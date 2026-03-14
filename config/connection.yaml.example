@@ -1,0 +1,33 @@
+# AS400 DB2 for i Connection Configuration
+# Copy this file to connection.yaml and update with your settings
+
+as400:
+  # Hostname or IP address of the AS400 system
+  host: "as400.company.com"
+  
+  # Authentication credentials
+  # You can use environment variables with ${VAR} syntax
+  user: "${AS400_USER}"
+  password: "${AS400_PASSWORD}"
+  
+  # DRDA port (default: 8471)
+  port: 8471
+  
+  # Use SSL connection (recommended)
+  ssl: true
+  
+  # Database name (usually *LOCAL for AS400)
+  database: "*LOCAL"
+
+# Default settings
+defaults:
+  # Default library/schema for operations
+  library: "QGPL"
+  
+  # Default journal library
+  journal_library: "QSYS2"
+
+# Logging configuration
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"

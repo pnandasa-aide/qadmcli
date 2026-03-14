@@ -1,0 +1,69 @@
+# Podman Compose Configuration for QADM CLI
+# 
+# Usage:
+#   podman-compose up -d    # Start development environment
+#   podman-compose down     # Stop environment
+#   podman-compose build    # Rebuild image
+
+version: "3.8"
+
+services:
+  qadmcli:
+    build:
+      context: .
+      dockerfile: Containerfile
+    image: qadmcli:latest
+    container_name: qadmcli-dev
+    
+    # Environment variables
+    environment:
+      # AS400 Connection (use .env file or export before running)
+      - AS400_USER=${AS400_USER:-}
+      - AS400_PASSWORD=${AS400_PASSWORD:-}
+      - QADMCLI_CONFIG=/app/config/connection.yaml
+      - JT400_JAR=/opt/jt400/jt400.jar
+    
+    # Volume mounts for development
+    volumes:
+      # Mount source code for hot-reload during development
+      - ./src:/app/src:Z
+      # Mount config directory
+      - ./config:/app/config:Z
+      # Optional: Mount jt400.jar if you have it locally
+      # - ./lib/jt400.jar:/opt/jt400/jt400.jar:Z
+    
+    # Keep container running for interactive use
+    stdin_open: true
+    tty: true
+    
+    # Network mode - use host for easier AS400 access
+    # Or use bridge with port mappings if needed
+    network_mode: host
+    
+    # Command to keep container alive
+    command: ["tail", "-f", "/dev/null"]
+    
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 128M
+
+  # Optional: Add a test AS400 simulator service for development
+  # This is a placeholder - you would need an actual AS400 or simulator
+  # as400-sim:
+  #   image: mock-as400:latest
+  #   container_name: as400-simulator
+  #   ports:
+  #     - "8471:8471"
+  #   networks:
+  #     - qadmcli-network
+
+# Optional: Define custom network
+# networks:
+#   qadmcli-network:
+#     driver: bridge

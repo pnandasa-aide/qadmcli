@@ -1,0 +1,71 @@
+# Example Table Configuration - Customer Master Table
+
+table:
+  name: "CUSTOMERS"
+  library: "MYLIB"
+  description: "Customer master table for storing customer information"
+
+columns:
+  - name: "CUST_ID"
+    type: "DECIMAL"
+    length: 10
+    scale: 0
+    nullable: false
+    description: "Unique customer identifier"
+  
+  - name: "CUST_NAME"
+    type: "VARCHAR"
+    length: 100
+    nullable: false
+    description: "Customer full name"
+  
+  - name: "CUST_EMAIL"
+    type: "VARCHAR"
+    length: 255
+    nullable: true
+    description: "Customer email address"
+  
+  - name: "CUST_PHONE"
+    type: "VARCHAR"
+    length: 20
+    nullable: true
+    description: "Customer phone number"
+  
+  - name: "CUST_STATUS"
+    type: "CHAR"
+    length: 1
+    nullable: false
+    default: "'A'"
+    description: "Customer status: A=Active, I=Inactive"
+  
+  - name: "CREATED_AT"
+    type: "TIMESTAMP"
+    nullable: false
+    default: "CURRENT_TIMESTAMP"
+    description: "Record creation timestamp"
+  
+  - name: "UPDATED_AT"
+    type: "TIMESTAMP"
+    nullable: true
+    description: "Last update timestamp"
+
+constraints:
+  primary_key:
+    name: "PK_CUSTOMERS"
+    columns: ["CUST_ID"]
+
+indexes:
+  - name: "IDX_CUST_NAME"
+    columns: ["CUST_NAME"]
+    unique: false
+  
+  - name: "IDX_CUST_STATUS"
+    columns: ["CUST_STATUS", "CREATED_AT"]
+    unique: false
+
+journaling:
+  enabled: true
+  # Optional: override default journal library
+  # journal_library: "MYLIB"
+  # Optional: override default journal name
+  # journal_name: "QSQJRN"
