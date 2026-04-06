@@ -123,31 +123,107 @@ class AS400ConnectionManager:
             return False
     
     def test_connection(self) -> dict[str, Any]:
-        """Test connection and return server info."""
+        """Test connection and return server info, permissions, and library details."""
         if not self.is_connected():
             self.connect()
+        
+        default_library = self.config.defaults.library
         
         info = {
             "host": self.config.as400.host,
             "connected": True,
             "server_info": {},
+            "user": self.config.as400.user,
+            "default_library": default_library,
+            "permissions": {},
+            "library_info": {},
         }
         
         try:
             cursor = self._connection.cursor()
             
-            # Get server information
-            cursor.execute("""
-                SELECT SYSTEM_SCHEMA_NAME, SYSTEM_TABLE_NAME 
-                FROM QSYS2.SYSTABLES 
-                FETCH FIRST 1 ROW ONLY
-            """)
-            
             # Get version info
+            logger.debug("Executing: SELECT OS_VERSION, OS_RELEASE FROM SYSIBMADM.ENV_SYS_INFO")
             cursor.execute("SELECT OS_VERSION, OS_RELEASE FROM SYSIBMADM.ENV_SYS_INFO")
             row = cursor.fetchone()
             if row:
                 info["server_info"]["version"] = f"{row[0]}.{row[1]}"
+            
+            # Check user permissions on default library
+            perm_sql = """
+                SELECT 
+                    OBJECT_AUTHORITY,
+                    DATA_READ,
+                    DATA_ADD,
+                    DATA_UPDATE,
+                    DATA_DELETE
+                FROM QSYS2.OBJECT_PRIVILEGES
+                WHERE OBJECT_SCHEMA = ?
+                AND OBJECT_NAME = ?
+                AND AUTHORIZATION_NAME = ?
+            """
+            logger.debug(f"Executing SQL: {perm_sql.strip()} [params: ({default_library}, {default_library}, {self.config.as400.user})]")
+            cursor.execute(perm_sql, (default_library, default_library, self.config.as400.user))
+            
+            row = cursor.fetchone()
+            if row:
+                info["permissions"]["library"] = {
+                    "object_authority": row[0],
+                    "data_read": row[1] == "YES",
+                    "data_add": row[2] == "YES",
+                    "data_update": row[3] == "YES",
+                    "data_delete": row[4] == "YES",
+                    "can_create_table": row[0] in ("*ALL", "*CHANGE"),
+                }
+            else:
+                info["permissions"]["library"] = {"access": "none"}
+            
+            # List available journals in the library
+            journals_sql = """
+                SELECT 
+                    JOURNAL_LIBRARY,
+                    JOURNAL_NAME,
+                    ATTACHED_JOURNAL_RECEIVER_LIBRARY,
+                    ATTACHED_JOURNAL_RECEIVER_NAME
+                FROM QSYS2.JOURNAL_INFO
+                WHERE JOURNAL_LIBRARY = ?
+            """
+            logger.debug(f"Executing SQL: {journals_sql.strip()} [params: ({default_library},)]")
+            cursor.execute(journals_sql, (default_library,))
+            
+            journals = []
+            rows = cursor.fetchall()
+            logger.debug(f"Found {len(rows)} journals in library {default_library}")
+            for row in rows:
+                journals.append({
+                    "journal": f"{row[0]}.{row[1]}",
+                    "receiver": f"{row[2]}.{row[3]}" if row[2] and row[3] else None,
+                })
+            info["library_info"]["available_journals"] = journals
+            
+            # List tables in the library
+            tables_sql = """
+                SELECT 
+                    SYSTEM_TABLE_NAME,
+                    TABLE_TYPE
+                FROM QSYS2.SYSTABLES
+                WHERE SYSTEM_TABLE_SCHEMA = ?
+                AND TABLE_TYPE IN ('T', 'P')
+                ORDER BY SYSTEM_TABLE_NAME
+                FETCH FIRST 20 ROWS ONLY
+            """
+            logger.debug(f"Executing SQL: {tables_sql.strip()} [params: ({default_library},)]")
+            cursor.execute(tables_sql, (default_library,))
+            
+            tables = []
+            rows = cursor.fetchall()
+            logger.debug(f"Found {len(rows)} tables in library {default_library}")
+            for row in rows:
+                tables.append({
+                    "name": row[0],
+                    "type": row[1],
+                })
+            info["library_info"]["tables"] = tables
             
             cursor.close()
             
@@ -161,6 +237,11 @@ class AS400ConnectionManager:
         if not self.is_connected():
             self.connect()
         
+        # Log the SQL query (truncate if very long)
+        sql_display = sql.strip()[:200] + "..." if len(sql.strip()) > 200 else sql.strip()
+        params_display = f" [params: {params}]" if params else ""
+        logger.debug(f"SQL: {sql_display}{params_display}")
+        
         cursor = self._connection.cursor()
         try:
             if params:
@@ -169,6 +250,7 @@ class AS400ConnectionManager:
                 cursor.execute(sql)
             return cursor
         except Exception as e:
+            logger.debug(f"SQL Error: {e}")
             cursor.close()
             raise
     

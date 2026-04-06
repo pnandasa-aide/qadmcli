@@ -1,0 +1,114 @@
+table_name: SUBSCRIBER
+library: GSLIBTST
+description: Converted from DB2 to MSSQL
+columns:
+- name: SUBS_ID
+  type: BIGINT
+  length: null
+  scale: null
+  nullable: false
+  default: null
+  identity: false
+  extra: {}
+  description: Subscriber ID
+- name: FIRST_NAME
+  type: VARCHAR
+  length: 50
+  scale: null
+  nullable: true
+  default: null
+  identity: false
+  extra: {}
+  description: First name
+- name: LAST_NAME
+  type: VARCHAR
+  length: 50
+  scale: null
+  nullable: true
+  default: null
+  identity: false
+  extra: {}
+  description: Last name
+- name: THAI_FIRST_NAME
+  type: NVARCHAR
+  length: 50
+  scale: null
+  nullable: true
+  default: null
+  identity: false
+  extra: {}
+  description: Thai first name
+- name: THAI_LAST_NAME
+  type: NVARCHAR
+  length: 50
+  scale: null
+  nullable: true
+  default: null
+  identity: false
+  extra: {}
+  description: Thai last name
+- name: EMAIL
+  type: VARCHAR
+  length: 100
+  scale: null
+  nullable: true
+  default: null
+  identity: false
+  extra: {}
+  description: Email address
+- name: PHONE
+  type: CHAR
+  length: 20
+  scale: null
+  nullable: true
+  default: null
+  identity: false
+  extra: {}
+  description: Phone number
+- name: BIRTH_DATE
+  type: DATE
+  length: null
+  scale: null
+  nullable: true
+  default: null
+  identity: false
+  extra: {}
+  description: Date of birth
+- name: STATUS
+  type: CHAR
+  length: 1
+  scale: null
+  nullable: false
+  default: '''A'''
+  identity: false
+  extra: {}
+  description: 'Status: A=Active, I=Inactive'
+- name: CREATED_DATE
+  type: DATETIME2
+  length: null
+  scale: null
+  nullable: false
+  default: GETDATE()
+  identity: false
+  extra: {}
+  description: Record creation timestamp
+- name: UPDATED_DATE
+  type: DATETIME2
+  length: null
+  scale: null
+  nullable: true
+  default: null
+  identity: false
+  extra: {}
+  description: Last update timestamp
+- name: BALANCE
+  type: DECIMAL
+  length: 15
+  scale: 2
+  nullable: true
+  default: null
+  identity: false
+  extra: {}
+  description: Account balance
+primary_key:
+- SUBS_ID

@@ -6,6 +6,8 @@ from typing import Any
 from rich.console import Console
 from rich.table import Table as RichTable
 from rich.json import JSON as RichJSON
+from rich import box
+from rich.text import Text
 
 
 def format_table(
@@ -14,7 +16,7 @@ def format_table(
     title: str | None = None
 ) -> RichTable:
     """Format data as Rich table."""
-    table = RichTable(title=title, show_header=True, header_style="bold magenta")
+    table = RichTable(title=title, show_header=True, header_style="bold magenta", box=box.ASCII)
     
     for header in headers:
         table.add_column(header)
@@ -45,3 +47,34 @@ def print_json(console: Console, data: Any, indent: int = 2) -> None:
     """Print formatted JSON to console."""
     json_str = format_json(data, indent)
     console.print(RichJSON(json_str))
+
+
+def print_ascii_panel(
+    console: Console,
+    content: str | Text,
+    title: str | None = None,
+    border_style: str = "blue"
+) -> None:
+    """Print content in an ASCII box (Windows-compatible).
+    
+    Replaces Rich Panel which uses Unicode box-drawing characters
+    that don't render correctly in Windows terminals.
+    """
+    lines = str(content).split('\n')
+    max_width = max(len(line) for line in lines) if lines else 0
+    
+    # Build ASCII box
+    top_border = f"+{'-' * (max_width + 2)}+"
+    bottom_border = top_border
+    
+    if title:
+        title_str = f" {title} "
+        title_pos = (max_width + 2 - len(title_str)) // 2
+        top_border = f"+{'-' * title_pos}{title_str}{'-' * (max_width + 2 - title_pos - len(title_str))}+"
+    
+    # Print box
+    console.print(f"[{border_style}]{top_border}[/{border_style}]")
+    for line in lines:
+        padding = ' ' * (max_width - len(line))
+        console.print(f"[{border_style}]|[/{border_style}] {line}{padding} [{border_style}]|[/{border_style}]")
+    console.print(f"[{border_style}]{bottom_border}[/{border_style}]")

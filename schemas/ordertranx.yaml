@@ -1,0 +1,201 @@
+# Order Transaction table - Fund order transactions
+# References SUBSCRIBER table
+
+table:
+  name: ORDERTRANX
+  library: GSLIBTST
+  description: "Fund order transaction table"
+  
+columns:
+  # Primary key
+  - name: ORDER_ID
+    type: DECIMAL
+    length: 18
+    scale: 0
+    nullable: false
+    description: "Order ID"
+    
+  # Foreign key to SUBSCRIBER
+  - name: SUBS_ID
+    type: DECIMAL
+    length: 15
+    scale: 0
+    nullable: false
+    description: "Subscriber ID"
+    
+  # Fund information
+  - name: FUND_CODE
+    type: CHAR
+    length: 10
+    nullable: false
+    description: "Fund code"
+    
+  - name: FUND_NAME_TH
+    type: VARCHAR
+    length: 200
+    ccsid: 838  # Thai
+    nullable: false
+    description: "Fund name in Thai"
+    
+  - name: FUND_NAME_EN
+    type: VARCHAR
+    length: 100
+    nullable: true
+    description: "Fund name in English"
+    
+  # Order details
+  - name: ORDER_TYPE
+    type: CHAR
+    length: 2
+    nullable: false
+    description: "Order type SI/RE/SW"
+    
+  - name: ORDER_DATE
+    type: DATE
+    nullable: false
+    description: "Order date"
+    
+  - name: ORDER_TIME
+    type: TIME
+    nullable: false
+    description: "Order time"
+    
+  # Amount and pricing
+  - name: ORDER_AMOUNT
+    type: DECIMAL
+    length: 18
+    scale: 2
+    nullable: false
+    description: "Order amount in THB"
+    
+  - name: UNIT_PRICE
+    type: DECIMAL
+    length: 15
+    scale: 6
+    nullable: false
+    description: "NAV price per unit"
+    
+  - name: UNIT_ALLOCATED
+    type: DECIMAL
+    length: 18
+    scale: 6
+    nullable: true
+    description: "Units allocated"
+    
+  # Fee and tax
+  - name: FEE_AMOUNT
+    type: DECIMAL
+    length: 15
+    scale: 2
+    nullable: false
+    default: "0"
+    description: "Transaction fee"
+    
+  - name: TAX_AMOUNT
+    type: DECIMAL
+    length: 15
+    scale: 2
+    nullable: false
+    default: "0"
+    description: "Tax amount"
+    
+  # Effective date
+  - name: EFFECTIVE_DATE
+    type: DATE
+    nullable: true
+    description: "Effective date"
+    
+  # Channel and sale reference
+  - name: CHANNEL_CODE
+    type: CHAR
+    length: 5
+    nullable: false
+    description: "Channel code"
+    
+  - name: SALE_REF_CODE
+    type: CHAR
+    length: 10
+    nullable: true
+    description: "Sale representative code"
+    
+  # Payment reference (binary for security)
+  - name: PAYMENT_REF
+    type: VARCHAR
+    length: 100
+    ccsid: 65535  # Binary/encrypted
+    nullable: true
+    description: "Payment ref"
+    
+  # IP Address (for audit)
+  - name: CLIENT_IP
+    type: CHAR
+    length: 15
+    nullable: true
+    description: "Client IP address"
+    
+  # Status workflow
+  - name: ORDER_STATUS
+    type: CHAR
+    length: 2
+    nullable: false
+    default: "'PE'"
+    description: "Status PE/CF/AL/CA"
+    
+  # Timestamps
+  - name: CREATED_DATE
+    type: TIMESTAMP
+    nullable: false
+    default: "CURRENT_TIMESTAMP"
+    description: "Created date"
+    
+  - name: CONFIRMED_DATE
+    type: TIMESTAMP
+    nullable: true
+    description: "Confirmed date"
+    
+  - name: ALLOCATED_DATE
+    type: TIMESTAMP
+    nullable: true
+    description: "Allocated date"
+    
+  - name: REMARKS
+    type: VARCHAR
+    length: 500
+    ccsid: 838  # Thai
+    nullable: true
+    description: "Remarks"
+
+constraints:
+  primary_key:
+    columns: [ORDER_ID]
+    
+  foreign_keys:
+    - name: FK_ORDER_SUBS
+      columns: [SUBS_ID]
+      references:
+        table: SUBSCRIBER
+        columns: [SUBS_ID]
+      on_delete: RESTRICT
+      on_update: NO ACTION
+      
+  indexes:
+    - name: IDX_ORDER_SUBS
+      columns: [SUBS_ID, ORDER_DATE]
+      unique: false
+      
+    - name: IDX_ORDER_FUND
+      columns: [FUND_CODE, ORDER_DATE]
+      unique: false
+      
+    - name: IDX_ORDER_STATUS
+      columns: [ORDER_STATUS, EFFECTIVE_DATE]
+      unique: false
+      
+    - name: IDX_ORDER_DATE
+      columns: [ORDER_DATE, ORDER_TIME]
+      unique: false
+
+journaling:
+  enabled: true
+  journal_library: GSLIBTST
+  journal_name: CUSTJRN

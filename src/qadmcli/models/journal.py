@@ -16,8 +16,8 @@ class JournalEntry(BaseModel):
     program_name: str | None = Field(None, description="Program that made the change")
     
     # Journal entry type codes
-    code: str = Field(..., description="Journal entry code (e.g., 'R' for record)")
-    entry_type: str = Field(..., description="Entry type (PT=Insert, UP=Update, DL=Delete)")
+    code: str | None = Field(None, description="Journal entry code (e.g., 'R' for record)")
+    entry_type: str | None = Field(None, description="Entry type (PT=Insert, UP=Update, DL=Delete)")
     
     # Object information
     object_library: str | None = Field(None, description="Library of the object")
@@ -46,7 +46,7 @@ class JournalEntry(BaseModel):
 
     def to_sql(self) -> str | None:
         """Convert journal entry to SQL statement."""
-        table = f"{self.object_library}.{object_name}" if self.object_library and self.object_name else "TABLE"
+        table = f"{self.object_library}.{self.object_name}" if self.object_library and self.object_name else "TABLE"
         
         if self.entry_type == "PT":  # Insert
             if self.after_image:
@@ -99,7 +99,11 @@ class JournalInfo(BaseModel):
     journal_receiver_library: str | None = None
     journal_receiver_name: str | None = None
     
-    # Entry range
+    # Receiver timestamps
+    receiver_attach_timestamp: str | None = None
+    receiver_detach_timestamp: str | None = None
+    
+    # Entry range (table-specific)
     oldest_entry_sequence: int | None = None
     newest_entry_sequence: int | None = None
     oldest_entry_timestamp: str | None = None

@@ -1,0 +1,41 @@
+# AS400 DB2 for i Connection Configuration
+# Copy this file to connection.yaml and update with your settings
+
+as400:
+  # Hostname or IP address of the AS400 system
+  host: "161.82.146.249"
+  
+  # Authentication credentials
+  # You can use environment variables with ${VAR} syntax
+  user: "${AS400_USER}"
+  password: "${AS400_PASSWORD}"
+  
+  # DRDA port (default: 8471)
+  port: 8471
+  
+  # Use SSL connection (recommended)
+  ssl: false
+  
+  # Database name (usually *LOCAL for AS400)
+  database: "GSLIBTST"
+
+# Default settings
+defaults:
+  # Default library/schema for operations
+  library: "GSLIBTST"
+  
+  # Default journal library
+  journal_library: "QSYS2"
+
+# Logging configuration
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+
+# MSSQL Connection Configuration (optional - remove or leave empty if not using MSSQL)
+mssql:
+  host: "${MSSQL_HOST:-192.168.13.62}"
+  port: ${MSSQL_PORT:-1433}
+  username: "${MSSQL_USER}"
+  password: "${MSSQL_PASSWORD}"
+  database: "${MSSQL_DATABASE:-GSTargetDB}"

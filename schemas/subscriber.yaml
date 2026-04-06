@@ -1,0 +1,134 @@
+# Subscriber table - Customer information with Thai name support
+# CCSID 838 = Thai character set
+
+table:
+  name: SUBSCRIBER
+  library: GSLIBTST
+  description: "Subscriber master with Thai name support"
+  
+columns:
+  # Primary key
+  - name: SUBS_ID
+    type: DECIMAL
+    length: 15
+    scale: 0
+    nullable: false
+    description: "Subscriber ID"
+    
+  # SIM card ID - Binary data for card reader
+  - name: SIM_CARD_ID
+    type: CHAR
+    length: 20
+    ccsid: 65535  # For bit data (binary)
+    nullable: true
+    description: "SIM Card ID binary"
+    
+  # Thai name fields - CCSID 838
+  - name: THAI_FIRST_NAME
+    type: VARCHAR
+    length: 100
+    ccsid: 838  # Thai
+    nullable: false
+    description: "Thai first name"
+    
+  - name: THAI_LAST_NAME
+    type: VARCHAR
+    length: 100
+    ccsid: 838  # Thai
+    nullable: false
+    description: "Thai last name"
+    
+  # English name fields
+  - name: ENG_FIRST_NAME
+    type: VARCHAR
+    length: 50
+    nullable: true
+    description: "English first name"
+    
+  - name: ENG_LAST_NAME
+    type: VARCHAR
+    length: 50
+    nullable: true
+    description: "English last name"
+    
+  # ID Card number (encrypted/binary)
+  - name: ID_CARD_HASH
+    type: CHAR
+    length: 64
+    ccsid: 65535  # Binary hash
+    nullable: false
+    description: "ID card hash"
+    
+  # Contact info
+  - name: MOBILE_NO
+    type: CHAR
+    length: 10
+    nullable: false
+    description: "Mobile phone number"
+    
+  - name: EMAIL
+    type: VARCHAR
+    length: 100
+    nullable: true
+    description: "Email address"
+    
+  # Sale reference
+  - name: SALE_REF_CODE
+    type: CHAR
+    length: 10
+    nullable: false
+    description: "Sale ref code"
+    
+  # Channel code
+  - name: CHANNEL_CODE
+    type: CHAR
+    length: 5
+    nullable: false
+    description: "Channel code"
+    
+  # Status
+  - name: STATUS
+    type: CHAR
+    length: 1
+    nullable: false
+    default: "'A'"
+    description: "Status A/I/S"
+    
+  # Timestamps
+  - name: CREATED_DATE
+    type: TIMESTAMP
+    nullable: false
+    default: "CURRENT_TIMESTAMP"
+    description: "Created date"
+    
+  - name: UPDATED_DATE
+    type: TIMESTAMP
+    nullable: true
+    description: "Updated date"
+    
+  - name: LAST_LOGIN_DATE
+    type: DATE
+    nullable: true
+    description: "Last login date"
+
+constraints:
+  primary_key:
+    columns: [SUBS_ID]
+    
+  indexes:
+    - name: IDX_SUBS_MOBILE
+      columns: [MOBILE_NO]
+      unique: true
+      
+    - name: IDX_SUBS_SALE
+      columns: [SALE_REF_CODE]
+      unique: false
+      
+    - name: IDX_SUBS_STATUS
+      columns: [STATUS, CREATED_DATE]
+      unique: false
+
+journaling:
+  enabled: true
+  journal_library: GSLIBTST
+  journal_name: CUSTJRN

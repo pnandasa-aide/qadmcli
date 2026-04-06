@@ -30,42 +30,63 @@ class SchemaManager:
         return row[0] > 0
     
     def get_table_info(self, table_name: str, library: str) -> TableInfo | None:
-        """Get table information from system catalogs."""
+        """Get table information from system catalogs including journal info."""
+        # Use OBJECT_STATISTICS for accurate info including journal status
         sql = """
             SELECT 
-                t.SYSTEM_TABLE_NAME,
-                t.SYSTEM_TABLE_SCHEMA,
-                t.TABLE_TYPE,
-                t.TABLE_TEXT,
-                t.NUMBER_ROWS,
-                t.CREATE_TIMESTAMP,
-                t.LAST_ALTERED_TIMESTAMP,
-                t.JOURNALED,
-                t.JOURNAL_LIBRARY,
-                t.JOURNAL_NAME
-            FROM QSYS2.SYSTABLES t
-            WHERE t.SYSTEM_TABLE_NAME = ?
-            AND t.SYSTEM_TABLE_SCHEMA = ?
+                OBJNAME,
+                OBJTYPE,
+                OBJTEXT,
+                JOURNALED,
+                JOURNAL_NAME,
+                JOURNAL_LIBRARY
+            FROM TABLE(QSYS2.OBJECT_STATISTICS(?, 'FILE', ?))
+            WHERE OBJTYPE = '*FILE'
         """
-        cursor = self.conn.execute(sql, (table_name.upper(), library.upper()))
+        cursor = self.conn.execute(sql, (library.upper(), table_name.upper()))
         row = cursor.fetchone()
         cursor.close()
         
         if not row:
             return None
         
+        # Get SQL name from SYSTABLES
+        sql_name = None
+        try:
+            sql_sql = """
+                SELECT TABLE_NAME 
+                FROM QSYS2.SYSTABLES 
+                WHERE SYSTEM_TABLE_NAME = ? AND SYSTEM_TABLE_SCHEMA = ?
+            """
+            cursor = self.conn.execute(sql_sql, (str(row[0]), library.upper()))
+            sql_row = cursor.fetchone()
+            cursor.close()
+            if sql_row and sql_row[0]:
+                sql_name = str(sql_row[0])
+        except Exception:
+            pass
+        
+        # Handle potential None values from database
         return TableInfo(
-            name=row[0],
-            library=row[1],
-            table_type=row[2],
-            description=row[3],
-            row_count=row[4],
-            created=str(row[5]) if row[5] else None,
-            last_altered=str(row[6]) if row[6] else None,
-            journaled=row[7] == "YES" if row[7] else False,
-            journal_library=row[8],
-            journal_name=row[9],
+            name=str(row[0]) if row[0] else "",
+            sql_name=sql_name,
+            library=library.upper(),
+            table_type="T",
+            description=str(row[2]) if row[2] else None,
+            journaled=row[3] == "YES" if row[3] else False,
+            journal_name=str(row[4]) if row[4] else None,
+            journal_library=str(row[5]) if row[5] else None,
         )
+    
+    def get_table_row_count(self, table_name: str, library: str) -> int | None:
+        """Get row count for a table."""
+        try:
+            cursor = self.conn.execute(f"SELECT COUNT(*) FROM {library}.{table_name}")
+            row = cursor.fetchone()
+            cursor.close()
+            return row[0] if row else None
+        except Exception:
+            return None
     
     def get_columns(self, table_name: str, library: str) -> list[dict[str, Any]]:
         """Get column information for a table."""
@@ -87,15 +108,17 @@ class SchemaManager:
         cursor = self.conn.execute(sql, (table_name.upper(), library.upper()))
         columns = []
         for row in cursor.fetchall():
+            # Convert Java strings to Python strings
+            nullable_val = str(row[5]).upper() if row[5] else "Y"
             columns.append({
-                "system_name": row[0],
-                "name": row[1],
-                "type": row[2],
+                "system_name": str(row[0]) if row[0] else None,
+                "name": str(row[1]) if row[1] else None,
+                "type": str(row[2]) if row[2] else None,
                 "length": row[3],
                 "scale": row[4],
-                "nullable": row[5] == "YES",
-                "default": row[6],
-                "description": row[7],
+                "nullable": nullable_val in ("Y", "YES", "TRUE", "1"),
+                "default": str(row[6]) if row[6] else None,
+                "description": str(row[7]) if row[7] else None,
             })
         cursor.close()
         return columns
@@ -233,46 +256,239 @@ class SchemaManager:
         return statements
     
     def list_tables(self, library: str, table_type: str | None = None) -> list[TableInfo]:
-        """List tables in a library."""
+        """List tables in a library using OBJECT_STATISTICS for journal info."""
+        # Use OBJECT_STATISTICS to get journal info (it doesn't have row count)
         sql = """
             SELECT 
-                SYSTEM_TABLE_NAME,
-                SYSTEM_TABLE_SCHEMA,
-                TABLE_TYPE,
-                TABLE_TEXT,
-                NUMBER_ROWS,
-                CREATE_TIMESTAMP,
-                LAST_ALTERED_TIMESTAMP,
+                OBJNAME,
+                OBJTYPE,
+                OBJTEXT,
                 JOURNALED,
-                JOURNAL_LIBRARY,
-                JOURNAL_NAME
-            FROM QSYS2.SYSTABLES
-            WHERE SYSTEM_TABLE_SCHEMA = ?
+                JOURNAL_NAME,
+                JOURNAL_LIBRARY
+            FROM TABLE(QSYS2.OBJECT_STATISTICS(?, 'FILE', '*ALL'))
+            WHERE OBJTYPE = '*FILE'
         """
-        params: list[Any] = [library.upper()]
-        
-        if table_type:
-            sql += " AND TABLE_TYPE = ?"
-            params.append(table_type.upper())
-        
-        sql += " ORDER BY SYSTEM_TABLE_NAME"
-        
-        cursor = self.conn.execute(sql, tuple(params))
+        cursor = self.conn.execute(sql, (library.upper(),))
         tables = []
         
+        # Get all SQL names in one query for efficiency
+        sql_names = {}
+        try:
+            sql_name_query = """
+                SELECT SYSTEM_TABLE_NAME, TABLE_NAME 
+                FROM QSYS2.SYSTABLES 
+                WHERE SYSTEM_TABLE_SCHEMA = ?
+            """
+            name_cursor = self.conn.execute(sql_name_query, (library.upper(),))
+            for name_row in name_cursor.fetchall():
+                if name_row[0] and name_row[1]:
+                    sql_names[str(name_row[0])] = str(name_row[1])
+            name_cursor.close()
+        except Exception:
+            pass
+        
         for row in cursor.fetchall():
+            system_name = str(row[0]) if row[0] else ""
             tables.append(TableInfo(
-                name=row[0],
-                library=row[1],
-                table_type=row[2],
-                description=row[3],
-                row_count=row[4],
-                created=str(row[5]) if row[5] else None,
-                last_altered=str(row[6]) if row[6] else None,
-                journaled=row[7] == "YES" if row[7] else False,
-                journal_library=row[8],
-                journal_name=row[9],
+                name=system_name,
+                sql_name=sql_names.get(system_name),
+                library=library.upper(),
+                table_type="T",  # All files from OBJECT_STATISTICS are tables
+                description=str(row[2]) if row[2] else None,
+                journaled=row[3] == "YES" if row[3] else False,
+                journal_name=str(row[4]) if row[4] else None,
+                journal_library=str(row[5]) if row[5] else None,
             ))
         
         cursor.close()
         return tables
+    
+    def generate_yaml_from_table(self, table_name: str, library: str) -> str:
+        """Generate YAML schema from existing table."""
+        import yaml
+        
+        # Helper to convert Java types to Python
+        def to_python(val):
+            if val is None:
+                return None
+            # Handle Java integers
+            if hasattr(val, 'intValue'):
+                return int(val.intValue())
+            # Handle Java strings
+            if hasattr(val, 'toString'):
+                return str(val.toString())
+            return val
+        
+        # Get table info
+        table_info = self.get_table_info(table_name, library)
+        columns = self.get_columns(table_name, library)
+        
+        # Build YAML structure
+        schema = {
+            "table": {
+                "name": str(table_name).upper(),
+                "library": str(library).upper(),
+                "description": table_info.description if table_info and table_info.description else f"Schema for {table_name}"
+            },
+            "columns": []
+        }
+        
+        # Map IBM i types to schema types
+        type_mapping = {
+            "CHARACTER": "CHAR",
+            "CHAR": "CHAR",
+            "VARCHAR": "VARCHAR",
+            "DECIMAL": "DECIMAL",
+            "NUMERIC": "DECIMAL",
+            "INTEGER": "INTEGER",
+            "BIGINT": "BIGINT",
+            "SMALLINT": "SMALLINT",
+            "DATE": "DATE",
+            "TIME": "TIME",
+            "TIMESTAMP": "TIMESTAMP",
+            "BLOB": "BLOB",
+            "CLOB": "CLOB",
+            "VARBINARY": "VARBINARY",
+            "BINARY": "BINARY",
+            "GRAPHIC": "GRAPHIC",
+            "VARGRAPHIC": "VARGRAPHIC",
+        }
+        
+        for col in columns:
+            col_type = str(col["type"]).upper()
+            col_def = {
+                "name": str(col["name"]),
+                "type": type_mapping.get(col_type, col_type),
+                "nullable": col["nullable"]
+            }
+            
+            # Add length if applicable
+            col_length = to_python(col["length"])
+            if col_length and col_type in ("CHARACTER", "CHAR", "VARCHAR", "GRAPHIC", "VARGRAPHIC", "BINARY", "VARBINARY"):
+                col_def["length"] = int(col_length)
+            
+            # Add scale for decimal/numeric
+            col_scale = to_python(col["scale"])
+            if col_scale is not None and col_type in ("DECIMAL", "NUMERIC"):
+                col_def["length"] = int(col_length) if col_length else None
+                col_def["scale"] = int(col_scale)
+            
+            # Add default if present
+            if col["default"]:
+                col_def["default"] = str(col["default"])
+            
+            # Add description
+            if col["description"]:
+                col_def["description"] = str(col["description"])
+            
+            schema["columns"].append(col_def)
+        
+        # Get constraints (primary key, foreign keys)
+        constraints = self._get_constraints(table_name, library)
+        if constraints:
+            schema["constraints"] = constraints
+        
+        # Get indexes
+        indexes = self._get_indexes(table_name, library)
+        if indexes:
+            schema["constraints"]["indexes"] = indexes
+        
+        # Add journaling info
+        if table_info and table_info.journaled:
+            schema["journaling"] = {
+                "enabled": True,
+                "journal_library": table_info.journal_library or library.upper(),
+                "journal_name": table_info.journal_name or "QSQJRN"
+            }
+        
+        return yaml.dump(schema, default_flow_style=False, sort_keys=False, allow_unicode=True)
+    
+    def _get_constraints(self, table_name: str, library: str) -> dict:
+        """Get table constraints."""
+        constraints = {}
+        
+        # Primary key - use SYSKEYCST for column names
+        pk_sql = """
+            SELECT k.COLUMN_NAME
+            FROM QSYS2.SYSKEYCST k
+            JOIN QSYS2.SYSCST c ON k.CONSTRAINT_NAME = c.CONSTRAINT_NAME
+                AND k.CONSTRAINT_SCHEMA = c.CONSTRAINT_SCHEMA
+            WHERE k.SYSTEM_TABLE_NAME = ?
+            AND k.SYSTEM_TABLE_SCHEMA = ?
+            AND c.CONSTRAINT_TYPE = 'PRIMARY KEY'
+            ORDER BY k.ORDINAL_POSITION
+        """
+        try:
+            cursor = self.conn.execute(pk_sql, (table_name.upper(), library.upper()))
+            pk_columns = [str(row[0]) for row in cursor.fetchall()]
+            cursor.close()
+            if pk_columns:
+                constraints["primary_key"] = {"columns": pk_columns}
+        except Exception:
+            pass
+        
+        # Foreign keys
+        fk_sql = """
+            SELECT 
+                CONSTRAINT_NAME,
+                COLUMN_NAME,
+                REFERENTIAL_CONSTRAINT_SCHEMA,
+                REFERENTIAL_CONSTRAINT_NAME
+            FROM QSYS2.SYSKEYCST
+            WHERE SYSTEM_TABLE_NAME = ?
+            AND SYSTEM_TABLE_SCHEMA = ?
+        """
+        try:
+            cursor = self.conn.execute(fk_sql, (table_name.upper(), library.upper()))
+            fk_rows = cursor.fetchall()
+            cursor.close()
+            if fk_rows:
+                constraints["foreign_keys"] = []
+                for row in fk_rows:
+                    constraints["foreign_keys"].append({
+                        "name": row[0],
+                        "columns": [row[1]],
+                        "references": {
+                            "table": row[2],
+                            "columns": [row[3]]
+                        }
+                    })
+        except Exception:
+            pass
+        
+        return constraints
+    
+    def _get_indexes(self, table_name: str, library: str) -> list:
+        """Get table indexes."""
+        indexes = []
+        
+        sql = """
+            SELECT 
+                INDEX_NAME,
+                COLUMN_NAME,
+                IS_UNIQUE
+            FROM QSYS2.SYSKEYS
+            WHERE SYSTEM_TABLE_NAME = ?
+            AND SYSTEM_TABLE_SCHEMA = ?
+            ORDER BY INDEX_NAME, ORDINAL_POSITION
+        """
+        try:
+            cursor = self.conn.execute(sql, (table_name.upper(), library.upper()))
+            index_map = {}
+            for row in cursor.fetchall():
+                idx_name = row[0]
+                if idx_name not in index_map:
+                    index_map[idx_name] = {
+                        "name": idx_name,
+                        "columns": [],
+                        "unique": row[2] == "YES"
+                    }
+                index_map[idx_name]["columns"].append(row[1])
+            cursor.close()
+            
+            indexes = list(index_map.values())
+        except Exception:
+            pass
+        
+        return indexes

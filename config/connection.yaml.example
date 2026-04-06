@@ -19,6 +19,21 @@ as400:
   # Database name (usually *LOCAL for AS400)
   database: "*LOCAL"
 
+# MSSQL Connection Configuration (optional - for cross-database operations)
+mssql:
+  # Hostname or IP address of the MSSQL server
+  host: "mssql.company.com"
+  
+  # Authentication credentials
+  username: "${MSSQL_USER}"
+  password: "${MSSQL_PASSWORD}"
+  
+  # MSSQL port (default: 1433)
+  port: 1433
+  
+  # Default database
+  database: "master"
+
 # Default settings
 defaults:
   # Default library/schema for operations

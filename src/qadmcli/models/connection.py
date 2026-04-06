@@ -32,6 +32,23 @@ class AS400Connection(BaseModel):
         return v.strip()
 
 
+class MSSQLConnection(BaseModel):
+    """MSSQL connection settings."""
+
+    host: str = Field(..., description="MSSQL server hostname or IP")
+    port: int = Field(default=1433, description="MSSQL port (default: 1433)")
+    username: str = Field(..., description="MSSQL username")
+    password: str = Field(..., description="MSSQL password")
+    database: str = Field(default="master", description="Default database")
+
+    @field_validator("host")
+    @classmethod
+    def validate_host(cls, v: str) -> str:
+        if not v or not v.strip():
+            raise ValueError("Host cannot be empty")
+        return v.strip()
+
+
 class DefaultsConfig(BaseModel):
     """Default settings."""
 
@@ -53,6 +70,7 @@ class ConnectionConfig(BaseModel):
     """Root connection configuration."""
 
     as400: AS400Connection
+    mssql: MSSQLConnection | None = Field(default=None, description="Optional MSSQL connection")
     defaults: DefaultsConfig = Field(default_factory=DefaultsConfig)
     logging: LoggingConfig = Field(default_factory=LoggingConfig)
 
@@ -64,16 +82,34 @@ class ConnectionConfig(BaseModel):
         with open(config_path, "r", encoding="utf-8") as f:
             content = f.read()
         
-        # Substitute environment variables: ${VAR} or ${VAR:-default}
+        # Track optional sections that should be removed if env vars are missing
+        optional_sections: dict[str, list[str]] = {}
+        
+        # Substitute environment variables: ${VAR}, ${VAR:-default}, or ${VAR:?} (optional)
         def env_substitute(match: Any) -> str:
             var_expr = match.group(1)
             if ":-" in var_expr:
                 var_name, default = var_expr.split(":-", 1)
                 return os.environ.get(var_name, default)
+            if ":?" in var_expr:
+                # Optional variable - return special marker if not set
+                var_name = var_expr[:-2]
+                return os.environ.get(var_name, "__OPTIONAL_UNSET__")
             return os.environ.get(var_expr, "")
         
         content = re.sub(r"\$\{([^}]+)\}", env_substitute, content)
         data = yaml.safe_load(content)
+        
+        # Remove optional sections that have unset credential values
+        if data.get("mssql"):
+            mssql_data = data["mssql"]
+            # Check if critical credential fields are empty
+            # If username and password are both empty, treat MSSQL as not configured
+            username = mssql_data.get("username", "")
+            password = mssql_data.get("password", "")
+            if (not username or username == "__OPTIONAL_UNSET__") and \
+               (not password or password == "__OPTIONAL_UNSET__"):
+                data["mssql"] = None
         
         return cls(**data)
     
@@ -90,6 +126,7 @@ class ConnectionConfig(BaseModel):
         props = {
             "user": self.as400.user,
             "password": self.as400.password,
+            "libraries": self.defaults.library,
         }
         if self.as400.ssl:
             props["ssl"] = "true"

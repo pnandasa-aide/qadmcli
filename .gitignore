@@ -1,0 +1,5 @@
+#ignore environment file
+.env
+#ignore comment,notes
+*.txt
+*.copy

@@ -1,0 +1,96 @@
+# Cross-database schema for SUBSCRIBER table
+# Source: DB2 for i on AS400
+# Target: MSSQL
+
+table_name: "SUBSCRIBER"
+library: "GSLIBTST"
+description: "Subscriber table for cross-database replication"
+
+# Primary key definition
+primary_key:
+  - "SUBS_ID"
+
+# Column definitions (DB2 for i native types)
+columns:
+  - name: "SUBS_ID"
+    type: "DECIMAL"
+    length: 15
+    scale: 0
+    nullable: false
+    description: "Subscriber ID"
+    identity: true
+
+  - name: "FIRST_NAME"
+    type: "VARCHAR"
+    length: 50
+    nullable: true
+    description: "First name"
+
+  - name: "LAST_NAME"
+    type: "VARCHAR"
+    length: 50
+    nullable: true
+    description: "Last name"
+
+  - name: "THAI_FIRST_NAME"
+    type: "NVARCHAR"
+    length: 50
+    nullable: true
+    description: "Thai first name"
+
+  - name: "THAI_LAST_NAME"
+    type: "NVARCHAR"
+    length: 50
+    nullable: true
+    description: "Thai last name"
+
+  - name: "EMAIL"
+    type: "VARCHAR"
+    length: 100
+    nullable: true
+    description: "Email address"
+
+  - name: "PHONE"
+    type: "CHAR"
+    length: 20
+    nullable: true
+    description: "Phone number"
+
+  - name: "BIRTH_DATE"
+    type: "DATE"
+    nullable: true
+    description: "Date of birth"
+
+  - name: "STATUS"
+    type: "CHAR"
+    length: 1
+    nullable: false
+    default: "'A'"
+    description: "Status: A=Active, I=Inactive"
+
+  - name: "CREATED_DATE"
+    type: "TIMESTAMP"
+    nullable: false
+    default: "CURRENT_TIMESTAMP"
+    description: "Record creation timestamp"
+
+  - name: "UPDATED_DATE"
+    type: "TIMESTAMP"
+    nullable: true
+    description: "Last update timestamp"
+
+  - name: "BALANCE"
+    type: "DECIMAL"
+    length: 15
+    scale: 2
+    nullable: true
+    description: "Account balance"
+
+# Cross-database type mappings
+# These will be automatically converted when creating tables on target database
+type_mappings:
+  db2_to_mssql:
+    DECIMAL(15,0) + identity: "BIGINT IDENTITY(1,1)"
+    NVARCHAR: "NVARCHAR"
+    TIMESTAMP: "DATETIME2"
+    CURRENT_TIMESTAMP: "GETDATE()"

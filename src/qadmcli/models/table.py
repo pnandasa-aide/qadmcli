@@ -123,17 +123,20 @@ class TableConfig(BaseModel):
         
         lines.append(")")
         
-        # Table description
+        # Table description - separate statement with semicolon
         if self.description:
-            lines.append(f"\nLABEL ON TABLE {table_name} IS '{self.description}'")
+            lines.append(f";\nLABEL ON TABLE {table_name} IS '{self.description}'")
         
-        # Column descriptions
+        # Column descriptions - separate statements with semicolons
         for col in self.columns:
             if col.description:
                 lines.append(
-                    f"\nLABEL ON COLUMN {table_name}.{col.name} "
+                    f";\nLABEL ON COLUMN {table_name}.{col.name} "
                     f"IS '{col.description}'"
                 )
+        
+        # End with semicolon
+        lines.append(";")
         
         return "\n".join(lines)
 
@@ -175,7 +178,8 @@ class TableConfig(BaseModel):
 class TableInfo(BaseModel):
     """Table information from system catalogs."""
 
-    name: str
+    name: str  # System name (short name)
+    sql_name: str | None = None  # SQL name (long name)
     library: str
     table_type: str
     description: str | None = None

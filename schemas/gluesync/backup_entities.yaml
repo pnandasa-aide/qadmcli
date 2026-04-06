@@ -1,0 +1,4544 @@
+schemas:
+  TBLIBTST:
+    target: dbo
+    sourceType: SQL
+    targetType: SQL
+    tables:
+      whitelist:
+      - PRODUCT_MASTER
+      - SALES_TRANSACTIONS
+      - TABLESLONGLIST
+      custom:
+        TABLESLONGLIST:
+          name: TABLESLONGLIST
+          entityName: TBLIBTST.TABLESLONGLIST
+          chainId: multitable_TABLESLONGLIST
+          columns:
+          - name: CUSTOMER_ID
+            type: INTEGER
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -5403347909400240591
+            ordinalPosition: -5403347909400240591
+          - name: FIRST_NAME
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 3280626576278720473
+            ordinalPosition: 3280626576278720473
+          - name: LAST_NAME
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 7696657422409895801
+            ordinalPosition: 7696657422409895801
+          - name: TH_NAME
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -690580183001257599
+            ordinalPosition: -690580183001257599
+          - name: TH_LASTNAME
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 5786481513073710123
+            ordinalPosition: 5786481513073710123
+          - name: DATE_OF_BIRTH
+            type: DATE
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 7553947723889059734
+            ordinalPosition: 7553947723889059734
+          - name: GENDER
+            type: CHARACTER
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 751284306666685497
+            ordinalPosition: 751284306666685497
+          - name: EMAIL
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8275657831543607410
+            ordinalPosition: 8275657831543607410
+          - name: PHONE_NUMBER
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3859241969956431065
+            ordinalPosition: -3859241969956431065
+          - name: ADDRESS_LINE1
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 1288856235159753218
+            ordinalPosition: 1288856235159753218
+          - name: ADDRESS_LINE2
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -5034593201906437980
+            ordinalPosition: -5034593201906437980
+          - name: CITY
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 3577542283041938912
+            ordinalPosition: 3577542283041938912
+          - name: STATE
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -40371200032326598
+            ordinalPosition: -40371200032326598
+          - name: ZIP_CODE
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 1194891062074907252
+            ordinalPosition: 1194891062074907252
+          - name: COUNTRY
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4930804573854400536
+            ordinalPosition: 4930804573854400536
+          - name: CUSTOMER_SINCE
+            type: DATE
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 1923530060940656244
+            ordinalPosition: 1923530060940656244
+          - name: CREDIT_SCORE
+            type: SMALLINT
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -153334463154590547
+            ordinalPosition: -153334463154590547
+          - name: IS_ACTIVE
+            type: SMALLINT
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3429550416457364630
+            ordinalPosition: -3429550416457364630
+          - name: CREATED_DATE
+            type: TIMESTAMP
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3665093776608184821
+            ordinalPosition: -3665093776608184821
+          - name: LAST_UPDATED
+            type: TIMESTAMP
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 2190785442543731920
+            ordinalPosition: 2190785442543731920
+          keys:
+          - CUSTOMER_ID
+        SALES_TRANSACTIONS:
+          name: SALES_TRANSACTIONS
+          entityName: TBLIBTST.SALES_TRANSACTIONS
+          keys:
+          - TRANS_ID
+          columns:
+          - source: CREATE_BY
+            target: CREATE_BY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -7631346387531906315
+            ordinalPosition: 10
+          - source: CUST_ID
+            target: CUST_ID
+            type: int
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -4891398803227897090
+            ordinalPosition: 4
+          - source: PROD_ID
+            target: PROD_ID
+            type: int
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -4453484290069758193
+            ordinalPosition: 5
+          - source: QUANTITY
+            target: QUANTITY
+            type: int
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3472026076544099006
+            ordinalPosition: 6
+          - source: BRANCH_ID
+            target: BRANCH_ID
+            type: smallint
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -1893784962627383252
+            ordinalPosition: 9
+          - source: TRANS_ID
+            target: TRANS_ID
+            type: int
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -1045580691169717642
+            ordinalPosition: 1
+          - source: TRANS_DATE
+            target: TRANS_DATE
+            type: date
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 219036591934912273
+            ordinalPosition: 3
+          - source: CREATE_TS
+            target: CREATE_TS
+            type: datetime2
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 1480676492861234073
+            ordinalPosition: 11
+          - source: DOC_NO
+            target: DOC_NO
+            type: char
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4231184645809736727
+            ordinalPosition: 2
+          - source: NET_AMOUNT
+            target: NET_AMOUNT
+            type: decimal
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 5033242983708415368
+            ordinalPosition: 7
+          - source: VAT_AMOUNT
+            target: VAT_AMOUNT
+            type: decimal
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 6843706758204376837
+            ordinalPosition: 8
+          customProperties:
+            source:
+              maxFetchItemsCountPerIteration: 1000
+              maxTransactionMessageKbSize: 1024
+              pollingIntervalMilliseconds: 500
+            target:
+              maxWriteBatchSize: 1000
+              maxDeleteBatchSize: 1000
+              maxWriteBulkSize: 250000
+              preSnapshotCommand: ''
+              postSnapshotCommand: ''
+              snapshotWritingConcurrency: 2
+              allowedOperations:
+              - INSERT
+              - UPDATE
+              - DELETE
+              - TRUNCATE
+        PRODUCT_MASTER:
+          name: PRODUCT_MASTER
+          entityName: TBLIBTST.PRODUCT_MASTER
+          keys:
+          - PROD_ID
+          columns:
+          - source: IS_CANCEL
+            target: IS_CANCEL
+            type: char
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -7471105084534689107
+            ordinalPosition: 8
+          - source: PROD_ID
+            target: PROD_ID
+            type: int
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -4453484290069758193
+            ordinalPosition: 1
+          - source: CATEGORY
+            target: CATEGORY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3533347846597312840
+            ordinalPosition: 5
+          - source: PROD_NAME
+            target: PROD_NAME
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -2331098072755397068
+            ordinalPosition: 3
+          - source: PROD_NAME_TH
+            target: PROD_NAME_TH
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -1964122885685890316
+            ordinalPosition: 4
+          - source: UPDATE_TS
+            target: UPDATE_TS
+            type: datetime2
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 1053239478904546461
+            ordinalPosition: 10
+          - source: CREATE_TS
+            target: CREATE_TS
+            type: datetime2
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 1480676492861234073
+            ordinalPosition: 9
+          - source: PROD_CODE
+            target: PROD_CODE
+            type: char
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4007645544370123399
+            ordinalPosition: 2
+          - source: UNIT_PRICE
+            target: UNIT_PRICE
+            type: decimal
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8040489501036014460
+            ordinalPosition: 6
+          - source: STOCK_QTY
+            target: STOCK_QTY
+            type: int
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8813848666498194767
+            ordinalPosition: 7
+          customProperties:
+            source:
+              maxFetchItemsCountPerIteration: 1000
+              maxTransactionMessageKbSize: 1024
+              pollingIntervalMilliseconds: 500
+            target:
+              maxWriteBatchSize: 1000
+              maxDeleteBatchSize: 1000
+              maxWriteBulkSize: 250000
+              preSnapshotCommand: ''
+              postSnapshotCommand: ''
+              snapshotWritingConcurrency: 2
+              allowedOperations:
+              - INSERT
+              - UPDATE
+              - DELETE
+              - TRUNCATE
+  EZPIPE:
+    target: dbo
+    sourceType: SQL
+    targetType: SQL
+    tables:
+      whitelist:
+      - TB_01
+      - TB_02
+      - TB_03
+      - TB_04
+      - TB_05
+      - TB_06
+      - TB_07
+      - TB_08
+      - TB_09
+      - TB_10
+      - TB_11
+      - TB_12
+      - TB_13
+      - TB_14
+      - TB_15
+      - TB_16
+      - TB_17
+      - TB_18
+      - TB_19
+      - TB_20
+      - TEST
+      - TEST2
+      custom:
+        TB_06:
+          name: TB_06
+          entityName: EZPIPE.TB_06
+          chainId: multitable_TB_06
+          columns:
+          - name: ID
+            type: BIGINT
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4054250243860915464
+            ordinalPosition: 4054250243860915464
+          - name: CODE
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 552209600269662485
+            ordinalPosition: 552209600269662485
+          - name: NAME
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -1538672849178263399
+            ordinalPosition: -1538672849178263399
+          - name: EMAIL
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8275657831543607410
+            ordinalPosition: 8275657831543607410
+          - name: PHONE
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 2613799984570680051
+            ordinalPosition: 2613799984570680051
+          - name: CITY
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 3577542283041938912
+            ordinalPosition: 3577542283041938912
+          - name: COUNTRY
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4930804573854400536
+            ordinalPosition: 4930804573854400536
+          - name: STATUS
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8345651681125515999
+            ordinalPosition: -8345651681125515999
+          - name: CATEGORY
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3533347846597312840
+            ordinalPosition: -3533347846597312840
+          - name: AMOUNT
+            type: DECIMAL
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 1329969635776169217
+            ordinalPosition: 1329969635776169217
+          - name: TXN_DATE
+            type: DATE
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8188186706941983258
+            ordinalPosition: 8188186706941983258
+          - name: SCORE
+            type: INTEGER
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -6480684600904069339
+            ordinalPosition: -6480684600904069339
+          - name: RATING
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8468531172870747109
+            ordinalPosition: -8468531172870747109
+          - name: REG_DATE
+            type: DATE
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -173532916760798446
+            ordinalPosition: -173532916760798446
+          - name: NOTES
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8933653772890505923
+            ordinalPosition: 8933653772890505923
+          - name: CREATED_BY
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4610455788947692530
+            ordinalPosition: 4610455788947692530
+          - name: CREATED_DATE
+            type: TIMESTAMP
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3665093776608184821
+            ordinalPosition: -3665093776608184821
+          - name: UPDATED_BY
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8553391487839514288
+            ordinalPosition: -8553391487839514288
+          - name: UPDATED_DATE
+            type: TIMESTAMP
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -2210160041977254107
+            ordinalPosition: -2210160041977254107
+          - name: IS_ACTIVE
+            type: CHARACTER
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3429550416457364630
+            ordinalPosition: -3429550416457364630
+          keys:
+          - ID
+        TB_07:
+          name: TB_07
+          entityName: EZPIPE.TB_06
+          chainId: multitable_TB_06
+          columns:
+          - name: ID
+            type: BIGINT
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4054250243860915464
+            ordinalPosition: 4054250243860915464
+          - name: CODE
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 552209600269662485
+            ordinalPosition: 552209600269662485
+          - name: NAME
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -1538672849178263399
+            ordinalPosition: -1538672849178263399
+          - name: EMAIL
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8275657831543607410
+            ordinalPosition: 8275657831543607410
+          - name: PHONE
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 2613799984570680051
+            ordinalPosition: 2613799984570680051
+          - name: CITY
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 3577542283041938912
+            ordinalPosition: 3577542283041938912
+          - name: COUNTRY
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4930804573854400536
+            ordinalPosition: 4930804573854400536
+          - name: STATUS
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8345651681125515999
+            ordinalPosition: -8345651681125515999
+          - name: CATEGORY
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3533347846597312840
+            ordinalPosition: -3533347846597312840
+          - name: AMOUNT
+            type: DECIMAL
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 1329969635776169217
+            ordinalPosition: 1329969635776169217
+          - name: TXN_DATE
+            type: DATE
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8188186706941983258
+            ordinalPosition: 8188186706941983258
+          - name: SCORE
+            type: INTEGER
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -6480684600904069339
+            ordinalPosition: -6480684600904069339
+          - name: RATING
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8468531172870747109
+            ordinalPosition: -8468531172870747109
+          - name: REG_DATE
+            type: DATE
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -173532916760798446
+            ordinalPosition: -173532916760798446
+          - name: NOTES
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8933653772890505923
+            ordinalPosition: 8933653772890505923
+          - name: CREATED_BY
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4610455788947692530
+            ordinalPosition: 4610455788947692530
+          - name: CREATED_DATE
+            type: TIMESTAMP
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3665093776608184821
+            ordinalPosition: -3665093776608184821
+          - name: UPDATED_BY
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8553391487839514288
+            ordinalPosition: -8553391487839514288
+          - name: UPDATED_DATE
+            type: TIMESTAMP
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -2210160041977254107
+            ordinalPosition: -2210160041977254107
+          - name: IS_ACTIVE
+            type: CHARACTER
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3429550416457364630
+            ordinalPosition: -3429550416457364630
+          keys:
+          - ID
+        TB_08:
+          name: TB_08
+          entityName: EZPIPE.TB_06
+          chainId: multitable_TB_06
+          columns:
+          - name: ID
+            type: BIGINT
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4054250243860915464
+            ordinalPosition: 4054250243860915464
+          - name: CODE
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 552209600269662485
+            ordinalPosition: 552209600269662485
+          - name: NAME
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -1538672849178263399
+            ordinalPosition: -1538672849178263399
+          - name: EMAIL
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8275657831543607410
+            ordinalPosition: 8275657831543607410
+          - name: PHONE
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 2613799984570680051
+            ordinalPosition: 2613799984570680051
+          - name: CITY
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 3577542283041938912
+            ordinalPosition: 3577542283041938912
+          - name: COUNTRY
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4930804573854400536
+            ordinalPosition: 4930804573854400536
+          - name: STATUS
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8345651681125515999
+            ordinalPosition: -8345651681125515999
+          - name: CATEGORY
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3533347846597312840
+            ordinalPosition: -3533347846597312840
+          - name: AMOUNT
+            type: DECIMAL
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 1329969635776169217
+            ordinalPosition: 1329969635776169217
+          - name: TXN_DATE
+            type: DATE
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8188186706941983258
+            ordinalPosition: 8188186706941983258
+          - name: SCORE
+            type: INTEGER
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -6480684600904069339
+            ordinalPosition: -6480684600904069339
+          - name: RATING
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8468531172870747109
+            ordinalPosition: -8468531172870747109
+          - name: REG_DATE
+            type: DATE
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -173532916760798446
+            ordinalPosition: -173532916760798446
+          - name: NOTES
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8933653772890505923
+            ordinalPosition: 8933653772890505923
+          - name: CREATED_BY
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4610455788947692530
+            ordinalPosition: 4610455788947692530
+          - name: CREATED_DATE
+            type: TIMESTAMP
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3665093776608184821
+            ordinalPosition: -3665093776608184821
+          - name: UPDATED_BY
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8553391487839514288
+            ordinalPosition: -8553391487839514288
+          - name: UPDATED_DATE
+            type: TIMESTAMP
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -2210160041977254107
+            ordinalPosition: -2210160041977254107
+          - name: IS_ACTIVE
+            type: CHARACTER
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3429550416457364630
+            ordinalPosition: -3429550416457364630
+          keys:
+          - ID
+        TB_09:
+          name: TB_09
+          entityName: EZPIPE.TB_06
+          chainId: multitable_TB_06
+          columns:
+          - name: ID
+            type: BIGINT
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4054250243860915464
+            ordinalPosition: 4054250243860915464
+          - name: CODE
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 552209600269662485
+            ordinalPosition: 552209600269662485
+          - name: NAME
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -1538672849178263399
+            ordinalPosition: -1538672849178263399
+          - name: EMAIL
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8275657831543607410
+            ordinalPosition: 8275657831543607410
+          - name: PHONE
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 2613799984570680051
+            ordinalPosition: 2613799984570680051
+          - name: CITY
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 3577542283041938912
+            ordinalPosition: 3577542283041938912
+          - name: COUNTRY
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4930804573854400536
+            ordinalPosition: 4930804573854400536
+          - name: STATUS
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8345651681125515999
+            ordinalPosition: -8345651681125515999
+          - name: CATEGORY
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3533347846597312840
+            ordinalPosition: -3533347846597312840
+          - name: AMOUNT
+            type: DECIMAL
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 1329969635776169217
+            ordinalPosition: 1329969635776169217
+          - name: TXN_DATE
+            type: DATE
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8188186706941983258
+            ordinalPosition: 8188186706941983258
+          - name: SCORE
+            type: INTEGER
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -6480684600904069339
+            ordinalPosition: -6480684600904069339
+          - name: RATING
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8468531172870747109
+            ordinalPosition: -8468531172870747109
+          - name: REG_DATE
+            type: DATE
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -173532916760798446
+            ordinalPosition: -173532916760798446
+          - name: NOTES
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8933653772890505923
+            ordinalPosition: 8933653772890505923
+          - name: CREATED_BY
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4610455788947692530
+            ordinalPosition: 4610455788947692530
+          - name: CREATED_DATE
+            type: TIMESTAMP
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3665093776608184821
+            ordinalPosition: -3665093776608184821
+          - name: UPDATED_BY
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8553391487839514288
+            ordinalPosition: -8553391487839514288
+          - name: UPDATED_DATE
+            type: TIMESTAMP
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -2210160041977254107
+            ordinalPosition: -2210160041977254107
+          - name: IS_ACTIVE
+            type: CHARACTER
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3429550416457364630
+            ordinalPosition: -3429550416457364630
+          keys:
+          - ID
+        TB_10:
+          name: TB_10
+          entityName: EZPIPE.TB_06
+          chainId: multitable_TB_06
+          columns:
+          - name: ID
+            type: BIGINT
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4054250243860915464
+            ordinalPosition: 4054250243860915464
+          - name: CODE
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 552209600269662485
+            ordinalPosition: 552209600269662485
+          - name: NAME
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -1538672849178263399
+            ordinalPosition: -1538672849178263399
+          - name: EMAIL
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8275657831543607410
+            ordinalPosition: 8275657831543607410
+          - name: PHONE
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 2613799984570680051
+            ordinalPosition: 2613799984570680051
+          - name: CITY
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 3577542283041938912
+            ordinalPosition: 3577542283041938912
+          - name: COUNTRY
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4930804573854400536
+            ordinalPosition: 4930804573854400536
+          - name: STATUS
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8345651681125515999
+            ordinalPosition: -8345651681125515999
+          - name: CATEGORY
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3533347846597312840
+            ordinalPosition: -3533347846597312840
+          - name: AMOUNT
+            type: DECIMAL
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 1329969635776169217
+            ordinalPosition: 1329969635776169217
+          - name: TXN_DATE
+            type: DATE
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8188186706941983258
+            ordinalPosition: 8188186706941983258
+          - name: SCORE
+            type: INTEGER
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -6480684600904069339
+            ordinalPosition: -6480684600904069339
+          - name: RATING
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8468531172870747109
+            ordinalPosition: -8468531172870747109
+          - name: REG_DATE
+            type: DATE
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -173532916760798446
+            ordinalPosition: -173532916760798446
+          - name: NOTES
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8933653772890505923
+            ordinalPosition: 8933653772890505923
+          - name: CREATED_BY
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4610455788947692530
+            ordinalPosition: 4610455788947692530
+          - name: CREATED_DATE
+            type: TIMESTAMP
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3665093776608184821
+            ordinalPosition: -3665093776608184821
+          - name: UPDATED_BY
+            type: CHARACTER VARYING
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8553391487839514288
+            ordinalPosition: -8553391487839514288
+          - name: UPDATED_DATE
+            type: TIMESTAMP
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -2210160041977254107
+            ordinalPosition: -2210160041977254107
+          - name: IS_ACTIVE
+            type: CHARACTER
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3429550416457364630
+            ordinalPosition: -3429550416457364630
+          keys:
+          - ID
+        TB_11:
+          name: TB_11
+          entityName: EZPIPE.TB_11
+          keys:
+          - ID
+          columns:
+          - source: UPDATED_BY
+            target: UPDATED_BY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8553391487839514288
+            ordinalPosition: 19
+          - source: RATING
+            target: RATING
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8468531172870747109
+            ordinalPosition: 14
+          - source: STATUS
+            target: STATUS
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8345651681125515999
+            ordinalPosition: 9
+          - source: SCORE
+            target: SCORE
+            type: int
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -6480684600904069339
+            ordinalPosition: 13
+          - source: CREATED_DATE
+            target: CREATED_DATE
+            type: datetime
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3665093776608184821
+            ordinalPosition: 18
+          - source: CATEGORY
+            target: CATEGORY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3533347846597312840
+            ordinalPosition: 10
+          - source: IS_ACTIVE
+            target: IS_ACTIVE
+            type: char
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3429550416457364630
+            ordinalPosition: 21
+          - source: UPDATED_DATE
+            target: UPDATED_DATE
+            type: datetime
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -2210160041977254107
+            ordinalPosition: 20
+          - source: NAME
+            target: NAME
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -1538672849178263399
+            ordinalPosition: 4
+          - source: REG_DATE
+            target: REG_DATE
+            type: date
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -173532916760798446
+            ordinalPosition: 15
+          - source: CODE
+            target: CODE
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 552209600269662485
+            ordinalPosition: 3
+          - source: AMOUNT
+            target: AMOUNT
+            type: decimal
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 1329969635776169217
+            ordinalPosition: 11
+          - source: _RRN
+            target: _RRN
+            type: bigint
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 1704915659655896885
+            ordinalPosition: 1
+          - source: PHONE
+            target: PHONE
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 2613799984570680051
+            ordinalPosition: 6
+          - source: CITY
+            target: CITY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 3577542283041938912
+            ordinalPosition: 7
+          - source: ID
+            target: ID
+            type: bigint
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4054250243860915464
+            ordinalPosition: 2
+          - source: CREATED_BY
+            target: CREATED_BY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4610455788947692530
+            ordinalPosition: 17
+          - source: COUNTRY
+            target: COUNTRY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4930804573854400536
+            ordinalPosition: 8
+          - source: TXN_DATE
+            target: TXN_DATE
+            type: date
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8188186706941983258
+            ordinalPosition: 12
+          - source: EMAIL
+            target: EMAIL
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8275657831543607410
+            ordinalPosition: 5
+          - source: NOTES
+            target: NOTES
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8933653772890505923
+            ordinalPosition: 16
+          customProperties:
+            source:
+              maxFetchItemsCountPerIteration: 1000
+              maxTransactionMessageKbSize: 1024
+              pollingIntervalMilliseconds: 500
+            target:
+              snapshotWritingConcurrency: 2
+        TB_12:
+          name: TB_12
+          entityName: EZPIPE.TB_12
+          keys:
+          - ID
+          columns:
+          - source: UPDATED_BY
+            target: UPDATED_BY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8553391487839514288
+            ordinalPosition: 19
+          - source: RATING
+            target: RATING
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8468531172870747109
+            ordinalPosition: 14
+          - source: STATUS
+            target: STATUS
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8345651681125515999
+            ordinalPosition: 9
+          - source: SCORE
+            target: SCORE
+            type: int
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -6480684600904069339
+            ordinalPosition: 13
+          - source: CREATED_DATE
+            target: CREATED_DATE
+            type: datetime
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3665093776608184821
+            ordinalPosition: 18
+          - source: CATEGORY
+            target: CATEGORY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3533347846597312840
+            ordinalPosition: 10
+          - source: IS_ACTIVE
+            target: IS_ACTIVE
+            type: char
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3429550416457364630
+            ordinalPosition: 21
+          - source: UPDATED_DATE
+            target: UPDATED_DATE
+            type: datetime
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -2210160041977254107
+            ordinalPosition: 20
+          - source: NAME
+            target: NAME
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -1538672849178263399
+            ordinalPosition: 4
+          - source: REG_DATE
+            target: REG_DATE
+            type: date
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -173532916760798446
+            ordinalPosition: 15
+          - source: CODE
+            target: CODE
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 552209600269662485
+            ordinalPosition: 3
+          - source: AMOUNT
+            target: AMOUNT
+            type: decimal
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 1329969635776169217
+            ordinalPosition: 11
+          - source: _RRN
+            target: _RRN
+            type: bigint
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 1704915659655896885
+            ordinalPosition: 1
+          - source: PHONE
+            target: PHONE
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 2613799984570680051
+            ordinalPosition: 6
+          - source: CITY
+            target: CITY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 3577542283041938912
+            ordinalPosition: 7
+          - source: ID
+            target: ID
+            type: bigint
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4054250243860915464
+            ordinalPosition: 2
+          - source: CREATED_BY
+            target: CREATED_BY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4610455788947692530
+            ordinalPosition: 17
+          - source: COUNTRY
+            target: COUNTRY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4930804573854400536
+            ordinalPosition: 8
+          - source: TXN_DATE
+            target: TXN_DATE
+            type: date
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8188186706941983258
+            ordinalPosition: 12
+          - source: EMAIL
+            target: EMAIL
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8275657831543607410
+            ordinalPosition: 5
+          - source: NOTES
+            target: NOTES
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8933653772890505923
+            ordinalPosition: 16
+          customProperties:
+            source:
+              maxFetchItemsCountPerIteration: 1000
+              maxTransactionMessageKbSize: 1024
+              pollingIntervalMilliseconds: 500
+            target:
+              snapshotWritingConcurrency: 2
+        TB_13:
+          name: TB_13
+          entityName: EZPIPE.TB_13
+          keys:
+          - ID
+          columns:
+          - source: UPDATED_BY
+            target: UPDATED_BY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8553391487839514288
+            ordinalPosition: 19
+          - source: RATING
+            target: RATING
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8468531172870747109
+            ordinalPosition: 14
+          - source: STATUS
+            target: STATUS
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8345651681125515999
+            ordinalPosition: 9
+          - source: SCORE
+            target: SCORE
+            type: int
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -6480684600904069339
+            ordinalPosition: 13
+          - source: CREATED_DATE
+            target: CREATED_DATE
+            type: datetime
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3665093776608184821
+            ordinalPosition: 18
+          - source: CATEGORY
+            target: CATEGORY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3533347846597312840
+            ordinalPosition: 10
+          - source: IS_ACTIVE
+            target: IS_ACTIVE
+            type: char
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3429550416457364630
+            ordinalPosition: 21
+          - source: UPDATED_DATE
+            target: UPDATED_DATE
+            type: datetime
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -2210160041977254107
+            ordinalPosition: 20
+          - source: NAME
+            target: NAME
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -1538672849178263399
+            ordinalPosition: 4
+          - source: REG_DATE
+            target: REG_DATE
+            type: date
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -173532916760798446
+            ordinalPosition: 15
+          - source: CODE
+            target: CODE
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 552209600269662485
+            ordinalPosition: 3
+          - source: AMOUNT
+            target: AMOUNT
+            type: decimal
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 1329969635776169217
+            ordinalPosition: 11
+          - source: _RRN
+            target: _RRN
+            type: bigint
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 1704915659655896885
+            ordinalPosition: 1
+          - source: PHONE
+            target: PHONE
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 2613799984570680051
+            ordinalPosition: 6
+          - source: CITY
+            target: CITY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 3577542283041938912
+            ordinalPosition: 7
+          - source: ID
+            target: ID
+            type: bigint
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4054250243860915464
+            ordinalPosition: 2
+          - source: CREATED_BY
+            target: CREATED_BY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4610455788947692530
+            ordinalPosition: 17
+          - source: COUNTRY
+            target: COUNTRY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4930804573854400536
+            ordinalPosition: 8
+          - source: TXN_DATE
+            target: TXN_DATE
+            type: date
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8188186706941983258
+            ordinalPosition: 12
+          - source: EMAIL
+            target: EMAIL
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8275657831543607410
+            ordinalPosition: 5
+          - source: NOTES
+            target: NOTES
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8933653772890505923
+            ordinalPosition: 16
+          customProperties:
+            source:
+              maxFetchItemsCountPerIteration: 1000
+              maxTransactionMessageKbSize: 1024
+              pollingIntervalMilliseconds: 500
+            target:
+              snapshotWritingConcurrency: 2
+        TB_14:
+          name: TB_14
+          entityName: EZPIPE.TB_14
+          keys:
+          - ID
+          columns:
+          - source: UPDATED_BY
+            target: UPDATED_BY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8553391487839514288
+            ordinalPosition: 19
+          - source: RATING
+            target: RATING
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8468531172870747109
+            ordinalPosition: 14
+          - source: STATUS
+            target: STATUS
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8345651681125515999
+            ordinalPosition: 9
+          - source: SCORE
+            target: SCORE
+            type: int
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -6480684600904069339
+            ordinalPosition: 13
+          - source: CREATED_DATE
+            target: CREATED_DATE
+            type: datetime
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3665093776608184821
+            ordinalPosition: 18
+          - source: CATEGORY
+            target: CATEGORY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3533347846597312840
+            ordinalPosition: 10
+          - source: IS_ACTIVE
+            target: IS_ACTIVE
+            type: char
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3429550416457364630
+            ordinalPosition: 21
+          - source: UPDATED_DATE
+            target: UPDATED_DATE
+            type: datetime
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -2210160041977254107
+            ordinalPosition: 20
+          - source: NAME
+            target: NAME
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -1538672849178263399
+            ordinalPosition: 4
+          - source: REG_DATE
+            target: REG_DATE
+            type: date
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -173532916760798446
+            ordinalPosition: 15
+          - source: CODE
+            target: CODE
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 552209600269662485
+            ordinalPosition: 3
+          - source: AMOUNT
+            target: AMOUNT
+            type: decimal
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 1329969635776169217
+            ordinalPosition: 11
+          - source: _RRN
+            target: _RRN
+            type: bigint
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 1704915659655896885
+            ordinalPosition: 1
+          - source: PHONE
+            target: PHONE
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 2613799984570680051
+            ordinalPosition: 6
+          - source: CITY
+            target: CITY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 3577542283041938912
+            ordinalPosition: 7
+          - source: ID
+            target: ID
+            type: bigint
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4054250243860915464
+            ordinalPosition: 2
+          - source: CREATED_BY
+            target: CREATED_BY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4610455788947692530
+            ordinalPosition: 17
+          - source: COUNTRY
+            target: COUNTRY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4930804573854400536
+            ordinalPosition: 8
+          - source: TXN_DATE
+            target: TXN_DATE
+            type: date
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8188186706941983258
+            ordinalPosition: 12
+          - source: EMAIL
+            target: EMAIL
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8275657831543607410
+            ordinalPosition: 5
+          - source: NOTES
+            target: NOTES
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8933653772890505923
+            ordinalPosition: 16
+          customProperties:
+            source:
+              maxFetchItemsCountPerIteration: 1000
+              maxTransactionMessageKbSize: 1024
+              pollingIntervalMilliseconds: 500
+            target:
+              snapshotWritingConcurrency: 2
+        TB_15:
+          name: TB_15
+          entityName: EZPIPE.TB_15
+          keys:
+          - ID
+          columns:
+          - source: UPDATED_BY
+            target: UPDATED_BY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8553391487839514288
+            ordinalPosition: 19
+          - source: RATING
+            target: RATING
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8468531172870747109
+            ordinalPosition: 14
+          - source: STATUS
+            target: STATUS
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8345651681125515999
+            ordinalPosition: 9
+          - source: SCORE
+            target: SCORE
+            type: int
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -6480684600904069339
+            ordinalPosition: 13
+          - source: CREATED_DATE
+            target: CREATED_DATE
+            type: datetime
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3665093776608184821
+            ordinalPosition: 18
+          - source: CATEGORY
+            target: CATEGORY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3533347846597312840
+            ordinalPosition: 10
+          - source: IS_ACTIVE
+            target: IS_ACTIVE
+            type: char
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3429550416457364630
+            ordinalPosition: 21
+          - source: UPDATED_DATE
+            target: UPDATED_DATE
+            type: datetime
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -2210160041977254107
+            ordinalPosition: 20
+          - source: NAME
+            target: NAME
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -1538672849178263399
+            ordinalPosition: 4
+          - source: REG_DATE
+            target: REG_DATE
+            type: date
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -173532916760798446
+            ordinalPosition: 15
+          - source: CODE
+            target: CODE
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 552209600269662485
+            ordinalPosition: 3
+          - source: AMOUNT
+            target: AMOUNT
+            type: decimal
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 1329969635776169217
+            ordinalPosition: 11
+          - source: _RRN
+            target: _RRN
+            type: bigint
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 1704915659655896885
+            ordinalPosition: 1
+          - source: PHONE
+            target: PHONE
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 2613799984570680051
+            ordinalPosition: 6
+          - source: CITY
+            target: CITY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 3577542283041938912
+            ordinalPosition: 7
+          - source: ID
+            target: ID
+            type: bigint
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4054250243860915464
+            ordinalPosition: 2
+          - source: CREATED_BY
+            target: CREATED_BY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4610455788947692530
+            ordinalPosition: 17
+          - source: COUNTRY
+            target: COUNTRY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4930804573854400536
+            ordinalPosition: 8
+          - source: TXN_DATE
+            target: TXN_DATE
+            type: date
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8188186706941983258
+            ordinalPosition: 12
+          - source: EMAIL
+            target: EMAIL
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8275657831543607410
+            ordinalPosition: 5
+          - source: NOTES
+            target: NOTES
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8933653772890505923
+            ordinalPosition: 16
+          customProperties:
+            source:
+              maxFetchItemsCountPerIteration: 1000
+              maxTransactionMessageKbSize: 1024
+              pollingIntervalMilliseconds: 500
+            target:
+              snapshotWritingConcurrency: 2
+        TB_16:
+          name: TB_16
+          entityName: EZPIPE.TB_16
+          keys:
+          - ID
+          columns:
+          - source: UPDATED_BY
+            target: UPDATED_BY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8553391487839514288
+            ordinalPosition: 19
+          - source: RATING
+            target: RATING
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8468531172870747109
+            ordinalPosition: 14
+          - source: STATUS
+            target: STATUS
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8345651681125515999
+            ordinalPosition: 9
+          - source: SCORE
+            target: SCORE
+            type: int
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -6480684600904069339
+            ordinalPosition: 13
+          - source: CREATED_DATE
+            target: CREATED_DATE
+            type: datetime
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3665093776608184821
+            ordinalPosition: 18
+          - source: CATEGORY
+            target: CATEGORY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3533347846597312840
+            ordinalPosition: 10
+          - source: IS_ACTIVE
+            target: IS_ACTIVE
+            type: char
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3429550416457364630
+            ordinalPosition: 21
+          - source: UPDATED_DATE
+            target: UPDATED_DATE
+            type: datetime
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -2210160041977254107
+            ordinalPosition: 20
+          - source: NAME
+            target: NAME
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -1538672849178263399
+            ordinalPosition: 4
+          - source: REG_DATE
+            target: REG_DATE
+            type: date
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -173532916760798446
+            ordinalPosition: 15
+          - source: CODE
+            target: CODE
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 552209600269662485
+            ordinalPosition: 3
+          - source: AMOUNT
+            target: AMOUNT
+            type: decimal
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 1329969635776169217
+            ordinalPosition: 11
+          - source: _RRN
+            target: _RRN
+            type: bigint
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 1704915659655896885
+            ordinalPosition: 1
+          - source: PHONE
+            target: PHONE
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 2613799984570680051
+            ordinalPosition: 6
+          - source: CITY
+            target: CITY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 3577542283041938912
+            ordinalPosition: 7
+          - source: ID
+            target: ID
+            type: bigint
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4054250243860915464
+            ordinalPosition: 2
+          - source: CREATED_BY
+            target: CREATED_BY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4610455788947692530
+            ordinalPosition: 17
+          - source: COUNTRY
+            target: COUNTRY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4930804573854400536
+            ordinalPosition: 8
+          - source: TXN_DATE
+            target: TXN_DATE
+            type: date
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8188186706941983258
+            ordinalPosition: 12
+          - source: EMAIL
+            target: EMAIL
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8275657831543607410
+            ordinalPosition: 5
+          - source: NOTES
+            target: NOTES
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8933653772890505923
+            ordinalPosition: 16
+          customProperties:
+            source:
+              maxFetchItemsCountPerIteration: 1000
+              maxTransactionMessageKbSize: 1024
+              pollingIntervalMilliseconds: 500
+            target:
+              snapshotWritingConcurrency: 2
+        TB_17:
+          name: TB_17
+          entityName: EZPIPE.TB_17
+          keys:
+          - ID
+          columns:
+          - source: UPDATED_BY
+            target: UPDATED_BY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8553391487839514288
+            ordinalPosition: 19
+          - source: RATING
+            target: RATING
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8468531172870747109
+            ordinalPosition: 14
+          - source: STATUS
+            target: STATUS
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8345651681125515999
+            ordinalPosition: 9
+          - source: SCORE
+            target: SCORE
+            type: int
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -6480684600904069339
+            ordinalPosition: 13
+          - source: CREATED_DATE
+            target: CREATED_DATE
+            type: datetime
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3665093776608184821
+            ordinalPosition: 18
+          - source: CATEGORY
+            target: CATEGORY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3533347846597312840
+            ordinalPosition: 10
+          - source: IS_ACTIVE
+            target: IS_ACTIVE
+            type: char
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3429550416457364630
+            ordinalPosition: 21
+          - source: UPDATED_DATE
+            target: UPDATED_DATE
+            type: datetime
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -2210160041977254107
+            ordinalPosition: 20
+          - source: NAME
+            target: NAME
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -1538672849178263399
+            ordinalPosition: 4
+          - source: REG_DATE
+            target: REG_DATE
+            type: date
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -173532916760798446
+            ordinalPosition: 15
+          - source: CODE
+            target: CODE
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 552209600269662485
+            ordinalPosition: 3
+          - source: AMOUNT
+            target: AMOUNT
+            type: decimal
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 1329969635776169217
+            ordinalPosition: 11
+          - source: _RRN
+            target: _RRN
+            type: bigint
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 1704915659655896885
+            ordinalPosition: 1
+          - source: PHONE
+            target: PHONE
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 2613799984570680051
+            ordinalPosition: 6
+          - source: CITY
+            target: CITY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 3577542283041938912
+            ordinalPosition: 7
+          - source: ID
+            target: ID
+            type: bigint
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4054250243860915464
+            ordinalPosition: 2
+          - source: CREATED_BY
+            target: CREATED_BY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4610455788947692530
+            ordinalPosition: 17
+          - source: COUNTRY
+            target: COUNTRY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4930804573854400536
+            ordinalPosition: 8
+          - source: TXN_DATE
+            target: TXN_DATE
+            type: date
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8188186706941983258
+            ordinalPosition: 12
+          - source: EMAIL
+            target: EMAIL
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8275657831543607410
+            ordinalPosition: 5
+          - source: NOTES
+            target: NOTES
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8933653772890505923
+            ordinalPosition: 16
+          customProperties:
+            source:
+              maxFetchItemsCountPerIteration: 1000
+              maxTransactionMessageKbSize: 1024
+              pollingIntervalMilliseconds: 500
+            target:
+              snapshotWritingConcurrency: 2
+        TB_18:
+          name: TB_18
+          entityName: EZPIPE.TB_18
+          keys:
+          - ID
+          columns:
+          - source: UPDATED_BY
+            target: UPDATED_BY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8553391487839514288
+            ordinalPosition: 19
+          - source: RATING
+            target: RATING
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8468531172870747109
+            ordinalPosition: 14
+          - source: STATUS
+            target: STATUS
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8345651681125515999
+            ordinalPosition: 9
+          - source: SCORE
+            target: SCORE
+            type: int
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -6480684600904069339
+            ordinalPosition: 13
+          - source: CREATED_DATE
+            target: CREATED_DATE
+            type: datetime
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3665093776608184821
+            ordinalPosition: 18
+          - source: CATEGORY
+            target: CATEGORY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3533347846597312840
+            ordinalPosition: 10
+          - source: IS_ACTIVE
+            target: IS_ACTIVE
+            type: char
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3429550416457364630
+            ordinalPosition: 21
+          - source: UPDATED_DATE
+            target: UPDATED_DATE
+            type: datetime
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -2210160041977254107
+            ordinalPosition: 20
+          - source: NAME
+            target: NAME
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -1538672849178263399
+            ordinalPosition: 4
+          - source: REG_DATE
+            target: REG_DATE
+            type: date
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -173532916760798446
+            ordinalPosition: 15
+          - source: CODE
+            target: CODE
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 552209600269662485
+            ordinalPosition: 3
+          - source: AMOUNT
+            target: AMOUNT
+            type: decimal
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 1329969635776169217
+            ordinalPosition: 11
+          - source: _RRN
+            target: _RRN
+            type: bigint
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 1704915659655896885
+            ordinalPosition: 1
+          - source: PHONE
+            target: PHONE
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 2613799984570680051
+            ordinalPosition: 6
+          - source: CITY
+            target: CITY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 3577542283041938912
+            ordinalPosition: 7
+          - source: ID
+            target: ID
+            type: bigint
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4054250243860915464
+            ordinalPosition: 2
+          - source: CREATED_BY
+            target: CREATED_BY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4610455788947692530
+            ordinalPosition: 17
+          - source: COUNTRY
+            target: COUNTRY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4930804573854400536
+            ordinalPosition: 8
+          - source: TXN_DATE
+            target: TXN_DATE
+            type: date
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8188186706941983258
+            ordinalPosition: 12
+          - source: EMAIL
+            target: EMAIL
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8275657831543607410
+            ordinalPosition: 5
+          - source: NOTES
+            target: NOTES
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8933653772890505923
+            ordinalPosition: 16
+          customProperties:
+            source:
+              maxFetchItemsCountPerIteration: 1000
+              maxTransactionMessageKbSize: 1024
+              pollingIntervalMilliseconds: 500
+            target:
+              snapshotWritingConcurrency: 2
+        TB_19:
+          name: TB_19
+          entityName: EZPIPE.TB_19
+          keys:
+          - ID
+          columns:
+          - source: UPDATED_BY
+            target: UPDATED_BY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8553391487839514288
+            ordinalPosition: 19
+          - source: RATING
+            target: RATING
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8468531172870747109
+            ordinalPosition: 14
+          - source: STATUS
+            target: STATUS
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8345651681125515999
+            ordinalPosition: 9
+          - source: SCORE
+            target: SCORE
+            type: int
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -6480684600904069339
+            ordinalPosition: 13
+          - source: CREATED_DATE
+            target: CREATED_DATE
+            type: datetime
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3665093776608184821
+            ordinalPosition: 18
+          - source: CATEGORY
+            target: CATEGORY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3533347846597312840
+            ordinalPosition: 10
+          - source: IS_ACTIVE
+            target: IS_ACTIVE
+            type: char
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3429550416457364630
+            ordinalPosition: 21
+          - source: UPDATED_DATE
+            target: UPDATED_DATE
+            type: datetime
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -2210160041977254107
+            ordinalPosition: 20
+          - source: NAME
+            target: NAME
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -1538672849178263399
+            ordinalPosition: 4
+          - source: REG_DATE
+            target: REG_DATE
+            type: date
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -173532916760798446
+            ordinalPosition: 15
+          - source: CODE
+            target: CODE
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 552209600269662485
+            ordinalPosition: 3
+          - source: AMOUNT
+            target: AMOUNT
+            type: decimal
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 1329969635776169217
+            ordinalPosition: 11
+          - source: _RRN
+            target: _RRN
+            type: bigint
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 1704915659655896885
+            ordinalPosition: 1
+          - source: PHONE
+            target: PHONE
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 2613799984570680051
+            ordinalPosition: 6
+          - source: CITY
+            target: CITY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 3577542283041938912
+            ordinalPosition: 7
+          - source: ID
+            target: ID
+            type: bigint
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4054250243860915464
+            ordinalPosition: 2
+          - source: CREATED_BY
+            target: CREATED_BY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4610455788947692530
+            ordinalPosition: 17
+          - source: COUNTRY
+            target: COUNTRY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4930804573854400536
+            ordinalPosition: 8
+          - source: TXN_DATE
+            target: TXN_DATE
+            type: date
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8188186706941983258
+            ordinalPosition: 12
+          - source: EMAIL
+            target: EMAIL
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8275657831543607410
+            ordinalPosition: 5
+          - source: NOTES
+            target: NOTES
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8933653772890505923
+            ordinalPosition: 16
+          customProperties:
+            source:
+              maxFetchItemsCountPerIteration: 1000
+              maxTransactionMessageKbSize: 1024
+              pollingIntervalMilliseconds: 500
+            target:
+              snapshotWritingConcurrency: 2
+        TB_20:
+          name: TB_20
+          entityName: EZPIPE.TB_20
+          keys:
+          - ID
+          columns:
+          - source: UPDATED_BY
+            target: UPDATED_BY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8553391487839514288
+            ordinalPosition: 19
+          - source: RATING
+            target: RATING
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8468531172870747109
+            ordinalPosition: 14
+          - source: STATUS
+            target: STATUS
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8345651681125515999
+            ordinalPosition: 9
+          - source: SCORE
+            target: SCORE
+            type: int
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -6480684600904069339
+            ordinalPosition: 13
+          - source: CREATED_DATE
+            target: CREATED_DATE
+            type: datetime
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3665093776608184821
+            ordinalPosition: 18
+          - source: CATEGORY
+            target: CATEGORY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3533347846597312840
+            ordinalPosition: 10
+          - source: IS_ACTIVE
+            target: IS_ACTIVE
+            type: char
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3429550416457364630
+            ordinalPosition: 21
+          - source: UPDATED_DATE
+            target: UPDATED_DATE
+            type: datetime
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -2210160041977254107
+            ordinalPosition: 20
+          - source: NAME
+            target: NAME
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -1538672849178263399
+            ordinalPosition: 4
+          - source: REG_DATE
+            target: REG_DATE
+            type: date
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -173532916760798446
+            ordinalPosition: 15
+          - source: CODE
+            target: CODE
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 552209600269662485
+            ordinalPosition: 3
+          - source: AMOUNT
+            target: AMOUNT
+            type: decimal
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 1329969635776169217
+            ordinalPosition: 11
+          - source: _RRN
+            target: _RRN
+            type: bigint
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 1704915659655896885
+            ordinalPosition: 1
+          - source: PHONE
+            target: PHONE
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 2613799984570680051
+            ordinalPosition: 6
+          - source: CITY
+            target: CITY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 3577542283041938912
+            ordinalPosition: 7
+          - source: ID
+            target: ID
+            type: bigint
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4054250243860915464
+            ordinalPosition: 2
+          - source: CREATED_BY
+            target: CREATED_BY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4610455788947692530
+            ordinalPosition: 17
+          - source: COUNTRY
+            target: COUNTRY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4930804573854400536
+            ordinalPosition: 8
+          - source: TXN_DATE
+            target: TXN_DATE
+            type: date
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8188186706941983258
+            ordinalPosition: 12
+          - source: EMAIL
+            target: EMAIL
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8275657831543607410
+            ordinalPosition: 5
+          - source: NOTES
+            target: NOTES
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8933653772890505923
+            ordinalPosition: 16
+          customProperties:
+            source:
+              maxFetchItemsCountPerIteration: 1000
+              maxTransactionMessageKbSize: 1024
+              pollingIntervalMilliseconds: 500
+            target:
+              snapshotWritingConcurrency: 2
+        TEST:
+          name: TEST
+          entityName: EZPIPE.TEST
+          keys:
+          - ID
+          columns:
+          - source: CREATED_AT
+            target: CREATED_AT
+            type: datetime
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -9209239526357045690
+            ordinalPosition: 4
+          - source: ACTIVITY_TYPE
+            target: ACTIVITY_TYPE
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -7869651087577601032
+            ordinalPosition: 5
+          - source: USER_ID
+            target: USER_ID
+            type: int
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -1892752292442015890
+            ordinalPosition: 6
+          - source: NAME
+            target: NAME
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -1538672849178263399
+            ordinalPosition: 3
+          - source: _RRN
+            target: _RRN
+            type: bigint
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 1704915659655896885
+            ordinalPosition: 1
+          - source: ID
+            target: ID
+            type: int
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4054250243860915464
+            ordinalPosition: 2
+          - source: CONTACT_ID
+            target: CONTACT_ID
+            type: int
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8331285987141658002
+            ordinalPosition: 7
+          customProperties:
+            source:
+              maxFetchItemsCountPerIteration: 1000
+              maxTransactionMessageKbSize: 1024
+              pollingIntervalMilliseconds: 500
+            target:
+              snapshotWritingConcurrency: 2
+        TEST2:
+          name: TEST2
+          entityName: EZPIPE.TEST2
+          keys:
+          - ID
+          columns:
+          - source: DATE_8DIGIT
+            target: DATE_8DIGIT
+            type: int
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -7917429840595610314
+            ordinalPosition: 8
+          - source: QTY_MEDIUM
+            target: QTY_MEDIUM
+            type: int
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -4536571762757966457
+            ordinalPosition: 4
+          - source: TIME_6DIGIT
+            target: TIME_6DIGIT
+            type: int
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -4437106516860935549
+            ordinalPosition: 10
+          - source: AMT_ZONED
+            target: AMT_ZONED
+            type: numeric
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -2044147618525504868
+            ordinalPosition: 7
+          - source: YEAR_2DIGIT
+            target: YEAR_2DIGIT
+            type: int
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 1276156373613543471
+            ordinalPosition: 12
+          - source: MONTH_NUM
+            target: MONTH_NUM
+            type: int
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 1538460305515124191
+            ordinalPosition: 13
+          - source: _RRN
+            target: _RRN
+            type: bigint
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 1704915659655896885
+            ordinalPosition: 1
+          - source: YEAR_4DIGIT
+            target: YEAR_4DIGIT
+            type: int
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 2518294334527828283
+            ordinalPosition: 11
+          - source: ID
+            target: ID
+            type: bigint
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4054250243860915464
+            ordinalPosition: 2
+          - source: DAY_NUM
+            target: DAY_NUM
+            type: int
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 6127498434874795001
+            ordinalPosition: 14
+          - source: AMT_PACKED
+            target: AMT_PACKED
+            type: decimal
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 6311575221779675450
+            ordinalPosition: 6
+          - source: TRAN_TIME
+            target: TRAN_TIME
+            type: int
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 6936469369281879642
+            ordinalPosition: 16
+          - source: QTY_SMALL
+            target: QTY_SMALL
+            type: smallint
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 7871713850580394542
+            ordinalPosition: 3
+          - source: QTY_DECFLOAT
+            target: QTY_DECFLOAT
+            type: decimal
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 7971165190376231180
+            ordinalPosition: 5
+          - source: DATE_6DIGIT
+            target: DATE_6DIGIT
+            type: int
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 9026267280491415520
+            ordinalPosition: 9
+          - source: TRAN_DATE
+            target: TRAN_DATE
+            type: int
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 9062956204856622206
+            ordinalPosition: 15
+          customProperties:
+            source:
+              maxFetchItemsCountPerIteration: 1000
+              maxTransactionMessageKbSize: 1024
+              pollingIntervalMilliseconds: 500
+            target:
+              snapshotWritingConcurrency: 2
+        TB_01:
+          name: TB_01
+          entityName: EZPIPE.TB_01
+          keys:
+          - ID
+          columns:
+          - source: UPDATED_BY
+            target: UPDATED_BY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8553391487839514288
+            ordinalPosition: 18
+          - source: RATING
+            target: RATING
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8468531172870747109
+            ordinalPosition: 13
+          - source: STATUS
+            target: STATUS
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8345651681125515999
+            ordinalPosition: 8
+          - source: SCORE
+            target: SCORE
+            type: int
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -6480684600904069339
+            ordinalPosition: 12
+          - source: CREATED_DATE
+            target: CREATED_DATE
+            type: datetime
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3665093776608184821
+            ordinalPosition: 17
+          - source: CATEGORY
+            target: CATEGORY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3533347846597312840
+            ordinalPosition: 9
+          - source: IS_ACTIVE
+            target: IS_ACTIVE
+            type: char
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3429550416457364630
+            ordinalPosition: 20
+          - source: UPDATED_DATE
+            target: UPDATED_DATE
+            type: datetime
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -2210160041977254107
+            ordinalPosition: 19
+          - source: NAME
+            target: NAME
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -1538672849178263399
+            ordinalPosition: 3
+          - source: REG_DATE
+            target: REG_DATE
+            type: date
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -173532916760798446
+            ordinalPosition: 14
+          - source: CODE
+            target: CODE
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 552209600269662485
+            ordinalPosition: 2
+          - source: AMOUNT
+            target: AMOUNT
+            type: decimal
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 1329969635776169217
+            ordinalPosition: 10
+          - source: PHONE
+            target: PHONE
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 2613799984570680051
+            ordinalPosition: 5
+          - source: CITY
+            target: CITY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 3577542283041938912
+            ordinalPosition: 6
+          - source: ID
+            target: ID
+            type: bigint
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4054250243860915464
+            ordinalPosition: 1
+          - source: CREATED_BY
+            target: CREATED_BY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4610455788947692530
+            ordinalPosition: 16
+          - source: COUNTRY
+            target: COUNTRY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4930804573854400536
+            ordinalPosition: 7
+          - source: TXN_DATE
+            target: TXN_DATE
+            type: date
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8188186706941983258
+            ordinalPosition: 11
+          - source: EMAIL
+            target: EMAIL
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8275657831543607410
+            ordinalPosition: 4
+          - source: NOTES
+            target: NOTES
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8933653772890505923
+            ordinalPosition: 15
+          customProperties:
+            source:
+              maxFetchItemsCountPerIteration: 1000
+              maxTransactionMessageKbSize: 1024
+              pollingIntervalMilliseconds: 500
+            target:
+              maxWriteBatchSize: 1000
+              maxDeleteBatchSize: 1000
+              maxWriteBulkSize: 250000
+              preSnapshotCommand: ''
+              postSnapshotCommand: ''
+              snapshotWritingConcurrency: 2
+              allowedOperations:
+              - INSERT
+              - UPDATE
+              - DELETE
+              - TRUNCATE
+        TB_02:
+          name: TB_02
+          entityName: EZPIPE.TB_02
+          groupId: G_Refresh1
+          keys:
+          - ID
+          columns:
+          - source: UPDATED_BY
+            target: UPDATED_BY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8553391487839514288
+            ordinalPosition: 18
+          - source: RATING
+            target: RATING
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8468531172870747109
+            ordinalPosition: 13
+          - source: STATUS
+            target: STATUS
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8345651681125515999
+            ordinalPosition: 8
+          - source: SCORE
+            target: SCORE
+            type: int
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -6480684600904069339
+            ordinalPosition: 12
+          - source: CREATED_DATE
+            target: CREATED_DATE
+            type: datetime
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3665093776608184821
+            ordinalPosition: 17
+          - source: CATEGORY
+            target: CATEGORY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3533347846597312840
+            ordinalPosition: 9
+          - source: IS_ACTIVE
+            target: IS_ACTIVE
+            type: char
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3429550416457364630
+            ordinalPosition: 20
+          - source: UPDATED_DATE
+            target: UPDATED_DATE
+            type: datetime
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -2210160041977254107
+            ordinalPosition: 19
+          - source: NAME
+            target: NAME
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -1538672849178263399
+            ordinalPosition: 3
+          - source: REG_DATE
+            target: REG_DATE
+            type: date
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -173532916760798446
+            ordinalPosition: 14
+          - source: CODE
+            target: CODE
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 552209600269662485
+            ordinalPosition: 2
+          - source: AMOUNT
+            target: AMOUNT
+            type: decimal
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 1329969635776169217
+            ordinalPosition: 10
+          - source: PHONE
+            target: PHONE
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 2613799984570680051
+            ordinalPosition: 5
+          - source: CITY
+            target: CITY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 3577542283041938912
+            ordinalPosition: 6
+          - source: ID
+            target: ID
+            type: bigint
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4054250243860915464
+            ordinalPosition: 1
+          - source: CREATED_BY
+            target: CREATED_BY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4610455788947692530
+            ordinalPosition: 16
+          - source: COUNTRY
+            target: COUNTRY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4930804573854400536
+            ordinalPosition: 7
+          - source: TXN_DATE
+            target: TXN_DATE
+            type: date
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8188186706941983258
+            ordinalPosition: 11
+          - source: EMAIL
+            target: EMAIL
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8275657831543607410
+            ordinalPosition: 4
+          - source: NOTES
+            target: NOTES
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8933653772890505923
+            ordinalPosition: 15
+          customProperties:
+            source:
+              maxFetchItemsCountPerIteration: 1000
+              maxTransactionMessageKbSize: 1024
+              pollingIntervalMilliseconds: 500
+            target:
+              maxWriteBatchSize: 1000
+              maxDeleteBatchSize: 1000
+              maxWriteBulkSize: 250000
+              preSnapshotCommand: ''
+              postSnapshotCommand: ''
+              snapshotWritingConcurrency: 2
+        TB_03:
+          name: TB_03
+          entityName: EZPIPE.TB_03
+          groupId: G_Refresh1
+          keys:
+          - ID
+          columns:
+          - source: UPDATED_BY
+            target: UPDATED_BY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8553391487839514288
+            ordinalPosition: 19
+          - source: RATING
+            target: RATING
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8468531172870747109
+            ordinalPosition: 14
+          - source: STATUS
+            target: STATUS
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8345651681125515999
+            ordinalPosition: 9
+          - source: SCORE
+            target: SCORE
+            type: int
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -6480684600904069339
+            ordinalPosition: 13
+          - source: CREATED_DATE
+            target: CREATED_DATE
+            type: datetime
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3665093776608184821
+            ordinalPosition: 18
+          - source: CATEGORY
+            target: CATEGORY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3533347846597312840
+            ordinalPosition: 10
+          - source: IS_ACTIVE
+            target: IS_ACTIVE
+            type: char
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3429550416457364630
+            ordinalPosition: 21
+          - source: UPDATED_DATE
+            target: UPDATED_DATE
+            type: datetime
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -2210160041977254107
+            ordinalPosition: 20
+          - source: NAME
+            target: NAME
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -1538672849178263399
+            ordinalPosition: 4
+          - source: REG_DATE
+            target: REG_DATE
+            type: date
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -173532916760798446
+            ordinalPosition: 15
+          - source: CODE
+            target: CODE
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 552209600269662485
+            ordinalPosition: 3
+          - source: AMOUNT
+            target: AMOUNT
+            type: decimal
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 1329969635776169217
+            ordinalPosition: 11
+          - source: _RRN
+            target: _RRN
+            type: bigint
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 1704915659655896885
+            ordinalPosition: 1
+          - source: PHONE
+            target: PHONE
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 2613799984570680051
+            ordinalPosition: 6
+          - source: CITY
+            target: CITY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 3577542283041938912
+            ordinalPosition: 7
+          - source: ID
+            target: ID
+            type: bigint
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4054250243860915464
+            ordinalPosition: 2
+          - source: CREATED_BY
+            target: CREATED_BY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4610455788947692530
+            ordinalPosition: 17
+          - source: COUNTRY
+            target: COUNTRY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4930804573854400536
+            ordinalPosition: 8
+          - source: TXN_DATE
+            target: TXN_DATE
+            type: date
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8188186706941983258
+            ordinalPosition: 12
+          - source: EMAIL
+            target: EMAIL
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8275657831543607410
+            ordinalPosition: 5
+          - source: NOTES
+            target: NOTES
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8933653772890505923
+            ordinalPosition: 16
+          customProperties:
+            source:
+              maxFetchItemsCountPerIteration: 1000
+              maxTransactionMessageKbSize: 1024
+              pollingIntervalMilliseconds: 500
+            target:
+              snapshotWritingConcurrency: 2
+        TB_04:
+          name: TB_04
+          entityName: EZPIPE.TB_04
+          groupId: G_Refresh1
+          keys:
+          - ID
+          columns:
+          - source: UPDATED_BY
+            target: UPDATED_BY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8553391487839514288
+            ordinalPosition: 19
+          - source: RATING
+            target: RATING
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8468531172870747109
+            ordinalPosition: 14
+          - source: STATUS
+            target: STATUS
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8345651681125515999
+            ordinalPosition: 9
+          - source: SCORE
+            target: SCORE
+            type: int
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -6480684600904069339
+            ordinalPosition: 13
+          - source: CREATED_DATE
+            target: CREATED_DATE
+            type: datetime
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3665093776608184821
+            ordinalPosition: 18
+          - source: CATEGORY
+            target: CATEGORY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3533347846597312840
+            ordinalPosition: 10
+          - source: IS_ACTIVE
+            target: IS_ACTIVE
+            type: char
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3429550416457364630
+            ordinalPosition: 21
+          - source: UPDATED_DATE
+            target: UPDATED_DATE
+            type: datetime
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -2210160041977254107
+            ordinalPosition: 20
+          - source: NAME
+            target: NAME
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -1538672849178263399
+            ordinalPosition: 4
+          - source: REG_DATE
+            target: REG_DATE
+            type: date
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -173532916760798446
+            ordinalPosition: 15
+          - source: CODE
+            target: CODE
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 552209600269662485
+            ordinalPosition: 3
+          - source: AMOUNT
+            target: AMOUNT
+            type: decimal
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 1329969635776169217
+            ordinalPosition: 11
+          - source: _RRN
+            target: _RRN
+            type: bigint
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 1704915659655896885
+            ordinalPosition: 1
+          - source: PHONE
+            target: PHONE
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 2613799984570680051
+            ordinalPosition: 6
+          - source: CITY
+            target: CITY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 3577542283041938912
+            ordinalPosition: 7
+          - source: ID
+            target: ID
+            type: bigint
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4054250243860915464
+            ordinalPosition: 2
+          - source: CREATED_BY
+            target: CREATED_BY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4610455788947692530
+            ordinalPosition: 17
+          - source: COUNTRY
+            target: COUNTRY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4930804573854400536
+            ordinalPosition: 8
+          - source: TXN_DATE
+            target: TXN_DATE
+            type: date
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8188186706941983258
+            ordinalPosition: 12
+          - source: EMAIL
+            target: EMAIL
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8275657831543607410
+            ordinalPosition: 5
+          - source: NOTES
+            target: NOTES
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8933653772890505923
+            ordinalPosition: 16
+          customProperties:
+            source:
+              maxFetchItemsCountPerIteration: 1000
+              maxTransactionMessageKbSize: 1024
+              pollingIntervalMilliseconds: 500
+            target:
+              snapshotWritingConcurrency: 2
+        TB_05:
+          name: TB_05
+          entityName: EZPIPE.TB_05
+          groupId: G_Refresh1
+          keys:
+          - ID
+          columns:
+          - source: UPDATED_BY
+            target: UPDATED_BY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8553391487839514288
+            ordinalPosition: 18
+          - source: RATING
+            target: RATING
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8468531172870747109
+            ordinalPosition: 13
+          - source: STATUS
+            target: STATUS
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -8345651681125515999
+            ordinalPosition: 8
+          - source: SCORE
+            target: SCORE
+            type: int
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -6480684600904069339
+            ordinalPosition: 12
+          - source: CREATED_DATE
+            target: CREATED_DATE
+            type: datetime
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3665093776608184821
+            ordinalPosition: 17
+          - source: CATEGORY
+            target: CATEGORY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3533347846597312840
+            ordinalPosition: 9
+          - source: IS_ACTIVE
+            target: IS_ACTIVE
+            type: char
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -3429550416457364630
+            ordinalPosition: 20
+          - source: UPDATED_DATE
+            target: UPDATED_DATE
+            type: datetime
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -2210160041977254107
+            ordinalPosition: 19
+          - source: NAME
+            target: NAME
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -1538672849178263399
+            ordinalPosition: 3
+          - source: REG_DATE
+            target: REG_DATE
+            type: date
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: -173532916760798446
+            ordinalPosition: 14
+          - source: CODE
+            target: CODE
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 552209600269662485
+            ordinalPosition: 2
+          - source: AMOUNT
+            target: AMOUNT
+            type: decimal
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 1329969635776169217
+            ordinalPosition: 10
+          - source: PHONE
+            target: PHONE
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 2613799984570680051
+            ordinalPosition: 5
+          - source: CITY
+            target: CITY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 3577542283041938912
+            ordinalPosition: 6
+          - source: ID
+            target: ID
+            type: bigint
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4054250243860915464
+            ordinalPosition: 1
+          - source: CREATED_BY
+            target: CREATED_BY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4610455788947692530
+            ordinalPosition: 16
+          - source: COUNTRY
+            target: COUNTRY
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 4930804573854400536
+            ordinalPosition: 7
+          - source: TXN_DATE
+            target: TXN_DATE
+            type: date
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8188186706941983258
+            ordinalPosition: 11
+          - source: EMAIL
+            target: EMAIL
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8275657831543607410
+            ordinalPosition: 4
+          - source: NOTES
+            target: NOTES
+            type: varchar
+            dataLength: 0
+            numericPrecision: 0
+            numericScale: 0
+            isNullable: false
+            id: 8933653772890505923
+            ordinalPosition: 15
+          customProperties:
+            source:
+              maxFetchItemsCountPerIteration: 1000
+              maxTransactionMessageKbSize: 1024
+              pollingIntervalMilliseconds: 500
+            target:
+              maxWriteBatchSize: 1000
+              maxDeleteBatchSize: 1000
+              maxWriteBulkSize: 250000
+              preSnapshotCommand: ''
+              postSnapshotCommand: ''
+              snapshotWritingConcurrency: 2
+groups:
+  default:
+    id: _default
+    color: '#00000000'
+  G_Refresh1:
+    id: 9ce907db
+    color: '#ea2f4cff'
