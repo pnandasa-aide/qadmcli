@@ -1884,6 +1884,120 @@ def user_permission(
 
 
 @cli.group()
+def library() -> None:
+    """Library management commands."""
+    pass
+
+
+@library.command("create")
+@click.option("--name", "-n", required=True, help="Library name to create")
+@click.option("--user", "-u", help="User to grant authority to (optional)")
+@click.option("--authority", "-a", default="*ALL", help="Authority level to grant (*USE, *CHANGE, *ALL)")
+@click.pass_context
+def library_create(
+    ctx: click.Context,
+    name: str,
+    user: str | None,
+    authority: str
+) -> None:
+    """Create a new library and optionally grant user authority.
+    
+    Examples:
+        qadmcli library create -n NEWLIB
+        qadmcli library create -n NEWLIB -u USER001
+        qadmcli library create -n NEWLIB -u USER001 -a *CHANGE
+    """
+    config_path = ctx.obj["config_path"]
+    output_json = ctx.obj["output_json"]
+    
+    try:
+        config = load_config(config_path)
+        
+        with AS400ConnectionManager(config) as conn:
+            from .db.user import UserManager
+            user_mgr = UserManager(conn)
+            
+            # Create the library
+            result = user_mgr.create_library(name)
+            
+            # Grant authority if user specified
+            if user:
+                grant_result = user_mgr.grant_object_authority(
+                    user, name, name, authority, "*LIB"
+                )
+                result["granted_to"] = user
+                result["authority"] = authority
+            
+            if output_json:
+                print_json(console, result)
+            else:
+                print_ascii_panel(
+                    console,
+                    f"Library {name} created successfully",
+                    title="Library Created",
+                    border_style="green"
+                )
+                if user:
+                    console.print(f"Granted {authority} authority to {user}")
+        
+    except ConnectionError as e:
+        console.print(f"[red]Connection error: {e.message}[/red]")
+        sys.exit(1)
+    except Exception as e:
+        console.print(f"[red]Error: {e}[/red]")
+        sys.exit(1)
+
+
+@library.command("grant")
+@click.option("--name", "-n", required=True, help="Library name")
+@click.option("--user", "-u", required=True, help="User to grant authority to")
+@click.option("--authority", "-a", default="*USE", help="Authority level (*USE, *CHANGE, *ALL)")
+@click.pass_context
+def library_grant(
+    ctx: click.Context,
+    name: str,
+    user: str,
+    authority: str
+) -> None:
+    """Grant authority to a user on a library.
+    
+    Examples:
+        qadmcli library grant -n MYLIB -u USER001
+        qadmcli library grant -n MYLIB -u USER001 -a *ALL
+    """
+    config_path = ctx.obj["config_path"]
+    output_json = ctx.obj["output_json"]
+    
+    try:
+        config = load_config(config_path)
+        
+        with AS400ConnectionManager(config) as conn:
+            from .db.user import UserManager
+            user_mgr = UserManager(conn)
+            
+            result = user_mgr.grant_object_authority(
+                user, name, name, authority, "*LIB"
+            )
+            
+            if output_json:
+                print_json(console, result)
+            else:
+                print_ascii_panel(
+                    console,
+                    f"Granted {authority} authority to {user} on library {name}",
+                    title="Authority Granted",
+                    border_style="green"
+                )
+        
+    except ConnectionError as e:
+        console.print(f"[red]Connection error: {e.message}[/red]")
+        sys.exit(1)
+    except Exception as e:
+        console.print(f"[red]Error: {e}[/red]")
+        sys.exit(1)
+
+
+@cli.group()
 def mockup() -> None:
     """Mockup data generation commands."""
     pass

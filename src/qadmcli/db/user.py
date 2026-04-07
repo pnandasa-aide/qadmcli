@@ -226,6 +226,28 @@ class UserManager:
         
         return result
     
+    def create_library(self, library_name: str) -> dict[str, Any]:
+        """Create a new library.
+        
+        Args:
+            library_name: Name of the library to create
+            
+        Returns:
+            Dictionary with creation results
+        """
+        cmd = f"CRTLIB LIB({library_name.upper()})"
+        
+        sql = "CALL QSYS2.QCMDEXC(?, ?)"
+        cmd_bytes = cmd.encode('utf-8')
+        cursor = self.conn.execute(sql, (cmd, len(cmd_bytes)))
+        cursor.close()
+        
+        logger.info(f"Created library {library_name.upper()}")
+        return {
+            "library": library_name.upper(),
+            "created": True
+        }
+    
     def create_user(self, username: str, password: str | None = None) -> dict[str, Any]:
         """Create a new user profile."""
         # Use CRTUSRPRF command via QCMDEXC
@@ -276,7 +298,12 @@ class UserManager:
             authority: Authority level (*USE, *CHANGE, *ALL, etc.)
             object_type: Object type (*FILE, *JRN, *JRNRCV, *LIB, *ALL)
         """
-        cmd = f"GRTOBJAUT OBJ({library.upper()}/{object_name}) OBJTYPE({object_type}) USER({username.upper()}) AUT({authority})"
+        # For libraries, the object name is the library name itself
+        # and the format is just LIBNAME not LIBNAME/LIBNAME
+        if object_type == "*LIB":
+            cmd = f"GRTOBJAUT OBJ({library.upper()}) OBJTYPE({object_type}) USER({username.upper()}) AUT({authority})"
+        else:
+            cmd = f"GRTOBJAUT OBJ({library.upper()}/{object_name}) OBJTYPE({object_type}) USER({username.upper()}) AUT({authority})"
         
         sql = "CALL QSYS2.QCMDEXC(?, ?)"
         cmd_bytes = cmd.encode('utf-8')
