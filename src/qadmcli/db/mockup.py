@@ -225,7 +225,8 @@ class MockupManager:
                 c.NUMERIC_SCALE,
                 c.IS_NULLABLE,
                 c.COLUMN_DEFAULT,
-                c.COLUMN_TEXT
+                c.COLUMN_TEXT,
+                c.IS_IDENTITY
             FROM QSYS2.SYSCOLUMNS c
             WHERE c.SYSTEM_TABLE_NAME = ?
             AND c.SYSTEM_TABLE_SCHEMA = ?
@@ -254,6 +255,11 @@ class MockupManager:
                 final_hint = self.schema_hints[col_name.upper()]
                 logger.debug(f"Using schema hint '{final_hint}' for column {col_name}")
 
+            # Check if column is identity or generated
+            is_identity = row[8] == "YES" if row[8] else False
+            column_default = str(row[6]) if row[6] else ""
+            is_generated = "GENERATED" in column_default.upper()
+
             columns.append({
                 "system_name": str(row[0]),
                 "name": col_name,
@@ -264,6 +270,8 @@ class MockupManager:
                 "default": row[6],
                 "description": description,
                 "hint": final_hint,
+                "is_identity": is_identity,
+                "is_generated": is_generated,
             })
         cursor.close()
         return columns
@@ -384,6 +392,11 @@ class MockupManager:
 
         for col in columns:
             col_name = col["name"]
+
+            # Skip identity or generated columns (for INSERTs)
+            if is_insert and (col.get("is_identity") or col.get("is_generated")):
+                logger.debug(f"Skipping identity/generated column {col_name}")
+                continue
 
             # Skip if column has default value
             if col["default"]:
