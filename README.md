@@ -265,7 +265,34 @@ qadmcli journal enable -n CUSTOMERS -l MYLIB
 
 # Specify journal explicitly (supports cross-library)
 qadmcli journal enable -n CUSTOMERS -l MYLIB --journal-library JRNLIB --journal-name QSQJRN
+
+# Enable with BEFORE/AFTER images (BOTH) for CDC
+qadmcli journal enable -n CUSTOMERS -l MYLIB --images *BOTH
 ```
+
+Enable/disable journaling for multiple tables (wildcard support):
+```bash
+# Dry run first to see which tables match
+qadmcli journal disable -n "TB_*" -l EZPIPE --dry-run
+
+# Disable journaling for all TB_ tables
+qadmcli journal disable -n "TB_*" -l EZPIPE
+
+# Enable with BOTH images for TB_01 to TB_09
+qadmcli journal enable -n "TB_0*" -l EZPIPE -j EZPIPE --images *BOTH
+
+# Enable for all TEST tables
+qadmcli journal enable -n "TEST*" -l MYLIB --images *AFTER
+```
+
+**Wildcard Characters:**
+| Character | Meaning | Example |
+|-----------|---------|---------|
+| `*` | Multiple characters | `TB_*` matches TB_01, TB_02, etc. |
+| `%` | Multiple characters (SQL style) | `TB_%` matches TB_01, TB_02, etc. |
+| `?` | Single character | `TB_?` matches TB_1, TB_2, etc. |
+
+**Note:** Underscore (`_`) is NOT a wildcard - it's a valid character in IBM i table names (e.g., `TB_01`).
 
 Get journal entries:
 ```bash
@@ -718,6 +745,36 @@ TMBGOLD,กองทุนเปิดทีเอ็มบี โกลด์,T
 - Ensures data consistency (e.g., fund code matches fund name)
 - Perfect for master data like products, customers, or funds
 
+### SQL Commands
+
+Execute SQL queries directly against the AS400:
+
+```bash
+# Execute a simple query
+qadmcli sql execute -q "SELECT * FROM EZPIPE.TB_01 FETCH FIRST 10 ROWS ONLY"
+
+# Query with current user
+qadmcli sql execute -q "SELECT CURRENT_USER FROM SYSIBM.SYSDUMMY1"
+
+# Check user permissions
+qadmcli sql execute -q "SELECT OBJECT_AUTHORITY FROM QSYS2.OBJECT_PRIVILEGES WHERE AUTHORIZATION_NAME = 'USER001' AND OBJECT_SCHEMA = 'EZPIPE' AND OBJECT_NAME = 'TB_01'"
+
+# Check journal info
+qadmcli sql execute -q "SELECT * FROM QSYS2.JOURNALED_OBJECTS WHERE OBJECT_LIBRARY = 'EZPIPE'"
+
+# Multi-line query (use quotes carefully)
+qadmcli sql execute -q "SELECT JOURNAL_NAME, JOURNAL_LIBRARY, JOURNAL_IMAGES FROM QSYS2.JOURNALED_OBJECTS WHERE OBJECT_NAME = 'TB_01' AND OBJECT_LIBRARY = 'EZPIPE'"
+```
+
+**Use Cases:**
+- Quick ad-hoc queries for troubleshooting
+- Checking system views (QSYS2.*)
+- Verifying permissions and authorities
+- Testing SQL before using in applications
+- Exploring database metadata
+
+> **Note:** Use with caution on production systems. The SQL execute command runs with the credentials configured in your connection.yaml.
+
 ### Global Options
 
 ```bash
@@ -947,6 +1004,59 @@ as400:
 **"Journal does not exist"**:
 - Create journal first: `CRTJRN JRN(MYLIB/QSQJRN)`
 - Or use existing journal library
+
+### Useful Diagnostic Queries
+
+Use these SQL queries with `qadmcli sql execute` to troubleshoot issues:
+
+**Check current user and session:**
+```bash
+qadmcli sql execute -q "SELECT CURRENT_USER, SESSION_USER FROM SYSIBM.SYSDUMMY1"
+```
+
+**Check user special authorities:**
+```bash
+qadmcli sql execute -q "SELECT AUTHORIZATION_NAME, SPECIAL_AUTHORITIES FROM QSYS2.USER_INFO WHERE AUTHORIZATION_NAME = 'USER001'"
+```
+
+**Check object permissions:**
+```bash
+# Direct permissions
+qadmcli sql execute -q "SELECT OBJECT_NAME, OBJECT_TYPE, OBJECT_AUTHORITY FROM QSYS2.OBJECT_PRIVILEGES WHERE AUTHORIZATION_NAME = 'USER001' AND OBJECT_SCHEMA = 'EZPIPE'"
+
+# Public permissions
+qadmcli sql execute -q "SELECT OBJECT_NAME, OBJECT_TYPE, OBJECT_AUTHORITY FROM QSYS2.OBJECT_PRIVILEGES WHERE AUTHORIZATION_NAME = '*PUBLIC' AND OBJECT_SCHEMA = 'EZPIPE'"
+```
+
+**Check journal status for tables:**
+```bash
+qadmcli sql execute -q "SELECT OBJECT_NAME, OBJECT_LIBRARY, JOURNAL_NAME, JOURNAL_LIBRARY, JOURNAL_IMAGES FROM QSYS2.JOURNALED_OBJECTS WHERE OBJECT_LIBRARY = 'EZPIPE'"
+```
+
+**Check journal receivers:**
+```bash
+qadmcli sql execute -q "SELECT JOURNAL_NAME, JOURNAL_LIBRARY, RECEIVER_NAME, RECEIVER_LIBRARY, NUMBER_OF_JOURNAL_ENTRIES, SIZE FROM QSYS2.JOURNAL_RECEIVER_INFO WHERE JOURNAL_LIBRARY = 'EZPIPE'"
+```
+
+**Check table metadata:**
+```bash
+qadmcli sql execute -q "SELECT TABLE_NAME, TABLE_SCHEMA, NUMBER_ROWS, NUMBER_PARTITIONS FROM QSYS2.SYSTABLES WHERE TABLE_SCHEMA = 'EZPIPE'"
+```
+
+**Check object statistics (includes journal status):**
+```bash
+qadmcli sql execute -q "SELECT OBJNAME, OBJTYPE, OBJOWNER, JOURNALED, JOURNAL_NAME, JOURNAL_LIBRARY FROM TABLE(QSYS2.OBJECT_STATISTICS('EZPIPE', '*FILE', '*ALL'))"
+```
+
+**Find tables by pattern:**
+```bash
+qadmcli sql execute -q "SELECT TABLE_NAME FROM QSYS2.SYSTABLES WHERE TABLE_SCHEMA = 'EZPIPE' AND TABLE_NAME LIKE 'TB_%'"
+```
+
+**Check library ownership:**
+```bash
+qadmcli sql execute -q "SELECT OBJNAME, OBJOWNER FROM TABLE(QSYS2.OBJECT_STATISTICS('QSYS', '*LIB', 'EZPIPE'))"
+```
 
 ## Project Structure
 
