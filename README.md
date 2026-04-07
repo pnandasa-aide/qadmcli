@@ -6,7 +6,7 @@ A Python-based CLI tool for managing AS400 DB2 for i database tables with connec
 
 - **Connection Management**: Connect to AS400 via jt400 JDBC driver with SSL support
 - **Table Operations**: Create, check, list, drop, empty, and reverse-engineer tables using YAML or SQL schema definitions
-- **User Management**: Check, create, delete users and manage permissions
+- **User Management**: List, check, create, modify, delete users with privilege escalation support
 - **Journal Management**: Enable/disable journaling, retrieve and decode journal entries
 - **Mockup Data Generation**: Generate realistic test data with intelligent field pattern recognition (names, emails, phones, Thai names, etc.)
 - **Dual Name Display**: Shows both system names (short) and SQL names (long) for tables
@@ -197,6 +197,15 @@ qadmcli user create -u appuser -p SecurePass123 -l MYLIB
 ```
 
 **Note:** Admin credentials are used only for the specific operation and are not stored.
+
+**Verify user was created:**
+```bash
+# List users to verify creation
+qadmcli user list --filter "appuser"
+
+# Check user details
+qadmcli user check -u appuser
+```
 
 ### 2. Create Table with Journaling
 
@@ -710,6 +719,70 @@ List user permissions:
 ```bash
 qadmcli user permission -u USER001
 qadmcli user permission -u USER001 -l MYLIB
+```
+
+List all users:
+```bash
+# List all users (first 100)
+qadmcli user list
+
+# List with limit
+qadmcli user list --limit 50
+
+# List only active users
+qadmcli user list --active-only
+
+# Filter users by name (supports wildcards)
+qadmcli user list --filter "Q*"
+qadmcli user list --filter "*ADMIN*"
+
+# JSON output
+qadmcli --json user list
+```
+
+**Output columns:**
+- Status indicator (🟢 Active / 🔴 Disabled)
+- Username
+- User Class (*USER, *PGMR, *SYSOPR, *SECADM, *SECOFR)
+- Status (Active, Disabled, Failed Logins, Password Expired)
+- Group Profile
+- Last Signon
+
+Modify user profile:
+```bash
+# Change user class
+qadmcli user modify -u GSUSER01 --class *PGMR
+qadmcli user modify -u GLUEUSR --class *USER
+
+# Enable/disable user
+qadmcli user modify -u OLDUSER --status *DISABLED
+qadmcli user modify -u NEWUSER --status *ENABLED
+
+# Change group profile
+qadmcli user modify -u USER001 --group QPGMR
+
+# Update description
+qadmcli user modify -u USER001 --text "Application service account"
+
+# Multiple changes at once
+qadmcli user modify -u USER001 --class *PGMR --group QPGMR --text "Developer account"
+```
+
+**Privilege Escalation for User Modification:**
+
+Modifying user profiles requires *SECADM authority. If your current user lacks this authority, use the same privilege escalation pattern as user creation:
+
+```bash
+# Method 1: Provide admin credentials via command line
+qadmcli user modify -u GSUSER01 --class *PGMR -U QSECOFR -P adminpassword
+
+# Method 2: Interactive prompting
+qadmcli user modify -u GSUSER01 --class *PGMR
+# Output:
+# Current user lacks *SECADM (Security Administrator) special authority.
+# Administrative credentials required: *SECADM authority required
+# Admin user: QSECOFR
+# Admin password: ********
 ```
 
 #### Use Case: Fixing User Permissions
