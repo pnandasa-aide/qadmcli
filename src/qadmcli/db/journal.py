@@ -483,7 +483,7 @@ class JournalManager:
         if not journal_library:
             journal_library = self.conn.config.defaults.journal_library
         if not journal_name:
-            journal_name = "QSQJRN"  # Common default
+            journal_name = self.conn.config.defaults.journal_name
         
         # Check user permissions on journal library (optional, can be disabled)
         user = self.conn.config.as400.user

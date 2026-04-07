@@ -41,6 +41,9 @@ defaults:
   
   # Default journal library
   journal_library: "QSYS2"
+  
+  # Default journal name (used when enabling journaling)
+  journal_name: "QSQJRN"
 
 # Logging configuration
 logging:

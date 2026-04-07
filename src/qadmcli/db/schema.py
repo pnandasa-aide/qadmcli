@@ -426,7 +426,7 @@ class SchemaManager:
             schema["journaling"] = {
                 "enabled": True,
                 "journal_library": table_info.journal_library or library.upper(),
-                "journal_name": table_info.journal_name or "QSQJRN"
+                "journal_name": table_info.journal_name or "${JOURNAL_NAME}"
             }
         
         return yaml.dump(schema, default_flow_style=False, sort_keys=False, allow_unicode=True)

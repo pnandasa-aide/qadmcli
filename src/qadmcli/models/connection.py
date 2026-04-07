@@ -54,6 +54,7 @@ class DefaultsConfig(BaseModel):
 
     library: str = Field(default="QGPL", description="Default library/schema")
     journal_library: str = Field(default="QSYS2", description="Default journal library")
+    journal_name: str = Field(default="QSQJRN", description="Default journal name")
 
 
 class LoggingConfig(BaseModel):

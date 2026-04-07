@@ -1199,7 +1199,7 @@ def journal_disable(
 @click.option("--name", "-n", required=True, help="Table name (supports wildcards: * or %)")
 @click.option("--library", "-l", required=True, help="Library name")
 @click.option("--journal-library", "-j", help="Journal library (default from config)")
-@click.option("--journal-name", help="Journal name (default: QSQJRN)")
+@click.option("--journal-name", help="Journal name (default from config)")
 @click.option("--images", "-i", type=click.Choice(["*BOTH", "*AFTER", "*BEFORE"]), 
               default="*AFTER", help="Journal images to capture (default: *AFTER)")
 @click.option("--dry-run", is_flag=True, help="Show which tables would be affected without making changes")
