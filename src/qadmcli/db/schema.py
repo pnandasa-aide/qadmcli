@@ -99,7 +99,8 @@ class SchemaManager:
                 c.NUMERIC_SCALE,
                 c.IS_NULLABLE,
                 c.COLUMN_DEFAULT,
-                c.COLUMN_TEXT
+                c.COLUMN_TEXT,
+                c.IS_IDENTITY
             FROM QSYS2.SYSCOLUMNS c
             WHERE c.SYSTEM_TABLE_NAME = ?
             AND c.SYSTEM_TABLE_SCHEMA = ?
@@ -110,6 +111,10 @@ class SchemaManager:
         for row in cursor.fetchall():
             # Convert Java strings to Python strings
             nullable_val = str(row[5]).upper() if row[5] else "Y"
+            column_default = str(row[6]) if row[6] else ""
+            is_identity = str(row[8]).upper() in ("Y", "YES", "TRUE", "1") if row[8] else False
+            is_generated = "GENERATED" in column_default.upper()
+            
             columns.append({
                 "system_name": str(row[0]) if row[0] else None,
                 "name": str(row[1]) if row[1] else None,
@@ -117,8 +122,10 @@ class SchemaManager:
                 "length": row[3],
                 "scale": row[4],
                 "nullable": nullable_val in ("Y", "YES", "TRUE", "1"),
-                "default": str(row[6]) if row[6] else None,
+                "default": column_default if row[6] else None,
                 "description": str(row[7]) if row[7] else None,
+                "is_identity": is_identity,
+                "is_generated": is_generated,
             })
         cursor.close()
         return columns

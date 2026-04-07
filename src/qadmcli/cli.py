@@ -180,9 +180,21 @@ def table_check(ctx: click.Context, name: str, library: str) -> None:
                     else:
                         parts.extend([("No", "yellow"), "\n"])
                     
-                    # Add primary key info
+                    # Add primary key info with identity indicator
                     if pk_columns:
-                        parts.extend([("Primary Key: ", "bold"), ", ".join(pk_columns), "\n"])
+                        pk_parts = []
+                        for pk_col in pk_columns:
+                            # Find column to check if it's identity
+                            is_identity = False
+                            for c in columns:
+                                if c["name"] == pk_col and (c.get("is_identity") or c.get("is_generated")):
+                                    is_identity = True
+                                    break
+                            if is_identity:
+                                pk_parts.append(f"{pk_col} (auto)")
+                            else:
+                                pk_parts.append(pk_col)
+                        parts.extend([("Primary Key: ", "bold"), ", ".join(pk_parts), "\n"])
                     else:
                         parts.extend([("Primary Key: ", "bold"), ("None", "yellow"), "\n"])
                     
@@ -192,7 +204,7 @@ def table_check(ctx: click.Context, name: str, library: str) -> None:
                         border_style="green"
                     ))
                     
-                    # Show columns with PK indicator and mockup pattern
+                    # Show columns with PK indicator, identity status, and mockup pattern
                     if columns:
                         from .utils.data_generator import DataGenerator
                         dg = DataGenerator()
@@ -200,17 +212,19 @@ def table_check(ctx: click.Context, name: str, library: str) -> None:
                         col_rows = []
                         for c in columns:
                             pk_indicator = "🔑" if c["name"] in pk_columns else ""
+                            identity_indicator = "⚡" if c.get("is_identity") or c.get("is_generated") else ""
                             pattern = dg.detect_pattern(c["name"], c["type"], c.get("hint"))
                             col_rows.append([
-                                f"{c['name']} {pk_indicator}".strip(),
+                                f"{c['name']} {pk_indicator}{identity_indicator}".strip(),
                                 c["type"],
                                 str(c["length"]) if c["length"] else "",
                                 "Yes" if c["nullable"] else "No",
+                                "Auto" if c.get("is_identity") or c.get("is_generated") else "",
                                 pattern
                             ])
                         console.print(print_table(
                             console,
-                            ["Column", "Type", "Length", "Nullable", "Mockup Pattern"],
+                            ["Column", "Type", "Length", "Nullable", "Identity", "Mockup Pattern"],
                             col_rows,
                             title=f"Columns in {library}.{name}"
                         ))
