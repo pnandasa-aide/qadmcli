@@ -198,11 +198,12 @@ def table_check(ctx: click.Context, name: str, library: str) -> None:
                     else:
                         parts.extend([("Primary Key: ", "bold"), ("None", "yellow"), "\n"])
                     
-                    console.print(Panel(
+                    print_ascii_panel(
+                        console,
                         Text.assemble(*parts),
                         title="Table Information",
                         border_style="green"
-                    ))
+                    )
                     
                     # Show columns with PK indicator, identity status, and mockup pattern
                     if columns:
