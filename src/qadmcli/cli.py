@@ -2389,16 +2389,16 @@ def _load_schema_hints(schema_path: str) -> tuple[dict[str, str], dict[str, Any]
 
 
 @mockup.command("generate")
-@click.option("--name", "-n", required=True, help="Table name")
-@click.option("--library", "-l", required=True, help="Library name")
-@click.option("--schema", "-s", help="Schema YAML file for column hints")
+@click.option("--name", "-n", required=True, help="Table name (e.g., TB_02)")
+@click.option("--library", "-l", required=True, help="Library/schema name (e.g., EZPIPE)")
+@click.option("--schema", "-s", help="Schema YAML file for column hints and validation")
 @click.option("--skip-validation", is_flag=True, help="Skip schema validation when using --schema")
-@click.option("--transactions", "-t", default=1000, help="Total number of transactions (default: 1000)")
-@click.option("--insert-ratio", default=50, help="Percentage of INSERT operations (default: 50)")
-@click.option("--update-ratio", default=30, help="Percentage of UPDATE operations (default: 30)")
-@click.option("--delete-ratio", default=20, help="Percentage of DELETE operations (default: 20)")
-@click.option("--batch-size", "-b", default=100, help="Batch size for commits (default: 100)")
-@click.option("--dry-run", is_flag=True, help="Output SQL statements instead of executing")
+@click.option("--transactions", "-t", default=1000, show_default=True, help="Total number of transactions to generate")
+@click.option("--insert-ratio", default=50, show_default=True, help="Percentage of INSERT operations (0-100)")
+@click.option("--update-ratio", default=30, show_default=True, help="Percentage of UPDATE operations (0-100)")
+@click.option("--delete-ratio", default=20, show_default=True, help="Percentage of DELETE operations (0-100)")
+@click.option("--batch-size", "-b", default=100, show_default=True, help="Number of operations per batch commit")
+@click.option("--dry-run", is_flag=True, help="Preview SQL statements without executing")
 @click.pass_context
 def mockup_generate(
     ctx: click.Context,
@@ -2415,8 +2415,42 @@ def mockup_generate(
 ) -> None:
     """Generate mock data with INSERT/UPDATE/DELETE operations.
 
-    Automatically detects field patterns (names, emails, phones, etc.) based on column names.
-    Use --schema to load column hints from a YAML schema file for more precise data generation.
+    Generates realistic test data by automatically detecting field patterns based on column names.
+    Supports tables with single or composite primary keys.
+
+    \b
+    Field Patterns (auto-detected):
+        - first_name: FIRST_NAME, FNAME, FIRSTNAME
+        - last_name: LAST_NAME, LNAME, LASTNAME, SURNAME
+        - email: EMAIL, E_MAIL, MAIL
+        - phone: PHONE, MOBILE, TEL, CELL
+        - date: DATE, CREATED_DATE, UPDATED_DATE
+        - amount: AMOUNT, PRICE, COST, FEE, TAX
+        - id: ID, CUST_ID, USER_ID, ORDER_ID
+        - status: STATUS, TYPE, ORDER_STATUS
+        - string: CHAR, VARCHAR (default fallback)
+
+    \b
+    Examples:
+        # Dry run - preview SQL without executing
+        qadmcli mockup generate -n TB_02 -l EZPIPE --dry-run -t 10
+
+        # Generate 1000 transactions with default ratios (50% insert, 30% update, 20% delete)
+        qadmcli mockup generate -n CUSTOMERS -l MYLIB -t 1000
+
+        # Custom transaction mix - 60% inserts, 30% updates, 10% deletes
+        qadmcli mockup generate -n ORDERS -l MYLIB -t 500 \\
+            --insert-ratio 60 --update-ratio 30 --delete-ratio 10
+
+        # Use schema file for custom column hints
+        qadmcli mockup generate -n PRODUCTS -l MYLIB -s config/schema/products.yaml -t 100
+
+    \b
+    Notes:
+        - Ratios must sum to exactly 100
+        - Table must have a primary key for UPDATE/DELETE operations
+        - Composite primary keys are supported
+        - Large tables (millions of rows) are handled efficiently using sampling
     """
     config_path = ctx.obj["config_path"]
 
