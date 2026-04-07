@@ -49,7 +49,12 @@ def _get_elevated_connection(
             return None
     
     if not admin_password:
-        admin_password = getpass.getpass("Admin password: ")
+        # Try getpass first (for secure input), fallback to console.input
+        try:
+            admin_password = getpass.getpass("Admin password: ")
+        except (EOFError, OSError):
+            # Non-TTY environment (e.g., piped input), use console input
+            admin_password = console.input("Admin password (visible): ", password=True)
         if not admin_password:
             return None
     
@@ -2113,9 +2118,13 @@ def user_create(
                 console.print(f"[green]Created user {user}[/green]")
             except Exception as e:
                 error_msg = str(e)
-                # Check for authority error (CPF0006 or CPF22E2)
-                if "CPF0006" in error_msg or "CPF22E2" in error_msg or "authority" in error_msg.lower():
-                    console.print("[yellow]Current user lacks *SECADM authority to create users.[/yellow]")
+                # Check for authority errors (CPF0006, CPF22E2, CPF2292)
+                if any(code in error_msg for code in ["CPF0006", "CPF22E2", "CPF2292"]) or "authority" in error_msg.lower():
+                    if "CPF2292" in error_msg:
+                        console.print("[yellow]Current user lacks *SECADM (Security Administrator) special authority.[/yellow]")
+                        console.print("[dim]To create users, you need a profile with *SECADM authority.[/dim]")
+                    else:
+                        console.print("[yellow]Current user lacks authority to create users.[/yellow]")
                     
                     # Get admin credentials
                     admin_conn = _get_elevated_connection(
@@ -2130,6 +2139,12 @@ def user_create(
                             admin_conn.disconnect()
                         except Exception as admin_e:
                             admin_conn.disconnect()
+                            # Check if elevated user also lacks *SECADM
+                            admin_error = str(admin_e)
+                            if "CPF2292" in admin_error:
+                                console.print("[red]The administrative user also lacks *SECADM authority.[/red]")
+                                console.print("[dim]Hint: Verify the admin user has *SECADM special authority:[/dim]")
+                                console.print(f"[dim]  qadmcli sql execute -q \"SELECT AUTHORIZATION_NAME, SPECIAL_AUTHORITIES FROM QSYS2.USER_INFO WHERE AUTHORIZATION_NAME = '<admin_user>'\"[/dim]")
                             raise admin_e
                     else:
                         console.print("[red]Operation cancelled. User not created.[/red]")
