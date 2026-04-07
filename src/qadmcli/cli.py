@@ -1,5 +1,6 @@
 """QADM CLI - Main entry point."""
 
+import getpass
 import os
 import sys
 from pathlib import Path
@@ -26,6 +27,52 @@ console = Console()
 
 # Default config path
 DEFAULT_CONFIG = Path("config/connection.yaml")
+
+
+def _get_elevated_connection(
+    config: Any,
+    admin_user: str | None,
+    admin_password: str | None,
+    reason: str = "Elevated privileges required"
+) -> AS400ConnectionManager | None:
+    """Get an elevated connection using admin credentials.
+    
+    Prompts interactively if credentials not provided via command line.
+    Returns None if user cancels or credentials are invalid.
+    """
+    console.print(f"\n[cyan]Administrative credentials required: {reason}[/cyan]")
+    
+    # Use provided credentials or prompt interactively
+    if not admin_user:
+        admin_user = console.input("Admin user: ").strip()
+        if not admin_user:
+            return None
+    
+    if not admin_password:
+        admin_password = getpass.getpass("Admin password: ")
+        if not admin_password:
+            return None
+    
+    # Create temporary config with admin credentials
+    from .models.connection import AS400Connection
+    admin_config = AS400Connection(
+        host=config.as400.host,
+        port=config.as400.port,
+        user=admin_user,
+        password=admin_password,
+        library=config.as400.library,
+        driver=config.as400.driver
+    )
+    
+    try:
+        # Create and test the elevated connection
+        admin_conn = AS400ConnectionManager(admin_config)
+        admin_conn.connect()
+        console.print(f"[green]Connected as {admin_user} with elevated privileges[/green]\n")
+        return admin_conn
+    except Exception as e:
+        console.print(f"[red]Failed to connect as {admin_user}: {e}[/red]")
+        return None
 
 
 def get_config_path(ctx: click.Context, param: Any, value: str | None) -> Path:
@@ -2025,15 +2072,28 @@ def user_check_table(
 @click.option("--password", "-p", help="Password for the user")
 @click.option("--library", "-l", help="Library to grant permissions on")
 @click.option("--name", "-n", help="Table name(s) to grant permissions (supports wildcards)")
+@click.option("--admin-user", "-U", help="Administrative user with *SECADM authority (for privilege escalation)")
+@click.option("--admin-password", "-P", help="Password for administrative user")
 @click.pass_context
 def user_create(
     ctx: click.Context,
     user: str,
     password: str | None,
     library: str | None,
-    name: str | None
+    name: str | None,
+    admin_user: str | None,
+    admin_password: str | None
 ) -> None:
-    """Create a new user with optional permissions."""
+    """Create a new user with optional permissions.
+    
+    If the current user lacks *SECADM authority, you can provide admin credentials
+    using --admin-user and --admin-password, or you will be prompted interactively.
+    
+    Examples:
+        qadmcli user create -u newuser -p password123
+        qadmcli user create -u newuser -p password123 -U QSECOFR -P adminpass
+        qadmcli user create -u newuser -p password123 -l MYLIB -n "*ALL"
+    """
     config_path = ctx.obj["config_path"]
     
     try:
@@ -2043,14 +2103,40 @@ def user_create(
             from .db.user import UserManager
             user_mgr = UserManager(conn)
             
-            result = user_mgr.create_user(user, password)
-            console.print(f"[green]Created user {user}[/green]")
+            try:
+                result = user_mgr.create_user(user, password)
+                console.print(f"[green]Created user {user}[/green]")
+            except Exception as e:
+                error_msg = str(e)
+                # Check for authority error (CPF0006 or CPF22E2)
+                if "CPF0006" in error_msg or "CPF22E2" in error_msg or "authority" in error_msg.lower():
+                    console.print("[yellow]Current user lacks *SECADM authority to create users.[/yellow]")
+                    
+                    # Get admin credentials
+                    admin_conn = _get_elevated_connection(
+                        config, admin_user, admin_password, "*SECADM authority required"
+                    )
+                    
+                    if admin_conn:
+                        try:
+                            admin_user_mgr = UserManager(admin_conn)
+                            result = admin_user_mgr.create_user(user, password)
+                            console.print(f"[green]Created user {user} using elevated privileges[/green]")
+                            admin_conn.disconnect()
+                        except Exception as admin_e:
+                            admin_conn.disconnect()
+                            raise admin_e
+                    else:
+                        console.print("[red]Operation cancelled. User not created.[/red]")
+                        sys.exit(1)
+                else:
+                    raise
             
             if library:
-                # Grant permissions on library/tables
+                # Grant permissions on library/tables using original connection
                 user_mgr.grant_library_permissions(user, library, name)
                 console.print(f"[green]Granted permissions on {library}[/green]")
-        
+    
     except ConnectionError as e:
         console.print(f"[red]Connection error: {e.message}[/red]")
         sys.exit(1)
