@@ -1876,6 +1876,92 @@ def user() -> None:
     pass
 
 
+@user.command("list")
+@click.option("--filter", "-f", help="Filter users by name (supports wildcards like 'Q*' or '%USER%')")
+@click.option("--active-only", "-a", is_flag=True, help="Show only active/enabled users")
+@click.option("--limit", "-n", type=int, default=100, help="Maximum number of users to display (default: 100)")
+@click.pass_context
+def user_list(
+    ctx: click.Context,
+    filter: str | None,
+    active_only: bool,
+    limit: int
+) -> None:
+    """List user profiles with status and library information."""
+    config_path = ctx.obj["config_path"]
+    output_json = ctx.obj["output_json"]
+    
+    try:
+        config = load_config(config_path)
+        
+        with AS400ConnectionManager(config) as conn:
+            from .db.user import UserManager
+            user_mgr = UserManager(conn)
+            
+            # Convert wildcards for SQL LIKE
+            sql_filter = None
+            if filter:
+                sql_filter = filter.replace("*", "%").replace("?", "_")
+            
+            users = user_mgr.list_users(filter_name=sql_filter, only_active=active_only)
+            
+            if output_json:
+                print_json(console, {"users": users[:limit], "total": len(users), "shown": min(len(users), limit)})
+            else:
+                if not users:
+                    console.print("[yellow]No users found matching the criteria.[/yellow]")
+                    return
+                
+                # Build table rows
+                rows = []
+                for u in users[:limit]:
+                    # Status indicator
+                    status_indicator = "🟢" if u["status"] == "*ENABLED" else "🔴"
+                    
+                    # Format last signon
+                    last_signon = u.get("last_signon")
+                    if last_signon:
+                        try:
+                            last_signon_str = last_signon.strftime("%Y-%m-%d %H:%M")
+                        except:
+                            last_signon_str = str(last_signon)[:16]
+                    else:
+                        last_signon_str = "Never"
+                    
+                    # Default library
+                    current_lib = u.get("current_library", "*CRTDFT")
+                    if current_lib == "*CRTDFT":
+                        current_lib = "-"
+                    
+                    rows.append([
+                        status_indicator,
+                        u["username"],
+                        u.get("user_class", ""),
+                        u.get("status_description", ""),
+                        current_lib,
+                        u.get("group_profile", "*NONE"),
+                        last_signon_str
+                    ])
+                
+                # Display table
+                console.print(print_table(
+                    console,
+                    ["", "Username", "Class", "Status", "Current Library", "Group Profile", "Last Signon"],
+                    rows,
+                    title=f"User Profiles ({min(len(users), limit)} of {len(users)} shown)"
+                ))
+                
+                if len(users) > limit:
+                    console.print(f"[dim]... and {len(users) - limit} more users (use --limit to show more)[/dim]")
+    
+    except ConnectionError as e:
+        console.print(f"[red]Connection error: {e.message}[/red]")
+        sys.exit(1)
+    except Exception as e:
+        console.print(f"[red]Error: {e}[/red]")
+        sys.exit(1)
+
+
 @user.command("check")
 @click.option("--user", "-u", required=True, help="Username to check")
 @click.option("--library", "-l", help="Library to check permissions on")

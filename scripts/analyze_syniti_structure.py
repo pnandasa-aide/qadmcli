@@ -152,6 +152,107 @@ def main():
     print("\nFirst 20 source tables:")
     for t in source_tables[:20]:
         print(f"  - {t['qualified']}")
+    
+    # Visual Tree Representation
+    print()
+    print("=" * 60)
+    print("VISUAL HIERARCHY TREE")
+    print("=" * 60)
+    
+    for conn_id, conn_info in sorted(connections.items()):
+        source_flag = "[SOURCE]" if conn_info["is_source"] else "[TARGET]"
+        conn_type_name = "DB2" if conn_info["type"] == "3" else "MSSQL" if conn_info["type"] == "1" else f"Type{conn_info['type']}"
+        print(f"\n📡 Connection {conn_id}: {conn_info['name']} {source_flag} ({conn_type_name})")
+        
+        if conn_id not in tables_by_conn:
+            print("   └─ (no tables)")
+            continue
+        
+        # For DB2 (source), group by schema
+        if conn_info["type"] == "3":  # DB2
+            schema_groups = tables_by_conn[conn_id]
+            schema_list = sorted(schema_groups.keys())
+            
+            for i, schema_name in enumerate(schema_list):
+                is_last_schema = (i == len(schema_list) - 1)
+                schema_prefix = "   └─" if is_last_schema else "   ├─"
+                table_list = schema_groups[schema_name]
+                
+                print(f"{schema_prefix} 📁 Schema: {schema_name} ({len(table_list)} tables)")
+                
+                # Show sample tables (first 3)
+                for j, t in enumerate(table_list[:3]):
+                    is_last_table = (j == len(table_list[:3]) - 1) and len(table_list) <= 3
+                    table_prefix = "      └─" if is_last_table else "      ├─"
+                    print(f"{table_prefix} 📝 {t['name']}")
+                
+                if len(table_list) > 3:
+                    print(f"      └─ ... and {len(table_list) - 3} more tables")
+        
+        # For MSSQL (target), group by catalog then schema
+        else:  # MSSQL
+            # Group by catalog
+            catalogs_for_conn = {}
+            for schema_name, table_list in tables_by_conn[conn_id].items():
+                # Find catalog for this schema
+                cat_name = "default"
+                for cat_id, cat_info in catalogs.items():
+                    if cat_info["connection_id"] == conn_id:
+                        cat_name = cat_info["name"]
+                        break
+                if cat_name not in catalogs_for_conn:
+                    catalogs_for_conn[cat_name] = {}
+                catalogs_for_conn[cat_name][schema_name] = table_list
+            
+            cat_list = sorted(catalogs_for_conn.keys())
+            for k, cat_name in enumerate(cat_list):
+                is_last_cat = (k == len(cat_list) - 1)
+                cat_prefix = "   └─" if is_last_cat else "   ├─"
+                schema_groups = catalogs_for_conn[cat_name]
+                total_tables = sum(len(t) for t in schema_groups.values())
+                
+                print(f"{cat_prefix} 🗄️  Catalog (Database): {cat_name} ({total_tables} tables)")
+                
+                schema_list = sorted(schema_groups.keys())
+                for i, schema_name in enumerate(schema_list):
+                    is_last_schema = (i == len(schema_list) - 1)
+                    schema_prefix = "      └─" if is_last_schema else "      ├─"
+                    table_list = schema_groups[schema_name]
+                    
+                    print(f"{schema_prefix} 📁 Schema: {schema_name} ({len(table_list)} tables)")
+                    
+                    # Show sample tables
+                    for j, t in enumerate(table_list[:2]):
+                        is_last_table = (j == len(table_list[:2]) - 1) and len(table_list) <= 2
+                        table_prefix = "         └─" if is_last_table else "         ├─"
+                        print(f"{table_prefix} 📝 {t['name']}")
+                    
+                    if len(table_list) > 2:
+                        print(f"         └─ ... and {len(table_list) - 2} more tables")
+    
+    # Summary Statistics
+    print()
+    print("=" * 60)
+    print("SUMMARY STATISTICS")
+    print("=" * 60)
+    
+    for conn_id, conn_info in sorted(connections.items()):
+        if conn_id in tables_by_conn:
+            total_tables = sum(len(t) for t in tables_by_conn[conn_id].values())
+            schema_count = len(tables_by_conn[conn_id])
+            print(f"\n{conn_info['name']}:")
+            print(f"  Total Tables: {total_tables}")
+            print(f"  Schemas: {schema_count}")
+            
+            # Top 5 largest schemas
+            sorted_schemas = sorted(
+                tables_by_conn[conn_id].items(),
+                key=lambda x: len(x[1]),
+                reverse=True
+            )[:5]
+            print(f"  Top 5 Largest Schemas:")
+            for schema_name, table_list in sorted_schemas:
+                print(f"    - {schema_name}: {len(table_list)} tables")
 
 
 if __name__ == "__main__":

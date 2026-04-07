@@ -517,6 +517,119 @@ class UserManager:
             "objects": obj_filter
         }
     
+    def list_users(self, filter_name: str | None = None, only_active: bool = False) -> list[dict[str, Any]]:
+        """List all user profiles with status and default library information.
+        
+        Args:
+            filter_name: Optional filter to search for specific user names (supports wildcards)
+            only_active: If True, only return enabled users
+            
+        Returns:
+            List of user dictionaries with profile information
+        """
+        users = []
+        
+        # Build the WHERE clause based on filters
+        where_conditions = []
+        params = []
+        
+        if filter_name:
+            # Support SQL wildcards: % for multiple chars, _ for single char
+            where_conditions.append("AUTHORIZATION_NAME LIKE ?")
+            params.append(filter_name.upper())
+        
+        if only_active:
+            where_conditions.append("STATUS = '*ENABLED'")
+        
+        where_clause = ""
+        if where_conditions:
+            where_clause = "WHERE " + " AND ".join(where_conditions)
+        
+        sql = f"""
+            SELECT 
+                AUTHORIZATION_NAME,
+                USER_CLASS_NAME,
+                STATUS,
+                PREVIOUS_SIGNON,
+                SIGN_ON_ATTEMPTS_NOT_VALID,
+                GROUP_PROFILE_NAME,
+                SPECIAL_AUTHORITIES,
+                TEXT_DESCRIPTION,
+                HOME_DIRECTORY,
+                CURRENT_LIBRARY,
+                INITIAL_MENU,
+                INITIAL_PROGRAM,
+                LIMIT_CAPABILITIES,
+                PASSWORD_EXPIRATION_INTERVAL,
+                PASSWORD_CHANGE_DATE,
+                USER_EXPIRATION_INTERVAL,
+                USER_EXPIRATION_ACTION,
+                STATUS_CHANGE_DATE,
+                CREATION_TIMESTAMP
+            FROM QSYS2.USER_INFO
+            {where_clause}
+            ORDER BY AUTHORIZATION_NAME
+        """
+        
+        cursor = self.conn.execute(sql, tuple(params) if params else ())
+        
+        for row in cursor.fetchall():
+            # Determine account status
+            status = row[2] if row[2] else "*UNKNOWN"
+            signon_attempts = row[4] if row[4] is not None else 0
+            
+            # Build status description
+            status_desc = []
+            if status == "*ENABLED":
+                status_desc.append("Active")
+            elif status == "*DISABLED":
+                status_desc.append("Disabled")
+            
+            if signon_attempts > 0:
+                status_desc.append(f"Failed Logins: {signon_attempts}")
+            
+            # Check if password is expired
+            pwd_change_date = row[14]
+            pwd_interval = row[13]
+            pwd_status = "OK"
+            if pwd_change_date and pwd_interval and pwd_interval > 0:
+                from datetime import datetime
+                try:
+                    days_since_change = (datetime.now() - pwd_change_date).days
+                    if days_since_change > pwd_interval:
+                        pwd_status = "Expired"
+                        status_desc.append("Password Expired")
+                except:
+                    pass
+            
+            user_info = {
+                "username": row[0],
+                "user_class": row[1] if row[1] else "*NONE",
+                "status": status,
+                "status_description": ", ".join(status_desc) if status_desc else "Unknown",
+                "last_signon": row[3],
+                "failed_signon_attempts": signon_attempts,
+                "group_profile": row[5] if row[5] else "*NONE",
+                "special_authorities": row[6] if row[6] else "",
+                "description": row[7] if row[7] else "",
+                "home_directory": row[8] if row[8] else "",
+                "current_library": row[9] if row[9] else "*CRTDFT",
+                "initial_menu": row[10] if row[10] else "",
+                "initial_program": row[11] if row[11] else "",
+                "limited_capabilities": row[12] if row[12] else "*NO",
+                "password_expiration_interval": row[13],
+                "password_change_date": row[14],
+                "password_status": pwd_status,
+                "user_expiration_interval": row[15],
+                "user_expiration_action": row[16] if row[16] else "*NONE",
+                "status_change_date": row[17],
+                "creation_timestamp": row[18]
+            }
+            users.append(user_info)
+        
+        cursor.close()
+        return users
+    
     def list_permissions(self, username: str, library: str | None = None) -> dict[str, Any]:
         """List user permissions and authorities."""
         result = {
