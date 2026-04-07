@@ -152,11 +152,13 @@ def table_check(ctx: click.Context, name: str, library: str) -> None:
                 info = schema.get_table_info(name, library)
                 row_count = schema.get_table_row_count(name, library) if info else None
                 columns = schema.get_columns(name, library) if info else []
+                pk_columns = schema.get_primary_key(name, library)
                 logger.debug(f"Table info retrieved successfully")
                 if output_json:
                     data = info.model_dump() if info else {}
                     data["row_count"] = row_count
                     data["columns"] = columns
+                    data["primary_key"] = pk_columns
                     print_json(console, data)
                 else:
                     # Build text parts safely
@@ -178,15 +180,29 @@ def table_check(ctx: click.Context, name: str, library: str) -> None:
                     else:
                         parts.extend([("No", "yellow"), "\n"])
                     
+                    # Add primary key info
+                    if pk_columns:
+                        parts.extend([("Primary Key: ", "bold"), ", ".join(pk_columns), "\n"])
+                    else:
+                        parts.extend([("Primary Key: ", "bold"), ("None", "yellow"), "\n"])
+                    
                     console.print(Panel(
                         Text.assemble(*parts),
                         title="Table Information",
                         border_style="green"
                     ))
                     
-                    # Show columns
+                    # Show columns with PK indicator
                     if columns:
-                        col_rows = [[c["name"], c["type"], str(c["length"]) if c["length"] else "", "Yes" if c["nullable"] else "No"] for c in columns]
+                        col_rows = []
+                        for c in columns:
+                            pk_indicator = "🔑" if c["name"] in pk_columns else ""
+                            col_rows.append([
+                                f"{c['name']} {pk_indicator}".strip(),
+                                c["type"],
+                                str(c["length"]) if c["length"] else "",
+                                "Yes" if c["nullable"] else "No"
+                            ])
                         console.print(print_table(
                             console,
                             ["Column", "Type", "Length", "Nullable"],

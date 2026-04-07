@@ -251,7 +251,8 @@ class StringPattern(DataPattern):
     
     def generate(self, length: Optional[int] = None, scale: Optional[int] = None) -> str:
         max_len = min(length or 50, 100)
-        return ''.join(random.choices(string.ascii_letters + ' ', k=random.randint(5, max_len)))
+        min_len = min(5, max_len)  # Ensure min_len doesn't exceed max_len
+        return ''.join(random.choices(string.ascii_letters + ' ', k=random.randint(min_len, max_len)))
 
 
 class FileBasedDataSource:

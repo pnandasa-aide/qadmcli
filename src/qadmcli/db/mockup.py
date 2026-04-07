@@ -300,14 +300,20 @@ class MockupManager:
             logger.warning(f"Could not get existing PK values: {e}")
             return set()
     
-    def _get_random_row_ids(self, table_name: str, library: str, 
+    def _get_random_row_ids(self, table_name: str, library: str,
                            count: int) -> list[Any]:
         """Get random row IDs for updates/deletes."""
+        # Get primary key columns
+        pk_columns = self._get_primary_key(table_name, library)
+        if not pk_columns:
+            logger.warning("No primary key found for random row selection")
+            return []
+            
+        pk_col = pk_columns[0]  # Use first PK column
+            
+        # Use DB2 for i compatible SQL to get random rows
         sql = f"""
-            SELECT * FROM (
-                SELECT ROW_NUMBER() OVER() as rn
-                FROM {library}.{table_name}
-            ) t
+            SELECT {pk_col} FROM {library}.{table_name}
             ORDER BY RAND()
             FETCH FIRST {count} ROWS ONLY
         """
@@ -317,8 +323,20 @@ class MockupManager:
             cursor.close()
             return ids
         except Exception as e:
-            logger.warning(f"Could not get random row IDs: {e}")
-            return []
+            logger.warning(f"Could not get random row IDs using RAND(): {e}")
+            # Fallback: get all IDs and randomly sample in Python
+            try:
+                fallback_sql = f"SELECT {pk_col} FROM {library}.{table_name}"
+                cursor = self.conn.execute(fallback_sql)
+                all_ids = [row[0] for row in cursor.fetchall()]
+                cursor.close()
+                import random
+                if len(all_ids) <= count:
+                    return all_ids
+                return random.sample(all_ids, count)
+            except Exception as e2:
+                logger.warning(f"Fallback also failed: {e2}")
+                return []
     
     def _generate_row(self, columns: list[dict], pk_columns: list[str],
                      existing_pks: set, is_insert: bool = True) -> dict[str, Any]:

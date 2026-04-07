@@ -123,6 +123,26 @@ class SchemaManager:
         cursor.close()
         return columns
     
+    def get_primary_key(self, table_name: str, library: str) -> list[str]:
+        """Get primary key columns for a table."""
+        sql = """
+            SELECT k.COLUMN_NAME
+            FROM QSYS2.SYSKEYCST k
+            JOIN QSYS2.SYSCST c ON k.CONSTRAINT_NAME = c.CONSTRAINT_NAME
+                AND k.CONSTRAINT_SCHEMA = c.CONSTRAINT_SCHEMA
+            WHERE k.SYSTEM_TABLE_NAME = ?
+            AND k.SYSTEM_TABLE_SCHEMA = ?
+            AND c.CONSTRAINT_TYPE = 'PRIMARY KEY'
+            ORDER BY k.ORDINAL_POSITION
+        """
+        try:
+            cursor = self.conn.execute(sql, (table_name.upper(), library.upper()))
+            pk_columns = [str(row[0]) for row in cursor.fetchall()]
+            cursor.close()
+            return pk_columns
+        except Exception:
+            return []
+    
     def create_table(self, config: TableConfig, dry_run: bool = False) -> str:
         """Create table from configuration."""
         ddl = config.to_sql_ddl()
