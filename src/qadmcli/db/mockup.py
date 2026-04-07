@@ -166,19 +166,19 @@ class MockupManager:
             self._execute_batch(results["inserts"], "INSERT")
             results["stats"]["inserted"] += len(results["inserts"])
         
-        # Get row IDs for updates/deletes
+        # Get row IDs for updates/deletes (now returns list of lists for composite key support)
         row_ids = self._get_random_row_ids(table_name, library, update_count + delete_count)
         
         # Generate UPDATE operations
         for i in range(min(update_count, len(row_ids))):
-            row_id = row_ids[i]
+            pk_values = row_ids[i]  # List of PK values for composite keys
             update_data = self._generate_update_data(columns, pk_columns)
-            sql = self._build_update_sql(table_name, library, update_data, pk_columns, row_id)
+            sql = self._build_update_sql(table_name, library, update_data, pk_columns, pk_values)
             
             if config.dry_run:
                 results["sql_statements"].append(sql)
             else:
-                results["updates"].append({"id": row_id, "data": update_data})
+                results["updates"].append({"pk_values": pk_values, "data": update_data})
             
             if not config.dry_run and (i + 1) % config.batch_size == 0:
                 self._execute_batch(results["updates"], "UPDATE", pk_columns)
@@ -191,13 +191,13 @@ class MockupManager:
         
         # Generate DELETE operations
         delete_ids = row_ids[update_count:update_count + delete_count]
-        for i, row_id in enumerate(delete_ids):
-            sql = self._build_delete_sql(table_name, library, pk_columns, row_id)
+        for i, pk_values in enumerate(delete_ids):
+            sql = self._build_delete_sql(table_name, library, pk_columns, pk_values)
             
             if config.dry_run:
                 results["sql_statements"].append(sql)
             else:
-                results["deletes"].append(row_id)
+                results["deletes"].append(pk_values)
             
             if not config.dry_run and (i + 1) % config.batch_size == 0:
                 self._execute_batch(results["deletes"], "DELETE", pk_columns)
@@ -299,74 +299,77 @@ class MockupManager:
         return set()
         
     def _get_random_row_ids(self, table_name: str, library: str,
-                           count: int) -> list[Any]:
-        """Get random row IDs for updates/deletes using efficient sampling."""
+                           count: int) -> list[list[Any]]:
+        """Get random row IDs for updates/deletes using efficient sampling.
+        
+        Returns list of lists, where each inner list contains values for all PK columns.
+        Supports composite primary keys.
+        """
         # Get primary key columns
         pk_columns = self._get_primary_key(table_name, library)
         if not pk_columns:
             logger.warning("No primary key found for random row selection")
             return []
-                
-        pk_col = pk_columns[0]  # Use first PK column
+        
+        # Build column list for SELECT
+        pk_cols_str = ", ".join(pk_columns)
             
         # Use TABLESAMPLE for efficient random sampling on large tables
-        # TABLESAMPLE SYSTEM(0.01) samples approximately 0.01% of rows
         sql = f"""
-            SELECT {pk_col} FROM {library}.{table_name}
+            SELECT {pk_cols_str} FROM {library}.{table_name}
             TABLESAMPLE SYSTEM(0.01)
             FETCH FIRST {count * 10} ROWS ONLY
         """
         try:
             cursor = self.conn.execute(sql)
-            ids = [row[0] for row in cursor.fetchall()]
+            rows = [list(row) for row in cursor.fetchall()]  # Get all PK column values
             cursor.close()
                 
             # Randomly sample from the results
-            if len(ids) >= count:
+            if len(rows) >= count:
                 import random
-                return random.sample(ids, count)
-            elif ids:
-                return ids
-            # If TABLESAMPLE returned nothing, try alternative approach
+                return random.sample(rows, count)
+            elif rows:
+                return rows
         except Exception as e:
             logger.debug(f"TABLESAMPLE failed: {e}, trying alternative")
             
         # Alternative: Use RAND() with WHERE clause for better performance
         try:
             sql = f"""
-                SELECT {pk_col} FROM {library}.{table_name}
+                SELECT {pk_cols_str} FROM {library}.{table_name}
                 WHERE RAND() < 0.001
                 FETCH FIRST {count} ROWS ONLY
             """
             cursor = self.conn.execute(sql)
-            ids = [row[0] for row in cursor.fetchall()]
+            rows = [list(row) for row in cursor.fetchall()]
             cursor.close()
-            if ids:
-                return ids
+            if rows:
+                return rows
         except Exception as e:
             logger.debug(f"RAND() with WHERE failed: {e}")
             
-        # Final fallback: Get max ID and generate random IDs in range
-        try:
-            sql = f"SELECT MIN({pk_col}), MAX({pk_col}) FROM {library}.{table_name}"
-            cursor = self.conn.execute(sql)
-            row = cursor.fetchone()
-            cursor.close()
-                
-            if row and row[0] is not None and row[1] is not None:
-                min_id, max_id = row[0], row[1]
-                import random
-                # Generate random IDs within the range
-                random_ids = [random.randint(min_id, max_id) for _ in range(count * 2)]
-                # Verify which IDs exist
-                id_list = ",".join(str(id_val) for id_val in random_ids)
-                verify_sql = f"SELECT {pk_col} FROM {library}.{table_name} WHERE {pk_col} IN ({id_list}) FETCH FIRST {count} ROWS ONLY"
-                cursor = self.conn.execute(verify_sql)
-                existing_ids = [row[0] for row in cursor.fetchall()]
+        # For single-column PK: Final fallback using MIN/MAX range
+        if len(pk_columns) == 1:
+            try:
+                pk_col = pk_columns[0]
+                sql = f"SELECT MIN({pk_col}), MAX({pk_col}) FROM {library}.{table_name}"
+                cursor = self.conn.execute(sql)
+                row = cursor.fetchone()
                 cursor.close()
-                return existing_ids[:count]
-        except Exception as e:
-            logger.warning(f"All random row selection methods failed: {e}")
+                    
+                if row and row[0] is not None and row[1] is not None:
+                    min_id, max_id = row[0], row[1]
+                    import random
+                    random_ids = [random.randint(min_id, max_id) for _ in range(count * 2)]
+                    id_list = ",".join(str(id_val) for id_val in random_ids)
+                    verify_sql = f"SELECT {pk_col} FROM {library}.{table_name} WHERE {pk_col} IN ({id_list}) FETCH FIRST {count} ROWS ONLY"
+                    cursor = self.conn.execute(verify_sql)
+                    existing_ids = [[row[0]] for row in cursor.fetchall()]  # Return as list of lists
+                    cursor.close()
+                    return existing_ids[:count]
+            except Exception as e:
+                logger.warning(f"MIN/MAX fallback failed: {e}")
             
         return []
     
@@ -461,8 +464,11 @@ class MockupManager:
     
     def _build_update_sql(self, table_name: str, library: str,
                          update_data: dict, pk_columns: list[str],
-                         row_id: Any) -> str:
-        """Build UPDATE SQL statement."""
+                         pk_values: list[Any]) -> str:
+        """Build UPDATE SQL statement.
+        
+        Supports composite primary keys by using all PK columns in WHERE clause.
+        """
         if not update_data:
             return ""
         
@@ -480,21 +486,45 @@ class MockupManager:
         
         set_str = ", ".join(set_clauses)
         
-        # Build WHERE clause for PK
-        if pk_columns:
-            where = f"{pk_columns[0]} = {row_id}"
+        # Build WHERE clause with all PK columns (composite key support)
+        if pk_columns and pk_values and len(pk_columns) == len(pk_values):
+            where_conditions = []
+            for col, val in zip(pk_columns, pk_values):
+                if isinstance(val, str):
+                    escaped_val = val.replace("'", "''")
+                    where_conditions.append(f"{col} = '{escaped_val}'")
+                else:
+                    where_conditions.append(f"{col} = {val}")
+            where = " AND ".join(where_conditions)
+        elif pk_columns:
+            # Fallback to first column only
+            where = f"{pk_columns[0]} = {pk_values[0] if pk_values else 0}"
         else:
-            where = f"ROW_NUMBER() OVER() = {row_id}"
+            where = "1=0"  # Safety: prevent update without PK
         
         return f"UPDATE {library}.{table_name} SET {set_str} WHERE {where};"
     
     def _build_delete_sql(self, table_name: str, library: str,
-                         pk_columns: list[str], row_id: Any) -> str:
-        """Build DELETE SQL statement."""
-        if pk_columns:
-            where = f"{pk_columns[0]} = {row_id}"
+                         pk_columns: list[str], pk_values: list[Any]) -> str:
+        """Build DELETE SQL statement.
+        
+        Supports composite primary keys by using all PK columns in WHERE clause.
+        """
+        # Build WHERE clause with all PK columns (composite key support)
+        if pk_columns and pk_values and len(pk_columns) == len(pk_values):
+            where_conditions = []
+            for col, val in zip(pk_columns, pk_values):
+                if isinstance(val, str):
+                    escaped_val = val.replace("'", "''")
+                    where_conditions.append(f"{col} = '{escaped_val}'")
+                else:
+                    where_conditions.append(f"{col} = {val}")
+            where = " AND ".join(where_conditions)
+        elif pk_columns:
+            # Fallback to first column only
+            where = f"{pk_columns[0]} = {pk_values[0] if pk_values else 0}"
         else:
-            where = f"ROW_NUMBER() OVER() = {row_id}"
+            where = "1=0"  # Safety: prevent delete without PK
         
         return f"DELETE FROM {library}.{table_name} WHERE {where};"
     
