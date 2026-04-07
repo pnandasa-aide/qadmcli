@@ -424,7 +424,8 @@ class UserManager:
         else:
             password_param = ""
         
-        cmd = f"CRTUSRPRF USRPRF({username.upper()}) {password_param} STATUS(*ENABLED)"
+        # Specify JOBD(QGPL/QDFTJOBD) to avoid CPF2242 error
+        cmd = f"CRTUSRPRF USRPRF({username.upper()}) {password_param} STATUS(*ENABLED) JOBD(QGPL/QDFTJOBD)"
         
         logger.debug(f"Executing command: CRTUSRPRF USRPRF({username.upper()}) ...")
         
