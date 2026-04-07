@@ -1319,11 +1319,21 @@ def journal_info(ctx: click.Context, name: str, library: str, fast: bool) -> Non
             if output_json:
                 print_json(console, info.model_dump())
             else:
+                # Format journal images for display
+                images_display = info.journal_images or "N/A"
+                if images_display == "*BOTH":
+                    images_display = "BOTH (Before & After)"
+                elif images_display == "*AFTER":
+                    images_display = "AFTER (After image only)"
+                elif images_display == "*BEFORE":
+                    images_display = "BEFORE (Before image only)"
+                
                 content = Text.assemble(
                     ("Table: ", "bold"), f"{library}.{name}", "\n\n",
                     ("Journal Status:\n", "bold underline"),
                     ("  Journaled: ", "bold"), ("Yes" if info.is_journaled else "No"), "\n",
                     ("  Journal: ", "bold"), (f"{info.journal_library}.{info.journal_name}" if info.journal_library else "N/A"), "\n",
+                    ("  Write Mode: ", "bold"), images_display, "\n",
                     ("  Receiver: ", "bold"), (f"{info.journal_receiver_library}.{info.journal_receiver_name}" if info.journal_receiver_library else "N/A"), "\n",
                     ("  Receiver Attached: ", "bold"), str(info.receiver_attach_timestamp or "N/A"), "\n",
                     ("  Receiver Detached: ", "bold"), str(info.receiver_detach_timestamp or "Still attached"), "\n\n",

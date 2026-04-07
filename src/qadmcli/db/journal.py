@@ -245,7 +245,8 @@ class JournalManager:
         sql = """
             SELECT 
                 JOURNAL_LIBRARY,
-                JOURNAL_NAME
+                JOURNAL_NAME,
+                JOURNAL_IMAGES
             FROM QSYS2.JOURNALED_OBJECTS 
             WHERE OBJECT_NAME = ? 
             AND OBJECT_LIBRARY = ?
@@ -260,14 +261,18 @@ class JournalManager:
         # Handle various None/empty cases from database
         journal_lib = None
         journal_name = None
+        journal_images = None
         if row:
             journal_lib = row[0] if row[0] else None
             journal_name = row[1] if row[1] else None
+            journal_images = row[2] if row[2] else None
             # Convert to string if not None
             if journal_lib is not None:
                 journal_lib = str(journal_lib).strip() or None
             if journal_name is not None:
                 journal_name = str(journal_name).strip() or None
+            if journal_images is not None:
+                journal_images = str(journal_images).strip() or None
         
         is_journaled = journal_lib is not None and journal_name is not None
         
@@ -279,6 +284,7 @@ class JournalManager:
             is_journaled=is_journaled,
             journal_library=journal_lib,
             journal_name=journal_name,
+            journal_images=journal_images,
         )
         
         # If journaled, get receiver info and entry range

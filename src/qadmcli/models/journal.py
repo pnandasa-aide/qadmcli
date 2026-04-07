@@ -99,6 +99,9 @@ class JournalInfo(BaseModel):
     journal_receiver_library: str | None = None
     journal_receiver_name: str | None = None
     
+    # Journal write mode (BEFORE/AFTER/BOTH)
+    journal_images: str | None = None
+    
     # Receiver timestamps
     receiver_attach_timestamp: str | None = None
     receiver_detach_timestamp: str | None = None
