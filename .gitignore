@@ -3,3 +3,12 @@
 #ignore comment,notes
 *.txt
 *.copy
+
+# Ignore Syniti metadata and converted schemas (large files, regenerate as needed)
+schemas/syniti/
+schemas/converted/
+schemas/converted_*/
+
+# Ignore working data files
+*.xml
+*.yaml.copy
