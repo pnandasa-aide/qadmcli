@@ -993,8 +993,9 @@ def journal_disable(
         with AS400ConnectionManager(config) as conn:
             jrn = JournalManager(conn)
             
-            # Check if wildcard pattern
-            if '*' in name or '%' in name or '?' in name or '_' in name:
+            # Check if wildcard pattern (* and ? are shell-style, % is SQL-style)
+            # Note: _ is a valid character in IBM i table names, not a wildcard
+            if '*' in name or '%' in name or '?' in name:
                 # Find matching tables
                 from .db.schema import SchemaManager
                 import fnmatch
@@ -1053,6 +1054,10 @@ def journal_disable(
                     console.print(f"\n[green]Completed: {success_count} succeeded, {error_count} failed[/green]")
             else:
                 # Single table
+                if dry_run:
+                    console.print(f"[blue]Dry run - would disable journaling for {library}.{name}[/blue]")
+                    return
+                
                 result = jrn.disable_journaling(name, library)
                 
                 if output_json:
@@ -1106,8 +1111,9 @@ def journal_enable(
         with AS400ConnectionManager(config) as conn:
             jrn = JournalManager(conn)
             
-            # Check if wildcard pattern
-            if '*' in name or '%' in name or '?' in name or '_' in name:
+            # Check if wildcard pattern (* and ? are shell-style, % is SQL-style)
+            # Note: _ is a valid character in IBM i table names, not a wildcard
+            if '*' in name or '%' in name or '?' in name:
                 # Find matching tables
                 from .db.schema import SchemaManager
                 import fnmatch
@@ -1169,6 +1175,10 @@ def journal_enable(
                     console.print(f"Images mode: {images}")
             else:
                 # Single table
+                if dry_run:
+                    console.print(f"[blue]Dry run - would enable journaling for {library}.{name} with {images}[/blue]")
+                    return
+                
                 result = jrn.enable_journaling(name, library, journal_library, journal_name, images)
                 
                 if output_json:
