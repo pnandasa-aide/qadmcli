@@ -1558,6 +1558,108 @@ Status: {status}"""
         sys.exit(1)
 
 
+@user.command("check-table")
+@click.option("--user", "-u", required=True, help="Username to check")
+@click.option("--table", "-t", required=True, help="Table name to check")
+@click.option("--library", "-l", required=True, help="Library containing the table")
+@click.pass_context
+def user_check_table(
+    ctx: click.Context,
+    user: str,
+    table: str,
+    library: str
+) -> None:
+    """Check user permissions for a specific table and its related journal objects.
+    
+    Shows a consolidated view of permissions on:
+    - The table itself
+    - The journal (even if in different library)
+    - The journal receiver
+    """
+    config_path = ctx.obj["config_path"]
+    output_json = ctx.obj["output_json"]
+    
+    try:
+        config = load_config(config_path)
+        
+        with AS400ConnectionManager(config) as conn:
+            from .db.user import UserManager
+            user_mgr = UserManager(conn)
+            
+            result = user_mgr.check_table_permissions_with_journal(user, table, library)
+            
+            if output_json:
+                print_json(console, result)
+            else:
+                # Build consolidated view
+                print_ascii_panel(
+                    console,
+                    f"Checking permissions for {user} on {library}.{table}",
+                    title="Table Permission Check",
+                    border_style="blue"
+                )
+                
+                # Table info
+                table_auth = result["table"]["authority"] or "*NONE"
+                table_rows = [[
+                    f"{result['table']['library']}.{result['table']['name']}",
+                    "*FILE",
+                    table_auth
+                ]]
+                console.print(print_table(
+                    console,
+                    ["Object", "Type", "Authority"],
+                    table_rows,
+                    title="Table"
+                ))
+                
+                # Journal info (if table is journaled)
+                if result["journal"]["name"]:
+                    jrn_auth = result["journal"]["authority"] or "*NONE"
+                    jrn_rows = [[
+                        f"{result['journal']['library']}.{result['journal']['name']}",
+                        "*JRN",
+                        jrn_auth
+                    ]]
+                    console.print(print_table(
+                        console,
+                        ["Object", "Type", "Authority"],
+                        jrn_rows,
+                        title="Journal"
+                    ))
+                    
+                    # Journal receiver info
+                    if result["journal_receiver"]["name"]:
+                        rcv_auth = result["journal_receiver"]["authority"] or "*NONE"
+                        rcv_rows = [[
+                            f"{result['journal_receiver']['library']}.{result['journal_receiver']['name']}",
+                            "*JRNRCV",
+                            rcv_auth
+                        ]]
+                        console.print(print_table(
+                            console,
+                            ["Object", "Type", "Authority"],
+                            rcv_rows,
+                            title="Journal Receiver"
+                        ))
+                    
+                    # Summary
+                    all_auths = [table_auth, jrn_auth, rcv_auth]
+                    if all(a in ["*ALL", "*CHANGE"] for a in all_auths):
+                        console.print("[green]User has full permissions on table and journal objects.[/green]")
+                    elif "*NONE" in all_auths or None in all_auths:
+                        console.print("[yellow]Warning: User may have insufficient permissions on some objects.[/yellow]")
+                else:
+                    console.print("[yellow]Table is not journaled.[/yellow]")
+        
+    except ConnectionError as e:
+        console.print(f"[red]Connection error: {e.message}[/red]")
+        sys.exit(1)
+    except Exception as e:
+        console.print(f"[red]Error: {e}[/red]")
+        sys.exit(1)
+
+
 @user.command("create")
 @click.option("--user", "-u", required=True, help="Username to create")
 @click.option("--password", "-p", help="Password for the user")

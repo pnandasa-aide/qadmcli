@@ -88,6 +88,144 @@ class UserManager:
         
         return result
     
+    def check_table_permissions_with_journal(
+        self, 
+        username: str, 
+        table_name: str, 
+        table_library: str
+    ) -> dict[str, Any]:
+        """Check user permissions for a specific table and its related journal objects.
+        
+        Returns a consolidated view showing:
+        - Table permissions
+        - Journal permissions (even if journal is in different library)
+        - Journal receiver permissions
+        """
+        result = {
+            "user": username.upper(),
+            "table": {
+                "name": table_name.upper(),
+                "library": table_library.upper(),
+                "authority": None
+            },
+            "journal": {
+                "name": None,
+                "library": None,
+                "authority": None
+            },
+            "journal_receiver": {
+                "name": None,
+                "library": None,
+                "authority": None
+            }
+        }
+        
+        # 1. Check table permission
+        table_sql = """
+            SELECT OBJECT_AUTHORITY
+            FROM QSYS2.OBJECT_PRIVILEGES
+            WHERE AUTHORIZATION_NAME = ?
+              AND OBJECT_SCHEMA = ?
+              AND OBJECT_NAME = ?
+              AND OBJECT_TYPE = '*FILE'
+        """
+        try:
+            cursor = self.conn.execute(table_sql, (
+                username.upper(), 
+                table_library.upper(), 
+                table_name.upper()
+            ))
+            row = cursor.fetchone()
+            cursor.close()
+            if row:
+                result["table"]["authority"] = str(row[0]) if row[0] else "*NONE"
+        except Exception as e:
+            logger.debug(f"Could not get table permission: {e}")
+        
+        # 2. Get journal info for this table
+        journal_sql = """
+            SELECT 
+                j.JOURNAL_NAME,
+                j.JOURNAL_LIBRARY,
+                r.ATTACHED_JOURNAL_RECEIVER_NAME,
+                r.ATTACHED_JOURNAL_RECEIVER_LIBRARY
+            FROM QSYS2.SYSTABLES t
+            LEFT JOIN QSYS2.JOURNALED_OBJECTS j ON (
+                t.TABLE_SCHEMA = j.OBJECT_LIBRARY 
+                AND t.SYSTEM_TABLE_NAME = j.OBJECT_NAME
+            )
+            LEFT JOIN QSYS2.JOURNAL_INFO r ON (
+                j.JOURNAL_LIBRARY = r.JOURNAL_LIBRARY
+                AND j.JOURNAL_NAME = r.JOURNAL_NAME
+            )
+            WHERE t.TABLE_SCHEMA = ?
+              AND t.TABLE_NAME = ?
+            FETCH FIRST 1 ROW ONLY
+        """
+        try:
+            cursor = self.conn.execute(journal_sql, (
+                table_library.upper(),
+                table_name.upper()
+            ))
+            row = cursor.fetchone()
+            cursor.close()
+            
+            if row:
+                journal_name = str(row[0]) if row[0] else None
+                journal_library = str(row[1]) if row[1] else None
+                receiver_name = str(row[2]) if row[2] else None
+                receiver_library = str(row[3]) if row[3] else None
+                
+                result["journal"]["name"] = journal_name
+                result["journal"]["library"] = journal_library
+                result["journal_receiver"]["name"] = receiver_name
+                result["journal_receiver"]["library"] = receiver_library
+                
+                # 3. Check journal permission
+                if journal_name and journal_library:
+                    jrn_sql = """
+                        SELECT OBJECT_AUTHORITY
+                        FROM QSYS2.OBJECT_PRIVILEGES
+                        WHERE AUTHORIZATION_NAME = ?
+                          AND OBJECT_SCHEMA = ?
+                          AND OBJECT_NAME = ?
+                          AND OBJECT_TYPE = '*JRN'
+                    """
+                    cursor = self.conn.execute(jrn_sql, (
+                        username.upper(),
+                        journal_library.upper(),
+                        journal_name.upper()
+                    ))
+                    row = cursor.fetchone()
+                    cursor.close()
+                    if row:
+                        result["journal"]["authority"] = str(row[0]) if row[0] else "*NONE"
+                
+                # 4. Check journal receiver permission
+                if receiver_name and receiver_library:
+                    rcv_sql = """
+                        SELECT OBJECT_AUTHORITY
+                        FROM QSYS2.OBJECT_PRIVILEGES
+                        WHERE AUTHORIZATION_NAME = ?
+                          AND OBJECT_SCHEMA = ?
+                          AND OBJECT_NAME = ?
+                          AND OBJECT_TYPE = '*JRNRCV'
+                    """
+                    cursor = self.conn.execute(rcv_sql, (
+                        username.upper(),
+                        receiver_library.upper(),
+                        receiver_name.upper()
+                    ))
+                    row = cursor.fetchone()
+                    cursor.close()
+                    if row:
+                        result["journal_receiver"]["authority"] = str(row[0]) if row[0] else "*NONE"
+                        
+        except Exception as e:
+            logger.debug(f"Could not get journal info: {e}")
+        
+        return result
+    
     def create_user(self, username: str, password: str | None = None) -> dict[str, Any]:
         """Create a new user profile."""
         # Use CRTUSRPRF command via QCMDEXC
