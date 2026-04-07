@@ -1560,13 +1560,13 @@ Status: {status}"""
 
 @user.command("check-table")
 @click.option("--user", "-u", required=True, help="Username to check")
-@click.option("--table", "-t", required=True, help="Table name to check")
+@click.option("--name", "-n", required=True, help="Table name to check")
 @click.option("--library", "-l", required=True, help="Library containing the table")
 @click.pass_context
 def user_check_table(
     ctx: click.Context,
     user: str,
-    table: str,
+    name: str,
     library: str
 ) -> None:
     """Check user permissions for a specific table and its related journal objects.
@@ -1586,7 +1586,7 @@ def user_check_table(
             from .db.user import UserManager
             user_mgr = UserManager(conn)
             
-            result = user_mgr.check_table_permissions_with_journal(user, table, library)
+            result = user_mgr.check_table_permissions_with_journal(user, name, library)
             
             if output_json:
                 print_json(console, result)
@@ -1594,7 +1594,7 @@ def user_check_table(
                 # Build consolidated view
                 print_ascii_panel(
                     console,
-                    f"Checking permissions for {user} on {library}.{table}",
+                    f"Checking permissions for {user} on {library}.{name}",
                     title="Table Permission Check",
                     border_style="blue"
                 )
