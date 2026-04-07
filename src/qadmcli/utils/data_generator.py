@@ -196,14 +196,21 @@ class AmountPattern(DataPattern):
         ]
         self.data_type_patterns = ["DECIMAL", "NUMERIC"]
     
-    def generate(self, length: Optional[int] = None, scale: Optional[int] = None) -> float:
+    def generate(self, length: Optional[int] = None, scale: Optional[int] = None):
         # Generate reasonable amounts
+        # Cap max value to avoid overflow issues with DECIMAL columns
+        max_digits = min(length or 10, 12)  # Cap at 12 digits for safety
+        max_val = 10 ** max_digits
         min_val = 10
-        max_val = 10 ** (length or 6)
         value = random.uniform(min_val, max_val)
-        if scale:
-            return round(value, scale)
-        return round(value, 2)
+        
+        # Use provided scale or default to 2 decimal places
+        decimal_places = scale if scale is not None else 2
+        rounded_value = round(value, decimal_places)
+        
+        # Return as Decimal for proper DB2 DECIMAL compatibility
+        from decimal import Decimal
+        return Decimal(str(rounded_value))
 
 
 class IDPattern(DataPattern):
