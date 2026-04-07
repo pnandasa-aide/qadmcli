@@ -339,6 +339,43 @@ qadmcli user check -u USER001 -l MYLIB
 qadmcli user check -u USER001 -l MYLIB -n "CUST*"
 ```
 
+Check permissions for a specific table (includes journal permissions):
+```bash
+# Check user permissions on table and its related journal objects
+qadmcli user check-table -u USER001 -t CUSTOMERS -l MYLIB
+
+# Output shows:
+# - Table permission (*FILE)
+# - Journal permission (*JRN) - even if in different library
+# - Journal receiver permission (*JRNRCV)
+```
+
+**Example output:**
+```
++------------- Table Permission Check -------------+
+| Checking permissions for USER001 on MYLIB.CUSTOMERS |
++--------------------------------------------------+
+
+Table
+ Object          | Type  | Authority
+-----------------+-------+-----------
+ MYLIB.CUSTOMERS | *FILE | *ALL
+
+Journal
+ Object     | Type | Authority
+------------+------+-----------
+ MYLIB.JRN  | *JRN | *ALL
+
+Journal Receiver
+ Object            | Type    | Authority
+-------------------+---------+-----------
+ MYLIB.JRNRCV0001  | *JRNRCV | *ALL
+
+User has full permissions on table and journal objects.
+```
+
+This is especially useful for CDC and replication scenarios where you need to verify permissions on all related objects.
+
 Create a new user:
 ```bash
 qadmcli user create -u NEWUSER -p password123
@@ -702,6 +739,7 @@ qadmcli -c /custom/path/connection.yaml table list -l MYLIB
 | `sql execute` | Execute SQL queries |
 | **User** | |
 | `user check` | Check user existence and permissions |
+| `user check-table` | Check permissions on table + journal + receiver |
 | `user create` | Create a new user |
 | `user delete` | Delete a user |
 | `user grant` | Grant authority to user |
