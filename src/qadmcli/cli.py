@@ -60,8 +60,8 @@ def _get_elevated_connection(
         port=config.as400.port,
         user=admin_user,
         password=admin_password,
-        library=config.as400.library,
-        driver=config.as400.driver
+        database=getattr(config.as400, 'database', '*LOCAL'),
+        ssl=getattr(config.as400, 'ssl', True)
     )
     
     try:
