@@ -85,6 +85,25 @@ def _get_elevated_connection(
         return None
 
 
+def print_panel(
+    ctx: click.Context,
+    content: str | Text,
+    title: str | None = None,
+    border_style: str = "blue"
+) -> None:
+    """Print content in a panel with border style from context.
+    
+    Uses unicode (Rich Panel) or ascii (print_ascii_panel) based on
+    the --border-style CLI option.
+    """
+    border_style_opt = ctx.obj.get("border_style", "unicode")
+    
+    if border_style_opt == "ascii":
+        print_ascii_panel(console, content, title=title, border_style=border_style)
+    else:
+        console.print(Panel(content, title=title, border_style=border_style))
+
+
 def get_config_path(ctx: click.Context, param: Any, value: str | None) -> Path:
     """Resolve config path."""
     if value:
@@ -113,8 +132,14 @@ def get_config_path(ctx: click.Context, param: Any, value: str | None) -> Path:
 )
 @click.option("--verbose", "-v", is_flag=True, help="Enable verbose output")
 @click.option("--json", "output_json", is_flag=True, help="Output in JSON format")
+@click.option(
+    "--border-style", "-b",
+    type=click.Choice(["unicode", "ascii"], case_sensitive=False),
+    default="unicode",
+    help="Border style for panels: unicode (default) or ascii (for Windows/PowerShell)"
+)
 @click.pass_context
-def cli(ctx: click.Context, config: Path, verbose: bool, output_json: bool) -> None:
+def cli(ctx: click.Context, config: Path, verbose: bool, output_json: bool, border_style: str) -> None:
     """QADM CLI - AS400 DB2 for i Database Management Tool."""
     # Ensure context object exists
     ctx.ensure_object(dict)
@@ -123,6 +148,7 @@ def cli(ctx: click.Context, config: Path, verbose: bool, output_json: bool) -> N
     ctx.obj["config_path"] = config
     ctx.obj["verbose"] = verbose
     ctx.obj["output_json"] = output_json
+    ctx.obj["border_style"] = border_style.lower()
     
     # Setup logging
     log_level = "DEBUG" if verbose else "INFO"
@@ -151,7 +177,8 @@ def connection_test(ctx: click.Context) -> None:
         if output_json:
             print_json(console, info)
         else:
-            console.print(Panel(
+            print_panel(
+                ctx,
                 Text.assemble(
                     ("Host: ", "bold"), info["host"], "\n",
                     ("Status: ", "bold"), ("Connected", "green"), "\n",
@@ -159,14 +186,15 @@ def connection_test(ctx: click.Context) -> None:
                 ),
                 title="Connection Test",
                 border_style="green"
-            ))
+            )
         
     except ConnectionError as e:
-        console.print(Panel(
+        print_panel(
+            ctx,
             Text.assemble(("Error: ", "bold red"), e.message),
             title="Connection Failed",
             border_style="red"
-        ))
+        )
         sys.exit(1)
     except Exception as e:
         console.print(f"[red]Error: {e}[/red]")
@@ -255,8 +283,8 @@ def table_check(ctx: click.Context, name: str, library: str) -> None:
                     else:
                         parts.extend([("Primary Key: ", "bold"), ("None", "yellow"), "\n"])
                     
-                    print_ascii_panel(
-                        console,
+                    print_panel(
+                        ctx,
                         Text.assemble(*parts),
                         title="Table Information",
                         border_style="green"
@@ -330,7 +358,7 @@ def table_create(ctx: click.Context, name: str | None, library: str | None, sche
                     table_config = TableConfig.from_yaml(str(schema_path))
                     ddl = schema_mgr.create_table(table_config, dry_run)
                     if dry_run:
-                        console.print(Panel(ddl, title="SQL to Execute", border_style="blue"))
+                        print_panel(ctx, ddl, title="SQL to Execute", border_style="blue")
                     else:
                         console.print(f"[green]Created table {table_config.library}.{table_config.name}[/green]")
             else:
@@ -403,7 +431,7 @@ def table_drop_create(
                 table_config = TableConfig.from_yaml(str(schema_path))
                 ddl = schema_mgr.drop_create_table(table_config, force=True, dry_run=dry_run)
                 if dry_run:
-                    console.print(Panel(ddl, title="SQL to Execute", border_style="blue"))
+                    print_panel(ctx, ddl, title="SQL to Execute", border_style="blue")
                 else:
                     console.print(f"[green]Recreated table {library}.{name}[/green]")
         
@@ -583,7 +611,7 @@ def table_reverse(
                     f.write(yaml_content)
                 console.print(f"[green]Schema saved to {output}[/green]")
             else:
-                console.print(Panel(yaml_content, title=f"Schema for {library}.{name}", border_style="blue"))
+                print_panel(ctx, yaml_content, title=f"Schema for {library}.{name}", border_style="blue")
         
     except ConnectionError as e:
         console.print(f"[red]Connection error: {e.message}[/red]")
@@ -650,7 +678,7 @@ def table_convert(
                 f.write(yaml_output)
             console.print(f"[green]Converted schema saved to {output}[/green]")
         else:
-            console.print(Panel(yaml_output, title=f"Converted Schema ({source_db} -> {target_db})", border_style="blue"))
+            print_panel(ctx, yaml_output, title=f"Converted Schema ({source_db} -> {target_db})", border_style="blue")
 
     except Exception as e:
         console.print(f"[red]Error: {e}[/red]")
@@ -719,7 +747,7 @@ def table_create_mssql(
             sql_preview = preview_mgr.schema._build_create_sql(name, columns, schema_name, schema_data.get("primary_key"))
             # Use Text to preserve SQL brackets (avoid Rich markup interpretation)
             sql_text = Text(sql_preview, style="cyan")
-            console.print(Panel(sql_text, title="Preview SQL", border_style="yellow"))
+            print_panel(ctx, sql_text, title="Preview SQL", border_style="yellow")
             return
 
         # Create table
@@ -1034,7 +1062,8 @@ def journal_check(ctx: click.Context, name: str, library: str) -> None:
                 print_json(console, info.get_summary())
             else:
                 status_color = "green" if info.is_journaled else "yellow"
-                console.print(Panel(
+                print_panel(
+                    ctx,
                     Text.assemble(
                         ("Table: ", "bold"), f"{library}.{name}", "\n",
                         ("Journaled: ", "bold"), ("Yes" if info.is_journaled else "No", status_color), "\n",
@@ -1045,7 +1074,7 @@ def journal_check(ctx: click.Context, name: str, library: str) -> None:
                     ),
                     title="Journal Information",
                     border_style=status_color
-                ))
+                )
         
     except ConnectionError as e:
         console.print(f"[red]Connection error: {e.message}[/red]")
@@ -1710,7 +1739,7 @@ def journal_info(ctx: click.Context, name: str, library: str, fast: bool) -> Non
                         ("  Newest Time: ", "bold"), str(info.newest_entry_timestamp or "N/A"), "\n",
                         ("  Total Entries: ", "bold"), str(info.total_entries or "N/A"),
                     )
-                    print_ascii_panel(console, content, title="Detailed Journal Information", border_style="blue")
+                    print_panel(ctx, content, title="Detailed Journal Information", border_style="blue")
         
     except ConnectionError as e:
         console.print(f"[red]Connection error: {e.message}[/red]")
@@ -1878,14 +1907,14 @@ def user_check(
                     user_class = str(result.get("user_class", "N/A"))
                     status = str(result.get("status", "N/A"))
                     
-                    # Build user info content for ASCII panel
+                    # Build user info content for panel
                     user_info_content = f"""User: {user}
 Exists: Yes
 User Class: {user_class}
 Status: {status}"""
                     
-                    print_ascii_panel(
-                        console,
+                    print_panel(
+                        ctx,
                         user_info_content,
                         title="User Information",
                         border_style="green"
@@ -1968,8 +1997,8 @@ def user_check_table(
                 print_json(console, result)
             else:
                 # Build consolidated view
-                print_ascii_panel(
-                    console,
+                print_panel(
+                    ctx,
                     f"Checking permissions for {user} on {library}.{name}",
                     title="Table Permission Check",
                     border_style="blue"
@@ -2314,7 +2343,8 @@ def user_permission(
             if output_json:
                 print_json(console, result)
             else:
-                console.print(Panel(
+                print_panel(
+                    ctx,
                     Text.assemble(
                         ("User: ", "bold"), user, "\n",
                         ("User Class: ", "bold"), result.get("user_class", "N/A"), "\n",
@@ -2323,7 +2353,7 @@ def user_permission(
                     ),
                     title="User Permissions",
                     border_style="blue"
-                ))
+                )
                 
                 if result.get("object_authorities"):
                     rows = []
@@ -2397,8 +2427,8 @@ def library_create(
             if output_json:
                 print_json(console, result)
             else:
-                print_ascii_panel(
-                    console,
+                print_panel(
+                    ctx,
                     f"Library {name} created successfully",
                     title="Library Created",
                     border_style="green"
@@ -2448,8 +2478,8 @@ def library_grant(
             if output_json:
                 print_json(console, result)
             else:
-                print_ascii_panel(
-                    console,
+                print_panel(
+                    ctx,
                     f"Granted {authority} authority to {user} on library {name}",
                     title="Authority Granted",
                     border_style="green"
