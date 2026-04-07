@@ -266,13 +266,16 @@ class MockupManager:
     
     def _get_primary_key(self, table_name: str, library: str) -> list[str]:
         """Get primary key columns."""
+        # Use SYSKEYCST joined with SYSCST for accurate PK column info
         sql = """
-            SELECT COLUMN_NAME
-            FROM QSYS2.SYSCST
-            WHERE SYSTEM_TABLE_NAME = ?
-            AND SYSTEM_TABLE_SCHEMA = ?
-            AND CONSTRAINT_TYPE = 'PRIMARY KEY'
-            ORDER BY ORDINAL_POSITION
+            SELECT k.COLUMN_NAME
+            FROM QSYS2.SYSKEYCST k
+            JOIN QSYS2.SYSCST c ON k.CONSTRAINT_NAME = c.CONSTRAINT_NAME
+                AND k.CONSTRAINT_SCHEMA = c.CONSTRAINT_SCHEMA
+            WHERE k.SYSTEM_TABLE_NAME = ?
+            AND k.SYSTEM_TABLE_SCHEMA = ?
+            AND c.CONSTRAINT_TYPE = 'PRIMARY KEY'
+            ORDER BY k.ORDINAL_POSITION
         """
         try:
             cursor = self.conn.execute(sql, (table_name.upper(), library.upper()))
