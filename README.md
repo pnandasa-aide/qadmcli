@@ -315,6 +315,33 @@ qadmcli journal info -n CUSTOMERS -l MYLIB --fast
 qadmcli journal info -n CUSTOMERS -l MYLIB --json
 ```
 
+Get journal info for multiple tables (wildcard support):
+```bash
+# Check journal status for all TB_ tables (fast mode recommended)
+qadmcli journal info -n "TB_*" -l EZPIPE --fast
+
+# Check all TEST tables
+qadmcli journal info -n "TEST*" -l MYLIB --fast
+
+# JSON output for multiple tables
+qadmcli journal info -n "TB_*" -l EZPIPE --fast --json
+```
+
+**Wildcard batch output format:**
+```
+Journal info for 9 table(s):
+
+  EZPIPE.TB_01: Journaled | BOTH | EZPIPE.QSQJRN
+  EZPIPE.TB_02: Journaled | AFTER | EZPIPE.QSQJRN
+  EZPIPE.TB_03: Not Journaled | N/A | N/A
+  ...
+```
+
+This is useful for:
+- Auditing journal status across multiple tables
+- Checking write mode (BOTH/AFTER/BEFORE) for CDC setup
+- Identifying non-journaled tables in a library
+
 **Example output:**
 ```
 +------ Detailed Journal Information -------+
