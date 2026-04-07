@@ -1928,17 +1928,11 @@ def user_list(
                     else:
                         last_signon_str = "Never"
                     
-                    # Default library
-                    current_lib = u.get("current_library", "*CRTDFT")
-                    if current_lib == "*CRTDFT":
-                        current_lib = "-"
-                    
                     rows.append([
                         status_indicator,
                         u["username"],
                         u.get("user_class", ""),
                         u.get("status_description", ""),
-                        current_lib,
                         u.get("group_profile", "*NONE"),
                         last_signon_str
                     ])
@@ -1946,7 +1940,7 @@ def user_list(
                 # Display table
                 console.print(print_table(
                     console,
-                    ["", "Username", "Class", "Status", "Current Library", "Group Profile", "Last Signon"],
+                    ["", "Username", "Class", "Status", "Group Profile", "Last Signon"],
                     rows,
                     title=f"User Profiles ({min(len(users), limit)} of {len(users)} shown)"
                 ))

@@ -554,18 +554,7 @@ class UserManager:
                 SIGN_ON_ATTEMPTS_NOT_VALID,
                 GROUP_PROFILE_NAME,
                 SPECIAL_AUTHORITIES,
-                TEXT_DESCRIPTION,
-                HOME_DIRECTORY,
-                CURRENT_LIBRARY,
-                INITIAL_MENU,
-                INITIAL_PROGRAM,
-                LIMIT_CAPABILITIES,
-                PASSWORD_EXPIRATION_INTERVAL,
-                PASSWORD_CHANGE_DATE,
-                USER_EXPIRATION_INTERVAL,
-                USER_EXPIRATION_ACTION,
-                STATUS_CHANGE_DATE,
-                CREATION_TIMESTAMP
+                TEXT_DESCRIPTION
             FROM QSYS2.USER_INFO
             {where_clause}
             ORDER BY AUTHORIZATION_NAME
@@ -588,20 +577,6 @@ class UserManager:
             if signon_attempts > 0:
                 status_desc.append(f"Failed Logins: {signon_attempts}")
             
-            # Check if password is expired
-            pwd_change_date = row[14]
-            pwd_interval = row[13]
-            pwd_status = "OK"
-            if pwd_change_date and pwd_interval and pwd_interval > 0:
-                from datetime import datetime
-                try:
-                    days_since_change = (datetime.now() - pwd_change_date).days
-                    if days_since_change > pwd_interval:
-                        pwd_status = "Expired"
-                        status_desc.append("Password Expired")
-                except:
-                    pass
-            
             user_info = {
                 "username": row[0],
                 "user_class": row[1] if row[1] else "*NONE",
@@ -611,19 +586,7 @@ class UserManager:
                 "failed_signon_attempts": signon_attempts,
                 "group_profile": row[5] if row[5] else "*NONE",
                 "special_authorities": row[6] if row[6] else "",
-                "description": row[7] if row[7] else "",
-                "home_directory": row[8] if row[8] else "",
-                "current_library": row[9] if row[9] else "*CRTDFT",
-                "initial_menu": row[10] if row[10] else "",
-                "initial_program": row[11] if row[11] else "",
-                "limited_capabilities": row[12] if row[12] else "*NO",
-                "password_expiration_interval": row[13],
-                "password_change_date": row[14],
-                "password_status": pwd_status,
-                "user_expiration_interval": row[15],
-                "user_expiration_action": row[16] if row[16] else "*NONE",
-                "status_change_date": row[17],
-                "creation_timestamp": row[18]
+                "description": row[7] if row[7] else ""
             }
             users.append(user_info)
         
