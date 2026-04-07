@@ -2404,6 +2404,8 @@ def user_password(
 @click.option("--status", "user_status", type=click.Choice(["*ENABLED", "*DISABLED"]), help="Enable or disable user")
 @click.option("--group", "group_profile", help="Group profile name")
 @click.option("--text", "text_description", help="Text description for user")
+@click.option("--admin-user", "-U", help="Administrative user with *SECADM authority (for privilege escalation)")
+@click.option("--admin-password", "-P", help="Password for administrative user")
 @click.pass_context
 def user_modify(
     ctx: click.Context,
@@ -2411,9 +2413,20 @@ def user_modify(
     user_class: str | None,
     user_status: str | None,
     group_profile: str | None,
-    text_description: str | None
+    text_description: str | None,
+    admin_user: str | None,
+    admin_password: str | None
 ) -> None:
-    """Modify user profile attributes."""
+    """Modify user profile attributes.
+    
+    If the current user lacks *SECADM authority, you can provide admin credentials
+    using --admin-user and --admin-password, or you will be prompted interactively.
+    
+    Examples:
+        qadmcli user modify -u GSUSER01 --class *PGMR
+        qadmcli user modify -u GLUEUSR --class *USER -U QSECOFR -P adminpass
+        qadmcli user modify -u OLDUSER --status *DISABLED --text "Disabled account"
+    """
     config_path = ctx.obj["config_path"]
     
     # Check that at least one option is provided
@@ -2429,20 +2442,69 @@ def user_modify(
             from .db.user import UserManager
             user_mgr = UserManager(conn)
             
-            result = user_mgr.modify_user(
-                user,
-                user_class=user_class,
-                status=user_status,
-                group_profile=group_profile,
-                text_description=text_description
-            )
-            
-            console.print(f"[green]User {user} modified successfully[/green]")
-            
-            # Show what was changed
-            if result.get("changes"):
-                for change in result["changes"]:
-                    console.print(f"  • {change}")
+            try:
+                result = user_mgr.modify_user(
+                    user,
+                    user_class=user_class,
+                    status=user_status,
+                    group_profile=group_profile,
+                    text_description=text_description
+                )
+                
+                console.print(f"[green]User {user} modified successfully[/green]")
+                
+                # Show what was changed
+                if result.get("changes"):
+                    for change in result["changes"]:
+                        console.print(f"  • {change}")
+                        
+            except Exception as e:
+                error_msg = str(e)
+                # Check for authority errors (CPF0006, CPF22E2, CPF2292)
+                if any(code in error_msg for code in ["CPF0006", "CPF22E2", "CPF2292"]) or "authority" in error_msg.lower():
+                    if "CPF2292" in error_msg:
+                        console.print("[yellow]Current user lacks *SECADM (Security Administrator) special authority.[/yellow]")
+                        console.print("[dim]To modify users, you need a profile with *SECADM authority.[/dim]")
+                    else:
+                        console.print("[yellow]Current user lacks authority to modify users.[/yellow]")
+                    
+                    # Get admin credentials
+                    admin_conn = _get_elevated_connection(
+                        config, admin_user, admin_password, "*SECADM authority required"
+                    )
+                    
+                    if admin_conn:
+                        try:
+                            admin_user_mgr = UserManager(admin_conn)
+                            result = admin_user_mgr.modify_user(
+                                user,
+                                user_class=user_class,
+                                status=user_status,
+                                group_profile=group_profile,
+                                text_description=text_description
+                            )
+                            console.print(f"[green]User {user} modified successfully using elevated privileges[/green]")
+                            
+                            # Show what was changed
+                            if result.get("changes"):
+                                for change in result["changes"]:
+                                    console.print(f"  • {change}")
+                                    
+                            admin_conn.disconnect()
+                        except Exception as admin_e:
+                            admin_conn.disconnect()
+                            # Check if elevated user also lacks *SECADM
+                            admin_error = str(admin_e)
+                            if "CPF2292" in admin_error:
+                                console.print("[red]The administrative user also lacks *SECADM authority.[/red]")
+                                console.print("[dim]Hint: Verify the admin user has *SECADM special authority:[/dim]")
+                                console.print(f"[dim]  qadmcli sql execute -q \"SELECT AUTHORIZATION_NAME, SPECIAL_AUTHORITIES FROM QSYS2.USER_INFO WHERE AUTHORIZATION_NAME = '<admin_user>'\"[/dim]")
+                            raise admin_e
+                    else:
+                        console.print("[red]Operation cancelled. User not modified.[/red]")
+                        sys.exit(1)
+                else:
+                    raise
         
     except ConnectionError as e:
         console.print(f"[red]Connection error: {e.message}[/red]")
