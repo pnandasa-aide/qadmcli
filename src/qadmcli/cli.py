@@ -962,18 +962,54 @@ def journal_check(ctx: click.Context, name: str, library: str) -> None:
         sys.exit(1)
 
 
+@journal.command("disable")
+@click.option("--name", "-n", required=True, help="Table name")
+@click.option("--library", "-l", required=True, help="Library name")
+@click.pass_context
+def journal_disable(
+    ctx: click.Context,
+    name: str,
+    library: str
+) -> None:
+    """Disable journaling for a table."""
+    config_path = ctx.obj["config_path"]
+    output_json = ctx.obj["output_json"]
+    
+    try:
+        config = load_config(config_path)
+        
+        with AS400ConnectionManager(config) as conn:
+            jrn = JournalManager(conn)
+            result = jrn.disable_journaling(name, library)
+            
+            if output_json:
+                print_json(console, result)
+            else:
+                console.print(f"[green]Disabled journaling for {library}.{name}[/green]")
+        
+    except ConnectionError as e:
+        console.print(f"[red]Connection error: {e.message}[/red]")
+        sys.exit(1)
+    except Exception as e:
+        console.print(f"[red]Error: {e}[/red]")
+        sys.exit(1)
+
+
 @journal.command("enable")
 @click.option("--name", "-n", required=True, help="Table name")
 @click.option("--library", "-l", required=True, help="Library name")
 @click.option("--journal-library", "-j", help="Journal library (default from config)")
 @click.option("--journal-name", help="Journal name (default: QSQJRN)")
+@click.option("--images", "-i", type=click.Choice(["*BOTH", "*AFTER", "*BEFORE"]), 
+              default="*AFTER", help="Journal images to capture (default: *AFTER)")
 @click.pass_context
 def journal_enable(
     ctx: click.Context,
     name: str,
     library: str,
     journal_library: str | None,
-    journal_name: str | None
+    journal_name: str | None,
+    images: str
 ) -> None:
     """Enable journaling for a table."""
     config_path = ctx.obj["config_path"]
@@ -984,13 +1020,14 @@ def journal_enable(
         
         with AS400ConnectionManager(config) as conn:
             jrn = JournalManager(conn)
-            result = jrn.enable_journaling(name, library, journal_library, journal_name)
+            result = jrn.enable_journaling(name, library, journal_library, journal_name, images)
             
             if output_json:
                 print_json(console, result)
             else:
                 console.print(f"[green]Enabled journaling for {library}.{name}[/green]")
                 console.print(f"Journal: {result['journal']}")
+                console.print(f"Images: {images}")
         
     except ConnectionError as e:
         console.print(f"[red]Connection error: {e.message}[/red]")

@@ -442,14 +442,14 @@ class JournalManager:
     
     def _check_journal_permission(self, journal_library: str, user: str) -> dict[str, Any]:
         """Check if user has permission to use journal in the specified library."""
+        # Check library permission (library object has same name as library)
         sql = """
             SELECT 
-                OBJECT_AUTHORITY,
-                DATA_READ,
-                DATA_ADD
+                OBJECT_AUTHORITY
             FROM QSYS2.OBJECT_PRIVILEGES
             WHERE OBJECT_SCHEMA = ?
             AND OBJECT_NAME = ?
+            AND OBJECT_TYPE = '*LIB'
             AND AUTHORIZATION_NAME = ?
         """
         try:
@@ -458,12 +458,11 @@ class JournalManager:
             cursor.close()
             
             if row:
+                auth = row[0]
                 return {
                     "has_access": True,
-                    "object_authority": row[0],
-                    "can_read": row[1] == "YES",
-                    "can_add": row[2] == "YES",
-                    "can_manage_journal": row[0] in ("*ALL", "*CHANGE"),
+                    "object_authority": auth,
+                    "can_manage_journal": auth in ("*ALL", "*CHANGE", "*USE"),
                 }
             else:
                 return {"has_access": False}
@@ -476,7 +475,8 @@ class JournalManager:
         table_name: str,
         library: str,
         journal_library: str | None = None,
-        journal_name: str | None = None
+        journal_name: str | None = None,
+        images: str = "*AFTER"
     ) -> dict[str, Any]:
         """Enable journaling for a table."""
         # Use defaults if not specified
@@ -502,11 +502,11 @@ class JournalManager:
                 "Please create it first or specify a different journal."
             )
         
-        # Build STRJRNPF command
+        # Build STRJRNPF command with images option
         cmd = (
             f"STRJRNPF FILE({library}/{table_name}) "
             f"JRN({journal_library}/{journal_name}) "
-            f"IMAGES(*BOTH) OMTJRNE(*OPNCLO)"
+            f"IMAGES({images}) OMTJRNE(*OPNCLO)"
         )
         
         # Execute via QCMDEXC
