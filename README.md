@@ -154,12 +154,22 @@ qadmcli user create -u appuser -p SecurePass123 -l MYLIB
 qadmcli library grant -n MYLIB -u appuser -a *ALL
 ```
 
-**Note:** If your current user lacks *SECADM authority, the `user create` command will prompt for admin credentials:
+**Privilege Escalation:** If your current user lacks *SECADM authority, you can elevate privileges on-the-fly:
+
+```bash
+# Option 1: Provide admin credentials via command line
+qadmcli user create -u appuser -p SecurePass123 -l MYLIB -U QSECOFR -P adminpassword
+
+# Option 2: Interactive prompting (will ask for admin credentials)
+qadmcli user create -u appuser -p SecurePass123 -l MYLIB
+# Output:
+# Current user lacks *SECADM (Security Administrator) special authority.
+# Administrative credentials required: *SECADM authority required
+# Admin user: QSECOFR
+# Admin password: ********
 ```
-Administrative credentials required: *SECADM authority required
-Admin user: QSECOFR
-Admin password: ********
-```
+
+**Note:** Admin credentials are used only for the specific operation and are not stored.
 
 ### 2. Create Table with Journaling
 
@@ -626,6 +636,29 @@ Create a new user:
 qadmcli user create -u NEWUSER -p password123
 qadmcli user create -u NEWUSER -p password123 -l MYLIB
 ```
+
+**Privilege Escalation for User Creation:**
+
+Creating users requires *SECADM (Security Administrator) special authority. If your current user lacks this authority, you can provide admin credentials using command-line options or interactive prompting:
+
+```bash
+# Method 1: Provide admin credentials via command line
+qadmcli user create -u NEWUSER -p password123 -U QSECOFR -P adminpassword
+
+# Method 2: Interactive prompting (will ask for admin user/password)
+qadmcli user create -u NEWUSER -p password123
+# Output:
+# Current user lacks *SECADM (Security Administrator) special authority.
+# Administrative credentials required: *SECADM authority required
+# Admin user: QSECOFR
+# Admin password: ********
+```
+
+**Options:**
+- `-U, --admin-user`: Administrative user with *SECADM authority
+- `-P, --admin-password`: Password for administrative user
+
+**Note:** Admin credentials are used only for the user creation operation and are not stored.
 
 Delete a user:
 ```bash
