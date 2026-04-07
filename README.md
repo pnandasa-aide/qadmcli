@@ -135,6 +135,123 @@ CREATE TABLE MYLIB.CUSTOMERS (
 );
 ```
 
+## Quick Start Guide
+
+This guide walks you through a complete setup from library creation to journal-enabled table.
+
+### 1. Create Library and User
+
+Create a new library and user with appropriate authorities:
+
+```bash
+# Create library
+qadmcli library create -n MYLIB
+
+# Create user (requires *SECADM authority - will prompt for admin credentials)
+qadmcli user create -u appuser -p SecurePass123 -l MYLIB
+
+# Grant library authority
+qadmcli library grant -n MYLIB -u appuser -a *ALL
+```
+
+**Note:** If your current user lacks *SECADM authority, the `user create` command will prompt for admin credentials:
+```
+Administrative credentials required: *SECADM authority required
+Admin user: QSECOFR
+Admin password: ********
+```
+
+### 2. Create Table with Journaling
+
+Create a table schema file (`config/tables/orders.yaml`):
+
+```yaml
+table:
+  name: "ORDERS"
+  library: "MYLIB"
+  description: "Order master table"
+
+columns:
+  - name: "ORDER_ID"
+    type: "DECIMAL"
+    length: 10
+    scale: 0
+    nullable: false
+  - name: "CUSTOMER_NAME"
+    type: "VARCHAR"
+    length: 100
+    nullable: false
+  - name: "ORDER_DATE"
+    type: "DATE"
+    nullable: false
+  - name: "AMOUNT"
+    type: "DECIMAL"
+    length: 15
+    scale: 2
+
+constraints:
+  primary_key:
+    name: "PK_ORDERS"
+    columns: ["ORDER_ID"]
+
+journaling:
+  enabled: true
+```
+
+Create the table:
+```bash
+# Preview SQL (dry run)
+qadmcli table create -s config/tables/orders.yaml --dry-run
+
+# Create table with journaling
+qadmcli table create -s config/tables/orders.yaml
+```
+
+### 3. Verify Setup
+
+Check the table and journal status:
+
+```bash
+# Check table info (shows row count, journaling status, primary key)
+qadmcli table check -n ORDERS -l MYLIB
+
+# Check journal info
+qadmcli journal info -n ORDERS -l MYLIB
+
+# List tables in library
+qadmcli table list -l MYLIB
+```
+
+### 4. Generate Mock Data (Optional)
+
+Populate the table with test data:
+
+```bash
+# Dry run - preview generated data
+qadmcli mockup generate -n ORDERS -l MYLIB --dry-run -t 10
+
+# Generate 1000 transactions (50% insert, 30% update, 20% delete)
+qadmcli mockup generate -n ORDERS -l MYLIB -t 1000
+
+# Custom transaction mix
+qadmcli mockup generate -n ORDERS -l MYLIB -t 500 \
+  --insert-ratio 60 --update-ratio 30 --delete-ratio 10
+```
+
+### 5. View Journal Entries
+
+After data changes, view the journal entries:
+
+```bash
+# Show recent journal entries
+qadmcli journal show -n ORDERS -l MYLIB -e 50
+
+# Show entries as JSON
+qadmcli journal show -n ORDERS -l MYLIB -e 50 --json
+```
+
+---
+
 ## Usage
 
 ### Connection Commands
