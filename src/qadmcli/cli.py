@@ -963,15 +963,27 @@ def journal_check(ctx: click.Context, name: str, library: str) -> None:
 
 
 @journal.command("disable")
-@click.option("--name", "-n", required=True, help="Table name")
+@click.option("--name", "-n", required=True, help="Table name (supports wildcards: * or %)")
 @click.option("--library", "-l", required=True, help="Library name")
+@click.option("--dry-run", is_flag=True, help="Show which tables would be affected without making changes")
 @click.pass_context
 def journal_disable(
     ctx: click.Context,
     name: str,
-    library: str
+    library: str,
+    dry_run: bool
 ) -> None:
-    """Disable journaling for a table."""
+    """Disable journaling for one or more tables.
+    
+    Supports wildcards:
+      - * or % for multiple characters
+      - ? or _ for single character
+    
+    Examples:
+      qadmcli journal disable -n TB_01 -l EZPIPE
+      qadmcli journal disable -n "TB_*" -l EZPIPE
+      qadmcli journal disable -n "%TEST%" -l MYLIB --dry-run
+    """
     config_path = ctx.obj["config_path"]
     output_json = ctx.obj["output_json"]
     
@@ -980,12 +992,73 @@ def journal_disable(
         
         with AS400ConnectionManager(config) as conn:
             jrn = JournalManager(conn)
-            result = jrn.disable_journaling(name, library)
             
-            if output_json:
-                print_json(console, result)
+            # Check if wildcard pattern
+            if '*' in name or '%' in name or '?' in name or '_' in name:
+                # Find matching tables
+                from .db.schema import SchemaManager
+                import fnmatch
+                schema_mgr = SchemaManager(conn)
+                all_tables = schema_mgr.list_tables(library)
+                
+                # Filter tables by pattern (convert SQL wildcards to fnmatch pattern)
+                pattern = name.replace('%', '*').replace('_', '?')
+                tables = [t for t in all_tables if fnmatch.fnmatch(t.name, pattern)]
+                
+                if not tables:
+                    console.print(f"[yellow]No tables matching pattern '{name}' in {library}[/yellow]")
+                    return
+                
+                if dry_run:
+                    console.print(f"[blue]Dry run - would disable journaling for {len(tables)} table(s):[/blue]")
+                    for table in tables:
+                        console.print(f"  - {table.name}")
+                    return
+                
+                # Process each table
+                results = []
+                success_count = 0
+                error_count = 0
+                
+                console.print(f"[blue]Disabling journaling for {len(tables)} table(s)...[/blue]")
+                for table in tables:
+                    try:
+                        result = jrn.disable_journaling(table.name, library)
+                        results.append({
+                            "table": f"{library}.{table.name}",
+                            "success": True
+                        })
+                        success_count += 1
+                        console.print(f"  [green]OK[/green] {library}.{table.name}")
+                    except Exception as e:
+                        results.append({
+                            "table": f"{library}.{table.name}",
+                            "success": False,
+                            "error": str(e)
+                        })
+                        error_count += 1
+                        console.print(f"  [red]ERR[/red] {library}.{table.name}: {e}")
+                
+                if output_json:
+                    print_json(console, {
+                        "operation": "disable",
+                        "pattern": name,
+                        "library": library,
+                        "total": len(tables),
+                        "success": success_count,
+                        "errors": error_count,
+                        "results": results
+                    })
+                else:
+                    console.print(f"\n[green]Completed: {success_count} succeeded, {error_count} failed[/green]")
             else:
-                console.print(f"[green]Disabled journaling for {library}.{name}[/green]")
+                # Single table
+                result = jrn.disable_journaling(name, library)
+                
+                if output_json:
+                    print_json(console, result)
+                else:
+                    console.print(f"[green]Disabled journaling for {library}.{name}[/green]")
         
     except ConnectionError as e:
         console.print(f"[red]Connection error: {e.message}[/red]")
@@ -996,12 +1069,13 @@ def journal_disable(
 
 
 @journal.command("enable")
-@click.option("--name", "-n", required=True, help="Table name")
+@click.option("--name", "-n", required=True, help="Table name (supports wildcards: * or %)")
 @click.option("--library", "-l", required=True, help="Library name")
 @click.option("--journal-library", "-j", help="Journal library (default from config)")
 @click.option("--journal-name", help="Journal name (default: QSQJRN)")
 @click.option("--images", "-i", type=click.Choice(["*BOTH", "*AFTER", "*BEFORE"]), 
               default="*AFTER", help="Journal images to capture (default: *AFTER)")
+@click.option("--dry-run", is_flag=True, help="Show which tables would be affected without making changes")
 @click.pass_context
 def journal_enable(
     ctx: click.Context,
@@ -1009,9 +1083,20 @@ def journal_enable(
     library: str,
     journal_library: str | None,
     journal_name: str | None,
-    images: str
+    images: str,
+    dry_run: bool
 ) -> None:
-    """Enable journaling for a table."""
+    """Enable journaling for one or more tables.
+    
+    Supports wildcards:
+      - * or % for multiple characters
+      - ? or _ for single character
+    
+    Examples:
+      qadmcli journal enable -n TB_01 -l EZPIPE
+      qadmcli journal enable -n "TB_*" -l EZPIPE --images *BOTH
+      qadmcli journal enable -n "%TEST%" -l MYLIB -j MYLIB --dry-run
+    """
     config_path = ctx.obj["config_path"]
     output_json = ctx.obj["output_json"]
     
@@ -1020,14 +1105,78 @@ def journal_enable(
         
         with AS400ConnectionManager(config) as conn:
             jrn = JournalManager(conn)
-            result = jrn.enable_journaling(name, library, journal_library, journal_name, images)
             
-            if output_json:
-                print_json(console, result)
+            # Check if wildcard pattern
+            if '*' in name or '%' in name or '?' in name or '_' in name:
+                # Find matching tables
+                from .db.schema import SchemaManager
+                import fnmatch
+                schema_mgr = SchemaManager(conn)
+                all_tables = schema_mgr.list_tables(library)
+                
+                # Filter tables by pattern (convert SQL wildcards to fnmatch pattern)
+                pattern = name.replace('%', '*').replace('_', '?')
+                tables = [t for t in all_tables if fnmatch.fnmatch(t.name, pattern)]
+                
+                if not tables:
+                    console.print(f"[yellow]No tables matching pattern '{name}' in {library}[/yellow]")
+                    return
+                
+                if dry_run:
+                    console.print(f"[blue]Dry run - would enable journaling for {len(tables)} table(s):[/blue]")
+                    for table in tables:
+                        console.print(f"  - {table.name} (images: {images})")
+                    return
+                
+                # Process each table
+                results = []
+                success_count = 0
+                error_count = 0
+                
+                console.print(f"[blue]Enabling journaling for {len(tables)} table(s) with {images}...[/blue]")
+                for table in tables:
+                    try:
+                        result = jrn.enable_journaling(table.name, library, journal_library, journal_name, images)
+                        results.append({
+                            "table": f"{library}.{table.name}",
+                            "success": True,
+                            "journal": result['journal']
+                        })
+                        success_count += 1
+                        console.print(f"  [green]OK[/green] {library}.{table.name} -> {result['journal']}")
+                    except Exception as e:
+                        results.append({
+                            "table": f"{library}.{table.name}",
+                            "success": False,
+                            "error": str(e)
+                        })
+                        error_count += 1
+                        console.print(f"  [red]ERR[/red] {library}.{table.name}: {e}")
+                
+                if output_json:
+                    print_json(console, {
+                        "operation": "enable",
+                        "pattern": name,
+                        "library": library,
+                        "images": images,
+                        "total": len(tables),
+                        "success": success_count,
+                        "errors": error_count,
+                        "results": results
+                    })
+                else:
+                    console.print(f"\n[green]Completed: {success_count} succeeded, {error_count} failed[/green]")
+                    console.print(f"Images mode: {images}")
             else:
-                console.print(f"[green]Enabled journaling for {library}.{name}[/green]")
-                console.print(f"Journal: {result['journal']}")
-                console.print(f"Images: {images}")
+                # Single table
+                result = jrn.enable_journaling(name, library, journal_library, journal_name, images)
+                
+                if output_json:
+                    print_json(console, result)
+                else:
+                    console.print(f"[green]Enabled journaling for {library}.{name}[/green]")
+                    console.print(f"Journal: {result['journal']}")
+                    console.print(f"Images: {images}")
         
     except ConnectionError as e:
         console.print(f"[red]Connection error: {e.message}[/red]")
