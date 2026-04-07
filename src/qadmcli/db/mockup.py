@@ -283,60 +283,92 @@ class MockupManager:
             logger.warning(f"Could not get primary key: {e}")
             return []
     
-    def _get_existing_pk_values(self, table_name: str, library: str, 
+    def _get_existing_pk_values(self, table_name: str, library: str,
                                 pk_columns: list[str]) -> set:
-        """Get existing primary key values to avoid duplicates."""
+        """Get existing primary key values to avoid duplicates.
+            
+        For large tables, this returns an empty set to avoid performance issues.
+        PK uniqueness will be handled by catching duplicate key errors.
+        """
         if not pk_columns:
             return set()
+            
+        # Skip fetching all PK values for large tables - too slow
+        # Instead, we'll handle duplicates by catching SQL errors
+        logger.debug("Skipping full PK value fetch for performance - will handle duplicates via error handling")
+        return set()
         
-        pk_col = pk_columns[0]  # Assume single column PK for simplicity
-        sql = f"SELECT {pk_col} FROM {library}.{table_name}"
-        try:
-            cursor = self.conn.execute(sql)
-            values = {row[0] for row in cursor.fetchall()}
-            cursor.close()
-            return values
-        except Exception as e:
-            logger.warning(f"Could not get existing PK values: {e}")
-            return set()
-    
     def _get_random_row_ids(self, table_name: str, library: str,
                            count: int) -> list[Any]:
-        """Get random row IDs for updates/deletes."""
+        """Get random row IDs for updates/deletes using efficient sampling."""
         # Get primary key columns
         pk_columns = self._get_primary_key(table_name, library)
         if not pk_columns:
             logger.warning("No primary key found for random row selection")
             return []
-            
+                
         pk_col = pk_columns[0]  # Use first PK column
             
-        # Use DB2 for i compatible SQL to get random rows
+        # Use TABLESAMPLE for efficient random sampling on large tables
+        # TABLESAMPLE SYSTEM(0.01) samples approximately 0.01% of rows
         sql = f"""
             SELECT {pk_col} FROM {library}.{table_name}
-            ORDER BY RAND()
-            FETCH FIRST {count} ROWS ONLY
+            TABLESAMPLE SYSTEM(0.01)
+            FETCH FIRST {count * 10} ROWS ONLY
         """
         try:
             cursor = self.conn.execute(sql)
             ids = [row[0] for row in cursor.fetchall()]
             cursor.close()
-            return ids
-        except Exception as e:
-            logger.warning(f"Could not get random row IDs using RAND(): {e}")
-            # Fallback: get all IDs and randomly sample in Python
-            try:
-                fallback_sql = f"SELECT {pk_col} FROM {library}.{table_name}"
-                cursor = self.conn.execute(fallback_sql)
-                all_ids = [row[0] for row in cursor.fetchall()]
-                cursor.close()
+                
+            # Randomly sample from the results
+            if len(ids) >= count:
                 import random
-                if len(all_ids) <= count:
-                    return all_ids
-                return random.sample(all_ids, count)
-            except Exception as e2:
-                logger.warning(f"Fallback also failed: {e2}")
-                return []
+                return random.sample(ids, count)
+            elif ids:
+                return ids
+            # If TABLESAMPLE returned nothing, try alternative approach
+        except Exception as e:
+            logger.debug(f"TABLESAMPLE failed: {e}, trying alternative")
+            
+        # Alternative: Use RAND() with WHERE clause for better performance
+        try:
+            sql = f"""
+                SELECT {pk_col} FROM {library}.{table_name}
+                WHERE RAND() < 0.001
+                FETCH FIRST {count} ROWS ONLY
+            """
+            cursor = self.conn.execute(sql)
+            ids = [row[0] for row in cursor.fetchall()]
+            cursor.close()
+            if ids:
+                return ids
+        except Exception as e:
+            logger.debug(f"RAND() with WHERE failed: {e}")
+            
+        # Final fallback: Get max ID and generate random IDs in range
+        try:
+            sql = f"SELECT MIN({pk_col}), MAX({pk_col}) FROM {library}.{table_name}"
+            cursor = self.conn.execute(sql)
+            row = cursor.fetchone()
+            cursor.close()
+                
+            if row and row[0] is not None and row[1] is not None:
+                min_id, max_id = row[0], row[1]
+                import random
+                # Generate random IDs within the range
+                random_ids = [random.randint(min_id, max_id) for _ in range(count * 2)]
+                # Verify which IDs exist
+                id_list = ",".join(str(id_val) for id_val in random_ids)
+                verify_sql = f"SELECT {pk_col} FROM {library}.{table_name} WHERE {pk_col} IN ({id_list}) FETCH FIRST {count} ROWS ONLY"
+                cursor = self.conn.execute(verify_sql)
+                existing_ids = [row[0] for row in cursor.fetchall()]
+                cursor.close()
+                return existing_ids[:count]
+        except Exception as e:
+            logger.warning(f"All random row selection methods failed: {e}")
+            
+        return []
     
     def _generate_row(self, columns: list[dict], pk_columns: list[str],
                      existing_pks: set, is_insert: bool = True) -> dict[str, Any]:
