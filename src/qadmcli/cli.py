@@ -54,14 +54,19 @@ def _get_elevated_connection(
             return None
     
     # Create temporary config with admin credentials
-    from .models.connection import AS400Connection
-    admin_config = AS400Connection(
+    from .models.connection import ConnectionConfig, AS400Connection, DefaultsConfig
+    admin_as400_config = AS400Connection(
         host=config.as400.host,
         port=config.as400.port,
         user=admin_user,
         password=admin_password,
         database=getattr(config.as400, 'database', '*LOCAL'),
         ssl=getattr(config.as400, 'ssl', True)
+    )
+    # Wrap in full ConnectionConfig
+    admin_config = ConnectionConfig(
+        as400=admin_as400_config,
+        defaults=getattr(config, 'defaults', DefaultsConfig())
     )
     
     try:
