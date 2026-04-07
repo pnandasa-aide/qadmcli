@@ -1646,48 +1646,89 @@ def user_check_table(
                     border_style="blue"
                 )
                 
-                # Table info
+                # Display user info (group profile and special authorities)
+                user_info_lines = []
+                if result["user_info"]["group_profile"] and result["user_info"]["group_profile"] != "*NONE":
+                    user_info_lines.append(["Group Profile", result["user_info"]["group_profile"]])
+                if result["user_info"]["special_authorities"] and result["user_info"]["special_authorities"] != "*NONE":
+                    user_info_lines.append(["Special Authorities", result["user_info"]["special_authorities"]])
+                
+                if user_info_lines:
+                    console.print(print_table(
+                        console,
+                        ["Attribute", "Value"],
+                        user_info_lines,
+                        title="User Information"
+                    ))
+                
+                # Helper function to format authority details
+                def format_auth_details(details: list) -> str:
+                    if not details:
+                        return "No explicit authority found"
+                    lines = []
+                    for d in details:
+                        auth = d["authority"]
+                        source = d["source"]
+                        lines.append(f"  - {source}: {auth}")
+                    return "\n".join(lines)
+                
+                # Table info with authority sources
                 table_auth = result["table"]["authority"] or "*NONE"
-                table_rows = [[
-                    f"{result['table']['library']}.{result['table']['name']}",
-                    "*FILE",
-                    table_auth
-                ]]
+                table_source = result["table"]["source"] or "N/A"
+                table_details = format_auth_details(result["table"]["details"])
+                
+                table_rows = [
+                    ["Object", f"{result['table']['library']}.{result['table']['name']}"],
+                    ["Type", "*FILE"],
+                    ["Effective Authority", table_auth],
+                    ["Primary Source", table_source],
+                    ["Authority Details", table_details]
+                ]
                 console.print(print_table(
                     console,
-                    ["Object", "Type", "Authority"],
+                    ["Property", "Value"],
                     table_rows,
-                    title="Table"
+                    title="Table Permissions"
                 ))
                 
                 # Journal info (if table is journaled)
                 if result["journal"]["name"]:
                     jrn_auth = result["journal"]["authority"] or "*NONE"
-                    jrn_rows = [[
-                        f"{result['journal']['library']}.{result['journal']['name']}",
-                        "*JRN",
-                        jrn_auth
-                    ]]
+                    jrn_source = result["journal"]["source"] or "N/A"
+                    jrn_details = format_auth_details(result["journal"]["details"])
+                    
+                    jrn_rows = [
+                        ["Object", f"{result['journal']['library']}.{result['journal']['name']}"],
+                        ["Type", "*JRN"],
+                        ["Effective Authority", jrn_auth],
+                        ["Primary Source", jrn_source],
+                        ["Authority Details", jrn_details]
+                    ]
                     console.print(print_table(
                         console,
-                        ["Object", "Type", "Authority"],
+                        ["Property", "Value"],
                         jrn_rows,
-                        title="Journal"
+                        title="Journal Permissions"
                     ))
                     
                     # Journal receiver info
                     if result["journal_receiver"]["name"]:
                         rcv_auth = result["journal_receiver"]["authority"] or "*NONE"
-                        rcv_rows = [[
-                            f"{result['journal_receiver']['library']}.{result['journal_receiver']['name']}",
-                            "*JRNRCV",
-                            rcv_auth
-                        ]]
+                        rcv_source = result["journal_receiver"]["source"] or "N/A"
+                        rcv_details = format_auth_details(result["journal_receiver"]["details"])
+                        
+                        rcv_rows = [
+                            ["Object", f"{result['journal_receiver']['library']}.{result['journal_receiver']['name']}"],
+                            ["Type", "*JRNRCV"],
+                            ["Effective Authority", rcv_auth],
+                            ["Primary Source", rcv_source],
+                            ["Authority Details", rcv_details]
+                        ]
                         console.print(print_table(
                             console,
-                            ["Object", "Type", "Authority"],
+                            ["Property", "Value"],
                             rcv_rows,
-                            title="Journal Receiver"
+                            title="Journal Receiver Permissions"
                         ))
                     
                     # Summary

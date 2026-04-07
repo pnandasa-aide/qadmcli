@@ -88,6 +88,182 @@ class UserManager:
         
         return result
     
+    def _get_object_authority_with_source(
+        self, 
+        username: str, 
+        object_library: str, 
+        object_name: str, 
+        object_type: str
+    ) -> dict[str, Any]:
+        """Get object authority with detailed source information.
+        
+        Checks multiple authority sources:
+        1. Direct user authority from OBJECT_PRIVILEGES
+        2. Group profile authority
+        3. *PUBLIC authority
+        4. Special authorities (*ALLOBJ)
+        5. Ownership
+        
+        Returns dict with authority and source information.
+        """
+        result = {
+            "authority": None,
+            "source": None,
+            "effective_authority": None,
+            "details": []
+        }
+        
+        # 1. Check direct user authority
+        direct_sql = """
+            SELECT OBJECT_AUTHORITY
+            FROM QSYS2.OBJECT_PRIVILEGES
+            WHERE AUTHORIZATION_NAME = ?
+              AND OBJECT_SCHEMA = ?
+              AND OBJECT_NAME = ?
+              AND OBJECT_TYPE = ?
+        """
+        try:
+            cursor = self.conn.execute(direct_sql, (
+                username.upper(),
+                object_library.upper(),
+                object_name.upper(),
+                object_type
+            ))
+            row = cursor.fetchone()
+            cursor.close()
+            if row and row[0]:
+                result["details"].append({
+                    "source": "Direct User Grant",
+                    "authority": str(row[0])
+                })
+        except Exception as e:
+            logger.debug(f"Could not get direct permission: {e}")
+        
+        # 2. Check group profile authority
+        group_sql = """
+            SELECT 
+                g.GROUP_PROFILE_NAME,
+                p.OBJECT_AUTHORITY
+            FROM QSYS2.USER_INFO u
+            JOIN QSYS2.OBJECT_PRIVILEGES p ON p.AUTHORIZATION_NAME = u.GROUP_PROFILE_NAME
+            WHERE u.AUTHORIZATION_NAME = ?
+              AND p.OBJECT_SCHEMA = ?
+              AND p.OBJECT_NAME = ?
+              AND p.OBJECT_TYPE = ?
+              AND u.GROUP_PROFILE_NAME IS NOT NULL
+              AND u.GROUP_PROFILE_NAME <> '*NONE'
+        """
+        try:
+            cursor = self.conn.execute(group_sql, (
+                username.upper(),
+                object_library.upper(),
+                object_name.upper(),
+                object_type
+            ))
+            row = cursor.fetchone()
+            cursor.close()
+            if row and row[1]:
+                result["details"].append({
+                    "source": f"Group Profile ({row[0]})",
+                    "authority": str(row[1])
+                })
+        except Exception as e:
+            logger.debug(f"Could not get group permission: {e}")
+        
+        # 3. Check *PUBLIC authority
+        public_sql = """
+            SELECT OBJECT_AUTHORITY
+            FROM QSYS2.OBJECT_PRIVILEGES
+            WHERE AUTHORIZATION_NAME = '*PUBLIC'
+              AND OBJECT_SCHEMA = ?
+              AND OBJECT_NAME = ?
+              AND OBJECT_TYPE = ?
+        """
+        try:
+            cursor = self.conn.execute(public_sql, (
+                object_library.upper(),
+                object_name.upper(),
+                object_type
+            ))
+            row = cursor.fetchone()
+            cursor.close()
+            if row and row[0]:
+                result["details"].append({
+                    "source": "*PUBLIC",
+                    "authority": str(row[0])
+                })
+        except Exception as e:
+            logger.debug(f"Could not get public permission: {e}")
+        
+        # 4. Check special authorities (*ALLOBJ)
+        special_sql = """
+            SELECT SPECIAL_AUTHORITIES
+            FROM QSYS2.USER_INFO
+            WHERE AUTHORIZATION_NAME = ?
+        """
+        try:
+            cursor = self.conn.execute(special_sql, (username.upper(),))
+            row = cursor.fetchone()
+            cursor.close()
+            if row and row[0]:
+                special_auths = str(row[0])
+                if '*ALLOBJ' in special_auths:
+                    result["details"].append({
+                        "source": "Special Authority (*ALLOBJ)",
+                        "authority": "*ALL"
+                    })
+        except Exception as e:
+            logger.debug(f"Could not get special authorities: {e}")
+        
+        # 5. Check ownership
+        owner_sql = """
+            SELECT OBJOWNER
+            FROM TABLE(QSYS2.OBJECT_STATISTICS(?, ?, ?))
+        """
+        try:
+            cursor = self.conn.execute(owner_sql, (
+                object_library.upper(),
+                object_type,
+                object_name.upper()
+            ))
+            row = cursor.fetchone()
+            cursor.close()
+            if row and row[0]:
+                owner = str(row[0])
+                if owner.upper() == username.upper():
+                    result["details"].append({
+                        "source": "Object Ownership",
+                        "authority": "*ALL (Owner)"
+                    })
+        except Exception as e:
+            logger.debug(f"Could not get ownership: {e}")
+        
+        # Determine effective authority (highest level wins)
+        authority_hierarchy = ["*EXCLUDE", "*USE", "*CHANGE", "*ALL"]
+        effective_auth = None
+        effective_source = None
+        
+        for detail in result["details"]:
+            auth = detail["authority"]
+            # Handle owner authority
+            if "Owner" in auth:
+                effective_auth = "*ALL"
+                effective_source = detail["source"]
+                break
+            # Handle standard authorities
+            for i, level in enumerate(authority_hierarchy):
+                if level in auth:
+                    if effective_auth is None or authority_hierarchy.index(effective_auth) < i:
+                        effective_auth = level
+                        effective_source = detail["source"]
+                    break
+        
+        result["authority"] = effective_auth
+        result["source"] = effective_source
+        result["effective_authority"] = effective_auth if effective_auth else "*NONE"
+        
+        return result
+    
     def check_table_permissions_with_journal(
         self, 
         username: str, 
@@ -97,50 +273,63 @@ class UserManager:
         """Check user permissions for a specific table and its related journal objects.
         
         Returns a consolidated view showing:
-        - Table permissions
+        - Table permissions with authority sources
         - Journal permissions (even if journal is in different library)
         - Journal receiver permissions
+        - Group profile and special authority information
         """
         result = {
             "user": username.upper(),
+            "user_info": {
+                "group_profile": None,
+                "special_authorities": None
+            },
             "table": {
                 "name": table_name.upper(),
                 "library": table_library.upper(),
-                "authority": None
+                "authority": None,
+                "source": None,
+                "details": []
             },
             "journal": {
                 "name": None,
                 "library": None,
-                "authority": None
+                "authority": None,
+                "source": None,
+                "details": []
             },
             "journal_receiver": {
                 "name": None,
                 "library": None,
-                "authority": None
+                "authority": None,
+                "source": None,
+                "details": []
             }
         }
         
-        # 1. Check table permission
-        table_sql = """
-            SELECT OBJECT_AUTHORITY
-            FROM QSYS2.OBJECT_PRIVILEGES
+        # Get user info (group profile and special authorities)
+        user_sql = """
+            SELECT GROUP_PROFILE_NAME, SPECIAL_AUTHORITIES
+            FROM QSYS2.USER_INFO
             WHERE AUTHORIZATION_NAME = ?
-              AND OBJECT_SCHEMA = ?
-              AND OBJECT_NAME = ?
-              AND OBJECT_TYPE = '*FILE'
         """
         try:
-            cursor = self.conn.execute(table_sql, (
-                username.upper(), 
-                table_library.upper(), 
-                table_name.upper()
-            ))
+            cursor = self.conn.execute(user_sql, (username.upper(),))
             row = cursor.fetchone()
             cursor.close()
             if row:
-                result["table"]["authority"] = str(row[0]) if row[0] else "*NONE"
+                result["user_info"]["group_profile"] = str(row[0]) if row[0] else "*NONE"
+                result["user_info"]["special_authorities"] = str(row[1]) if row[1] else "*NONE"
         except Exception as e:
-            logger.debug(f"Could not get table permission: {e}")
+            logger.debug(f"Could not get user info: {e}")
+        
+        # 1. Check table permission with all sources
+        table_auth = self._get_object_authority_with_source(
+            username, table_library, table_name, "*FILE"
+        )
+        result["table"]["authority"] = table_auth["effective_authority"]
+        result["table"]["source"] = table_auth["source"]
+        result["table"]["details"] = table_auth["details"]
         
         # 2. Get journal info for this table
         journal_sql = """
@@ -181,45 +370,23 @@ class UserManager:
                 result["journal_receiver"]["name"] = receiver_name
                 result["journal_receiver"]["library"] = receiver_library
                 
-                # 3. Check journal permission
+                # 3. Check journal permission with all sources
                 if journal_name and journal_library:
-                    jrn_sql = """
-                        SELECT OBJECT_AUTHORITY
-                        FROM QSYS2.OBJECT_PRIVILEGES
-                        WHERE AUTHORIZATION_NAME = ?
-                          AND OBJECT_SCHEMA = ?
-                          AND OBJECT_NAME = ?
-                          AND OBJECT_TYPE = '*JRN'
-                    """
-                    cursor = self.conn.execute(jrn_sql, (
-                        username.upper(),
-                        journal_library.upper(),
-                        journal_name.upper()
-                    ))
-                    row = cursor.fetchone()
-                    cursor.close()
-                    if row:
-                        result["journal"]["authority"] = str(row[0]) if row[0] else "*NONE"
+                    jrn_auth = self._get_object_authority_with_source(
+                        username, journal_library, journal_name, "*JRN"
+                    )
+                    result["journal"]["authority"] = jrn_auth["effective_authority"]
+                    result["journal"]["source"] = jrn_auth["source"]
+                    result["journal"]["details"] = jrn_auth["details"]
                 
-                # 4. Check journal receiver permission
+                # 4. Check journal receiver permission with all sources
                 if receiver_name and receiver_library:
-                    rcv_sql = """
-                        SELECT OBJECT_AUTHORITY
-                        FROM QSYS2.OBJECT_PRIVILEGES
-                        WHERE AUTHORIZATION_NAME = ?
-                          AND OBJECT_SCHEMA = ?
-                          AND OBJECT_NAME = ?
-                          AND OBJECT_TYPE = '*JRNRCV'
-                    """
-                    cursor = self.conn.execute(rcv_sql, (
-                        username.upper(),
-                        receiver_library.upper(),
-                        receiver_name.upper()
-                    ))
-                    row = cursor.fetchone()
-                    cursor.close()
-                    if row:
-                        result["journal_receiver"]["authority"] = str(row[0]) if row[0] else "*NONE"
+                    rcv_auth = self._get_object_authority_with_source(
+                        username, receiver_library, receiver_name, "*JRNRCV"
+                    )
+                    result["journal_receiver"]["authority"] = rcv_auth["effective_authority"]
+                    result["journal_receiver"]["source"] = rcv_auth["source"]
+                    result["journal_receiver"]["details"] = rcv_auth["details"]
                         
         except Exception as e:
             logger.debug(f"Could not get journal info: {e}")
