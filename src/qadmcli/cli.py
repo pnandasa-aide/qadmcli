@@ -1496,12 +1496,22 @@ def journal_monitor(ctx: click.Context, library: str | None, threshold: int) -> 
 
 
 @journal.command("info")
-@click.option("--name", "-n", required=True, help="Table name")
+@click.option("--name", "-n", required=True, help="Table name (supports wildcards: * or %)")
 @click.option("--library", "-l", required=True, help="Library name")
 @click.option("--fast", "-f", is_flag=True, help="Skip slow entry range query (for large journals)")
 @click.pass_context
 def journal_info(ctx: click.Context, name: str, library: str, fast: bool) -> None:
-    """Get detailed journal information for a table."""
+    """Get detailed journal information for one or more tables.
+    
+    Supports wildcards:
+      - * or % for multiple characters
+      - ? for single character
+    
+    Examples:
+      qadmcli journal info -n TB_01 -l EZPIPE
+      qadmcli journal info -n "TB_*" -l EZPIPE --fast
+      qadmcli journal info -n "TEST*" -l MYLIB
+    """
     config_path = ctx.obj["config_path"]
     output_json = ctx.obj["output_json"]
     
@@ -1510,37 +1520,95 @@ def journal_info(ctx: click.Context, name: str, library: str, fast: bool) -> Non
         
         with AS400ConnectionManager(config) as conn:
             jrn = JournalManager(conn)
-            info = jrn.get_journal_info(name, library, skip_entry_range=fast)
             
-            if output_json:
-                print_json(console, info.model_dump())
-            else:
-                # Format journal images for display
-                images_display = info.journal_images or "N/A"
-                if images_display == "*BOTH":
-                    images_display = "BOTH (Before & After)"
-                elif images_display == "*AFTER":
-                    images_display = "AFTER (After image only)"
-                elif images_display == "*BEFORE":
-                    images_display = "BEFORE (Before image only)"
+            # Check if wildcard pattern (* and ? are shell-style, % is SQL-style)
+            if '*' in name or '%' in name or '?' in name:
+                # Find matching tables
+                from .db.schema import SchemaManager
+                import fnmatch
+                schema_mgr = SchemaManager(conn)
+                all_tables = schema_mgr.list_tables(library)
                 
-                content = Text.assemble(
-                    ("Table: ", "bold"), f"{library}.{name}", "\n\n",
-                    ("Journal Status:\n", "bold underline"),
-                    ("  Journaled: ", "bold"), ("Yes" if info.is_journaled else "No"), "\n",
-                    ("  Journal: ", "bold"), (f"{info.journal_library}.{info.journal_name}" if info.journal_library else "N/A"), "\n",
-                    ("  Write Mode: ", "bold"), images_display, "\n",
-                    ("  Receiver: ", "bold"), (f"{info.journal_receiver_library}.{info.journal_receiver_name}" if info.journal_receiver_library else "N/A"), "\n",
-                    ("  Receiver Attached: ", "bold"), str(info.receiver_attach_timestamp or "N/A"), "\n",
-                    ("  Receiver Detached: ", "bold"), str(info.receiver_detach_timestamp or "Still attached"), "\n\n",
-                    ("Table Entry Range:\n", "bold underline"),
-                    ("  Oldest Sequence: ", "bold"), str(info.oldest_entry_sequence or "N/A"), "\n",
-                    ("  Newest Sequence: ", "bold"), str(info.newest_entry_sequence or "N/A"), "\n",
-                    ("  Oldest Time: ", "bold"), str(info.oldest_entry_timestamp or "N/A"), "\n",
-                    ("  Newest Time: ", "bold"), str(info.newest_entry_timestamp or "N/A"), "\n",
-                    ("  Total Entries: ", "bold"), str(info.total_entries or "N/A"),
-                )
-                print_ascii_panel(console, content, title="Detailed Journal Information", border_style="blue")
+                # Filter tables by pattern
+                pattern = name.replace('%', '*')
+                tables = [t for t in all_tables if fnmatch.fnmatch(t.name, pattern)]
+                
+                if not tables:
+                    console.print(f"[yellow]No tables matching pattern '{name}' in {library}[/yellow]")
+                    return
+                
+                # Process each table
+                results = []
+                console.print(f"[blue]Journal info for {len(tables)} table(s):[/blue]\n")
+                
+                for table in tables:
+                    try:
+                        info = jrn.get_journal_info(table.name, library, skip_entry_range=fast)
+                        results.append({
+                            "table": f"{library}.{table.name}",
+                            "info": info.model_dump()
+                        })
+                        
+                        # Format journal images for display
+                        images_display = info.journal_images or "N/A"
+                        if images_display == "*BOTH":
+                            images_display = "BOTH"
+                        elif images_display == "*AFTER":
+                            images_display = "AFTER"
+                        elif images_display == "*BEFORE":
+                            images_display = "BEFORE"
+                        
+                        # Compact display for batch mode
+                        status = "Journaled" if info.is_journaled else "Not Journaled"
+                        journal_info = f"{info.journal_library}.{info.journal_name}" if info.journal_library else "N/A"
+                        console.print(f"  {library}.{table.name}: {status} | {images_display} | {journal_info}")
+                        
+                    except Exception as e:
+                        results.append({
+                            "table": f"{library}.{table.name}",
+                            "error": str(e)
+                        })
+                        console.print(f"  [red]ERR[/red] {library}.{table.name}: {e}")
+                
+                if output_json:
+                    print_json(console, {
+                        "pattern": name,
+                        "library": library,
+                        "tables": results
+                    })
+            else:
+                # Single table
+                info = jrn.get_journal_info(name, library, skip_entry_range=fast)
+                
+                if output_json:
+                    print_json(console, info.model_dump())
+                else:
+                    # Format journal images for display
+                    images_display = info.journal_images or "N/A"
+                    if images_display == "*BOTH":
+                        images_display = "BOTH (Before & After)"
+                    elif images_display == "*AFTER":
+                        images_display = "AFTER (After image only)"
+                    elif images_display == "*BEFORE":
+                        images_display = "BEFORE (Before image only)"
+                    
+                    content = Text.assemble(
+                        ("Table: ", "bold"), f"{library}.{name}", "\n\n",
+                        ("Journal Status:\n", "bold underline"),
+                        ("  Journaled: ", "bold"), ("Yes" if info.is_journaled else "No"), "\n",
+                        ("  Journal: ", "bold"), (f"{info.journal_library}.{info.journal_name}" if info.journal_library else "N/A"), "\n",
+                        ("  Write Mode: ", "bold"), images_display, "\n",
+                        ("  Receiver: ", "bold"), (f"{info.journal_receiver_library}.{info.journal_receiver_name}" if info.journal_receiver_library else "N/A"), "\n",
+                        ("  Receiver Attached: ", "bold"), str(info.receiver_attach_timestamp or "N/A"), "\n",
+                        ("  Receiver Detached: ", "bold"), str(info.receiver_detach_timestamp or "Still attached"), "\n\n",
+                        ("Table Entry Range:\n", "bold underline"),
+                        ("  Oldest Sequence: ", "bold"), str(info.oldest_entry_sequence or "N/A"), "\n",
+                        ("  Newest Sequence: ", "bold"), str(info.newest_entry_sequence or "N/A"), "\n",
+                        ("  Oldest Time: ", "bold"), str(info.oldest_entry_timestamp or "N/A"), "\n",
+                        ("  Newest Time: ", "bold"), str(info.newest_entry_timestamp or "N/A"), "\n",
+                        ("  Total Entries: ", "bold"), str(info.total_entries or "N/A"),
+                    )
+                    print_ascii_panel(console, content, title="Detailed Journal Information", border_style="blue")
         
     except ConnectionError as e:
         console.print(f"[red]Connection error: {e.message}[/red]")
