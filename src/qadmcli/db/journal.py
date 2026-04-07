@@ -485,14 +485,14 @@ class JournalManager:
         if not journal_name:
             journal_name = "QSQJRN"  # Common default
         
-        # Check user permissions on journal library
+        # Check user permissions on journal library (optional, can be disabled)
         user = self.conn.config.as400.user
         perm = self._check_journal_permission(journal_library, user)
         
         if not perm.get("has_access"):
-            raise PermissionError(
-                f"User {user} does not have access to journal library {journal_library}. "
-                "Contact your AS400 administrator to grant *USE or higher authority."
+            logger.warning(
+                f"User {user} may not have explicit access to journal library {journal_library}. "
+                "Attempting operation anyway..."
             )
         
         # Check if journal exists
