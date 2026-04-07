@@ -16,10 +16,17 @@ def format_table(
     title: str | None = None
 ) -> RichTable:
     """Format data as Rich table."""
-    table = RichTable(title=title, show_header=True, header_style="bold magenta", box=box.ASCII)
+    table = RichTable(
+        title=title, 
+        show_header=True, 
+        header_style="bold magenta", 
+        box=box.ASCII,
+        show_edge=False  # Disable edge to prevent truncation issues
+    )
     
     for header in headers:
-        table.add_column(header)
+        # Use overflow="fold" to wrap long text instead of truncating with ellipsis
+        table.add_column(header, overflow="fold", no_wrap=False)
     
     for row in rows:
         table.add_row(*[str(cell) for cell in row])

@@ -1501,17 +1501,19 @@ def user_check(
                 if result["exists"]:
                     user_class = str(result.get("user_class", "N/A"))
                     status = str(result.get("status", "N/A"))
-                    parts = [
-                        ("User: ", "bold"), user, "\n",
-                        ("Exists: ", "bold"), ("Yes", "green"), "\n",
-                        ("User Class: ", "bold"), user_class, "\n",
-                        ("Status: ", "bold"), status, "\n",
-                    ]
-                    console.print(Panel(
-                        Text.assemble(*parts),
+                    
+                    # Build user info content for ASCII panel
+                    user_info_content = f"""User: {user}
+Exists: Yes
+User Class: {user_class}
+Status: {status}"""
+                    
+                    print_ascii_panel(
+                        console,
+                        user_info_content,
                         title="User Information",
                         border_style="green"
-                    ))
+                    )
                     
                     if result.get("permissions"):
                         rows = []
@@ -1525,8 +1527,26 @@ def user_check(
                             console,
                             ["Object", "Type", "Authority"],
                             rows,
-                            title="Permissions"
+                            title="Table Permissions"
                         ))
+                    
+                    # Display journal permissions
+                    if result.get("journal_permissions"):
+                        rows = []
+                        for perm in result["journal_permissions"]:
+                            rows.append([
+                                perm.get("object", ""),
+                                perm.get("object_type", ""),
+                                perm.get("authority", "")
+                            ])
+                        console.print(print_table(
+                            console,
+                            ["Object", "Type", "Authority"],
+                            rows,
+                            title="Journal Permissions"
+                        ))
+                    elif library:
+                        console.print("[yellow]No journal permissions found in library {library}.[/yellow]".format(library=library))
                 else:
                     console.print(f"[yellow]User {user} does not exist.[/yellow]")
         
@@ -1955,8 +1975,30 @@ def sql_execute(ctx: click.Context, query: str) -> None:
                     for row in rows:
                         table_rows.append([str(cell) if cell is not None else "NULL" for cell in row])
                     
-                    # Convert column names to strings
-                    str_columns = [str(col) for col in columns]
+                    # Sanitize column names for Windows terminal compatibility
+                    # Replace non-ASCII characters that may render as Thai characters
+                    def sanitize_column(name: str) -> str:
+                        """Sanitize column name for Windows terminal display."""
+                        # Replace common problematic characters
+                        sanitized = str(name)
+                        # Replace ellipsis and other Unicode characters with ASCII equivalents
+                        replacements = {
+                            '\u2026': '...',  # Horizontal ellipsis
+                            '\u2018': "'",    # Left single quote
+                            '\u2019': "'",    # Right single quote
+                            '\u201C': '"',    # Left double quote
+                            '\u201D': '"',    # Right double quote
+                            '\u2013': '-',    # En dash
+                            '\u2014': '--',   # Em dash
+                        }
+                        for unicode_char, ascii_char in replacements.items():
+                            sanitized = sanitized.replace(unicode_char, ascii_char)
+                        # Truncate if too long (prevents wrapping issues)
+                        if len(sanitized) > 30:
+                            sanitized = sanitized[:27] + '...'
+                        return sanitized
+                    
+                    str_columns = [sanitize_column(str(col)) for col in columns]
                     console.print(print_table(
                         console,
                         str_columns,

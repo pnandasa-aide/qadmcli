@@ -19,7 +19,8 @@ class UserManager:
         result = {
             "exists": False,
             "user": username.upper(),
-            "permissions": []
+            "permissions": [],
+            "journal_permissions": []
         }
         
         # Check user existence
@@ -60,6 +61,28 @@ class UserManager:
                     "object": str(row[0]) if row[0] else "",  # OBJNAME
                     "object_type": str(row[1]) if row[1] else "*FILE",  # OBJTYPE
                     "authority": "*CHANGE"  # Default assumption for accessible objects
+                })
+            cursor.close()
+            
+            # Query journal and journal receiver permissions
+            journal_sql = """
+                SELECT 
+                    OBJECT_NAME,
+                    OBJECT_TYPE,
+                    OBJECT_AUTHORITY
+                FROM QSYS2.OBJECT_PRIVILEGES
+                WHERE AUTHORIZATION_NAME = ?
+                  AND OBJECT_SCHEMA = ?
+                  AND OBJECT_TYPE IN ('*JRN', '*JRNRCV')
+                ORDER BY OBJECT_TYPE, OBJECT_NAME
+            """
+            cursor = self.conn.execute(journal_sql, (username.upper(), library.upper()))
+            
+            for row in cursor.fetchall():
+                result["journal_permissions"].append({
+                    "object": str(row[0]) if row[0] else "",
+                    "object_type": str(row[1]) if row[1] else "",
+                    "authority": str(row[2]) if row[2] else "*NONE"
                 })
             cursor.close()
         
