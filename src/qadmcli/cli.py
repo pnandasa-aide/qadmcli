@@ -1541,34 +1541,43 @@ def journal_info(ctx: click.Context, name: str, library: str, fast: bool) -> Non
                 results = []
                 console.print(f"[blue]Journal info for {len(tables)} table(s):[/blue]\n")
                 
-                for table in tables:
-                    try:
-                        info = jrn.get_journal_info(table.name, library, skip_entry_range=fast)
-                        results.append({
-                            "table": f"{library}.{table.name}",
-                            "info": info.model_dump()
-                        })
-                        
-                        # Format journal images for display
-                        images_display = info.journal_images or "N/A"
-                        if images_display == "*BOTH":
-                            images_display = "BOTH"
-                        elif images_display == "*AFTER":
-                            images_display = "AFTER"
-                        elif images_display == "*BEFORE":
-                            images_display = "BEFORE"
-                        
-                        # Compact display for batch mode
-                        status = "Journaled" if info.is_journaled else "Not Journaled"
-                        journal_info = f"{info.journal_library}.{info.journal_name}" if info.journal_library else "N/A"
-                        console.print(f"  {library}.{table.name}: {status} | {images_display} | {journal_info}")
-                        
-                    except Exception as e:
-                        results.append({
-                            "table": f"{library}.{table.name}",
-                            "error": str(e)
-                        })
-                        console.print(f"  [red]ERR[/red] {library}.{table.name}: {e}")
+                # Temporarily suppress INFO logging for cleaner batch output
+                import logging
+                original_level = logging.getLogger("qadmcli").level
+                logging.getLogger("qadmcli").setLevel(logging.WARNING)
+                
+                try:
+                    for table in tables:
+                        try:
+                            info = jrn.get_journal_info(table.name, library, skip_entry_range=fast)
+                            results.append({
+                                "table": f"{library}.{table.name}",
+                                "info": info.model_dump()
+                            })
+                            
+                            # Format journal images for display
+                            images_display = info.journal_images or "N/A"
+                            if images_display == "*BOTH":
+                                images_display = "BOTH"
+                            elif images_display == "*AFTER":
+                                images_display = "AFTER"
+                            elif images_display == "*BEFORE":
+                                images_display = "BEFORE"
+                            
+                            # Compact display for batch mode
+                            status = "Journaled" if info.is_journaled else "Not Journaled"
+                            journal_info = f"{info.journal_library}.{info.journal_name}" if info.journal_library else "N/A"
+                            console.print(f"  {library}.{table.name}: {status} | {images_display} | {journal_info}")
+                            
+                        except Exception as e:
+                            results.append({
+                                "table": f"{library}.{table.name}",
+                                "error": str(e)
+                            })
+                            console.print(f"  [red]ERR[/red] {library}.{table.name}: {e}")
+                finally:
+                    # Restore original logging level
+                    logging.getLogger("qadmcli").setLevel(original_level)
                 
                 if output_json:
                     print_json(console, {
