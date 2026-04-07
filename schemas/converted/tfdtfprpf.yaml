@@ -1,0 +1,40 @@
+# TFDTFPRPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TFDTFPRPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TFDTFPRPF
+columns:
+- name: PTRNCDE
+  type: DECIMAL
+  nullable: true
+  length: 18
+  scale: 0
+- name: PRDRATE
+  type: DECIMAL
+  nullable: true
+  length: 18
+  scale: 2
+- name: INSUCLSCDE
+  type: VARCHAR
+  nullable: true
+  length: 255
+- name: INSUREAGE
+  type: SMALLINT
+  nullable: true
+- name: INSURESEX
+  type: VARCHAR
+  nullable: true
+  length: 1
+- name: PRDPLAN
+  type: VARCHAR
+  nullable: true
+  length: 255
+- name: RATEID
+  type: VARCHAR
+  nullable: true
+  length: 4
+journaling:
+  enabled: true

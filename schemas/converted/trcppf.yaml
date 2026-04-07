@@ -1,0 +1,473 @@
+# TRCPPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TRCPPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TRCPPF
+columns:
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: TRANNOR
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+  description: TRANSACTION NUMBER FOR REVERSAL
+- name: TRANNO
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+  description: TRANSACTION NUMBER
+- name: TCHQDATE10
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: TN(TCHQDATE) CHEQUE DATE
+- name: TCHQDATE09
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: TN(TCHQDATE) CHEQUE DATE
+- name: TCHQDATE08
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: TN(TCHQDATE) CHEQUE DATE
+- name: TCHQDATE07
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: TN(TCHQDATE) CHEQUE DATE
+- name: TCHQDATE06
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: TN(TCHQDATE) CHEQUE DATE
+- name: TCHQDATE05
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: TN(TCHQDATE) CHEQUE DATE
+- name: TCHQDATE04
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: TN(TCHQDATE) CHEQUE DATE
+- name: TCHQDATE03
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: TN(TCHQDATE) CHEQUE DATE
+- name: TCHQDATE02
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: TN(TCHQDATE) CHEQUE DATE
+- name: TCHQDATE01
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: TN(TCHQDATE) CHEQUE DATE
+- name: TCASHIND
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: CASH INDICATOR
+  default: ''' '''
+- name: PRTFLG
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: PRINT FLAG
+  default: ''' '''
+- name: PRCPNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: PREMIUM RECEIPT NUMBER
+  default: ''' '''
+- name: PRCPCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: PREMIUM RECEIPT COMPANY
+  default: ''' '''
+- name: PRCDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: PROCESS DATE
+- name: LETTER_PRINT_DATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: LETTER PRINT DATE
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: INST_PREM10
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(INSTPRM) COV/RIDER INSTALMENT AMOUNT
+- name: INST_PREM09
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(INSTPRM) COV/RIDER INSTALMENT AMOUNT
+- name: INST_PREM08
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(INSTPRM) COV/RIDER INSTALMENT AMOUNT
+- name: INST_PREM07
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(INSTPRM) COV/RIDER INSTALMENT AMOUNT
+- name: INST_PREM06
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(INSTPRM) COV/RIDER INSTALMENT AMOUNT
+- name: INST_PREM05
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(INSTPRM) COV/RIDER INSTALMENT AMOUNT
+- name: INST_PREM04
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(INSTPRM) COV/RIDER INSTALMENT AMOUNT
+- name: INST_PREM03
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(INSTPRM) COV/RIDER INSTALMENT AMOUNT
+- name: INST_PREM02
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(INSTPRM) COV/RIDER INSTALMENT AMOUNT
+- name: INST_PREM01
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(INSTPRM) COV/RIDER INSTALMENT AMOUNT
+- name: EFFDATE02
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: TN(EFFDATE) EFFECTIVE DATE
+- name: EFFDATE01
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: TN(EFFDATE) EFFECTIVE DATE
+- name: DESPNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: DESPATCH NUMBER
+  default: ''' '''
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+- name: COWNNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CONTRACT OWNER NUMBER
+  default: ''' '''
+- name: CHQNUM10
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TN(CHQNUM) CHEQUE NUMBER
+  default: ''' '''
+- name: CHQNUM09
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TN(CHQNUM) CHEQUE NUMBER
+  default: ''' '''
+- name: CHQNUM08
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TN(CHQNUM) CHEQUE NUMBER
+  default: ''' '''
+- name: CHQNUM07
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TN(CHQNUM) CHEQUE NUMBER
+  default: ''' '''
+- name: CHQNUM06
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TN(CHQNUM) CHEQUE NUMBER
+  default: ''' '''
+- name: CHQNUM05
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TN(CHQNUM) CHEQUE NUMBER
+  default: ''' '''
+- name: CHQNUM04
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TN(CHQNUM) CHEQUE NUMBER
+  default: ''' '''
+- name: CHQNUM03
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TN(CHQNUM) CHEQUE NUMBER
+  default: ''' '''
+- name: CHQNUM02
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TN(CHQNUM) CHEQUE NUMBER
+  default: ''' '''
+- name: CHQNUM01
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TN(CHQNUM) CHEQUE NUMBER
+  default: ''' '''
+- name: CHDRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CONTRACT NUMBER
+  default: ''' '''
+- name: BILLFREQ
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: BILLING FREQUENCY
+  default: ''' '''
+- name: BATCTRCDE
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: BATCH TRANSACTION CODE
+  default: ''' '''
+- name: BANKDESC10
+  type: CHAR
+  nullable: false
+  length: 30
+  ccsid: 838
+  description: TN(BANKDESC) BANK DESCRIPTION
+  default: ''' '''
+- name: BANKDESC09
+  type: CHAR
+  nullable: false
+  length: 30
+  ccsid: 838
+  description: TN(BANKDESC) BANK DESCRIPTION
+  default: ''' '''
+- name: BANKDESC08
+  type: CHAR
+  nullable: false
+  length: 30
+  ccsid: 838
+  description: TN(BANKDESC) BANK DESCRIPTION
+  default: ''' '''
+- name: BANKDESC07
+  type: CHAR
+  nullable: false
+  length: 30
+  ccsid: 838
+  description: TN(BANKDESC) BANK DESCRIPTION
+  default: ''' '''
+- name: BANKDESC06
+  type: CHAR
+  nullable: false
+  length: 30
+  ccsid: 838
+  description: TN(BANKDESC) BANK DESCRIPTION
+  default: ''' '''
+- name: BANKDESC05
+  type: CHAR
+  nullable: false
+  length: 30
+  ccsid: 838
+  description: TN(BANKDESC) BANK DESCRIPTION
+  default: ''' '''
+- name: BANKDESC04
+  type: CHAR
+  nullable: false
+  length: 30
+  ccsid: 838
+  description: TN(BANKDESC) BANK DESCRIPTION
+  default: ''' '''
+- name: BANKDESC03
+  type: CHAR
+  nullable: false
+  length: 30
+  ccsid: 838
+  description: TN(BANKDESC) BANK DESCRIPTION
+  default: ''' '''
+- name: BANKDESC02
+  type: CHAR
+  nullable: false
+  length: 30
+  ccsid: 838
+  description: TN(BANKDESC) BANK DESCRIPTION
+  default: ''' '''
+- name: BANKDESC01
+  type: CHAR
+  nullable: false
+  length: 30
+  ccsid: 838
+  description: TN(BANKDESC) BANK DESCRIPTION
+  default: ''' '''
+- name: ARECEIPT10
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TN(ARECEIPT) RECEIPT NUMBER
+  default: ''' '''
+- name: ARECEIPT09
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TN(ARECEIPT) RECEIPT NUMBER
+  default: ''' '''
+- name: ARECEIPT08
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TN(ARECEIPT) RECEIPT NUMBER
+  default: ''' '''
+- name: ARECEIPT07
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TN(ARECEIPT) RECEIPT NUMBER
+  default: ''' '''
+- name: ARECEIPT06
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TN(ARECEIPT) RECEIPT NUMBER
+  default: ''' '''
+- name: ARECEIPT05
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TN(ARECEIPT) RECEIPT NUMBER
+  default: ''' '''
+- name: ARECEIPT04
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TN(ARECEIPT) RECEIPT NUMBER
+  default: ''' '''
+- name: ARECEIPT03
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TN(ARECEIPT) RECEIPT NUMBER
+  default: ''' '''
+- name: ARECEIPT02
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TN(ARECEIPT) RECEIPT NUMBER
+  default: ''' '''
+- name: ARECEIPT01
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TN(ARECEIPT) RECEIPT NUMBER
+  default: ''' '''
+- name: AGNTNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: AGENT NUMBER
+  default: ''' '''
+constraints:
+  primary_key:
+    columns:
+    - PRCPCOY
+    - PRCPNUM
+journaling:
+  enabled: true

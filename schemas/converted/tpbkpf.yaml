@@ -1,0 +1,112 @@
+# TPBKPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TPBKPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TPBKPF
+columns:
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: TSRCEBUS
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: SOURCE OF BUSINESS
+  default: ''' '''
+- name: TBKSDESC
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: BROKER SHORT DESC
+  default: ''' '''
+- name: TBKLICNO
+  type: CHAR
+  nullable: false
+  length: 15
+  ccsid: 838
+  description: BROKER LICENSE NUMBER
+  default: ''' '''
+- name: TBKLDESC
+  type: CHAR
+  nullable: false
+  length: 60
+  ccsid: 838
+  description: BROKER LONG DESC
+  default: ''' '''
+- name: TBKCODE
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: BROKER CODE
+  default: ''' '''
+- name: SERVFEE
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 2
+  description: SERVICE FEE
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+- name: CMPRCNT
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 2
+  description: COMMISSION PERCENTAGE
+- name: CHDRPFX
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: CONT HEADER PREFIX
+  default: ''' '''
+- name: CHDRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CONTRACT NUMBER
+  default: ''' '''
+- name: CHDRCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: CONT HEADER COMPANY
+  default: ''' '''
+- name: AGNORM
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 2
+  description: AGENT NORMAL COMM
+constraints:
+  primary_key:
+    columns:
+    - CHDRPFX
+    - CHDRCOY
+    - CHDRNUM
+journaling:
+  enabled: true

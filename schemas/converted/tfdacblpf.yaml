@@ -1,0 +1,59 @@
+# TFDACBLPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TFDACBLPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TFDACBLPF
+columns:
+- name: DATIME
+  type: DATE
+  nullable: false
+- name: JOB_NAME
+  type: VARCHAR
+  nullable: false
+  length: 10
+- name: USER_PROFILE
+  type: VARCHAR
+  nullable: false
+  length: 10
+- name: SACSCURBAL
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+- name: SACSTYP
+  type: VARCHAR
+  nullable: true
+  length: 2
+- name: ORIGCURR
+  type: VARCHAR
+  nullable: true
+  length: 3
+- name: RLDGACCT
+  type: VARCHAR
+  nullable: true
+  length: 16
+- name: RLDGPFX
+  type: VARCHAR
+  nullable: false
+  length: 2
+- name: SACSCODE
+  type: VARCHAR
+  nullable: true
+  length: 2
+- name: RLDGCOY
+  type: VARCHAR
+  nullable: true
+  length: 1
+constraints:
+  primary_key:
+    columns:
+    - RLDGCOY
+    - SACSCODE
+    - RLDGACCT
+    - ORIGCURR
+    - SACSTYP
+journaling:
+  enabled: true

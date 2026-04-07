@@ -1,0 +1,47 @@
+# TFDGHOVISIT table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TFDGHOVISIT
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TFDGHOVISIT
+columns:
+- name: LMTWHOM
+  type: CHAR
+  nullable: true
+  length: 2
+- name: AMTYEAR
+  type: DECIMAL
+  nullable: true
+  length: 10
+  scale: 0
+- name: AMTVIS
+  type: DECIMAL
+  nullable: true
+  length: 10
+  scale: 0
+- name: AMTDAY
+  type: DECIMAL
+  nullable: true
+  length: 10
+  scale: 0
+- name: VISYEAR
+  type: DECIMAL
+  nullable: true
+  length: 5
+  scale: 0
+- name: PLANNO
+  type: CHAR
+  nullable: true
+  length: 3
+- name: CHDRNUM
+  type: CHAR
+  nullable: true
+  length: 8
+- name: BENCDE
+  type: CHAR
+  nullable: true
+  length: 4
+journaling:
+  enabled: true

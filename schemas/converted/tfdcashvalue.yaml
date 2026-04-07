@@ -1,0 +1,29 @@
+# TFDCASHVALUE table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TFDCASHVALUE
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TFDCASHVALUE
+columns:
+- name: ORIGAMT01
+  type: DECIMAL
+  nullable: true
+  length: 20
+  scale: 2
+- name: SEQ
+  type: CHAR
+  nullable: true
+  length: 2
+- name: TRANNO
+  type: DECIMAL
+  nullable: true
+  length: 5
+  scale: 0
+- name: RDOCNUM
+  type: CHAR
+  nullable: true
+  length: 9
+journaling:
+  enabled: true

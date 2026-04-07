@@ -1,0 +1,94 @@
+# CHEQPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: CHEQPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - CHEQPF
+columns:
+- name: USRPRF
+  type: CHAR
+  nullable: true
+  length: 10
+- name: TRDT
+  type: DECIMAL
+  nullable: true
+  length: 6
+  scale: 0
+- name: AUTHDATE
+  type: DECIMAL
+  nullable: true
+  length: 8
+  scale: 0
+- name: AUTHUSER
+  type: DECIMAL
+  nullable: true
+  length: 6
+  scale: 0
+- name: REQDATE
+  type: DECIMAL
+  nullable: true
+  length: 8
+  scale: 0
+- name: REQUSER
+  type: DECIMAL
+  nullable: true
+  length: 6
+  scale: 0
+- name: FACTHOUS
+  type: CHAR
+  nullable: true
+  length: 2
+- name: BANKACCKEY
+  type: CHAR
+  nullable: true
+  length: 20
+- name: BANKKEY
+  type: CHAR
+  nullable: true
+  length: 10
+- name: CHEQNO
+  type: CHAR
+  nullable: true
+  length: 9
+- name: CLTTYPE02
+  type: CHAR
+  nullable: true
+  length: 1
+- name: CLTTYPE01
+  type: CHAR
+  nullable: true
+  length: 1
+- name: CLNTNUM02
+  type: CHAR
+  nullable: true
+  length: 8
+- name: CLNTNUM01
+  type: CHAR
+  nullable: true
+  length: 8
+- name: REQNBCDE
+  type: CHAR
+  nullable: true
+  length: 2
+- name: PAYAMT
+  type: DECIMAL
+  nullable: true
+  length: 18
+  scale: 2
+- name: REQNTYPE
+  type: CHAR
+  nullable: true
+  length: 1
+- name: REQNNO
+  type: CHAR
+  nullable: true
+  length: 9
+constraints:
+  primary_key:
+    columns:
+    - REQNNO
+    - CLNTNUM01
+journaling:
+  enabled: true

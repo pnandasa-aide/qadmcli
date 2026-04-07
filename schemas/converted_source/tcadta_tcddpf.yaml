@@ -1,0 +1,103 @@
+# TCDDPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TCDDPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TCDDPF
+columns:
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: TDEDPER
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 2
+  description: CLAIM DEDUCT PERCENT
+- name: TACTINC
+  type: DECIMAL
+  nullable: false
+  length: 13
+  scale: 2
+  description: ACTUAL INCURR
+- name: SRVCCODE
+  type: CHAR
+  nullable: false
+  length: 6
+  ccsid: 838
+  description: SERVICE CODE
+  default: ''' '''
+- name: PAYPROV
+  type: DECIMAL
+  nullable: false
+  length: 15
+  scale: 2
+  description: PAYABLE TO PROVIDER
+- name: MBRSHARE
+  type: DECIMAL
+  nullable: false
+  length: 15
+  scale: 2
+  description: MEMBER SHARE
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: HMOSHARE
+  type: DECIMAL
+  nullable: false
+  length: 15
+  scale: 2
+  description: HMO SHARE
+- name: GCOCCNO
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: CLAIMS OCCURANCE NO
+  default: ''' '''
+- name: GCBENSEQ
+  type: DECIMAL
+  nullable: false
+  length: 2
+  scale: 0
+  description: CLAIM DETAILS - BENEFIT SEQUENCE NO.
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+- name: CLMCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: CLAIM COMPANY
+  default: ''' '''
+- name: CLAMNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CLAIM NUMBER
+  default: ''' '''
+constraints:
+  primary_key:
+    columns:
+    - CLMCOY
+    - CLAMNUM
+    - GCOCCNO
+    - GCBENSEQ
+journaling:
+  enabled: true

@@ -1,0 +1,84 @@
+# TFDTLIFPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TFDTLIFPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TFDTLIFPF
+columns:
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 8
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+- name: TBMI
+  type: DECIMAL
+  nullable: false
+  length: 4
+  scale: 2
+- name: HEIGHT
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 2
+- name: WEIGHT
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 2
+- name: LIFCNUM
+  type: CHAR
+  nullable: false
+  length: 8
+- name: JLIFE
+  type: CHAR
+  nullable: true
+  length: 2
+- name: LIFE
+  type: CHAR
+  nullable: true
+  length: 2
+- name: CURRTO
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+- name: CURRFROM
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+- name: TRANNO
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+- name: VALIDFLAG
+  type: CHAR
+  nullable: false
+  length: 1
+- name: CHDRNUM
+  type: CHAR
+  nullable: true
+  length: 8
+- name: CHDRCOY
+  type: CHAR
+  nullable: true
+  length: 1
+constraints:
+  primary_key:
+    columns:
+    - CHDRCOY
+    - CHDRNUM
+    - LIFE
+    - JLIFE
+journaling:
+  enabled: true

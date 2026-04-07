@@ -1,0 +1,80 @@
+# TFDGCDIPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TFDGCDIPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TFDGCDIPF
+columns:
+- name: DATIME
+  type: CHAR
+  nullable: false
+  length: 26
+- name: JOB_NAME
+  type: VARCHAR
+  nullable: false
+  length: 10
+- name: USER_PROFILE
+  type: VARCHAR
+  nullable: false
+  length: 10
+- name: GCDIAGCD10
+  type: VARCHAR
+  nullable: false
+  length: 5
+- name: GCDIAGCD09
+  type: VARCHAR
+  nullable: false
+  length: 5
+- name: GCDIAGCD08
+  type: VARCHAR
+  nullable: false
+  length: 5
+- name: GCDIAGCD07
+  type: VARCHAR
+  nullable: false
+  length: 5
+- name: GCDIAGCD06
+  type: VARCHAR
+  nullable: false
+  length: 5
+- name: GCDIAGCD05
+  type: VARCHAR
+  nullable: false
+  length: 5
+- name: GCDIAGCD04
+  type: VARCHAR
+  nullable: false
+  length: 5
+- name: GCDIAGCD03
+  type: VARCHAR
+  nullable: false
+  length: 5
+- name: GCDIAGCD02
+  type: VARCHAR
+  nullable: false
+  length: 5
+- name: GCDIAGCD01
+  type: VARCHAR
+  nullable: false
+  length: 5
+- name: GCOCCNO
+  type: VARCHAR
+  nullable: false
+  length: 2
+- name: CLAMNUM
+  type: VARCHAR
+  nullable: false
+  length: 8
+- name: CLMCOY
+  type: VARCHAR
+  nullable: false
+  length: 1
+constraints:
+  primary_key:
+    columns:
+    - CLAMNUM
+    - GCOCCNO
+journaling:
+  enabled: true

@@ -1,0 +1,34 @@
+# TFDTCDHPF_R table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TFDTCDHPF_R
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TFDTCDHPF_R
+columns:
+- name: DATIME
+  type: CHAR
+  nullable: false
+  length: 26
+- name: VALIDFLAG
+  type: VARCHAR
+  nullable: false
+  length: 1
+- name: FCLAMSTS
+  type: VARCHAR
+  nullable: false
+  length: 6
+- name: DOCTNUM
+  type: VARCHAR
+  nullable: false
+  length: 8
+- name: RRN
+  type: BIGINT
+  nullable: true
+constraints:
+  primary_key:
+    columns:
+    - RRN
+journaling:
+  enabled: true

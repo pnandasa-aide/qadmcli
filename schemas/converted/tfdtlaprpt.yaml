@@ -1,0 +1,75 @@
+# TFDTLAPRPT table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TFDTLAPRPT
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TFDTLAPRPT
+columns:
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 8
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+- name: PSTATCODE
+  type: CHAR
+  nullable: false
+  length: 2
+- name: STATCODE
+  type: CHAR
+  nullable: false
+  length: 2
+- name: PRCDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+- name: EFFDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+- name: TRANNO
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+- name: RIDER
+  type: CHAR
+  nullable: false
+  length: 2
+- name: COVERAGE
+  type: CHAR
+  nullable: false
+  length: 2
+- name: PLAN_SUFFIX
+  type: DECIMAL
+  nullable: false
+  length: 4
+  scale: 0
+- name: JLIFE
+  type: CHAR
+  nullable: false
+  length: 2
+- name: LIFE
+  type: CHAR
+  nullable: false
+  length: 2
+- name: CHDRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+- name: CHDRCOY
+  type: CHAR
+  nullable: false
+  length: 1
+journaling:
+  enabled: true

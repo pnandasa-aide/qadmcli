@@ -1,0 +1,39 @@
+# GCHIPFACT table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: GCHIPFACT
+  library: GSLIBTST
+  description: Converted from Syniti metadata - GCHIPFACT
+columns:
+- name: BILLFREQ
+  type: CHAR
+  nullable: true
+  length: 2
+- name: CRDATE
+  type: DECIMAL
+  nullable: true
+  length: 8
+  scale: 0
+- name: CCDATE
+  type: DECIMAL
+  nullable: true
+  length: 8
+  scale: 0
+- name: EFFDATE
+  type: DECIMAL
+  nullable: true
+  length: 8
+  scale: 0
+- name: CHDRNUM
+  type: CHAR
+  nullable: true
+  length: 8
+constraints:
+  primary_key:
+    columns:
+    - CHDRNUM
+    - EFFDATE
+journaling:
+  enabled: true

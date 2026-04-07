@@ -1,0 +1,29 @@
+# NETDPFACT table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: NETDPFACT
+  library: GSLIBTST
+  description: Converted from Syniti metadata - NETDPFACT
+columns:
+- name: PAYCLT
+  type: CHAR
+  nullable: true
+  length: 8
+- name: ENDDT
+  type: DECIMAL
+  nullable: true
+  length: 8
+  scale: 0
+- name: STRTDT
+  type: DECIMAL
+  nullable: true
+  length: 8
+  scale: 0
+- name: PROVORG
+  type: CHAR
+  nullable: true
+  length: 8
+journaling:
+  enabled: true

@@ -1,0 +1,173 @@
+# TUNDPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TUNDPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TUNDPF
+columns:
+- name: UNIT_VIRTUAL_FUND
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 37
+  description: UNIT LINKED FUND
+  default: ''' '''
+- name: VFUNDESC
+  type: CHAR
+  nullable: false
+  length: 30
+  ccsid: 37
+  description: VIRTUAL FUND DESCRIPTION
+  default: ''' '''
+- name: TSALEUNT
+  type: CHAR
+  nullable: false
+  length: 5
+  ccsid: 37
+  description: SALE UNIT CODE
+  default: ''' '''
+- name: TRANNO
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+  description: TRANSACTION NUMBER
+- name: TFNDHOUS
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 37
+  description: FUND HOUSE
+  default: ''' '''
+- name: TALOCRTE
+  type: DECIMAL
+  nullable: false
+  length: 16
+  scale: 8
+  description: ALLOCATION RATE
+- name: TAGGROUP
+  type: CHAR
+  nullable: false
+  length: 5
+  ccsid: 37
+  description: AGENT GROUP CODE
+  default: ''' '''
+- name: SACSTYP
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 37
+  description: SUB-ACCOUNT TYPE
+  default: ''' '''
+- name: RIDER
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 37
+  description: RIDER NUMBER
+  default: ''' '''
+- name: NOF_UNITS
+  type: DECIMAL
+  nullable: false
+  length: 16
+  scale: 5
+  description: NUMBER OF UNITS
+- name: LIFE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 37
+  description: LIFE NUMBER
+  default: ''' '''
+- name: LIFCNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 37
+  description: LIFE CLIENT NUMBER
+  default: ''' '''
+- name: FUNDPOOL
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 37
+  description: FUND POOL
+  default: ''' '''
+- name: FUND_AMOUNT
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: FUND AMOUNT
+- name: DEALCDTE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: DEALING COMPLETION DATE
+- name: DATEDUE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: DATE DUE
+- name: CRTABLE
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 37
+  description: COVERAGE/RIDER TABLE
+  default: ''' '''
+- name: COVERAGE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 37
+  description: COVERAGE NUMBER
+  default: ''' '''
+- name: CHDRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 37
+  description: CONTRACT NUMBER
+  default: ''' '''
+- name: CHDRCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 37
+  description: CONT HEADER COMPANY
+  default: ''' '''
+- name: BILLFREQ
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 37
+  description: BILLING FREQUENCY
+  default: ''' '''
+- name: BATCTRCDE
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 37
+  description: BATCH TRANSACTION CODE
+  default: ''' '''
+- name: AGTYDESC
+  type: CHAR
+  nullable: false
+  length: 30
+  ccsid: 37
+  description: TYPE DESCRIPTION
+  default: ''' '''
+- name: AGNTNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 37
+  description: AGENT NUMBER
+  default: ''' '''
+journaling:
+  enabled: true

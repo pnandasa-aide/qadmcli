@@ -1,0 +1,99 @@
+# TFDPREQPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TFDPREQPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TFDPREQPF
+columns:
+- name: AGNTNUM
+  type: CHAR
+  nullable: true
+  length: 8
+- name: TRDT
+  type: DECIMAL
+  nullable: true
+  length: 6
+  scale: 0
+- name: ACCTAMT
+  type: DECIMAL
+  nullable: true
+  length: 17
+  scale: 2
+- name: ORIGAMT
+  type: DECIMAL
+  nullable: true
+  length: 17
+  scale: 2
+- name: TRANREF
+  type: CHAR
+  nullable: true
+  length: 30
+- name: TRANDESC
+  type: CHAR
+  nullable: true
+  length: 30
+- name: EFFDATE
+  type: DECIMAL
+  nullable: true
+  length: 8
+  scale: 0
+- name: POSTYEAR
+  type: CHAR
+  nullable: true
+  length: 4
+- name: POSTMONTH
+  type: CHAR
+  nullable: true
+  length: 2
+- name: GLSIGN
+  type: CHAR
+  nullable: true
+  length: 1
+- name: GLCODE
+  type: CHAR
+  nullable: true
+  length: 14
+- name: RLDGACCT
+  type: CHAR
+  nullable: true
+  length: 16
+- name: SACSTYP
+  type: CHAR
+  nullable: true
+  length: 2
+- name: SACSCODE
+  type: CHAR
+  nullable: true
+  length: 2
+- name: BRANCH
+  type: CHAR
+  nullable: true
+  length: 2
+- name: JRNSEQ
+  type: DECIMAL
+  nullable: true
+  length: 3
+  scale: 0
+- name: RDOCNUM
+  type: CHAR
+  nullable: true
+  length: 9
+- name: RDOCCOY
+  type: CHAR
+  nullable: true
+  length: 1
+- name: RDOCPFX
+  type: CHAR
+  nullable: true
+  length: 2
+constraints:
+  primary_key:
+    columns:
+    - RDOCPFX
+    - RDOCCOY
+    - RDOCNUM
+    - JRNSEQ
+journaling:
+  enabled: true

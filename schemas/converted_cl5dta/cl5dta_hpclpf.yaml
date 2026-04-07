@@ -1,0 +1,560 @@
+# HPCLPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: HPCLPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - HPCLPF
+columns:
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: TINCURDT
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: INCURRED DATE
+- name: THOSPSEL
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: HOSPITAL SELECTION
+  default: ''' '''
+- name: TDOCTOR
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: DOCTOR CLIENT NUMBER
+  default: ''' '''
+- name: TDIAGCDE
+  type: CHAR
+  nullable: false
+  length: 5
+  ccsid: 838
+  description: DIAGNOSIS CODE
+  default: ''' '''
+- name: TBENFACT13
+  type: DECIMAL
+  nullable: false
+  length: 10
+  scale: 2
+  description: TN(TBENFACT) ACTUAL BENEFIT AMOUNT
+- name: TBENFACT12
+  type: DECIMAL
+  nullable: false
+  length: 10
+  scale: 2
+  description: TN(TBENFACT) ACTUAL BENEFIT AMOUNT
+- name: TBENFACT11
+  type: DECIMAL
+  nullable: false
+  length: 10
+  scale: 2
+  description: TN(TBENFACT) ACTUAL BENEFIT AMOUNT
+- name: TBENFACT10
+  type: DECIMAL
+  nullable: false
+  length: 10
+  scale: 2
+  description: TN(TBENFACT) ACTUAL BENEFIT AMOUNT
+- name: TBENFACT09
+  type: DECIMAL
+  nullable: false
+  length: 10
+  scale: 2
+  description: TN(TBENFACT) ACTUAL BENEFIT AMOUNT
+- name: TBENFACT08
+  type: DECIMAL
+  nullable: false
+  length: 10
+  scale: 2
+  description: TN(TBENFACT) ACTUAL BENEFIT AMOUNT
+- name: TBENFACT07
+  type: DECIMAL
+  nullable: false
+  length: 10
+  scale: 2
+  description: TN(TBENFACT) ACTUAL BENEFIT AMOUNT
+- name: TBENFACT06
+  type: DECIMAL
+  nullable: false
+  length: 10
+  scale: 2
+  description: TN(TBENFACT) ACTUAL BENEFIT AMOUNT
+- name: TBENFACT05
+  type: DECIMAL
+  nullable: false
+  length: 10
+  scale: 2
+  description: TN(TBENFACT) ACTUAL BENEFIT AMOUNT
+- name: TBENFACT04
+  type: DECIMAL
+  nullable: false
+  length: 10
+  scale: 2
+  description: TN(TBENFACT) ACTUAL BENEFIT AMOUNT
+- name: TBENFACT03
+  type: DECIMAL
+  nullable: false
+  length: 10
+  scale: 2
+  description: TN(TBENFACT) ACTUAL BENEFIT AMOUNT
+- name: TBENFACT02
+  type: DECIMAL
+  nullable: false
+  length: 10
+  scale: 2
+  description: TN(TBENFACT) ACTUAL BENEFIT AMOUNT
+- name: TBENFACT01
+  type: DECIMAL
+  nullable: false
+  length: 10
+  scale: 2
+  description: TN(TBENFACT) ACTUAL BENEFIT AMOUNT
+- name: TBENFACTT
+  type: DECIMAL
+  nullable: false
+  length: 10
+  scale: 2
+  description: ACTUAL BENEFIT TOTAL
+- name: RIDER
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: RIDER NUMBER
+  default: ''' '''
+- name: RGPYNUM
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+  description: REGULAR PAYMENT SEQUENCE NUMBER
+- name: PREMUNIT
+  type: DECIMAL
+  nullable: false
+  length: 6
+  scale: 0
+  description: PREMIUM UNIT
+- name: NUMCLM
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+  description: NUMBER OF CLAIM
+- name: LIFE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: LIFE NUMBER
+  default: ''' '''
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: ITMTO
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: ITEM TO DATE
+- name: ITMFRM
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: ITEM FROM DATE
+- name: DISCHGDT
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: DISCHARGE DATE
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+- name: DACLAIM13
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: TN(DACLAIM) NUMBER OF DAYS CLAIM
+- name: DACLAIM12
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: TN(DACLAIM) NUMBER OF DAYS CLAIM
+- name: DACLAIM11
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: TN(DACLAIM) NUMBER OF DAYS CLAIM
+- name: DACLAIM10
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: TN(DACLAIM) NUMBER OF DAYS CLAIM
+- name: DACLAIM09
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: TN(DACLAIM) NUMBER OF DAYS CLAIM
+- name: DACLAIM08
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: TN(DACLAIM) NUMBER OF DAYS CLAIM
+- name: DACLAIM07
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: TN(DACLAIM) NUMBER OF DAYS CLAIM
+- name: DACLAIM06
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: TN(DACLAIM) NUMBER OF DAYS CLAIM
+- name: DACLAIM05
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: TN(DACLAIM) NUMBER OF DAYS CLAIM
+- name: DACLAIM04
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: TN(DACLAIM) NUMBER OF DAYS CLAIM
+- name: DACLAIM03
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: TN(DACLAIM) NUMBER OF DAYS CLAIM
+- name: DACLAIM02
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: TN(DACLAIM) NUMBER OF DAYS CLAIM
+- name: DACLAIM01
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: TN(DACLAIM) NUMBER OF DAYS CLAIM
+- name: COVERAGE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: COVERAGE NUMBER
+  default: ''' '''
+- name: CLAIMTOT
+  type: DECIMAL
+  nullable: false
+  length: 10
+  scale: 2
+  description: CLAIM TOTAL
+- name: CLAIMAMT13
+  type: DECIMAL
+  nullable: false
+  length: 10
+  scale: 2
+  description: TN(CLAIMAMT) CLAIM AMOUNT
+- name: CLAIMAMT12
+  type: DECIMAL
+  nullable: false
+  length: 10
+  scale: 2
+  description: TN(CLAIMAMT) CLAIM AMOUNT
+- name: CLAIMAMT11
+  type: DECIMAL
+  nullable: false
+  length: 10
+  scale: 2
+  description: TN(CLAIMAMT) CLAIM AMOUNT
+- name: CLAIMAMT10
+  type: DECIMAL
+  nullable: false
+  length: 10
+  scale: 2
+  description: TN(CLAIMAMT) CLAIM AMOUNT
+- name: CLAIMAMT09
+  type: DECIMAL
+  nullable: false
+  length: 10
+  scale: 2
+  description: TN(CLAIMAMT) CLAIM AMOUNT
+- name: CLAIMAMT08
+  type: DECIMAL
+  nullable: false
+  length: 10
+  scale: 2
+  description: TN(CLAIMAMT) CLAIM AMOUNT
+- name: CLAIMAMT07
+  type: DECIMAL
+  nullable: false
+  length: 10
+  scale: 2
+  description: TN(CLAIMAMT) CLAIM AMOUNT
+- name: CLAIMAMT06
+  type: DECIMAL
+  nullable: false
+  length: 10
+  scale: 2
+  description: TN(CLAIMAMT) CLAIM AMOUNT
+- name: CLAIMAMT05
+  type: DECIMAL
+  nullable: false
+  length: 10
+  scale: 2
+  description: TN(CLAIMAMT) CLAIM AMOUNT
+- name: CLAIMAMT04
+  type: DECIMAL
+  nullable: false
+  length: 10
+  scale: 2
+  description: TN(CLAIMAMT) CLAIM AMOUNT
+- name: CLAIMAMT03
+  type: DECIMAL
+  nullable: false
+  length: 10
+  scale: 2
+  description: TN(CLAIMAMT) CLAIM AMOUNT
+- name: CLAIMAMT02
+  type: DECIMAL
+  nullable: false
+  length: 10
+  scale: 2
+  description: TN(CLAIMAMT) CLAIM AMOUNT
+- name: CLAIMAMT01
+  type: DECIMAL
+  nullable: false
+  length: 10
+  scale: 2
+  description: TN(CLAIMAMT) CLAIM AMOUNT
+- name: CHDRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CONTRACT NUMBER
+  default: ''' '''
+- name: CHDRCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: CONT HEADER COMPANY
+  default: ''' '''
+- name: BENFAMT13
+  type: DECIMAL
+  nullable: false
+  length: 7
+  scale: 0
+  description: TN(BENFAMT) BENEFIT AMOUNT
+- name: BENFAMT12
+  type: DECIMAL
+  nullable: false
+  length: 7
+  scale: 0
+  description: TN(BENFAMT) BENEFIT AMOUNT
+- name: BENFAMT11
+  type: DECIMAL
+  nullable: false
+  length: 7
+  scale: 0
+  description: TN(BENFAMT) BENEFIT AMOUNT
+- name: BENFAMT10
+  type: DECIMAL
+  nullable: false
+  length: 7
+  scale: 0
+  description: TN(BENFAMT) BENEFIT AMOUNT
+- name: BENFAMT09
+  type: DECIMAL
+  nullable: false
+  length: 7
+  scale: 0
+  description: TN(BENFAMT) BENEFIT AMOUNT
+- name: BENFAMT08
+  type: DECIMAL
+  nullable: false
+  length: 7
+  scale: 0
+  description: TN(BENFAMT) BENEFIT AMOUNT
+- name: BENFAMT07
+  type: DECIMAL
+  nullable: false
+  length: 7
+  scale: 0
+  description: TN(BENFAMT) BENEFIT AMOUNT
+- name: BENFAMT06
+  type: DECIMAL
+  nullable: false
+  length: 7
+  scale: 0
+  description: TN(BENFAMT) BENEFIT AMOUNT
+- name: BENFAMT05
+  type: DECIMAL
+  nullable: false
+  length: 7
+  scale: 0
+  description: TN(BENFAMT) BENEFIT AMOUNT
+- name: BENFAMT04
+  type: DECIMAL
+  nullable: false
+  length: 7
+  scale: 0
+  description: TN(BENFAMT) BENEFIT AMOUNT
+- name: BENFAMT03
+  type: DECIMAL
+  nullable: false
+  length: 7
+  scale: 0
+  description: TN(BENFAMT) BENEFIT AMOUNT
+- name: BENFAMT02
+  type: DECIMAL
+  nullable: false
+  length: 7
+  scale: 0
+  description: TN(BENFAMT) BENEFIT AMOUNT
+- name: BENFAMT01
+  type: DECIMAL
+  nullable: false
+  length: 7
+  scale: 0
+  description: TN(BENFAMT) BENEFIT AMOUNT
+- name: BENEFITS13
+  type: CHAR
+  nullable: false
+  length: 29
+  ccsid: 838
+  description: TN(BENEFITS) BENEFITS DESCRIPTION
+  default: ''' '''
+- name: BENEFITS12
+  type: CHAR
+  nullable: false
+  length: 29
+  ccsid: 838
+  description: TN(BENEFITS) BENEFITS DESCRIPTION
+  default: ''' '''
+- name: BENEFITS11
+  type: CHAR
+  nullable: false
+  length: 29
+  ccsid: 838
+  description: TN(BENEFITS) BENEFITS DESCRIPTION
+  default: ''' '''
+- name: BENEFITS10
+  type: CHAR
+  nullable: false
+  length: 29
+  ccsid: 838
+  description: TN(BENEFITS) BENEFITS DESCRIPTION
+  default: ''' '''
+- name: BENEFITS09
+  type: CHAR
+  nullable: false
+  length: 29
+  ccsid: 838
+  description: TN(BENEFITS) BENEFITS DESCRIPTION
+  default: ''' '''
+- name: BENEFITS08
+  type: CHAR
+  nullable: false
+  length: 29
+  ccsid: 838
+  description: TN(BENEFITS) BENEFITS DESCRIPTION
+  default: ''' '''
+- name: BENEFITS07
+  type: CHAR
+  nullable: false
+  length: 29
+  ccsid: 838
+  description: TN(BENEFITS) BENEFITS DESCRIPTION
+  default: ''' '''
+- name: BENEFITS06
+  type: CHAR
+  nullable: false
+  length: 29
+  ccsid: 838
+  description: TN(BENEFITS) BENEFITS DESCRIPTION
+  default: ''' '''
+- name: BENEFITS05
+  type: CHAR
+  nullable: false
+  length: 29
+  ccsid: 838
+  description: TN(BENEFITS) BENEFITS DESCRIPTION
+  default: ''' '''
+- name: BENEFITS04
+  type: CHAR
+  nullable: false
+  length: 29
+  ccsid: 838
+  description: TN(BENEFITS) BENEFITS DESCRIPTION
+  default: ''' '''
+- name: BENEFITS03
+  type: CHAR
+  nullable: false
+  length: 29
+  ccsid: 838
+  description: TN(BENEFITS) BENEFITS DESCRIPTION
+  default: ''' '''
+- name: BENEFITS02
+  type: CHAR
+  nullable: false
+  length: 29
+  ccsid: 838
+  description: TN(BENEFITS) BENEFITS DESCRIPTION
+  default: ''' '''
+- name: BENEFITS01
+  type: CHAR
+  nullable: false
+  length: 29
+  ccsid: 838
+  description: TN(BENEFITS) BENEFITS DESCRIPTION
+  default: ''' '''
+- name: ADMITDT
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: ADMIT DATE
+constraints:
+  primary_key:
+    columns:
+    - CHDRCOY
+    - CHDRNUM
+    - LIFE
+    - COVERAGE
+    - RIDER
+    - RGPYNUM
+journaling:
+  enabled: true

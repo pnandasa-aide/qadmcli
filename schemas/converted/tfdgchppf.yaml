@@ -1,0 +1,88 @@
+# TFDGCHPPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TFDGCHPPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TFDGCHPPF
+columns:
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 8
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+- name: MAJORMET
+  type: CHAR
+  nullable: false
+  length: 2
+- name: INDUSTRY
+  type: CHAR
+  nullable: false
+  length: 6
+- name: AREACOD
+  type: CHAR
+  nullable: false
+  length: 6
+- name: INWINCTYP
+  type: CHAR
+  nullable: false
+  length: 2
+- name: EMPGRP
+  type: CHAR
+  nullable: false
+  length: 2
+- name: DEFCLMPYE
+  type: CHAR
+  nullable: false
+  length: 4
+- name: DEFPLANDI
+  type: CHAR
+  nullable: false
+  length: 6
+- name: ADMNRULE
+  type: CHAR
+  nullable: false
+  length: 4
+- name: MBRDATA
+  type: CHAR
+  nullable: false
+  length: 2
+- name: REFNO
+  type: CHAR
+  nullable: false
+  length: 20
+- name: BRKSRVAC
+  type: CHAR
+  nullable: false
+  length: 50
+- name: EXUNDNM
+  type: CHAR
+  nullable: false
+  length: 47
+- name: EXBRKNM
+  type: CHAR
+  nullable: false
+  length: 47
+- name: CHDRNUM
+  type: CHAR
+  nullable: true
+  length: 8
+- name: CHDRCOY
+  type: CHAR
+  nullable: true
+  length: 1
+constraints:
+  primary_key:
+    columns:
+    - CHDRCOY
+    - CHDRNUM
+journaling:
+  enabled: true

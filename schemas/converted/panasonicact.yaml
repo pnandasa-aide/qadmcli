@@ -1,0 +1,74 @@
+# PANASONICACT table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: PANASONICACT
+  library: GSLIBTST
+  description: Converted from Syniti metadata - PANASONICACT
+columns:
+- name: TLMBRSHR01
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+- name: TLHMOSHR01
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+- name: AMTYEAR
+  type: DECIMAL
+  nullable: false
+  length: 10
+  scale: 0
+- name: PLANNO
+  type: VARCHAR
+  nullable: false
+  length: 3
+- name: PRODTYP
+  type: VARCHAR
+  nullable: false
+  length: 4
+- name: EMPNO
+  type: VARCHAR
+  nullable: false
+  length: 12
+- name: GIVNAME
+  type: VARCHAR
+  nullable: false
+  length: 20
+- name: SURNAME
+  type: VARCHAR
+  nullable: false
+  length: 30
+- name: SHORTDESC
+  type: VARCHAR
+  nullable: false
+  length: 10
+- name: DPNTNO
+  type: VARCHAR
+  nullable: false
+  length: 2
+- name: MBRNO
+  type: VARCHAR
+  nullable: false
+  length: 5
+- name: CLNTNUM
+  type: VARCHAR
+  nullable: false
+  length: 8
+- name: LSURNAME
+  type: VARCHAR
+  nullable: false
+  length: 60
+- name: COWNNUM
+  type: VARCHAR
+  nullable: false
+  length: 8
+- name: CHDRNUM
+  type: VARCHAR
+  nullable: false
+  length: 8
+journaling:
+  enabled: true

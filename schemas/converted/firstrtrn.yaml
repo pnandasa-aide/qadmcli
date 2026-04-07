@@ -1,0 +1,38 @@
+# FIRSTRTRN table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: FIRSTRTRN
+  library: GSLIBTST
+  description: Converted from Syniti metadata - FIRSTRTRN
+columns:
+- name: RLDGACCT
+  type: CHAR
+  nullable: false
+  length: 16
+  ccsid: 838
+  description: Sub Ledger Account
+  default: ''' '''
+- name: OVERFLOW
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: OVERFLOW FLAG
+  default: ''' '''
+- name: EFFDATE03
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: EFFDATE MIN
+- name: BREAKLVL
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: BREAK LEVEL
+  default: ''' '''
+journaling:
+  enabled: true

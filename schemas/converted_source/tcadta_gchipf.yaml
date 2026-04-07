@@ -1,0 +1,307 @@
+# GCHIPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: GCHIPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - GCHIPF
+columns:
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: USER
+  type: DECIMAL
+  nullable: false
+  length: 6
+  scale: 0
+  description: USER NUMBER
+- name: TRANSACTION_TIME
+  type: DECIMAL
+  nullable: false
+  length: 6
+  scale: 0
+  description: TRANSACTION TIME
+- name: TRANSACTION_DATE
+  type: DECIMAL
+  nullable: false
+  length: 6
+  scale: 0
+  description: TRANSACTION DATE
+- name: TRANNO
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+  description: TRANSACTION NUMBER
+- name: TERNMPRM
+  type: DECIMAL
+  nullable: false
+  length: 2
+  scale: 0
+  description: SHORT TERM CHARGED (MONTH)
+- name: TERMID
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: TERMINAL ID
+  default: ''' '''
+- name: SURGSCHMV
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: SURGICAL SCHEDULE METHOD/VERSION
+  default: ''' '''
+- name: CHDRSTCDE
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: STATISTICAL CODE E
+  default: ''' '''
+- name: CHDRSTCDD
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: STATISTICAL CODE D
+  default: ''' '''
+- name: CHDRSTCDC
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: STATISTICAL CODE C
+  default: ''' '''
+- name: CHDRSTCDB
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: STATISTICAL CODE B
+  default: ''' '''
+- name: CHDRSTCDA
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: STATISTICAL CODE A
+  default: ''' '''
+- name: SPSMED
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: SPOUSE MEDICAL ASSITANCE
+  default: ''' '''
+- name: SPSMBR
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: SPOUSE MEMBERSHIP
+  default: ''' '''
+- name: RIMTHVCD
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: RI METHOD VARIATION CODE
+  default: ''' '''
+- name: PRVBILFLG
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: PROVISIONAL BILL FOR CURRENT TERM FLAG
+  default: ''' '''
+- name: PAYRPFX
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: PAYER PREFIX
+  default: ''' '''
+- name: PAYRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: PAYER NUMBER
+  default: ''' '''
+- name: PAYRCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: PAYER COMPANY
+  default: ''' '''
+- name: NRISDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: ISSUE DATE OF CURRENT TERM (NB/RENEWAL)
+- name: MEDPRVDR
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: MEDICAL PROVIDER
+  default: ''' '''
+- name: MANDREF
+  type: CHAR
+  nullable: false
+  length: 5
+  ccsid: 838
+  description: MANDATE REFERENCE NUMBER
+  default: ''' '''
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: GADJFREQ
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: ADJUSTMENT FREQUENCY
+  default: ''' '''
+- name: EFFDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: EFFECTIVE DATE
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+- name: CRDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: RENEWAL DATE
+- name: CRATE
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 9
+  description: CURRENCY RATE
+- name: CNTBRANCH
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: SERVICING BRANCH
+  default: ''' '''
+- name: CHILDMED
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: CHILD MEDICAL ASSITANCE
+  default: ''' '''
+- name: CHILDMBR
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: CHILD MEMBERSHIP
+  default: ''' '''
+- name: CHDRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CONTRACT NUMBER
+  default: ''' '''
+- name: CHDRCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: CONT HEADER COMPANY
+  default: ''' '''
+- name: CCDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: CONTRACT COMMENCEMENT DATE
+- name: BTDATENR
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: FIRST BILLINGDATE AT NEWBUSINESS/RENEWAL
+- name: BILLFREQ
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: BILLING FREQUENCY
+  default: ''' '''
+- name: BILLCHNL
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: BILLING CHANNEL
+  default: ''' '''
+- name: BANKCODE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: BANK CODE
+  default: ''' '''
+- name: AREACDEMV
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: AREA CODE METHOD/VERSION
+  default: ''' '''
+- name: AGNTPFX
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: AGENT PREFIX
+  default: ''' '''
+- name: AGNTNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: AGENT NUMBER
+  default: ''' '''
+- name: AGNTCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: AGENT COMPANY
+  default: ''' '''
+constraints:
+  primary_key:
+    columns:
+    - CHDRCOY
+    - CHDRNUM
+    - EFFDATE
+journaling:
+  enabled: true

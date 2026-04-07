@@ -1,0 +1,142 @@
+# GCHPPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: GCHPPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - GCHPPF
+columns:
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: REFNO
+  type: CHAR
+  nullable: false
+  length: 20
+  ccsid: 838
+  description: PREVIOUS POLICY NUMBER
+  default: ''' '''
+- name: MBRDATA
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: METHOD OF PROVIDING NEW MEMBERS DATA
+  default: ''' '''
+- name: MAJORMET
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: MAJOR MEDICAL METHOD
+  default: ''' '''
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: INWINCTYP
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: INWARD INCOME TYPE
+  default: ''' '''
+- name: INDUSTRY
+  type: CHAR
+  nullable: false
+  length: 6
+  ccsid: 838
+  description: INDUSTRY
+  default: ''' '''
+- name: EXUNDNM
+  type: CHAR
+  nullable: false
+  length: 47
+  ccsid: 838
+  description: FORMER UNDERWRITING NAME
+  default: ''' '''
+- name: EXBRKNM
+  type: CHAR
+  nullable: false
+  length: 47
+  ccsid: 838
+  description: FORMER BROKER NAME
+  default: ''' '''
+- name: EMPGRP
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: EMPLOYER GROUP
+  default: ''' '''
+- name: DEFPLANDI
+  type: CHAR
+  nullable: false
+  length: 6
+  ccsid: 838
+  description: DEFAULT PLAN FOR DATA IMPORT
+  default: ''' '''
+- name: DEFCLMPYE
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: DEFAULT CLAIM PAYEE RULE
+  default: ''' '''
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+- name: CHDRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CONTRACT NUMBER
+  default: ''' '''
+- name: CHDRCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: CONT HEADER COMPANY
+  default: ''' '''
+- name: BRKSRVAC
+  type: CHAR
+  nullable: false
+  length: 50
+  ccsid: 838
+  description: BROKER SERVICING STAFF
+  default: ''' '''
+- name: AREACOD
+  type: CHAR
+  nullable: false
+  length: 6
+  ccsid: 838
+  description: AREA CODE
+  default: ''' '''
+- name: ADMNRULE
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: MEMBER AND CLAIM ADMINISTRATION RULE
+  default: ''' '''
+constraints:
+  primary_key:
+    columns:
+    - CHDRCOY
+    - CHDRNUM
+journaling:
+  enabled: true

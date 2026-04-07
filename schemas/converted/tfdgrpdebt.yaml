@@ -1,0 +1,23 @@
+# TFDGRPDEBT table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TFDGRPDEBT
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TFDGRPDEBT
+columns:
+- name: ENGDSC
+  type: CHAR
+  nullable: true
+  length: 800
+- name: THADSC
+  type: CHAR
+  nullable: true
+  length: 800
+- name: DBTCDE
+  type: CHAR
+  nullable: true
+  length: 3
+journaling:
+  enabled: true

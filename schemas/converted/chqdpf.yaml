@@ -1,0 +1,112 @@
+# CHQDPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: CHQDPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - CHQDPF
+columns:
+- name: ZCOVDATA
+  type: CHAR
+  nullable: false
+  length: 135
+  ccsid: 838
+  description: ZCOVDATA
+  default: ''' '''
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: TUSRGRP
+  type: CHAR
+  nullable: false
+  length: 20
+  ccsid: 838
+  description: USER GROUP
+  default: ''' '''
+- name: TPAYDESC
+  type: CHAR
+  nullable: false
+  length: 20
+  ccsid: 838
+  description: PAYMENT TYPE DESC
+  default: ''' '''
+- name: TCHQEXPD
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: CHEQUE EXPIRE DATE
+- name: TCHQDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: CHEQUE DATE
+- name: TAUSER
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TA USER
+  default: ''' '''
+- name: REQNNO
+  type: CHAR
+  nullable: false
+  length: 9
+  ccsid: 838
+  description: REQN NUMBER
+  default: ''' '''
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+- name: CHEQSTS
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CHEQSTS
+  default: ''' '''
+- name: CHEQNO
+  type: CHAR
+  nullable: false
+  length: 9
+  ccsid: 838
+  description: CHEQ NUMBER
+  default: ''' '''
+- name: CHDRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CONTRACT NUMBER
+  default: ''' '''
+- name: JOBNAME_NUMBER
+  type: DECIMAL
+  nullable: false
+  length: 6
+  scale: 0
+  description: BATCH SCHEDULE JOBNAME - NUMBER
+constraints:
+  primary_key:
+    columns:
+    - REQNNO
+    - CHEQNO
+    - TCHQDATE
+journaling:
+  enabled: true

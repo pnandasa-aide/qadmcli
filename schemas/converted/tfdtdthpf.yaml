@@ -1,0 +1,44 @@
+# TFDTDTHPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TFDTDTHPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TFDTDTHPF
+columns:
+- name: DATESUB
+  type: DECIMAL
+  nullable: true
+  length: 8
+  scale: 0
+- name: BATCACTMN
+  type: DECIMAL
+  nullable: true
+  length: 2
+  scale: 0
+- name: BATCACTYR
+  type: DECIMAL
+  nullable: true
+  length: 4
+  scale: 0
+- name: PTRNEFF
+  type: DECIMAL
+  nullable: true
+  length: 8
+  scale: 0
+- name: BATCTRCDE
+  type: CHAR
+  nullable: true
+  length: 4
+- name: TRANNO
+  type: DECIMAL
+  nullable: true
+  length: 5
+  scale: 0
+- name: CHDRNUM
+  type: CHAR
+  nullable: true
+  length: 8
+journaling:
+  enabled: true

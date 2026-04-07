@@ -1,0 +1,65 @@
+# DCRBPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: DCRBPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - DCRBPF
+columns:
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 8
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+- name: BNKACKEY03
+  type: CHAR
+  nullable: false
+  length: 20
+- name: BNKACKEY02
+  type: CHAR
+  nullable: false
+  length: 20
+- name: BNKACKEY01
+  type: CHAR
+  nullable: false
+  length: 20
+- name: BANKKEY03
+  type: CHAR
+  nullable: false
+  length: 10
+- name: BANKKEY02
+  type: CHAR
+  nullable: false
+  length: 10
+- name: BANKKEY01
+  type: CHAR
+  nullable: false
+  length: 10
+- name: CLNTNUM
+  type: CHAR
+  nullable: true
+  length: 8
+- name: CLNTCOY
+  type: CHAR
+  nullable: true
+  length: 1
+- name: CLNTPFX
+  type: CHAR
+  nullable: true
+  length: 2
+constraints:
+  primary_key:
+    columns:
+    - CLNTPFX
+    - CLNTCOY
+    - CLNTNUM
+journaling:
+  enabled: true

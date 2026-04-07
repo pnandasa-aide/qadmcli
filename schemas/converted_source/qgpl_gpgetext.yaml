@@ -1,0 +1,37 @@
+# GPGETEXT table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: GPGETEXT
+  library: GSLIBTST
+  description: Converted from Syniti metadata - GPGETEXT
+columns:
+- name: SEQNOGP
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: SEQUENCE NO - GENERAL PAGE
+- name: POL
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: substr(genpkey,2,8)
+  default: ''' '''
+- name: GENPLINE
+  type: CHAR
+  nullable: false
+  length: 75
+  ccsid: 838
+  description: GENERAL PAGE - DETAILED LINE
+  default: ''' '''
+- name: EFFDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: EFFECTIVE DATE
+journaling:
+  enabled: true

@@ -1,0 +1,100 @@
+# TFDTAGOPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TFDTAGOPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TFDTAGOPF
+columns:
+- name: TOFFCSTS
+  type: CHAR
+  nullable: true
+  length: 1
+- name: TPOSTCDE
+  type: CHAR
+  nullable: true
+  length: 10
+- name: TFAXNO
+  type: CHAR
+  nullable: true
+  length: 16
+- name: TTELNO02
+  type: CHAR
+  nullable: true
+  length: 16
+- name: TTELNO01
+  type: CHAR
+  nullable: true
+  length: 16
+- name: TPROVCDE
+  type: CHAR
+  nullable: true
+  length: 3
+- name: ZCLTADDR03
+  type: CHAR
+  nullable: true
+  length: 50
+- name: ZCLTADDR02
+  type: CHAR
+  nullable: true
+  length: 50
+- name: ZCLTADDR01
+  type: CHAR
+  nullable: true
+  length: 50
+- name: TOFFAREA
+  type: CHAR
+  nullable: true
+  length: 2
+- name: TOFFCTYP
+  type: CHAR
+  nullable: true
+  length: 3
+- name: AGNTNUM
+  type: CHAR
+  nullable: true
+  length: 8
+- name: AGNTCOY
+  type: CHAR
+  nullable: true
+  length: 1
+- name: AGNTPFX
+  type: CHAR
+  nullable: true
+  length: 2
+- name: TJOINDTE
+  type: DECIMAL
+  nullable: true
+  length: 8
+  scale: 0
+- name: EFFDATE
+  type: DECIMAL
+  nullable: true
+  length: 8
+  scale: 0
+- name: CRTDATE
+  type: DECIMAL
+  nullable: true
+  length: 8
+  scale: 0
+- name: TEOFFCNM
+  type: CHAR
+  nullable: true
+  length: 50
+- name: TTOFFCNM
+  type: CHAR
+  nullable: true
+  length: 50
+- name: TOFFCCDE
+  type: CHAR
+  nullable: true
+  length: 3
+constraints:
+  primary_key:
+    columns:
+    - TOFFCCDE
+    - CRTDATE
+    - EFFDATE
+journaling:
+  enabled: true

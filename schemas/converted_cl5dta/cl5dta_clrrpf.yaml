@@ -1,0 +1,98 @@
+# CLRRPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: CLRRPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - CLRRPF
+columns:
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: USED_TO_BE
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: USED TO BE INDICATOR
+  default: ''' '''
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: FOREPFX
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: FOREIGN KEY - PREFIX
+  default: ''' '''
+- name: FORENUM
+  type: CHAR
+  nullable: false
+  length: 30
+  ccsid: 838
+  description: FOREIGN KEY - NUMBER
+  default: ''' '''
+- name: FORECOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: FOREIGN KEY - COMPANY
+  default: ''' '''
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+- name: CLRRROLE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: CLIENT RELATIONSHIP
+  default: ''' '''
+- name: CLNTPFX
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: CLIENT PREFIX
+  default: ''' '''
+- name: CLNTNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CLIENT NUMBER
+  default: ''' '''
+- name: CLNTCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: CLIENT COMPANY
+  default: ''' '''
+constraints:
+  primary_key:
+    columns:
+    - CLNTPFX
+    - CLNTCOY
+    - CLNTNUM
+    - CLRRROLE
+    - FOREPFX
+    - FORECOY
+    - FORENUM
+journaling:
+  enabled: true

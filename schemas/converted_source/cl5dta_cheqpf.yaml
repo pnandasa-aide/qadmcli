@@ -1,0 +1,303 @@
+# CHEQPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: CHEQPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - CHEQPF
+columns:
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: USER
+  type: DECIMAL
+  nullable: false
+  length: 6
+  scale: 0
+  description: USER NUMBER
+- name: TRANSACTION_TIME
+  type: DECIMAL
+  nullable: false
+  length: 6
+  scale: 0
+  description: TRANSACTION TIME
+- name: TRANSACTION_DATE
+  type: DECIMAL
+  nullable: false
+  length: 6
+  scale: 0
+  description: TRANSACTION DATE
+- name: TERMID
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: TERMINAL ID
+  default: ''' '''
+- name: SURNAM02
+  type: CHAR
+  nullable: false
+  length: 30
+  ccsid: 838
+  description: TN(SURNAM) SURNAM
+  default: ''' '''
+- name: SURNAM01
+  type: CHAR
+  nullable: false
+  length: 30
+  ccsid: 838
+  description: TN(SURNAM) SURNAM
+  default: ''' '''
+- name: STMTPAGE
+  type: DECIMAL
+  nullable: false
+  length: 4
+  scale: 0
+  description: BANK STMT PAGE
+- name: SAL_N_INIT02
+  type: CHAR
+  nullable: false
+  length: 30
+  ccsid: 838
+  description: TN(SALNINIT) SALUTATION AND INITIALS
+  default: ''' '''
+- name: SAL_N_INIT01
+  type: CHAR
+  nullable: false
+  length: 30
+  ccsid: 838
+  description: TN(SALNINIT) SALUTATION AND INITIALS
+  default: ''' '''
+- name: REVERSAL_IND
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: REVERSAL INDICTOR
+  default: ''' '''
+- name: REQUSER
+  type: DECIMAL
+  nullable: false
+  length: 6
+  scale: 0
+  description: REQUESTING USER
+- name: REQTIME
+  type: DECIMAL
+  nullable: false
+  length: 6
+  scale: 0
+  description: REQUEST TIME
+- name: REQNTYPE
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: PAYMENT REQUEST TYPE
+  default: ''' '''
+- name: REQNREV
+  type: CHAR
+  nullable: false
+  length: 9
+  ccsid: 838
+  description: REVERSE REQUISITION NUMBER
+  default: ''' '''
+- name: REQNNO
+  type: CHAR
+  nullable: false
+  length: 9
+  ccsid: 838
+  description: REQN NUMBER
+  default: ''' '''
+- name: REQNCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: REQN COMPANY
+  default: ''' '''
+- name: REQNBCDE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: REQN BANKCODE
+  default: ''' '''
+- name: REQDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: REQUEST DATE
+- name: PROCIND
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: PROCESS IND
+  default: ''' '''
+- name: PRESFLAG
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: PRESENTED FLAG
+  default: ''' '''
+- name: PRESDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: PRESENTED DATE
+- name: PAYDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: PAY DATE
+- name: PAYCURR
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: PAYMENT CURRENCY
+  default: ''' '''
+- name: PAYAMT
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: PAY AMT
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: FACTHOUS
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: FACTORING HOUSE 1
+  default: ''' '''
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+- name: CLTTYPE02
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: TN(CLTTYPE) CLIENT TYPE - PER/COMP
+  default: ''' '''
+- name: CLTTYPE01
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: TN(CLTTYPE) CLIENT TYPE - PER/COMP
+  default: ''' '''
+- name: CLNTNUM02
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: TN(CLNTNUM) CLIENT NUMBER
+  default: ''' '''
+- name: CLNTNUM01
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: TN(CLNTNUM) CLIENT NUMBER
+  default: ''' '''
+- name: CLNTCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: CLIENT COMPANY
+  default: ''' '''
+- name: CHEQNO
+  type: CHAR
+  nullable: false
+  length: 9
+  ccsid: 838
+  description: CHEQ NUMBER
+  default: ''' '''
+- name: CHEQDUPN
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: CHEQ DUP NO
+  default: ''' '''
+- name: CAPNAME
+  type: CHAR
+  nullable: false
+  length: 50
+  ccsid: 838
+  description: NAME IN CAPITAL FORM
+  default: ''' '''
+- name: BRANCH
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: BRANCH
+  default: ''' '''
+- name: BANKKEY
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: BANK KEY
+  default: ''' '''
+- name: BANKACCKEY
+  type: CHAR
+  nullable: false
+  length: 20
+  ccsid: 838
+  description: BANK ACCOUNT KEY
+  default: ''' '''
+- name: AUTHUSER
+  type: DECIMAL
+  nullable: false
+  length: 6
+  scale: 0
+  description: AUTHORISING USER
+- name: AUTHTIME
+  type: DECIMAL
+  nullable: false
+  length: 6
+  scale: 0
+  description: AUTHORISED TIME
+- name: AUTHDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: AUTHORISED DATE
+- name: ARCHDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: ARCHIVE DATE
+constraints:
+  primary_key:
+    columns:
+    - REQNCOY
+    - REQNNO
+journaling:
+  enabled: true

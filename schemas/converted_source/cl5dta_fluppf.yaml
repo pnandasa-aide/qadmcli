@@ -1,0 +1,145 @@
+# FLUPPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: FLUPPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - FLUPPF
+columns:
+- name: ZAUTOIND
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: AUTOMATIC FOLLOW UP INDICATOR
+  default: ''' '''
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: USER
+  type: DECIMAL
+  nullable: false
+  length: 6
+  scale: 0
+  description: USER NUMBER
+- name: TRANSACTION_TIME
+  type: DECIMAL
+  nullable: false
+  length: 6
+  scale: 0
+  description: TRANSACTION TIME
+- name: TRANSACTION_DATE
+  type: DECIMAL
+  nullable: false
+  length: 6
+  scale: 0
+  description: TRANSACTION DATE
+- name: TRANNO
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+  description: TRANSACTION NUMBER
+- name: TERMID
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: TERMINAL ID
+  default: ''' '''
+- name: LIFE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: LIFE NUMBER
+  default: ''' '''
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: JLIFE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: JOINT LIFE NUMBER
+  default: ''' '''
+- name: FUPTYPE
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: FOLLOW-UP TYPE
+  default: ''' '''
+- name: FUPSTAT
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: FOLLOW-UP STATUS
+  default: ''' '''
+- name: FUPREMK
+  type: CHAR
+  nullable: false
+  length: 40
+  ccsid: 838
+  description: FOLLOW-UP REMARKS
+  default: ''' '''
+- name: FUPNO
+  type: DECIMAL
+  nullable: false
+  length: 2
+  scale: 0
+  description: FOLLOW-UP NUMBER
+- name: FUPREMDT
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: FOLLOW-UP REMIDER DATE
+- name: FUPCODE
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: FOLLOW-UP CODE
+  default: ''' '''
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+- name: CLAMNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CLAIM NUMBER
+  default: ''' '''
+- name: CHDRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CONTRACT NUMBER
+  default: ''' '''
+- name: CHDRCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: CONT HEADER COMPANY
+  default: ''' '''
+journaling:
+  enabled: true

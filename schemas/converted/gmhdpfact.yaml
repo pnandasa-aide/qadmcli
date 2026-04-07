@@ -1,0 +1,47 @@
+# GMHDPFACT table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: GMHDPFACT
+  library: GSLIBTST
+  description: Converted from Syniti metadata - GMHDPFACT
+columns:
+- name: EMPNO
+  type: CHAR
+  nullable: true
+  length: 12
+- name: DTEATT
+  type: DECIMAL
+  nullable: true
+  length: 8
+  scale: 0
+- name: CLNTNUM
+  type: CHAR
+  nullable: true
+  length: 8
+- name: DTETRM
+  type: DECIMAL
+  nullable: true
+  length: 8
+  scale: 0
+- name: DPNTNO
+  type: CHAR
+  nullable: true
+  length: 2
+- name: MBRNO
+  type: CHAR
+  nullable: true
+  length: 5
+- name: CHDRNUM
+  type: CHAR
+  nullable: true
+  length: 8
+constraints:
+  primary_key:
+    columns:
+    - CHDRNUM
+    - MBRNO
+    - DPNTNO
+journaling:
+  enabled: true

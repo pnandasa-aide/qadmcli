@@ -1,0 +1,117 @@
+# GBNFL table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: GBNFL
+  library: GSLIBTST
+  description: Converted from Syniti metadata - GBNFL
+columns:
+- name: VISYEAR
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+- name: VISMNTH
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+- name: VISLIFE
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+- name: SYSDTE
+  type: DECIMAL
+  nullable: false
+  length: 6
+  scale: 0
+- name: RELBNFT
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  default: ''' '''
+- name: PRODTYP
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  default: ''' '''
+- name: PLANNO
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  default: ''' '''
+- name: LIMITMET
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  default: ''' '''
+- name: ENDDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+- name: EFFDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+- name: DAYSVIS
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+- name: CHDRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  default: ''' '''
+- name: BENCDE
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  default: ''' '''
+- name: AMTYEAR
+  type: DECIMAL
+  nullable: false
+  length: 10
+  scale: 0
+- name: AMTVIS
+  type: DECIMAL
+  nullable: false
+  length: 10
+  scale: 0
+- name: AMTPROPR
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+- name: AMTPROC
+  type: DECIMAL
+  nullable: false
+  length: 10
+  scale: 0
+- name: AMTMNTH
+  type: DECIMAL
+  nullable: false
+  length: 10
+  scale: 0
+- name: AMTLIFE
+  type: DECIMAL
+  nullable: false
+  length: 10
+  scale: 0
+- name: AMTDAY
+  type: DECIMAL
+  nullable: false
+  length: 10
+  scale: 0
+journaling:
+  enabled: true

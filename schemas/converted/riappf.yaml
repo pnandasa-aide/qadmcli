@@ -1,0 +1,212 @@
+# RIAPPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: RIAPPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - RIAPPF
+columns:
+- name: VALIDFLAG
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: VALID FLAG
+  default: ''' '''
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: TRANNO
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+  description: TRANSACTION NUMBER
+- name: TRANCDE
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: TRANSACTION CODE
+  default: ''' '''
+- name: SUBSNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: SUBSIDIARY NUMBER
+  default: ''' '''
+- name: SUBSCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: SUBSIDIARY COMPANY
+  default: ''' '''
+- name: RITRATYP
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: RI TREATY TYPE
+  default: ''' '''
+- name: RISUMINS
+  type: DECIMAL
+  nullable: false
+  length: 15
+  scale: 2
+  description: RI SUM INSURED
+- name: RIPRCNT
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 2
+  description: RI CEDING PERCENTAGE
+- name: RIBASTYP
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: RI BASIS TYPE (P=PREM, S=SUM INSURED)
+  default: ''' '''
+- name: RIAPREM
+  type: DECIMAL
+  nullable: false
+  length: 15
+  scale: 2
+  description: RI ANNUALISED NORMAL PREMIUM
+- name: RIAEPRMR
+  type: DECIMAL
+  nullable: false
+  length: 15
+  scale: 2
+  description: RI ANNUALISED EXTRA PREMIUM (RATE LOADG)
+- name: RIAEPRMP
+  type: DECIMAL
+  nullable: false
+  length: 15
+  scale: 2
+  description: RI ANNUALISED EXTRA PREMIUM (% LOADING)
+- name: PRODTYP
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: PRODUCT CODE
+  default: ''' '''
+- name: PLANNO
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: PLAN NUMBER
+  default: ''' '''
+- name: MBRNO
+  type: CHAR
+  nullable: false
+  length: 5
+  ccsid: 838
+  description: MEMBER NUMBER
+  default: ''' '''
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: HEADCNTIND
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: HEADCOUNT IND (M-MEMBER, H-HEADCOUNT)
+  default: ''' '''
+- name: GRSKCLS
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: GROUP RI RISK CLASS
+  default: ''' '''
+- name: GRNGMNT
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: GROUP RI ARRANGEMENT CODE
+  default: ''' '''
+- name: GREASCD
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: GROUP REASSURER CODE
+  default: ''' '''
+- name: EFFDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: EFFECTIVE DATE
+- name: DTETRM
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: DATE TERMINATED
+- name: DPNTNO
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: DEPENDENT NUMBER
+  default: ''' '''
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+- name: CMRATE
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 2
+  description: COMMISSION RATE
+- name: CHDRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CONTRACT NUMBER
+  default: ''' '''
+- name: CHDRCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: CONT HEADER COMPANY
+  default: ''' '''
+constraints:
+  primary_key:
+    columns:
+    - CHDRCOY
+    - CHDRNUM
+    - HEADCNTIND
+    - MBRNO
+    - DPNTNO
+    - PRODTYP
+    - GREASCD
+    - GRNGMNT
+    - GRSKCLS
+    - EFFDATE
+    - TRANNO
+journaling:
+  enabled: true

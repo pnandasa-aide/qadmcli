@@ -1,0 +1,28 @@
+# TFDUSRDPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TFDUSRDPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TFDUSRDPF
+columns:
+- name: GROUPNAME
+  type: CHAR
+  nullable: true
+  length: 10
+- name: USERNUM
+  type: DECIMAL
+  nullable: true
+  length: 6
+  scale: 0
+- name: USERID
+  type: CHAR
+  nullable: true
+  length: 10
+constraints:
+  primary_key:
+    columns:
+    - USERID
+journaling:
+  enabled: true

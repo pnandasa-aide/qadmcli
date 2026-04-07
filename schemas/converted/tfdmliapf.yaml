@@ -1,0 +1,99 @@
+# TFDMLIAPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TFDMLIAPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TFDMLIAPF
+columns:
+- name: DATIME
+  type: VARCHAR
+  nullable: true
+  length: 8
+- name: JOB_NAME
+  type: CHAR
+  nullable: true
+  length: 10
+- name: USER_PROFILE
+  type: CHAR
+  nullable: true
+  length: 10
+- name: EFFDATE
+  type: CHAR
+  nullable: true
+  length: 8
+- name: MIND
+  type: CHAR
+  nullable: true
+  length: 2
+- name: INDC
+  type: CHAR
+  nullable: true
+  length: 2
+- name: ACTN
+  type: CHAR
+  nullable: true
+  length: 1
+- name: MLMEDCDE03
+  type: CHAR
+  nullable: true
+  length: 4
+- name: MLMEDCDE02
+  type: CHAR
+  nullable: true
+  length: 4
+- name: MLMEDCDE01
+  type: CHAR
+  nullable: true
+  length: 4
+- name: MLHSPERD
+  type: DECIMAL
+  nullable: true
+  length: 3
+  scale: 0
+- name: HPROPDTE
+  type: DECIMAL
+  nullable: true
+  length: 8
+  scale: 0
+- name: RSKFLG
+  type: CHAR
+  nullable: true
+  length: 2
+- name: DOB
+  type: DECIMAL
+  nullable: true
+  length: 8
+  scale: 0
+- name: CLNTNAML
+  type: CHAR
+  nullable: true
+  length: 51
+- name: MLOTHIC
+  type: CHAR
+  nullable: true
+  length: 16
+- name: MLOLDIC
+  type: CHAR
+  nullable: true
+  length: 16
+- name: SECURITYNO
+  type: CHAR
+  nullable: true
+  length: 15
+- name: MLENTITY
+  type: CHAR
+  nullable: true
+  length: 16
+- name: MLCOYCDE
+  type: CHAR
+  nullable: true
+  length: 2
+constraints:
+  primary_key:
+    columns:
+    - SECURITYNO
+    - MLENTITY
+journaling:
+  enabled: true

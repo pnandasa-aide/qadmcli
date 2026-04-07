@@ -1,0 +1,267 @@
+# TLIAPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TLIAPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TLIAPF
+columns:
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: TSYSFLG
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: MIB SYSTEM FLAG
+  default: ''' '''
+- name: TSLTDSC
+  type: CHAR
+  nullable: false
+  length: 15
+  ccsid: 838
+  description: MIB SALUTATION DESC
+  default: ''' '''
+- name: TMIBSLT
+  type: CHAR
+  nullable: false
+  length: 6
+  ccsid: 838
+  description: MIB SALUTATION
+  default: ''' '''
+- name: TMIBSEX
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: MIB GENDER
+  default: ''' '''
+- name: TMIBRSK
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: MIB CONCLUSION CODE
+  default: ''' '''
+- name: TMIBRMK02
+  type: CHAR
+  nullable: false
+  length: 50
+  ccsid: 838
+  description: TN(TMIBRMK) MIB REMARKS
+  default: ''' '''
+- name: TMIBRMK01
+  type: CHAR
+  nullable: false
+  length: 50
+  ccsid: 838
+  description: TN(TMIBRMK) MIB REMARKS
+  default: ''' '''
+- name: TMIBREL
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: MIB RELATIONSHIP
+  default: ''' '''
+- name: TMIBREF
+  type: CHAR
+  nullable: false
+  length: 20
+  ccsid: 838
+  description: MIB REFERENCE NUMBER
+  default: ''' '''
+- name: TMIBNUM
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: MIB NUMBER
+  default: ''' '''
+- name: TMIBMNM
+  type: CHAR
+  nullable: false
+  length: 30
+  ccsid: 838
+  description: MIB MIDDLE NAME
+  default: ''' '''
+- name: TMIBLNM
+  type: CHAR
+  nullable: false
+  length: 30
+  ccsid: 838
+  description: MIB LAST NAME
+  default: ''' '''
+- name: TMIBLIF
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: MIB LIFE STATUS
+  default: ''' '''
+- name: TMIBIDN
+  type: CHAR
+  nullable: false
+  length: 13
+  ccsid: 838
+  description: MIB IDENTIFICATION NO.
+  default: ''' '''
+- name: TMIBFNM
+  type: CHAR
+  nullable: false
+  length: 25
+  ccsid: 838
+  description: MIB FIRST NAME
+  default: ''' '''
+- name: TMIBFLG
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: MIB EXTRACT FLAG
+  default: ''' '''
+- name: TMIBDOB
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: MIB DATE OF BIRTH
+- name: TMIBDOA
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: MIB DATE OF APPLICATION
+- name: TMIBCOY
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: MIB COMPANY CODE
+  default: ''' '''
+- name: TMIBCDE03
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TN(TMIBCDE) MIB REASON CODE
+  default: ''' '''
+- name: TMIBCDE02
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TN(TMIBCDE) MIB REASON CODE
+  default: ''' '''
+- name: TMIBCDE01
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TN(TMIBCDE) MIB REASON CODE
+  default: ''' '''
+- name: MLMEDCDE10
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: TN(MLMEDCDE) MEDICAL CODE
+  default: ''' '''
+- name: MLMEDCDE09
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: TN(MLMEDCDE) MEDICAL CODE
+  default: ''' '''
+- name: MLMEDCDE08
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: TN(MLMEDCDE) MEDICAL CODE
+  default: ''' '''
+- name: MLMEDCDE07
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: TN(MLMEDCDE) MEDICAL CODE
+  default: ''' '''
+- name: MLMEDCDE06
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: TN(MLMEDCDE) MEDICAL CODE
+  default: ''' '''
+- name: MLMEDCDE05
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: TN(MLMEDCDE) MEDICAL CODE
+  default: ''' '''
+- name: MLMEDCDE04
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: TN(MLMEDCDE) MEDICAL CODE
+  default: ''' '''
+- name: MLMEDCDE03
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: TN(MLMEDCDE) MEDICAL CODE
+  default: ''' '''
+- name: MLMEDCDE02
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: TN(MLMEDCDE) MEDICAL CODE
+  default: ''' '''
+- name: MLMEDCDE01
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: TN(MLMEDCDE) MEDICAL CODE
+  default: ''' '''
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: EFFDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: EFFECTIVE DATE
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+- name: ACTN
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: ACTION
+  default: ''' '''
+journaling:
+  enabled: true

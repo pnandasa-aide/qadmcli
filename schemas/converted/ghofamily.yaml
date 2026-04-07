@@ -1,0 +1,78 @@
+# GHOFAMILY table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: GHOFAMILY
+  library: GSLIBTST
+  description: Converted from Syniti metadata - GHOFAMILY
+columns:
+- name: VISYEAR
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+- name: TLHMOSHR01
+  type: DECIMAL
+  nullable: false
+  length: 21
+  scale: 2
+  description: TLHMOSHR01 TOTAL
+- name: PRODTYP
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: PRODUCT CODE
+  default: ''' '''
+- name: PLANNO
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: PLAN NUMBER
+  default: ''' '''
+- name: MBRNO
+  type: CHAR
+  nullable: false
+  length: 5
+  ccsid: 838
+  description: MEMBER NUMBER
+  default: ''' '''
+- name: LMTWHOM
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: WHOM TO APPLY LIMITS
+  default: ''' '''
+- name: CNT0101
+  type: DECIMAL
+  nullable: false
+  length: 7
+  scale: 0
+  description: CNT01 TOTAL
+- name: CHDRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CONTRACT NUMBER
+  default: ''' '''
+- name: AMTYEAR
+  type: DECIMAL
+  nullable: false
+  length: 10
+  scale: 0
+- name: AMTVIS
+  type: DECIMAL
+  nullable: false
+  length: 10
+  scale: 0
+- name: AMTDAY
+  type: DECIMAL
+  nullable: false
+  length: 10
+  scale: 0
+journaling:
+  enabled: true

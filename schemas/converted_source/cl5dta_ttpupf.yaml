@@ -1,0 +1,388 @@
+# TTPUPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TTPUPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TTPUPF
+columns:
+- name: VIRTUAL_FUND10
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: TN(VRTFUND) VIRTUAL FUND
+  default: ''' '''
+- name: VIRTUAL_FUND09
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: TN(VRTFUND) VIRTUAL FUND
+  default: ''' '''
+- name: VIRTUAL_FUND08
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: TN(VRTFUND) VIRTUAL FUND
+  default: ''' '''
+- name: VIRTUAL_FUND07
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: TN(VRTFUND) VIRTUAL FUND
+  default: ''' '''
+- name: VIRTUAL_FUND06
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: TN(VRTFUND) VIRTUAL FUND
+  default: ''' '''
+- name: VIRTUAL_FUND05
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: TN(VRTFUND) VIRTUAL FUND
+  default: ''' '''
+- name: VIRTUAL_FUND04
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: TN(VRTFUND) VIRTUAL FUND
+  default: ''' '''
+- name: VIRTUAL_FUND03
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: TN(VRTFUND) VIRTUAL FUND
+  default: ''' '''
+- name: VIRTUAL_FUND02
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: TN(VRTFUND) VIRTUAL FUND
+  default: ''' '''
+- name: VIRTUAL_FUND01
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: TN(VRTFUND) VIRTUAL FUND
+  default: ''' '''
+- name: VALIDFLAG
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: VALID FLAG
+  default: ''' '''
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: TRANNO
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+  description: TRANSACTION NUMBER
+- name: TPAUIND
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: PERCENT OR AMOUNT OR UNIT INDICATOR
+  default: ''' '''
+- name: RIDER
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: RIDER NUMBER
+  default: ''' '''
+- name: PREMIUM
+  type: DECIMAL
+  nullable: false
+  length: 13
+  scale: 2
+  description: PREMIUM
+- name: PLAN_SUFFIX
+  type: DECIMAL
+  nullable: false
+  length: 4
+  scale: 0
+  description: PLAN SUFFIX
+- name: PCNTAMT10
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(PCNTAMT) PERCENT/AMOUNT
+- name: PCNTAMT09
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(PCNTAMT) PERCENT/AMOUNT
+- name: PCNTAMT08
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(PCNTAMT) PERCENT/AMOUNT
+- name: PCNTAMT07
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(PCNTAMT) PERCENT/AMOUNT
+- name: PCNTAMT06
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(PCNTAMT) PERCENT/AMOUNT
+- name: PCNTAMT05
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(PCNTAMT) PERCENT/AMOUNT
+- name: PCNTAMT04
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(PCNTAMT) PERCENT/AMOUNT
+- name: PCNTAMT03
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(PCNTAMT) PERCENT/AMOUNT
+- name: PCNTAMT02
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(PCNTAMT) PERCENT/AMOUNT
+- name: PCNTAMT01
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(PCNTAMT) PERCENT/AMOUNT
+- name: LIFE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: LIFE NUMBER
+  default: ''' '''
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: FUNDPOOL10
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: TN(FUNDPOOL) FUND POOL
+  default: ''' '''
+- name: FUNDPOOL09
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: TN(FUNDPOOL) FUND POOL
+  default: ''' '''
+- name: FUNDPOOL08
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: TN(FUNDPOOL) FUND POOL
+  default: ''' '''
+- name: FUNDPOOL07
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: TN(FUNDPOOL) FUND POOL
+  default: ''' '''
+- name: FUNDPOOL06
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: TN(FUNDPOOL) FUND POOL
+  default: ''' '''
+- name: FUNDPOOL05
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: TN(FUNDPOOL) FUND POOL
+  default: ''' '''
+- name: FUNDPOOL04
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: TN(FUNDPOOL) FUND POOL
+  default: ''' '''
+- name: FUNDPOOL03
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: TN(FUNDPOOL) FUND POOL
+  default: ''' '''
+- name: FUNDPOOL02
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: TN(FUNDPOOL) FUND POOL
+  default: ''' '''
+- name: FUNDPOOL01
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: TN(FUNDPOOL) FUND POOL
+  default: ''' '''
+- name: EFFDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: EFFECTIVE DATE
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+- name: CURRENCY10
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: TN(CURRENCY) CURRENCY
+  default: ''' '''
+- name: CURRENCY09
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: TN(CURRENCY) CURRENCY
+  default: ''' '''
+- name: CURRENCY08
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: TN(CURRENCY) CURRENCY
+  default: ''' '''
+- name: CURRENCY07
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: TN(CURRENCY) CURRENCY
+  default: ''' '''
+- name: CURRENCY06
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: TN(CURRENCY) CURRENCY
+  default: ''' '''
+- name: CURRENCY05
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: TN(CURRENCY) CURRENCY
+  default: ''' '''
+- name: CURRENCY04
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: TN(CURRENCY) CURRENCY
+  default: ''' '''
+- name: CURRENCY03
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: TN(CURRENCY) CURRENCY
+  default: ''' '''
+- name: CURRENCY02
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: TN(CURRENCY) CURRENCY
+  default: ''' '''
+- name: CURRENCY01
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: TN(CURRENCY) CURRENCY
+  default: ''' '''
+- name: COVERAGE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: COVERAGE NUMBER
+  default: ''' '''
+- name: CHDRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CONTRACT NUMBER
+  default: ''' '''
+- name: CHDRCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: CONT HEADER COMPANY
+  default: ''' '''
+- name: BATCHKEY
+  type: CHAR
+  nullable: false
+  length: 22
+  ccsid: 838
+  description: BATCH KEY
+  default: ''' '''
+constraints:
+  primary_key:
+    columns:
+    - CHDRCOY
+    - CHDRNUM
+    - TRANNO
+journaling:
+  enabled: true

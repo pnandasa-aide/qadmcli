@@ -1,0 +1,98 @@
+# CLMPPFACT table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: CLMPPFACT
+  library: GSLIBTST
+  description: Converted from Syniti metadata - CLMPPFACT
+columns:
+- name: INDC
+  type: CHAR
+  nullable: true
+  length: 2
+- name: RECEIPT03
+  type: CHAR
+  nullable: true
+  length: 8
+- name: RECEIPT02
+  type: CHAR
+  nullable: true
+  length: 8
+- name: RECEIPT01
+  type: CHAR
+  nullable: true
+  length: 8
+- name: POSTMONTH
+  type: CHAR
+  nullable: true
+  length: 2
+- name: POSTYEAR
+  type: CHAR
+  nullable: true
+  length: 4
+- name: TRANDATE
+  type: DECIMAL
+  nullable: true
+  length: 8
+  scale: 0
+- name: PAYAMT
+  type: DECIMAL
+  nullable: true
+  length: 18
+  scale: 2
+- name: REQNNO
+  type: CHAR
+  nullable: true
+  length: 9
+- name: TRANTYP
+  type: CHAR
+  nullable: true
+  length: 2
+- name: REQNTYPE
+  type: CHAR
+  nullable: true
+  length: 1
+- name: REQNBCDE
+  type: CHAR
+  nullable: true
+  length: 2
+- name: PAYCLT
+  type: CHAR
+  nullable: true
+  length: 8
+- name: PAYCOY
+  type: CHAR
+  nullable: true
+  length: 1
+- name: GCPYSEQ
+  type: DECIMAL
+  nullable: true
+  length: 3
+  scale: 0
+- name: PAYMTYP
+  type: CHAR
+  nullable: true
+  length: 1
+- name: GCOCCNO
+  type: CHAR
+  nullable: true
+  length: 2
+- name: CLAMNUM
+  type: CHAR
+  nullable: true
+  length: 8
+- name: CLMCOY
+  type: CHAR
+  nullable: true
+  length: 1
+constraints:
+  primary_key:
+    columns:
+    - CLMCOY
+    - CLAMNUM
+    - GCOCCNO
+    - PAYMTYP
+    - GCPYSEQ
+journaling:
+  enabled: true

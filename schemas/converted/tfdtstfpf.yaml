@@ -1,0 +1,27 @@
+# TFDTSTFPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TFDTSTFPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TFDTSTFPF
+columns:
+- name: TJPAVSCD
+  type: CHAR
+  nullable: true
+  length: 3
+- name: TCRSTFCD
+  type: CHAR
+  nullable: true
+  length: 3
+- name: CHDRNUM
+  type: CHAR
+  nullable: true
+  length: 8
+constraints:
+  primary_key:
+    columns:
+    - CHDRNUM
+journaling:
+  enabled: true

@@ -1,0 +1,55 @@
+# TDTHPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TDTHPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TDTHPF
+columns:
+- name: TRANNO
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+  description: TRANSACTION NUMBER
+- name: PTRNEFF
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: PTRN EFFECTIVE DATE
+- name: DATESUB
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: DATE SUBMITTED
+- name: CHDRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CONTRACT NUMBER
+  default: ''' '''
+- name: BATCTRCDE
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: BATCH TRANSACTION CODE
+  default: ''' '''
+- name: BATCACTYR
+  type: DECIMAL
+  nullable: false
+  length: 4
+  scale: 0
+  description: BATCH ACCOUNT YEAR
+- name: BATCACTMN
+  type: DECIMAL
+  nullable: false
+  length: 2
+  scale: 0
+  description: BATCH ACCOUNT MONTH
+journaling:
+  enabled: true

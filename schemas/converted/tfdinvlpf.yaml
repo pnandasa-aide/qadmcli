@@ -1,0 +1,28 @@
+# TFDINVLPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TFDINVLPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TFDINVLPF
+columns:
+- name: DMARINVCE
+  type: CHAR
+  nullable: true
+  length: 20
+- name: GCOCCNO
+  type: CHAR
+  nullable: true
+  length: 2
+- name: CLAMNUM
+  type: CHAR
+  nullable: true
+  length: 8
+constraints:
+  primary_key:
+    columns:
+    - CLAMNUM
+    - GCOCCNO
+journaling:
+  enabled: true

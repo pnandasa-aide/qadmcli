@@ -1,0 +1,74 @@
+# TFDHCERPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TFDHCERPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TFDHCERPF
+columns:
+- name: DATETIME
+  type: VARCHAR
+  nullable: true
+  length: 4
+- name: JOB_NAME
+  type: CHAR
+  nullable: true
+  length: 10
+- name: USER_PROFILE
+  type: CHAR
+  nullable: true
+  length: 10
+- name: TPRTDTE
+  type: DECIMAL
+  nullable: true
+  length: 8
+  scale: 0
+- name: CHDRNO
+  type: CHAR
+  nullable: true
+  length: 8
+- name: YNFLAG
+  type: CHAR
+  nullable: true
+  length: 1
+- name: TPRTFLG
+  type: CHAR
+  nullable: true
+  length: 1
+- name: SRCEBUS
+  type: CHAR
+  nullable: true
+  length: 2
+- name: INFLAG
+  type: CHAR
+  nullable: true
+  length: 1
+- name: BILLFREQ
+  type: CHAR
+  nullable: true
+  length: 2
+- name: OPTTYPE
+  type: CHAR
+  nullable: true
+  length: 1
+- name: FROM_YEAR
+  type: DECIMAL
+  nullable: true
+  length: 4
+  scale: 0
+- name: RUNACCTYR
+  type: DECIMAL
+  nullable: true
+  length: 4
+  scale: 0
+- name: CHDRNUM_1
+  type: CHAR
+  nullable: true
+  length: 8
+- name: CHDRNUM
+  type: CHAR
+  nullable: true
+  length: 8
+journaling:
+  enabled: true

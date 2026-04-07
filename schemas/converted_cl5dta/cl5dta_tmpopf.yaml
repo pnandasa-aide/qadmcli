@@ -1,0 +1,94 @@
+# TMPOPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TMPOPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TMPOPF
+columns:
+- name: ZPAYMTH
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: PAYMENT METHOD
+  default: ''' '''
+- name: VALIDFLAG
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: VALID FLAG
+  default: ''' '''
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: PAYCLT
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: PAYEE CLIENT NUMBER
+  default: ''' '''
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+- name: CURRFROM
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: CURRENT FROM
+- name: CHDRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CONTRACT NUMBER
+  default: ''' '''
+- name: CHDRCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: CONT HEADER COMPANY
+  default: ''' '''
+- name: BANKKEY
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: BANK KEY
+  default: ''' '''
+- name: BANKACCKEY
+  type: CHAR
+  nullable: false
+  length: 20
+  ccsid: 838
+  description: BANK ACCOUNT KEY
+  default: ''' '''
+- name: BANKACCDSC
+  type: CHAR
+  nullable: false
+  length: 30
+  ccsid: 838
+  description: BANK ACCOUNT DESC
+  default: ''' '''
+journaling:
+  enabled: true

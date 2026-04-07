@@ -1,0 +1,106 @@
+# MBRXPFACT table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: MBRXPFACT
+  library: GSLIBTST
+  description: Converted from Syniti metadata - MBRXPFACT
+columns:
+- name: CERTLINE03
+  type: VARCHAR
+  nullable: true
+  length: 75
+- name: CERTLINE02
+  type: VARCHAR
+  nullable: true
+  length: 75
+- name: CERTLINE01
+  type: VARCHAR
+  nullable: true
+  length: 75
+- name: EXDIAGCLSD
+  type: DECIMAL
+  nullable: true
+  length: 6
+  scale: 0
+- name: EXDIACLS
+  type: CHAR
+  nullable: true
+  length: 6
+- name: EXDIAGDAYS
+  type: DECIMAL
+  nullable: true
+  length: 6
+  scale: 0
+- name: EXDIAG
+  type: CHAR
+  nullable: true
+  length: 6
+- name: EXPROCCLSD
+  type: DECIMAL
+  nullable: true
+  length: 6
+  scale: 0
+- name: EXPROCLS
+  type: CHAR
+  nullable: true
+  length: 6
+- name: EXPROCDAYS
+  type: DECIMAL
+  nullable: true
+  length: 6
+  scale: 0
+- name: EXPROC
+  type: CHAR
+  nullable: true
+  length: 6
+- name: EXDRUGCLSD
+  type: DECIMAL
+  nullable: true
+  length: 6
+  scale: 0
+- name: EXDRGCLS
+  type: CHAR
+  nullable: true
+  length: 6
+- name: EXDRUGDAYS
+  type: DECIMAL
+  nullable: true
+  length: 6
+  scale: 0
+- name: EXDRUG
+  type: CHAR
+  nullable: true
+  length: 6
+- name: EFFDATE
+  type: DECIMAL
+  nullable: true
+  length: 8
+  scale: 0
+- name: DPNTNO
+  type: CHAR
+  nullable: true
+  length: 2
+- name: MBRNO
+  type: CHAR
+  nullable: true
+  length: 5
+- name: CHDRNUM
+  type: CHAR
+  nullable: true
+  length: 8
+- name: CHDRCOY
+  type: CHAR
+  nullable: true
+  length: 1
+constraints:
+  primary_key:
+    columns:
+    - CHDRCOY
+    - CHDRNUM
+    - MBRNO
+    - DPNTNO
+    - EFFDATE
+journaling:
+  enabled: true

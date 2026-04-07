@@ -1,0 +1,109 @@
+# TGNPPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TGNPPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TGNPPF
+columns:
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: USER
+  type: DECIMAL
+  nullable: false
+  length: 6
+  scale: 0
+  description: USER NUMBER
+- name: TRANSACTION_TIME
+  type: DECIMAL
+  nullable: false
+  length: 6
+  scale: 0
+  description: TRANSACTION TIME
+- name: TRANSACTION_DATE
+  type: DECIMAL
+  nullable: false
+  length: 6
+  scale: 0
+  description: TRANSACTION DATE
+- name: TRANNO
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+  description: TRANSACTION NUMBER
+- name: TERMID
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: TERMINAL ID
+  default: ''' '''
+- name: SEQNOGP
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: SEQUENCE NO - GENERAL PAGE
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: GENPTYPE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: GENERAL PAGE TYPE
+  default: ''' '''
+- name: GENPLINE
+  type: CHAR
+  nullable: false
+  length: 75
+  ccsid: 838
+  description: GENERAL PAGE - DETAILED LINE
+  default: ''' '''
+- name: GENPKEY
+  type: CHAR
+  nullable: false
+  length: 25
+  ccsid: 838
+  description: GENERAL PAGE KEY (DEPENDS ON GENPTYPE)
+  default: ''' '''
+- name: EFFDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: EFFECTIVE DATE
+- name: DTETRM
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: DATE TERMINATED
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+constraints:
+  primary_key:
+    columns:
+    - GENPTYPE
+    - GENPKEY
+    - EFFDATE
+    - SEQNOGP
+journaling:
+  enabled: true

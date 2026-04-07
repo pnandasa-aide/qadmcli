@@ -1,0 +1,118 @@
+# DMEDPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: DMEDPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - DMEDPF
+columns:
+- name: BENEFIT_MAX
+  type: DECIMAL
+  nullable: false
+  length: 7
+  scale: 0
+  description: MAX BENEFIT
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: TAKOVRFLG
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: 'TAKE OVER FLAG : Y-YES, N-NO'
+  default: ''' '''
+- name: SEQNO
+  type: DECIMAL
+  nullable: false
+  length: 2
+  scale: 0
+  description: SEQUENCE NO
+- name: PAIDAMT
+  type: DECIMAL
+  nullable: false
+  length: 7
+  scale: 0
+  description: PAID CLAIM AMOUNT
+- name: OVERAMT
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+  description: OVER AMOUNT
+- name: MEDFNUM
+  type: CHAR
+  nullable: false
+  length: 9
+  ccsid: 838
+  description: MEDICAL
+  default: ''' '''
+- name: LABRATE
+  type: DECIMAL
+  nullable: false
+  length: 9
+  scale: 2
+  description: LAB RATE
+- name: LABCODE
+  type: CHAR
+  nullable: false
+  length: 5
+  ccsid: 838
+  description: LAB CODE
+  default: ''' '''
+- name: KEYSEQ
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: KEY SEQ
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: HOSPCODE
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: HOSPITAL MEDICAL
+  default: ''' '''
+- name: DIFAMT
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+  description: DIFFERENC AMOUNT
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+- name: CHDRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CONTRACT NUMBER
+  default: ''' '''
+constraints:
+  primary_key:
+    columns:
+    - HOSPCODE
+    - MEDFNUM
+    - CHDRNUM
+    - LABCODE
+    - KEYSEQ
+    - SEQNO
+journaling:
+  enabled: true

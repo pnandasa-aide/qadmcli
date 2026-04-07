@@ -1,0 +1,98 @@
+# TDMYPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TDMYPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TDMYPF
+columns:
+- name: XTRANNO
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+  description: TRANSACTION NUMBER
+- name: VALIDFLAG
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 37
+  description: VALID FLAG
+  default: ''' '''
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 37
+  description: USER PROFILE
+  default: ''' '''
+- name: TDMYTYPE
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 37
+  description: DUMMY TYPE
+  default: ''' '''
+- name: SEQNO
+  type: DECIMAL
+  nullable: false
+  length: 2
+  scale: 0
+  description: SEQUENCE NO
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 37
+  description: JOB NAME
+  default: ''' '''
+- name: EXPDTE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: EXPIRY DATE
+- name: EFFDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: EFFECTIVE DATE
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 37
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+- name: AGNTPFX
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 37
+  description: AGENT PREFIX
+  default: ''' '''
+- name: AGNTNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 37
+  description: AGENT NUMBER
+  default: ''' '''
+- name: AGNTCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 37
+  description: AGENT COMPANY
+  default: ''' '''
+- name: AGENTTO
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 37
+  description: AGENT NUMBER TO
+  default: ''' '''
+journaling:
+  enabled: true

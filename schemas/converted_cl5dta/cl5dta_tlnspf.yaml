@@ -1,0 +1,79 @@
+# TLNSPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TLNSPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TLNSPF
+columns:
+- name: TPLSTMDTY
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: POLICY LOAN STAMP DUTY AMOUNT
+- name: THPLTOT
+  type: DECIMAL
+  nullable: false
+  length: 10
+  scale: 2
+  description: LOAN TOTAL AMOUNT
+- name: TACRINT
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 2
+  description: LOAN ACCRUE INTEREST
+- name: LAST_CAPN_LOAN_AMT
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: LAST CAPITALISATION LOAN AMOUNT
+- name: LAST_CAPN_DATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: LAST CAPITALISATION DATE
+- name: LOAN_TYPE
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: LOAN TYPE
+  default: ''' '''
+- name: LOAN_START_DATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: LOAN START DATE
+- name: LOAN_ORIGINAL_AMOUNT
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: LOAN ORIGINAL AMOUNT
+- name: HPNDINT
+  type: DECIMAL
+  nullable: false
+  length: 7
+  scale: 2
+  description: PENDING INTEREST
+- name: EFFDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: EFFECTIVE DATE
+- name: CHDRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CONTRACT NUMBER
+  default: ''' '''
+journaling:
+  enabled: true

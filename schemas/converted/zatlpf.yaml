@@ -1,0 +1,64 @@
+# ZATLPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: ZATLPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - ZATLPF
+columns:
+- name: UPDDATE
+  type: CHAR
+  nullable: false
+  length: 20
+  ccsid: 838
+  description: UPDDATE
+  default: ''' '''
+- name: UPDATEBY
+  type: CHAR
+  nullable: false
+  length: 20
+  ccsid: 838
+  description: UPDATEBY
+  default: ''' '''
+- name: TLAGLICNO
+  type: CHAR
+  nullable: false
+  length: 15
+  ccsid: 838
+  description: LIFE AGENT LICENSE NUMBER
+  default: ''' '''
+- name: STOPDATE
+  type: CHAR
+  nullable: false
+  length: 20
+  ccsid: 838
+  description: END DATE FOR CONVERSE
+  default: ''' '''
+- name: BEDATE
+  type: CHAR
+  nullable: false
+  length: 20
+  ccsid: 838
+  description: START DATE FOR CONVERSE
+  default: ''' '''
+- name: AVN
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: AGENT LICENSE VERSION
+  default: ''' '''
+- name: AGNTNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: AGENT NUMBER
+  default: ''' '''
+constraints:
+  primary_key:
+    columns:
+    - AGNTNUM
+journaling:
+  enabled: true

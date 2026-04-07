@@ -1,0 +1,88 @@
+# ACBLPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: ACBLPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - ACBLPF
+columns:
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: SACSTYP
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: SUB-ACCOUNT TYPE
+  default: ''' '''
+- name: SACSCURBAL
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: CURRENT BALANCE AMT 1
+- name: SACSCODE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: SUB-ACCOUNT CODE
+  default: ''' '''
+- name: RLDGPFX
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: SUB LEDGER PREFIX
+  default: ''' '''
+- name: RLDGCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: SUB LEDGER COMPANY
+  default: ''' '''
+- name: RLDGACCT
+  type: CHAR
+  nullable: false
+  length: 16
+  ccsid: 838
+  description: SUB LEDGER ACCOUNT ENTITY
+  default: ''' '''
+- name: ORIGCURR
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: ORIGINAL CURRENCY
+  default: ''' '''
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+constraints:
+  primary_key:
+    columns:
+    - RLDGCOY
+    - SACSCODE
+    - RLDGACCT
+    - ORIGCURR
+    - SACSTYP
+journaling:
+  enabled: true

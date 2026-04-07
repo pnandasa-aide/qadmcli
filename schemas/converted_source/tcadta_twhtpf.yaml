@@ -1,0 +1,131 @@
+# TWHTPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TWHTPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TWHTPF
+columns:
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: TYPDESC
+  type: CHAR
+  nullable: false
+  length: 50
+  ccsid: 838
+  description: TYPE DESC
+  default: ''' '''
+- name: TWHTAX
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 2
+  description: WITHOLDING TAX
+- name: TPAYWHT
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: PAYMENT WITHOLDING TAX
+- name: TPAYVAT
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: PAYMENT VAT
+- name: TPAYNET
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: PAYMENT NET
+- name: REQNTYPE
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: PAYMENT REQUEST TYPE
+  default: ''' '''
+- name: REQNNO
+  type: CHAR
+  nullable: false
+  length: 9
+  ccsid: 838
+  description: REQN NUMBER
+  default: ''' '''
+- name: REQNBCDE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: REQN BANKCODE
+  default: ''' '''
+- name: PAYAMT
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: PAY AMT
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+- name: CLNTNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CLIENT NUMBER
+  default: ''' '''
+- name: CLNTCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: CLIENT COMPANY
+  default: ''' '''
+- name: BATCTRCDE
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: BATCH TRANSACTION CODE
+  default: ''' '''
+- name: AUTHDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: AUTHORISED DATE
+- name: AREACHK
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: AREA CODE
+  default: ''' '''
+constraints:
+  primary_key:
+    columns:
+    - CLNTCOY
+    - CLNTNUM
+    - AUTHDATE
+    - REQNNO
+journaling:
+  enabled: true

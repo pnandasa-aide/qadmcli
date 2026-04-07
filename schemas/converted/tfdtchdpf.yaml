@@ -1,0 +1,75 @@
+# TFDTCHDPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TFDTCHDPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TFDTCHDPF
+columns:
+- name: NOFOUTINST
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+- name: BATCACTMN
+  type: DECIMAL
+  nullable: false
+  length: 2
+  scale: 0
+- name: BATCACTYR
+  type: DECIMAL
+  nullable: false
+  length: 4
+  scale: 0
+- name: SHORTPRM
+  type: DECIMAL
+  nullable: false
+  length: 11
+  scale: 2
+- name: ZTOTPREM
+  type: DECIMAL
+  nullable: false
+  length: 11
+  scale: 2
+- name: FREQ
+  type: CHAR
+  nullable: false
+  length: 2
+- name: PTDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+- name: PTRNEFF
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+- name: BUSCDE
+  type: CHAR
+  nullable: false
+  length: 4
+- name: BATCTRCDE
+  type: CHAR
+  nullable: false
+  length: 4
+- name: LIFCNUM
+  type: CHAR
+  nullable: false
+  length: 8
+- name: TRANNO
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+- name: PRCPNUM
+  type: CHAR
+  nullable: false
+  length: 8
+- name: CHDRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+journaling:
+  enabled: true

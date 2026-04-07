@@ -1,0 +1,126 @@
+# TDVHPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TDVHPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TDVHPF
+columns:
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: TDLVDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: POLICY DELIVERY DATE
+- name: TCMPYDTE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: COMPANY RECEIVED DATE
+- name: TAGDLVDTE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: AGENT DELIVERY DATE
+- name: RTNCODE
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: RTNCODE
+  default: ''' '''
+- name: NDLVDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: POLICY DELIVERY DATE
+- name: NCMPYDTE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: COMPANY RECEIVED DATE
+- name: NAGDLVDTE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: AGENT DELIVERY DATE
+- name: LASTREV
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: LAST REVIEW DATE
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: EVTCODE
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: EVTCODE
+  default: ''' '''
+- name: DTERRTN
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: DATE RESEND OF RETURN
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+- name: DATERETN
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: DATE OF RETURN
+- name: CRTUSER
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: CREATE USER
+  default: ''' '''
+- name: CHDRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CONTRACT NUMBER
+  default: ''' '''
+- name: CHDRCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: CONT HEADER COMPANY
+  default: ''' '''
+constraints:
+  primary_key:
+    columns:
+    - CHDRCOY
+    - CHDRNUM
+journaling:
+  enabled: true

@@ -1,0 +1,80 @@
+# AS400GROUPFAXCLAIMTRAN table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: AS400GROUPFAXCLAIMTRAN
+  library: GSLIBTST
+  description: Converted from Syniti metadata - AS400GROUPFAXCLAIMTRAN
+columns:
+- name: CLIENTSURNAME
+  type: VARCHAR
+  nullable: true
+  length: 50
+- name: CLIENTNAME
+  type: VARCHAR
+  nullable: true
+  length: 50
+- name: HOSPITALCODE
+  type: VARCHAR
+  nullable: true
+  length: 50
+- name: RINTERNET
+  type: VARCHAR
+  nullable: true
+  length: 50
+- name: LASTUPDATE
+  type: VARCHAR
+  nullable: true
+  length: 8
+- name: CLAIMREF
+  type: VARCHAR
+  nullable: true
+  length: 18
+- name: REGULARSTATUS
+  type: VARCHAR
+  nullable: true
+  length: 2
+- name: CHANNEL
+  type: VARCHAR
+  nullable: true
+  length: 10
+- name: FAXSTATUS
+  type: VARCHAR
+  nullable: true
+  length: 10
+- name: DISCHARGEDATE
+  type: VARCHAR
+  nullable: true
+  length: 8
+- name: ADMITDATE
+  type: VARCHAR
+  nullable: true
+  length: 8
+- name: HOSPITAL
+  type: VARCHAR
+  nullable: true
+  length: 242
+- name: CLIENTNO
+  type: VARCHAR
+  nullable: true
+  length: 16
+- name: POLICYNO
+  type: VARCHAR
+  nullable: true
+  length: 16
+- name: CLAIMNOSERIES
+  type: VARCHAR
+  nullable: true
+  length: 4
+- name: CLAIMNO
+  type: VARCHAR
+  nullable: true
+  length: 16
+constraints:
+  primary_key:
+    columns:
+    - CLAIMNO
+    - CLAIMNOSERIES
+journaling:
+  enabled: true

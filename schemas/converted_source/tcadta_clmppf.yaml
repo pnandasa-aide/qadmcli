@@ -1,0 +1,170 @@
+# CLMPPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: CLMPPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - CLMPPF
+columns:
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: TRANTYP
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TRANS TYPE
+  default: ''' '''
+- name: TRANDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: TRAN DATE
+- name: REQNTYPE
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: PAYMENT REQUEST TYPE
+  default: ''' '''
+- name: REQNNO
+  type: CHAR
+  nullable: false
+  length: 9
+  ccsid: 838
+  description: REQN NUMBER
+  default: ''' '''
+- name: REQNBCDE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: REQN BANKCODE
+  default: ''' '''
+- name: RECEIPT03
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: TN(RECEIPT) CASH RECEIPT NO
+  default: ''' '''
+- name: RECEIPT02
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: TN(RECEIPT) CASH RECEIPT NO
+  default: ''' '''
+- name: RECEIPT01
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: TN(RECEIPT) CASH RECEIPT NO
+  default: ''' '''
+- name: POSTYEAR
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: POSTING YEAR
+  default: ''' '''
+- name: POSTMONTH
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: POSTING MONTH
+  default: ''' '''
+- name: PAYMTYP
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: PAYMENT TYPE (A-ADVANCE, N-NORMAL)
+  default: ''' '''
+- name: PAYCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: PAYEE CLIENT COMPANY
+  default: ''' '''
+- name: PAYCLT
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: PAYEE CLIENT NUMBER
+  default: ''' '''
+- name: PAYAMT
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: PAY AMT
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: INDC
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: INDICATOR
+  default: ''' '''
+- name: GCPYSEQ
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: PAYEE SEQUENCE NUMBER
+- name: GCOCCNO
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: CLAIMS OCCURANCE NO
+  default: ''' '''
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+- name: CLMCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: CLAIM COMPANY
+  default: ''' '''
+- name: CLAMNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CLAIM NUMBER
+  default: ''' '''
+constraints:
+  primary_key:
+    columns:
+    - CLMCOY
+    - CLAMNUM
+    - GCOCCNO
+    - PAYMTYP
+    - GCPYSEQ
+journaling:
+  enabled: true

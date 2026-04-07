@@ -1,0 +1,410 @@
+# AGLFPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: AGLFPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - AGLFPF
+columns:
+- name: ZRORCODE
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: OVERRIDING CODE
+  default: ''' '''
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: USER
+  type: DECIMAL
+  nullable: false
+  length: 6
+  scale: 0
+  description: USER NUMBER
+- name: TSALESUNT
+  type: CHAR
+  nullable: false
+  length: 5
+  ccsid: 838
+  description: AGENT SALES UNIT CODE
+  default: ''' '''
+- name: TRANSACTION_TIME
+  type: DECIMAL
+  nullable: false
+  length: 6
+  scale: 0
+  description: TRANSACTION TIME
+- name: TRMCDE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: AGENT TERMINATION CODE
+  default: ''' '''
+- name: TRANSACTION_DATE
+  type: DECIMAL
+  nullable: false
+  length: 6
+  scale: 0
+  description: TRANSACTION DATE
+- name: TLICEXPDT
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: LICENSE EXPIRY DATE
+- name: TLAGLICNO
+  type: CHAR
+  nullable: false
+  length: 15
+  ccsid: 838
+  description: LIFE AGENT LICENSE NUMBER
+  default: ''' '''
+- name: TERMID
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: TERMINAL ID
+  default: ''' '''
+- name: TCOLPRCT
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 2
+  description: COLLATERAL PERCENTAGE
+- name: TCOLMAX
+  type: DECIMAL
+  nullable: false
+  length: 14
+  scale: 2
+  description: COLLATERAL MAXIMUM LIMIT
+- name: TAXMETH
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: AGENT TAX PAY METHOD
+  default: ''' '''
+- name: TAXCDE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TAXATION CODE LIFE AGENT
+  default: ''' '''
+- name: TAXALW
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TAX FREE ALLOWANCE LIFE AGENT
+- name: TAGSUSIND
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: AGENT SUSPEND INDICATOR
+  default: ''' '''
+- name: SPRSCHM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: AGENT SUPERANNUATION SCHEME
+  default: ''' '''
+- name: SPRPRC
+  type: DECIMAL
+  nullable: false
+  length: 4
+  scale: 1
+  description: SUPERANNUATION DEDUCTION PERCENTAGE
+- name: SCMTAB
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: SERVICING COMMISSION TABLE LIFE AGENT
+  default: ''' '''
+- name: REPORTAG
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: REPORTING AGENT
+  default: ''' '''
+- name: RCMTAB
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: RENEWAL COMMISSION PAYMENT CALCULATION
+  default: ''' '''
+- name: RASFLG
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: REASSIGNMENT PENDING FLAG
+  default: ''' '''
+- name: PRDAGENT
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: PRODUCTION AGENT
+  default: ''' '''
+- name: PFTFLG
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: PORTFOLIO TRANSFER PENDING FLAG
+  default: ''' '''
+- name: PAYMTH
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: PAYMENT METHOD
+  default: ''' '''
+- name: PAYFRQ
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: PAYMENT FREQUENCY
+  default: ''' '''
+- name: PAYCLT
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: PAYEE CLIENT NUMBER
+  default: ''' '''
+- name: OVCPC
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 2
+  description: OVERRIDING COMMISSION PERCENTAGE
+- name: OTHER_LOANS
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: OTHER LOANS
+  default: ''' '''
+- name: OFFICE_RENT
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: OFFICE RENT
+  default: ''' '''
+- name: OCMTAB
+  type: CHAR
+  nullable: false
+  length: 5
+  ccsid: 838
+  description: BONUS COMMISSION TABLE
+  default: ''' '''
+- name: MINSTA
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: MINIMUM AMOUNT FOR STATEMENT
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: IRDNO
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: I.R.D. TAX NUMBER
+  default: ''' '''
+- name: INTCRD
+  type: DECIMAL
+  nullable: false
+  length: 4
+  scale: 1
+  description: INITIAL CREDIT PERCENT LIFE AGENT
+- name: HOUSE_LOAN
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: HOUSING LOAN
+  default: ''' '''
+- name: FIXPRC
+  type: DECIMAL
+  nullable: false
+  length: 4
+  scale: 1
+  description: FIXED AGREEMENT PERCENTAGE
+- name: FACTHOUS
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: FACTORING HOUSE 1
+  default: ''' '''
+- name: EXCL_AGMT
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: EXCLUSIVE AGREEMENT
+  default: ''' '''
+- name: EFFDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: EFFECTIVE DATE
+- name: DTETRM
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: DATE TERMINATED
+- name: DTEPAY
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: DATE OF LAST PAYMENT
+- name: DTEEXP
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: DATE EXPIRED LIFE AGENT
+- name: DTEAPP
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: DATE APPOINTED
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+- name: CURRTO
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: CURRENT TO
+- name: CURRFROM
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: CURRENT FROM
+- name: CURRCODE
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: CURRENCY CODE
+  default: ''' '''
+- name: COMPUTER_LOAN
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: COMPUTER LOAN
+  default: ''' '''
+- name: CAR_LOAN
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: CAR LOAN
+  default: ''' '''
+- name: BMAFLG
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: BUSINESS MANAGEMENT ALLOWANCE FLAG
+  default: ''' '''
+- name: BCMTAB
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: BASIC COMMISSION PAYMENT CALCULATION MTH
+  default: ''' '''
+- name: BANKKEY
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: BANK KEY
+  default: ''' '''
+- name: BANKACCKEY
+  type: CHAR
+  nullable: false
+  length: 20
+  ccsid: 838
+  description: BANK ACCOUNT KEY
+  default: ''' '''
+- name: ARACDE
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: AREA CODE LIFE AGENT
+  default: ''' '''
+- name: AGNTNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: AGENT NUMBER
+  default: ''' '''
+- name: AGNTCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: AGENT COMPANY
+  default: ''' '''
+- name: AGENT_CLASS
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: AGENT CLASSIFICATION
+  default: ''' '''
+- name: AGCCQIND
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: AGENT CONSOLIDATION CHEQUE INDICATOR
+  default: ''' '''
+constraints:
+  primary_key:
+    columns:
+    - AGNTCOY
+    - AGNTNUM
+journaling:
+  enabled: true

@@ -1,0 +1,77 @@
+# TFDCLEXPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TFDCLEXPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TFDCLEXPF
+columns:
+- name: ZSPECIND
+  type: CHAR
+  nullable: true
+  length: 2
+- name: DATIME
+  type: VARCHAR
+  nullable: true
+  length: 8
+- name: JOBNM
+  type: CHAR
+  nullable: true
+  length: 10
+- name: USRPRF
+  type: CHAR
+  nullable: true
+  length: 10
+- name: SPLINDIC
+  type: CHAR
+  nullable: true
+  length: 2
+- name: RSTAFLAG
+  type: CHAR
+  nullable: true
+  length: 2
+- name: RTAXDNUM
+  type: CHAR
+  nullable: true
+  length: 13
+- name: RINTERNET
+  type: CHAR
+  nullable: true
+  length: 50
+- name: FAXNO
+  type: CHAR
+  nullable: true
+  length: 16
+- name: RPAGER
+  type: CHAR
+  nullable: true
+  length: 16
+- name: RMBLPHONE
+  type: CHAR
+  nullable: true
+  length: 16
+- name: RDIDTELNO
+  type: CHAR
+  nullable: true
+  length: 16
+- name: CLNTNUM
+  type: CHAR
+  nullable: true
+  length: 8
+- name: CLNTCOY
+  type: CHAR
+  nullable: true
+  length: 1
+- name: CLNTPFX
+  type: CHAR
+  nullable: true
+  length: 2
+constraints:
+  primary_key:
+    columns:
+    - CLNTNUM
+    - CLNTPFX
+    - CLNTCOY
+journaling:
+  enabled: true

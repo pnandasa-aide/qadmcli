@@ -1,0 +1,85 @@
+# AGEXPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: AGEXPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - AGEXPF
+columns:
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: TTRANTYP
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: TRANSACTION TYPE
+  default: ''' '''
+- name: TAGGROUP
+  type: CHAR
+  nullable: false
+  length: 5
+  ccsid: 838
+  description: AGENT GROUP CODE
+  default: ''' '''
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: DTETRM
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: DATE TERMINATED
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+- name: DATESUB
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: DATE SUBMITTED
+- name: AGNTPFX
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: AGENT PREFIX
+  default: ''' '''
+- name: AGNTNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: AGENT NUMBER
+  default: ''' '''
+- name: AGNTCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: AGENT COMPANY
+  default: ''' '''
+constraints:
+  primary_key:
+    columns:
+    - AGNTPFX
+    - AGNTCOY
+    - AGNTNUM
+journaling:
+  enabled: true

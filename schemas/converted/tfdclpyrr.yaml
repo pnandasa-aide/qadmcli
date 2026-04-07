@@ -1,0 +1,23 @@
+# TFDCLPYRR table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TFDCLPYRR
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TFDCLPYRR
+columns:
+- name: CLRRROLE
+  type: CHAR
+  nullable: true
+  length: 2
+- name: FORENUM
+  type: CHAR
+  nullable: true
+  length: 8
+- name: CLNTNUM
+  type: CHAR
+  nullable: true
+  length: 8
+journaling:
+  enabled: true

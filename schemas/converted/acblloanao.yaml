@@ -1,0 +1,52 @@
+# ACBLLOANAO table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: ACBLLOANAO
+  library: GSLIBTST
+  description: Converted from Syniti metadata - ACBLLOANAO
+columns:
+- name: SACSTYP
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: SUB-ACCOUNT TYPE
+  default: ''' '''
+- name: SACSCURB01
+  type: DECIMAL
+  nullable: false
+  length: 20
+  scale: 2
+  description: SACSCURBAL TOTAL
+- name: SACSCODE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: SUB-ACCOUNT CODE
+  default: ''' '''
+- name: POLICY
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: substr(rldgacct,1,8)
+  default: ''' '''
+- name: OVERFLOW
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: OVERFLOW FLAG
+  default: ''' '''
+- name: BREAKLVL
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: BREAK LEVEL
+  default: ''' '''
+journaling:
+  enabled: true

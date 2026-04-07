@@ -1,0 +1,1560 @@
+# CHDRPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: CHDRPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - CHDRPF
+columns:
+- name: ZSCHPRT
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: SCHEDULE PRINT INDICATOR
+  default: ''' '''
+- name: ZRINUM
+  type: CHAR
+  nullable: false
+  length: 16
+  ccsid: 838
+  description: REINSURANCE NUMBER
+  default: ''' '''
+- name: ZRESNPD
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: PENDING REASON
+  default: ''' '''
+- name: ZREPOLNO
+  type: CHAR
+  nullable: false
+  length: 20
+  ccsid: 838
+  description: REPLACED POLICY NO.
+  default: ''' '''
+- name: ZRENNO
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+  description: RENEWAL NUMBER
+- name: ZPAYMODE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: PAYMENT MODE
+  default: ''' '''
+- name: ZENDNO
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: ENDORSEMENT NO.
+- name: ZCOMTYP
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: COMMISSION TYPE TABLE
+  default: ''' '''
+- name: WVTDAT
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: WAIVE CONTRACT FEE TO DATE
+- name: WVFIND
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: WAIVE CONTRACT FEE INDICATOR
+  default: ''' '''
+- name: WVFDAT
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: WAIVE CONTRACT FEE FROM DATE
+- name: VALIDFLAG
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: VALID FLAG
+  default: ''' '''
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: TRANNO
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+  description: TRANSACTION NUMBER
+- name: TRANLUSED
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+  description: LAST USED TRAN NO
+- name: TRANID
+  type: CHAR
+  nullable: false
+  length: 14
+  ccsid: 838
+  description: TRAN ID
+  default: ''' '''
+- name: FREE_SWITCHES_USED
+  type: DECIMAL
+  nullable: false
+  length: 4
+  scale: 0
+  description: TOTAL FREE SWITCHES USED
+- name: FREE_SWITCHES_LEFT
+  type: DECIMAL
+  nullable: false
+  length: 4
+  scale: 0
+  description: TOTAL FREE SWITCHES LEFT
+- name: TERMAGE
+  type: DECIMAL
+  nullable: false
+  length: 2
+  scale: 0
+  description: TERMINAL AGE
+- name: TAXFLAG
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: TAX FLAG                            (P3)
+  default: ''' '''
+- name: TAKOVRFLG
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: 'TAKE OVER FLAG : Y-YES, N-NO'
+  default: ''' '''
+- name: SUSTRCDE
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: SUSPENSE TRANSACTION CODE
+  default: ''' '''
+- name: SUBSFLG
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: SUBSIDIARIES FLAG  Y-YES, N-NO
+  default: ''' '''
+- name: STMPDTYDTE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: STAMP DUTY DATE
+- name: STMPDTYAMT
+  type: DECIMAL
+  nullable: false
+  length: 15
+  scale: 2
+  description: STAMP DUTY AMOUNT
+- name: STATEMENT_DATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: UNIT STATEMENT DATE
+- name: CHDRSTCDE
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: STATISTICAL CODE E
+  default: ''' '''
+- name: CHDRSTCDD
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: STATISTICAL CODE D
+  default: ''' '''
+- name: CHDRSTCDC
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: STATISTICAL CODE C
+  default: ''' '''
+- name: CHDRSTCDB
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: STATISTICAL CODE B
+  default: ''' '''
+- name: CHDRSTCDA
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: STATISTICAL CODE A
+  default: ''' '''
+- name: STATTRAN
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+  description: STATUS TRAN NUMBER
+- name: STATREASN
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: STATUS CHANGE REASON
+  default: ''' '''
+- name: STATDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: STATUS CHANGE DATE
+- name: STATCODE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: STATUS CODE
+  default: ''' '''
+- name: SRCEBUS
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: ACCOUNT TYPE
+  default: ''' '''
+- name: SPLITSUBS
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: SPLIT BILL BY SUBSIDIARY
+  default: ''' '''
+- name: SPECIND
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: SPECIAL INDICATOR
+  default: ''' '''
+- name: SLRYPFLG
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: SALARY PRINT FLAG - Y-YES, N-NO
+  default: ''' '''
+- name: SINSTTO
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: STDG INST TO DATE
+- name: SINSTFROM
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: STDG INST FROM DATE
+- name: SINSTAMT06
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(SINSTAMT) STANDING INSTALMENT AMOUNT
+- name: SINSTAMT05
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(SINSTAMT) STANDING INSTALMENT AMOUNT
+- name: SINSTAMT04
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(SINSTAMT) STANDING INSTALMENT AMOUNT
+- name: SINSTAMT03
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(SINSTAMT) STANDING INSTALMENT AMOUNT
+- name: SINSTAMT02
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(SINSTAMT) STANDING INSTALMENT AMOUNT
+- name: SINSTAMT01
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(SINSTAMT) STANDING INSTALMENT AMOUNT
+- name: SERVUNIT
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: SERVICE UNIT
+  default: ''' '''
+- name: RNWLSUPR
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: TN(SUPRFLAG), RNWL SUPR FLAG
+  default: ''' '''
+- name: RNWLSPTO
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: TN(SUPRTO), RNWL SUPR TO
+- name: RNWLSPFROM
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: TN(SUPRFROM), RNWL SUPR FROM
+- name: RNLTYPE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: RENEWAL TYPE
+  default: ''' '''
+- name: RNLSTS
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: RENEWAL STATUS
+  default: ''' '''
+- name: RNLNOTTO
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: RENEWAL NOTICE TO
+  default: ''' '''
+- name: RNLNOTS
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: RENEWAL NOTICE TYPE
+  default: ''' '''
+- name: RNLDURN
+  type: DECIMAL
+  nullable: false
+  length: 2
+  scale: 0
+  description: RENEWAL DURATION
+- name: RNLATTN
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: RENEWAL ATTEN REQD
+  default: ''' '''
+- name: REPTYPE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: REPLACEMENT TYPE
+  default: ''' '''
+- name: REPNUM
+  type: CHAR
+  nullable: false
+  length: 25
+  ccsid: 838
+  description: REPLACEMENT NUMBER
+  default: ''' '''
+- name: REGISTER
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: REGISTER
+  default: ''' '''
+- name: RECODE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: RECORD CODE
+  default: ''' '''
+- name: QUOTENO
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: QUOTATION NUMBER
+  default: ''' '''
+- name: PTDATEAB
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: PAID-TO-DATE FOR ADJUSTMENT BILLS
+- name: PTDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: PAID TO DATE
+- name: PSTATTRAN
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+  description: PREMIUM STATUS TRANSACTION
+- name: PSTATREASN
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: PREMIUM STATUS REASON
+  default: ''' '''
+- name: PSTATDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: PREMIUM STATUS DATE
+- name: PSTATCODE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: PREMIUM STATUS CODE
+  default: ''' '''
+- name: PROCTRANCD
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: LOCKING TRANSCODE
+  default: ''' '''
+- name: PROCID
+  type: CHAR
+  nullable: false
+  length: 14
+  ccsid: 838
+  description: PROCESS TRAN ID
+  default: ''' '''
+- name: PROCFLAG
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: PROCESS FLAG
+  default: ''' '''
+- name: POLSUM
+  type: DECIMAL
+  nullable: false
+  length: 4
+  scale: 0
+  description: POLICIES SUMMARISED CURRENTLY
+- name: POLSCHPFLG
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: POLICY SCHEDULE FLAG
+  default: ''' '''
+- name: POLPLN
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: POLICY PLAN
+  default: ''' '''
+- name: POLINC
+  type: DECIMAL
+  nullable: false
+  length: 4
+  scale: 0
+  description: POLICIES INCLUDED IN PLAN
+- name: POAPFX
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: POWER OF ATTORNEY PREFIX
+  default: ''' '''
+- name: POANUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: POWER OF ATTORNEY NUMBER
+  default: ''' '''
+- name: POACOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: POWER OF ATTORNEY COMPANY
+  default: ''' '''
+- name: PNTRCDE
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: PENDING TRANSACTION CODE
+  default: ''' '''
+- name: PNDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: PENDING DATE
+- name: PERSONCOV
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: PERSON COVERAGE
+  default: ''' '''
+- name: PDTYPE
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: PD TYPE
+  default: ''' '''
+- name: PDIND
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: PD INDICATOR
+  default: ''' '''
+- name: PAYRPFX
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: PAYER PREFIX
+  default: ''' '''
+- name: PAYRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: PAYER NUMBER
+  default: ''' '''
+- name: PAYRCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: PAYER COMPANY
+  default: ''' '''
+- name: PAYPLAN
+  type: CHAR
+  nullable: false
+  length: 6
+  ccsid: 838
+  description: PAYMENT PLAN
+  default: ''' '''
+- name: PAYFLAG
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: INST PAYED FLAG
+  default: ''' '''
+- name: OUTSTAMT
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: OUTST INSTAL AMOUNT
+- name: OCCDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: ORIGINAL COMMENCEMENT DATE
+- name: NXTSFX
+  type: DECIMAL
+  nullable: false
+  length: 4
+  scale: 0
+  description: NEXT POLICY SUFFIX
+- name: NOTSSUPR
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: TN(SUPRFLAG), NOTS SUPR FLAG
+  default: ''' '''
+- name: NOTSSPTO
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: TN(SUPRTO), NOTS SUPR TO
+- name: NOTSSPFROM
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: TN(SUPRFROM), NOTS SUPR FROM
+- name: NOFRISKS
+  type: DECIMAL
+  nullable: false
+  length: 4
+  scale: 0
+  description: NUMBER OF RISKS
+- name: NOFOUTINST
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: NUMBER OUTST INSTAL
+- name: MRKSRVAC
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: MARKETING STAFF
+  default: ''' '''
+- name: MPLPFX
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: MASTER POLICY PREFIX
+  default: ''' '''
+- name: MPLNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: MASTER POLICY NUMBER
+  default: ''' '''
+- name: MPLCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: MASTER POLICY COMPANY
+  default: ''' '''
+- name: MEMBSEL
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: GROUP MEMBER NUMBER
+  default: ''' '''
+- name: MANDREF
+  type: CHAR
+  nullable: false
+  length: 5
+  ccsid: 838
+  description: MANDATE REFERENCE NUMBER
+  default: ''' '''
+- name: MAILSUPR
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: TN(SUPRFLAG), MAIL SUPR FLAG
+  default: ''' '''
+- name: MAILSPTO
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: TN(SUPRTO), MAIL SUPR TO
+- name: MAILSPFROM
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: TN(SUPRFROM), MAIL SUPR FROM
+- name: LMBRNO
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+  description: LAST MEMBER NUMBER USED
+- name: LHEADNO
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+  description: LAST HEADCOUNT NO USED IN POLICY
+- name: LAST_SWITCH_DATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: LAST SWITCH DATE
+- name: LAPSSUPR
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: TN(SUPRFLAG), LAPS SUPR FLAG
+  default: ''' '''
+- name: LAPSSPTO
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: TN(SUPRTO), LAPS SUPR TO
+- name: LAPSSPFROM
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: TN(SUPRFROM), LAPS SUPR FROM
+- name: LAPRIND
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: LAPR APPLICATION INDICATOR
+  default: ''' '''
+- name: JOWNNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CONTRACT JOINT OWNER NUMBER
+  default: ''' '''
+- name: JOBNAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOBNAME
+  default: ''' '''
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: JACKET
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: POLICY JACKET
+  default: ''' '''
+- name: INSTSTAMT06
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(ISAM) TN(INSTSTAMT), INS STG AMT 1
+- name: INSTSTAMT05
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(ISAM) TN(INSTSTAMT), INS STG AMT 1
+- name: INSTSTAMT04
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(ISAM) TN(INSTSTAMT), INS STG AMT 1
+- name: INSTSTAMT03
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(ISAM) TN(INSTSTAMT), INS STG AMT 1
+- name: INSTSTAMT02
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(ISAM) TN(INSTSTAMT), INS STG AMT 1
+- name: INSTSTAMT01
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(ISAM) TN(INSTSTAMT), INS STG AMT 1
+- name: INSTTOT06
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(INSTTOT) TN(INSTTOT), INSTAL AMOUNT 1
+- name: INSTTOT05
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(INSTTOT) TN(INSTTOT), INSTAL AMOUNT 1
+- name: INSTTOT04
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(INSTTOT) TN(INSTTOT), INSTAL AMOUNT 1
+- name: INSTTOT03
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(INSTTOT) TN(INSTTOT), INSTAL AMOUNT 1
+- name: INSTTOT02
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(INSTTOT) TN(INSTTOT), INSTAL AMOUNT 1
+- name: INSTTOT01
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(INSTTOT) TN(INSTTOT), INSTAL AMOUNT 1
+- name: INSTTO
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: INSTAL TO DATE
+- name: INSTPAST06
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(INSTPAST) TN(INSTPAST), INS PAST DUE 1
+- name: INSTPAST05
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(INSTPAST) TN(INSTPAST), INS PAST DUE 1
+- name: INSTPAST04
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(INSTPAST) TN(INSTPAST), INS PAST DUE 1
+- name: INSTPAST03
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(INSTPAST) TN(INSTPAST), INS PAST DUE 1
+- name: INSTPAST02
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(INSTPAST) TN(INSTPAST), INS PAST DUE 1
+- name: INSTPAST01
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(INSTPAST) TN(INSTPAST), INS PAST DUE 1
+- name: INSTJCTL
+  type: CHAR
+  nullable: false
+  length: 24
+  ccsid: 838
+  description: INSTALMENT RUN ID
+  default: ''' '''
+- name: INSTFROM
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: INSTAL FROM DATE
+- name: INSTFREQ
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: INSTAL BILL FREQ
+  default: ''' '''
+- name: INSTCCHNL
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: INSTALMENT COLLECTION CHANNEL
+  default: ''' '''
+- name: INSTBCHNL
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: INSTALMENT BILLING CHANNEL
+  default: ''' '''
+- name: HRSKIND
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: HIGH RISK IND (Y-YES, N-NO)
+  default: ''' '''
+- name: GRUPKEY
+  type: CHAR
+  nullable: false
+  length: 12
+  ccsid: 838
+  description: GROUP KEY
+  default: ''' '''
+- name: GPRNLTYP
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: GROUPE LIFE - RENEWAL TYPE (Y-YES, N-NO)
+  default: ''' '''
+- name: GPRMNTHS
+  type: DECIMAL
+  nullable: false
+  length: 2
+  scale: 0
+  description: RENEWAL NOTICE DUE DATE FROM RENEWAL DT
+- name: FINPFX
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: FINANCIAL INSTITUTION PREFIX
+  default: ''' '''
+- name: FINNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: FINANCIAL INSTITUTION NUMBER
+  default: ''' '''
+- name: FINCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: FINANCIAL INSTITUTION COMPANY
+  default: ''' '''
+- name: FACTHOUS
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: FACTORING HOUSE 1
+  default: ''' '''
+- name: ENROLLTYP
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: ENROLLMENT TYPE
+  default: ''' '''
+- name: EFFDCLDT
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: EFFDATE DATE OF DECLINE/CANCEL/LAPSE
+- name: DUEFLG
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: DUE DATE FLAG
+  default: ''' '''
+- name: DTLSIND
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: DEPENDENT DETAILS INDICATOR
+  default: ''' '''
+- name: DTECAN
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: DATE CANCEL
+- name: DOCNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: DOCUMENT NUMBER
+  default: ''' '''
+- name: DISHNRDTE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: DISHONOUR DATE
+- name: DISHNRCNT
+  type: DECIMAL
+  nullable: false
+  length: 2
+  scale: 0
+  description: DISHONOUR COUNT
+- name: DISCODE04
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: TN(DISCODE) TN(DISCODE), LAST DISH CODE
+  default: ''' '''
+- name: DISCODE03
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: TN(DISCODE) TN(DISCODE), LAST DISH CODE
+  default: ''' '''
+- name: DISCODE02
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: TN(DISCODE) TN(DISCODE), LAST DISH CODE
+  default: ''' '''
+- name: DISCODE01
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: TN(DISCODE) TN(DISCODE), LAST DISH CODE
+  default: ''' '''
+- name: DESPPFX
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: DESPATCH PREFIX
+  default: ''' '''
+- name: DESPNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: DESPATCH NUMBER
+  default: ''' '''
+- name: DESPCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: DESPATCH COMPANY
+  default: ''' '''
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+- name: CURRTO
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: CURRENT TO
+- name: CURRFROM
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: CURRENT FROM
+- name: CRDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: RENEWAL DATE
+- name: CRATE
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 9
+  description: CURRENCY RATE
+- name: COYSRVAC
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: SERVICING STAFF
+  default: ''' '''
+- name: COWNPFX
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: CONTRACT OWNER PREFIX
+  default: ''' '''
+- name: COWNNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CONTRACT OWNER NUMBER
+  default: ''' '''
+- name: COWNCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: CONT OWNER COMPANY
+  default: ''' '''
+- name: COVERNT
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: COVER NOTE NUMBER
+  default: ''' '''
+- name: COTYPE
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: CO INSURANCE TYPE
+  default: ''' '''
+- name: COPPN
+  type: DECIMAL
+  nullable: false
+  length: 11
+  scale: 8
+  description: COINSURANCE PERCENTAGE
+- name: COMMSUPR
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: TN(SUPRFLAG), COMM SUPR FLAG
+  default: ''' '''
+- name: COMMSPTO
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: TN(SUPRTO), COMM SUPR TO
+- name: COMMSPFROM
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: TN(SUPRFROM), COMM SUPR FROM
+- name: COLLCHNL
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: COLLECTION CHANNEL
+  default: ''' '''
+- name: CNTTYPE
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: CONTRACT TYPE
+  default: ''' '''
+- name: CNTRCV
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: COVER NOTE RECEIPT DATE
+- name: CNTISS
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: COVER NOTE ISSUE DATE
+- name: CNTCURR
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: CURRENCY
+  default: ''' '''
+- name: CNTBRANCH
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: SERVICING BRANCH
+  default: ''' '''
+- name: CLUPFX
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: CLUSTER POLICY PREFIX
+  default: ''' '''
+- name: CLUNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CLUSTER POLICY NUMBER
+  default: ''' '''
+- name: CLUCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: CLUSTER POLICY COMPANY
+  default: ''' '''
+- name: CHGFLAG
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: CHANGE FLAG
+  default: ''' '''
+- name: CHDRPFX
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: CONT HEADER PREFIX
+  default: ''' '''
+- name: CHDRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CONTRACT NUMBER
+  default: ''' '''
+- name: CHDRCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: CONT HEADER COMPANY
+  default: ''' '''
+- name: CCDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: CONTRACT COMMENCEMENT DATE
+- name: CAMPAIGN
+  type: CHAR
+  nullable: false
+  length: 6
+  ccsid: 838
+  description: CAMPAIGN
+  default: ''' '''
+- name: BTDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: BILLED TO DATE
+- name: BILLSUPR
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: TN(SUPRFLAG), BILL SUPR FLAG
+  default: ''' '''
+- name: BILLSPTO
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: TN(SUPRTO), BILL SUPR TO
+- name: BILLSPFROM
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: TN(SUPRFROM), BILL SUPR FROM
+- name: BILLMONTH
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: BILLING MONTH OF YEAR
+  default: ''' '''
+- name: BILLFREQ
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: BILLING FREQUENCY
+  default: ''' '''
+- name: BILLDAY
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: BILLING DAY OF MONTH
+  default: ''' '''
+- name: BILLDATE04
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: TN(BILLDATE) BILLING DATE
+- name: BILLDATE03
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: TN(BILLDATE) BILLING DATE
+- name: BILLDATE02
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: TN(BILLDATE) BILLING DATE
+- name: BILLDATE01
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: TN(BILLDATE) BILLING DATE
+- name: BILLCURR
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: BILLING CURRENCY
+  default: ''' '''
+- name: BILLCHNL
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: BILLING CHANNEL
+  default: ''' '''
+- name: BILLCD
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: BILLING RENEWAL DATE
+- name: BILLAMT04
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(BILLAMT) TN(BILLAMT), LAST BILL AMT
+- name: BILLAMT03
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(BILLAMT) TN(BILLAMT), LAST BILL AMT
+- name: BILLAMT02
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(BILLAMT) TN(BILLAMT), LAST BILL AMT
+- name: BILLAMT01
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(BILLAMT) TN(BILLAMT), LAST BILL AMT
+- name: BFCHARGE
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: BANK FEE CHARGE
+  default: ''' '''
+- name: BANKKEY
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: BANK KEY
+  default: ''' '''
+- name: BANKCODE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: BANK CODE
+  default: ''' '''
+- name: BANKACCKEY
+  type: CHAR
+  nullable: false
+  length: 20
+  ccsid: 838
+  description: BANK ACCOUNT KEY
+  default: ''' '''
+- name: AVLISU
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: AVAILABLE (VALID) FOR ISSUE
+  default: ''' '''
+- name: ASGNPFX
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: ASSIGNEE PREFIX
+  default: ''' '''
+- name: ASGNNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: ASSIGNEE NUMBER
+  default: ''' '''
+- name: ASGNCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: ASSIGNEE COMPANY
+  default: ''' '''
+- name: APLSUPR
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: TN(SUPRFLAG), APL SUPR FLAG
+  default: ''' '''
+- name: APLSPTO
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: TN(SUPRTO), APL SUPR TO
+- name: APLSPFROM
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: TN(SUPRFROM), APL SUPR FROM
+- name: ANNAMT06
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(ANNAMT) ANNIVERSARY AMOUNT
+- name: ANNAMT05
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(ANNAMT) ANNIVERSARY AMOUNT
+- name: ANNAMT04
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(ANNAMT) ANNIVERSARY AMOUNT
+- name: ANNAMT03
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(ANNAMT) ANNIVERSARY AMOUNT
+- name: ANNAMT02
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(ANNAMT) ANNIVERSARY AMOUNT
+- name: ANNAMT01
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(ANNAMT) ANNIVERSARY AMOUNT
+- name: AGNTPFX
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: AGENT PREFIX
+  default: ''' '''
+- name: AGNTNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: AGENT NUMBER
+  default: ''' '''
+- name: AGNTCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: AGENT COMPANY
+  default: ''' '''
+- name: AGEDEF
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: AGE DEFINITION
+  default: ''' '''
+- name: ADJDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: ADJUSTMENT TO DATE
+- name: ACCTMETH
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: ACCOUNTING METHOD
+  default: ''' '''
+- name: ACCTCCY
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: ACCOUNTING CURRENCY
+  default: ''' '''
+constraints:
+  primary_key:
+    columns:
+    - CHDRPFX
+    - CHDRCOY
+    - CHDRNUM
+journaling:
+  enabled: true

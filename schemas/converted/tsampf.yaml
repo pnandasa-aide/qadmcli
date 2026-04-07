@@ -1,0 +1,43 @@
+# TSAMPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TSAMPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TSAMPF
+columns:
+- name: ZSEX
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: SEX
+  default: ''' '''
+- name: MINSUMIN
+  type: DECIMAL
+  nullable: false
+  length: 10
+  scale: 0
+  description: MIN SUM INSURED
+- name: MAXSUMIN
+  type: DECIMAL
+  nullable: false
+  length: 10
+  scale: 0
+  description: MAX SUM INSURED
+- name: ELEMKEY
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: ELEMENT KEY
+  default: ''' '''
+- name: AGE
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: AGE
+journaling:
+  enabled: true

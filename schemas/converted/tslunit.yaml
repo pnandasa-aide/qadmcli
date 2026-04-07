@@ -1,0 +1,122 @@
+# TSLUNIT table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TSLUNIT
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TSLUNIT
+columns:
+- name: CREDTE
+  type: VARCHAR
+  nullable: true
+  length: 8
+- name: UNITCODENM
+  type: CHAR
+  nullable: true
+  length: 60
+- name: UPDDATE
+  type: VARCHAR
+  nullable: true
+  length: 8
+  description: Update date
+- name: UPDATEBY
+  type: CHAR
+  nullable: true
+  length: 20
+  description: Update by user
+- name: STSEMAIL
+  type: INTEGER
+  nullable: true
+- name: STATUS
+  type: VARCHAR
+  nullable: true
+  length: 1
+  description: Sales unit status
+- name: AREADATE
+  type: VARCHAR
+  nullable: true
+  length: 8
+- name: AREACODE
+  type: CHAR
+  nullable: true
+  length: 3
+  description: Sales area (branch) code
+- name: GRPDATE
+  type: VARCHAR
+  nullable: true
+  length: 8
+- name: GRPCO
+  type: CHAR
+  nullable: true
+  length: 5
+- name: MKTCHAN
+  type: CHAR
+  nullable: true
+  length: 2
+  description: Marketing channel code
+- name: EXPDATE
+  type: VARCHAR
+  nullable: true
+  length: 8
+  description: Unit close date
+- name: EFFDATE
+  type: VARCHAR
+  nullable: true
+  length: 8
+  description: Unit start date
+- name: JOINDATE
+  type: VARCHAR
+  nullable: true
+  length: 8
+- name: NOOFAS
+  type: INTEGER
+  nullable: true
+  description: No. of associates
+- name: NOOFTEAM
+  type: INTEGER
+  nullable: true
+  description: No. of team
+- name: UNITCOCO
+  type: CHAR
+  nullable: true
+  length: 8
+  description: Unit-Co code
+- name: REFCODE
+  type: CHAR
+  nullable: true
+  length: 8
+- name: UNITDATE
+  type: VARCHAR
+  nullable: true
+  length: 8
+- name: UPUNITCO
+  type: CHAR
+  nullable: true
+  length: 5
+- name: ADCODE
+  type: CHAR
+  nullable: true
+  length: 8
+  description: AD code
+- name: THDESC
+  type: CHAR
+  nullable: true
+  length: 50
+  description: Thai name
+- name: ENDESC
+  type: CHAR
+  nullable: true
+  length: 50
+  description: English name
+- name: CODE
+  type: CHAR
+  nullable: false
+  length: 5
+  description: Sales unit code
+constraints:
+  primary_key:
+    columns:
+    - CODE
+journaling:
+  enabled: true

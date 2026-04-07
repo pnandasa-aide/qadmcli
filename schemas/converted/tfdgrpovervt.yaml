@@ -1,0 +1,57 @@
+# TFDGRPOVERVT table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TFDGRPOVERVT
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TFDGRPOVERVT
+columns:
+- name: AMTYEAR
+  type: DECIMAL
+  nullable: false
+  length: 10
+  scale: 0
+- name: TLHMOSHR01
+  type: DECIMAL
+  nullable: false
+  length: 21
+  scale: 2
+- name: VISYEAR
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+- name: CNT0101
+  type: DECIMAL
+  nullable: false
+  length: 7
+  scale: 0
+- name: MLVLPLAN
+  type: CHAR
+  nullable: false
+  length: 3
+- name: DTETRM
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+- name: EFFDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+- name: DPNTNO
+  type: CHAR
+  nullable: false
+  length: 2
+- name: MBRNO
+  type: CHAR
+  nullable: false
+  length: 5
+- name: CHDRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+journaling:
+  enabled: true

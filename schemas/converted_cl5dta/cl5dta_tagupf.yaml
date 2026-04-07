@@ -1,0 +1,256 @@
+# TAGUPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TAGUPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TAGUPF
+columns:
+- name: ZUNITDTE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: UNIT CHANGED DATE
+- name: ZOFFDTE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: OFFICE CHANGED DATE
+- name: ZGRPDTE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: GROUP CHANGED DATE
+- name: XTRANNO
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+  description: TRANSACTION NUMBER
+- name: VALIDFLAG
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: VALID FLAG
+  default: ''' '''
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: USERID
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: PROJECT CONTROL USER ID
+  default: ''' '''
+- name: TUNITSTS
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: SALES UNIT STATUS
+  default: ''' '''
+- name: TTAGUNTN
+  type: CHAR
+  nullable: false
+  length: 50
+  ccsid: 838
+  description: AGENT UNIT NAME
+  default: ''' '''
+- name: TSALEUNT
+  type: CHAR
+  nullable: false
+  length: 5
+  ccsid: 838
+  description: SALE UNIT CODE
+  default: ''' '''
+- name: TRANSACTION_TIME
+  type: DECIMAL
+  nullable: false
+  length: 6
+  scale: 0
+  description: TRANSACTION TIME
+- name: TRANSACTION_DATE
+  type: DECIMAL
+  nullable: false
+  length: 6
+  scale: 0
+  description: TRANSACTION DATE
+- name: TRANSCD
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: TRANSACTION CODE
+  default: ''' '''
+- name: TRANNO
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+  description: TRANSACTION NUMBER
+- name: TOFFCCDE
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: OFFICE CODE
+  default: ''' '''
+- name: TLDUNTCD
+  type: CHAR
+  nullable: false
+  length: 5
+  ccsid: 838
+  description: LEADER SALE UNIT CODE
+  default: ''' '''
+- name: TLDGRPCD
+  type: CHAR
+  nullable: false
+  length: 5
+  ccsid: 838
+  description: LEADER GROUP CODE
+  default: ''' '''
+- name: TJOINDTE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: JOIN DATE
+- name: TERMID
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: TERMINAL ID
+  default: ''' '''
+- name: TEAGUNTN
+  type: CHAR
+  nullable: false
+  length: 50
+  ccsid: 838
+  description: AGENT UNIT NAME
+  default: ''' '''
+- name: TACORPNO
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: AGENT CORPORATE NUMBER
+  default: ''' '''
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: EFFDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: EFFECTIVE DATE
+- name: DESPNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: DESPATCH NUMBER
+  default: ''' '''
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+- name: CURRTO
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: CURRENT TO
+- name: CURRFROM
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: CURRENT FROM
+- name: CRTDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: CREATION DATE
+- name: CHGFLAG05
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: TN(CHGFLAG) CHANGE FLAG
+  default: ''' '''
+- name: CHGFLAG04
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: TN(CHGFLAG) CHANGE FLAG
+  default: ''' '''
+- name: CHGFLAG03
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: TN(CHGFLAG) CHANGE FLAG
+  default: ''' '''
+- name: CHGFLAG02
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: TN(CHGFLAG) CHANGE FLAG
+  default: ''' '''
+- name: CHGFLAG01
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: TN(CHGFLAG) CHANGE FLAG
+  default: ''' '''
+- name: AGNTPFX
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: AGENT PREFIX
+  default: ''' '''
+- name: AGNTNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: AGENT NUMBER
+  default: ''' '''
+- name: AGNTCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: AGENT COMPANY
+  default: ''' '''
+constraints:
+  primary_key:
+    columns:
+    - TSALEUNT
+    - TRANNO
+journaling:
+  enabled: true

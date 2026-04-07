@@ -1,0 +1,71 @@
+# TFDTCDHPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TFDTCDHPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TFDTCDHPF
+columns:
+- name: DATIME
+  type: VARCHAR
+  nullable: true
+  length: 8
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+- name: THOSPNM
+  type: CHAR
+  nullable: false
+  length: 8
+- name: CRTUSER
+  type: CHAR
+  nullable: false
+  length: 10
+- name: LIFCNUM
+  type: CHAR
+  nullable: false
+  length: 8
+- name: VALIDFLAG
+  type: CHAR
+  nullable: false
+  length: 1
+- name: FCLAMSTS
+  type: CHAR
+  nullable: false
+  length: 6
+- name: RELEASE_TIME
+  type: DECIMAL
+  nullable: false
+  length: 6
+  scale: 0
+- name: CURRTO
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+- name: BASE_VERSION_TIME
+  type: DECIMAL
+  nullable: false
+  length: 6
+  scale: 0
+- name: CURRFROM
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+- name: GCOCCNO
+  type: CHAR
+  nullable: false
+  length: 2
+- name: CLAMNUM
+  type: CHAR
+  nullable: false
+  length: 8
+journaling:
+  enabled: true

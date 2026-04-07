@@ -1,0 +1,147 @@
+# ZSGRPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: ZSGRPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - ZSGRPF
+columns:
+- name: UPUNITCO
+  type: CHAR
+  nullable: false
+  length: 5
+  ccsid: 838
+  description: UPUNITCO
+  default: ''' '''
+- name: UPGRP
+  type: CHAR
+  nullable: false
+  length: 5
+  ccsid: 838
+  description: UPGRP
+  default: ''' '''
+- name: UPDDATE
+  type: CHAR
+  nullable: false
+  length: 20
+  ccsid: 838
+  description: UPDDATE
+  default: ''' '''
+- name: UPDATEBY
+  type: CHAR
+  nullable: false
+  length: 20
+  ccsid: 838
+  description: UPDATEBY
+  default: ''' '''
+- name: UNITDATE
+  type: CHAR
+  nullable: false
+  length: 20
+  ccsid: 838
+  description: UNITDATE
+  default: ''' '''
+- name: STOPDATE
+  type: CHAR
+  nullable: false
+  length: 20
+  ccsid: 838
+  description: END DATE FOR CONVERSE
+  default: ''' '''
+- name: SRCEBUS
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: ACCOUNT TYPE
+  default: ''' '''
+- name: SFCDESC
+  type: CHAR
+  nullable: false
+  length: 60
+  ccsid: 838
+  description: DESCRIPTION
+  default: ''' '''
+- name: REFCODE
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: REFCODE
+  default: ''' '''
+- name: JOINDATE
+  type: CHAR
+  nullable: false
+  length: 20
+  ccsid: 838
+  description: JOINDATE
+  default: ''' '''
+- name: GRPDATE
+  type: CHAR
+  nullable: false
+  length: 20
+  ccsid: 838
+  description: GRPDATE
+  default: ''' '''
+- name: GRPCO
+  type: CHAR
+  nullable: false
+  length: 5
+  ccsid: 838
+  description: GRPCO
+  default: ''' '''
+- name: DESC
+  type: CHAR
+  nullable: false
+  length: 50
+  ccsid: 838
+  description: ELEMENT DESCRIPTION
+  default: ''' '''
+- name: CREDTE
+  type: CHAR
+  nullable: false
+  length: 20
+  ccsid: 838
+  description: CREDTE
+  default: ''' '''
+- name: BEDATE
+  type: CHAR
+  nullable: false
+  length: 20
+  ccsid: 838
+  description: START DATE FOR CONVERSE
+  default: ''' '''
+- name: ASSTATUS
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: ASSTATUS
+- name: ARADATE
+  type: CHAR
+  nullable: false
+  length: 20
+  ccsid: 838
+  description: ARADATE
+  default: ''' '''
+- name: ARACDE
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: AREA CODE LIFE AGENT
+  default: ''' '''
+- name: ADCODE
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: ADCODE
+  default: ''' '''
+constraints:
+  primary_key:
+    columns:
+    - GRPCO
+journaling:
+  enabled: true

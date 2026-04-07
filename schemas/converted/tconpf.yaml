@@ -1,0 +1,92 @@
+# TCONPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TCONPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TCONPF
+columns:
+- name: ZCHANNEL
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: CHANNEL CODE
+  default: ''' '''
+- name: VALIDFLAG
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: VALID FLAG
+  default: ''' '''
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: TCONBEF
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: CONSENT BENEFICIARY FLAG
+  default: ''' '''
+- name: SECUITYNO
+  type: CHAR
+  nullable: false
+  length: 24
+  ccsid: 838
+  description: SOCIAL SECURITY NUMBER
+  default: ''' '''
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+- name: DATESUB
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: DATE SUBMITTED
+- name: CURRTO
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: CURRENT TO
+- name: CURRFROM
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: CURRENT FROM
+- name: CHDRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CONTRACT NUMBER
+  default: ''' '''
+- name: CHDRCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: CONT HEADER COMPANY
+  default: ''' '''
+journaling:
+  enabled: true

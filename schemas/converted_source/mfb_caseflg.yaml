@@ -1,0 +1,46 @@
+# CASEFLG table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: CASEFLG
+  library: GSLIBTST
+  description: Converted from Syniti metadata - CASEFLG
+columns:
+- name: OVERFLOW
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: OVERFLOW FLAG
+  default: ''' '''
+- name: GCOCCNO
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: CLAIMS OCCURANCE NO
+  default: ''' '''
+- name: FLAG
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: SUBSTR(CASENOTE,1,1)
+  default: ''' '''
+- name: CLAMNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CLAIM NUMBER
+  default: ''' '''
+- name: BREAKLVL
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: BREAK LEVEL
+  default: ''' '''
+journaling:
+  enabled: true

@@ -1,0 +1,50 @@
+# AGENCYDATA table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: AGENCYDATA
+  library: GSLIBTST
+  description: Converted from Syniti metadata - AGENCYDATA
+columns:
+- name: STATUS
+  type: CHAR
+  nullable: true
+  length: 40
+  ccsid: 838
+- name: CREATEDDATE
+  type: CHAR
+  nullable: true
+  length: 8
+  ccsid: 838
+- name: CORPORATE
+  type: CHAR
+  nullable: true
+  length: 100
+  ccsid: 838
+- name: AGENTSURNAME
+  type: CHAR
+  nullable: true
+  length: 50
+  ccsid: 838
+- name: AGENTNAME
+  type: CHAR
+  nullable: true
+  length: 50
+  ccsid: 838
+- name: AGENTID
+  type: CHAR
+  nullable: true
+  length: 13
+  ccsid: 838
+- name: AGENTCODE
+  type: CHAR
+  nullable: true
+  length: 8
+  ccsid: 838
+constraints:
+  primary_key:
+    columns:
+    - AGENTCODE
+journaling:
+  enabled: true

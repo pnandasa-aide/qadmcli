@@ -1,0 +1,69 @@
+# TFDEPOLPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TFDEPOLPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TFDEPOLPF
+columns:
+- name: USER_PROFILE
+  type: VARCHAR
+  nullable: false
+  length: 10
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 8
+- name: JOB_NAME
+  type: VARCHAR
+  nullable: false
+  length: 10
+- name: CRTUSER
+  type: VARCHAR
+  nullable: false
+  length: 10
+- name: VALIDFLAG
+  type: VARCHAR
+  nullable: false
+  length: 1
+- name: LETTER_STATUS
+  type: VARCHAR
+  nullable: false
+  length: 1
+- name: LETTER_PRINT_DATE
+  type: DECIMAL
+  nullable: true
+  length: 8
+  scale: 0
+- name: EPOLFLAG
+  type: VARCHAR
+  nullable: false
+  length: 1
+- name: BATCTRCDE
+  type: VARCHAR
+  nullable: true
+  length: 4
+- name: TRANNO
+  type: DECIMAL
+  nullable: true
+  length: 5
+  scale: 0
+- name: CHDRNUM
+  type: VARCHAR
+  nullable: true
+  length: 8
+- name: CHDRCOY
+  type: VARCHAR
+  nullable: true
+  length: 1
+constraints:
+  primary_key:
+    columns:
+    - CHDRCOY
+    - CHDRNUM
+    - TRANNO
+    - BATCTRCDE
+    - LETTER_PRINT_DATE
+journaling:
+  enabled: true

@@ -1,0 +1,231 @@
+# GMHDPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: GMHDPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - GMHDPF
+columns:
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: USER
+  type: DECIMAL
+  nullable: false
+  length: 6
+  scale: 0
+  description: USER NUMBER
+- name: TRANSACTION_TIME
+  type: DECIMAL
+  nullable: false
+  length: 6
+  scale: 0
+  description: TRANSACTION TIME
+- name: TRANSACTION_DATE
+  type: DECIMAL
+  nullable: false
+  length: 6
+  scale: 0
+  description: TRANSACTION DATE
+- name: TRANNO
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+  description: TRANSACTION NUMBER
+- name: TERMRSNCD
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TERMINATION REASON CODE
+  default: ''' '''
+- name: TERMID
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: TERMINAL ID
+  default: ''' '''
+- name: SMOKEIND
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: SMOKING / NON-SMOKING INDICATOR
+  default: ''' '''
+- name: RELN
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: RELATIONSHIP
+  default: ''' '''
+- name: REFIND
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: REFUND INDICATOR
+  default: ''' '''
+- name: REASONTRM
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: REASON CODE FOR TERMINATION
+  default: ''' '''
+- name: PNDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: PENDING DATE
+- name: OCCPCLAS
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: OCCUPATIONAL CLASS
+  default: ''' '''
+- name: MEDEVD
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: MEDICAL EVIDENCE
+  default: ''' '''
+- name: MBRNO
+  type: CHAR
+  nullable: false
+  length: 5
+  ccsid: 838
+  description: MEMBER NUMBER
+  default: ''' '''
+- name: LDPNTNO
+  type: DECIMAL
+  nullable: false
+  length: 2
+  scale: 0
+  description: LAST DEPENDENT NUMBER
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: HEADCNT
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: PART OF HEADCOUNT
+  default: ''' '''
+- name: GWEIGHT
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: WEIGHT
+- name: GHEIGHT
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: HEIGHT
+- name: FSUCO
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: FSU COMPANY - CLIENT DATABASE COMPANY
+  default: ''' '''
+- name: FAUWDT
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: DATE OF 1ST ADVICE OF U/W REQUIREMENTS
+- name: ETHORG
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: ETHNIC ORIGIN
+  default: ''' '''
+- name: EMPNO
+  type: CHAR
+  nullable: false
+  length: 12
+  ccsid: 838
+  description: EMPLOYEE NUMBER
+  default: ''' '''
+- name: DTETRM
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: DATE TERMINATED
+- name: DTEATT
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: DTEATT
+- name: DPNTNO
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: DEPENDENT NUMBER
+  default: ''' '''
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+- name: CLNTPFX
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: CLIENT PREFIX
+  default: ''' '''
+- name: CLNTNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CLIENT NUMBER
+  default: ''' '''
+- name: CLIENT
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CLIENT KEY
+  default: ''' '''
+- name: CHDRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CONTRACT NUMBER
+  default: ''' '''
+- name: CHDRCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: CONT HEADER COMPANY
+  default: ''' '''
+journaling:
+  enabled: true

@@ -1,0 +1,379 @@
+# TAGCPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TAGCPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TAGCPF
+columns:
+- name: ZCNTADDR05
+  type: CHAR
+  nullable: false
+  length: 50
+  ccsid: 838
+  description: TN(ZCNTADDR) CLIENT ADDR
+  default: ''' '''
+- name: ZCNTADDR04
+  type: CHAR
+  nullable: false
+  length: 50
+  ccsid: 838
+  description: TN(ZCNTADDR) CLIENT ADDR
+  default: ''' '''
+- name: ZCNTADDR03
+  type: CHAR
+  nullable: false
+  length: 50
+  ccsid: 838
+  description: TN(ZCNTADDR) CLIENT ADDR
+  default: ''' '''
+- name: ZCNTADDR02
+  type: CHAR
+  nullable: false
+  length: 50
+  ccsid: 838
+  description: TN(ZCNTADDR) CLIENT ADDR
+  default: ''' '''
+- name: ZCNTADDR01
+  type: CHAR
+  nullable: false
+  length: 50
+  ccsid: 838
+  description: TN(ZCNTADDR) CLIENT ADDR
+  default: ''' '''
+- name: ZCLTADDR05
+  type: CHAR
+  nullable: false
+  length: 50
+  ccsid: 838
+  description: TN(ZCLTADDR) CLIENT ADDR
+  default: ''' '''
+- name: ZCLTADDR04
+  type: CHAR
+  nullable: false
+  length: 50
+  ccsid: 838
+  description: TN(ZCLTADDR) CLIENT ADDR
+  default: ''' '''
+- name: ZCLTADDR03
+  type: CHAR
+  nullable: false
+  length: 50
+  ccsid: 838
+  description: TN(ZCLTADDR) CLIENT ADDR
+  default: ''' '''
+- name: ZCLTADDR02
+  type: CHAR
+  nullable: false
+  length: 50
+  ccsid: 838
+  description: TN(ZCLTADDR) CLIENT ADDR
+  default: ''' '''
+- name: ZCLTADDR01
+  type: CHAR
+  nullable: false
+  length: 50
+  ccsid: 838
+  description: TN(ZCLTADDR) CLIENT ADDR
+  default: ''' '''
+- name: XTRANNO
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+  description: TRANSACTION NUMBER
+- name: VALIDFLAG
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: VALID FLAG
+  default: ''' '''
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: USERID
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: PROJECT CONTROL USER ID
+  default: ''' '''
+- name: TRANSACTION_TIME
+  type: DECIMAL
+  nullable: false
+  length: 6
+  scale: 0
+  description: TRANSACTION TIME
+- name: TRMCDE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: AGENT TERMINATION CODE
+  default: ''' '''
+- name: TREGVAT
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: REGISTER VAT FLAG
+  default: ''' '''
+- name: TRANSACTION_DATE
+  type: DECIMAL
+  nullable: false
+  length: 6
+  scale: 0
+  description: TRANSACTION DATE
+- name: TRANSCD
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: TRANSACTION CODE
+  default: ''' '''
+- name: TRANNO
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+  description: TRANSACTION NUMBER
+- name: THOLDRSN
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: HOLD PAYMENT REASON CODE
+  default: ''' '''
+- name: THOLDFLG
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: HOLD PAYMENT FLAG
+  default: ''' '''
+- name: TERMID
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: TERMINAL ID
+  default: ''' '''
+- name: TCORPTYP
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: CORPORATE TYPE
+  default: ''' '''
+- name: TCORPSTS
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: AGENT CORPORATE STATUS
+  default: ''' '''
+- name: TBANKCHG
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: BANK CHANGE FLAG
+  default: ''' '''
+- name: TACORPNO
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: AGENT CORPORATE NUMBER
+  default: ''' '''
+- name: SECUITYNO
+  type: CHAR
+  nullable: false
+  length: 24
+  ccsid: 838
+  description: SOCIAL SECURITY NUMBER
+  default: ''' '''
+- name: RTAXIDNUM
+  type: CHAR
+  nullable: false
+  length: 13
+  ccsid: 838
+  description: TAX ID NUMBER
+  default: ''' '''
+- name: PAYMTH
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: PAYMENT METHOD
+  default: ''' '''
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: EFFDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: EFFECTIVE DATE
+- name: DTETRM
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: DATE TERMINATED
+- name: DESPPFX
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: DESPATCH PREFIX
+  default: ''' '''
+- name: DESPNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: DESPATCH NUMBER
+  default: ''' '''
+- name: DESPCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: DESPATCH COMPANY
+  default: ''' '''
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+- name: CURRTO
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: CURRENT TO
+- name: CURRFROM
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: CURRENT FROM
+- name: CTRYCODE
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: COUNTRY CODE
+  default: ''' '''
+- name: CRTDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: CREATION DATE
+- name: COUNTRY
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: COUNTRY
+  default: ''' '''
+- name: CORPNAME
+  type: CHAR
+  nullable: false
+  length: 50
+  ccsid: 838
+  description: CORPORATE NAME
+  default: ''' '''
+- name: CLTPHONE
+  type: CHAR
+  nullable: false
+  length: 16
+  ccsid: 838
+  description: TELEPHONE NO
+  default: ''' '''
+- name: CLTPCODE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: CLIENT PCODE
+  default: ''' '''
+- name: CLNTPFX
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: CLIENT PREFIX
+  default: ''' '''
+- name: CLNTCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: CLIENT COMPANY
+  default: ''' '''
+- name: CHGFLAG05
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: TN(CHGFLAG) CHANGE FLAG
+  default: ''' '''
+- name: CHGFLAG04
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: TN(CHGFLAG) CHANGE FLAG
+  default: ''' '''
+- name: CHGFLAG03
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: TN(CHGFLAG) CHANGE FLAG
+  default: ''' '''
+- name: CHGFLAG02
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: TN(CHGFLAG) CHANGE FLAG
+  default: ''' '''
+- name: CHGFLAG01
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: TN(CHGFLAG) CHANGE FLAG
+  default: ''' '''
+- name: ADDPOST
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: ADDPOST
+  default: ''' '''
+constraints:
+  primary_key:
+    columns:
+    - TACORPNO
+    - EFFDATE
+    - TRANNO
+journaling:
+  enabled: true

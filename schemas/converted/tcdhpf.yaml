@@ -1,0 +1,113 @@
+# TCDHPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TCDHPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TCDHPF
+columns:
+- name: VALIDFLAG
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: VALID FLAG
+  default: ''' '''
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: THOSPNM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: HOSPITAL CODE
+  default: ''' '''
+- name: RELEASE_TIME
+  type: DECIMAL
+  nullable: false
+  length: 6
+  scale: 0
+  description: RELEASE TIME
+- name: LIFCNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: LIFE CLIENT NUMBER
+  default: ''' '''
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: GCOCCNO
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: CLAIMS OCCURANCE NO
+  default: ''' '''
+- name: FCLAMSTS
+  type: CHAR
+  nullable: false
+  length: 6
+  ccsid: 838
+  description: FAX CLAIM STASTS
+  default: ''' '''
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+- name: CURRTO
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: CURRENT TO
+- name: CURRFROM
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: CURRENT FROM
+- name: CRTUSER
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: CREATE USER
+  default: ''' '''
+- name: CLAMNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CLAIM NUMBER
+  default: ''' '''
+- name: BASE_VERSION_TIME
+  type: DECIMAL
+  nullable: false
+  length: 6
+  scale: 0
+  description: BASE SOURCE TIME
+constraints:
+  primary_key:
+    columns:
+    - CLAMNUM
+    - GCOCCNO
+    - FCLAMSTS
+    - VALIDFLAG
+    - DATIME
+journaling:
+  enabled: true

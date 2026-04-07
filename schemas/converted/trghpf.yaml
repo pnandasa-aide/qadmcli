@@ -1,0 +1,153 @@
+# TRGHPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TRGHPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TRGHPF
+columns:
+- name: RECVD_DATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: DATE CLAIM RECEIVED
+- name: VALIDFLAG
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: VALID FLAG
+  default: ''' '''
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: TRGREASON
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: REGULAR CLAIM REASON CONDE BY ADMIN
+  default: ''' '''
+- name: THOSPNM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: HOSPITAL CODE
+  default: ''' '''
+- name: TDOCTORNM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: DOCTOR CODE
+  default: ''' '''
+- name: TDIAGCDE
+  type: CHAR
+  nullable: false
+  length: 5
+  ccsid: 838
+  description: DIAGNOSIS CODE
+  default: ''' '''
+- name: TACCDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: ACCIDENT DATE
+- name: STATZ
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: STATUS
+  default: ''' '''
+- name: REFCODE
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: REFCODE
+  default: ''' '''
+- name: LIFCNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: LIFE CLIENT NUMBER
+  default: ''' '''
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: HCLAIMEVD
+  type: CHAR
+  nullable: false
+  length: 18
+  ccsid: 838
+  description: CLAIM EVIDENCE
+  default: ''' '''
+- name: DOCTNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: DOCUMENT NUMBER
+  default: ''' '''
+- name: DISCHGDT
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: DISCHARGE DATE
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+- name: CRTUSER
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: CREATE USER
+  default: ''' '''
+- name: CLAMEFF
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: CLAIM EFFECTIVE DATE
+- name: CLAIMEVD
+  type: CHAR
+  nullable: false
+  length: 18
+  ccsid: 838
+  description: CLAIM EVIDENCE
+  default: ''' '''
+- name: ASSESSOR
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: ASSESSOR REGULAR CLAIM
+  default: ''' '''
+- name: ADMITDT
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: ADMIT DATE
+journaling:
+  enabled: true

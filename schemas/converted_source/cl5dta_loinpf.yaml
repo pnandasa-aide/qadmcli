@@ -1,0 +1,175 @@
+# LOINPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: LOINPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - LOINPF
+columns:
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: TRANNO
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+  description: TRANSACTION NUMBER
+- name: TPLSTMDTY
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: POLICY LOAN STAMP DUTY AMOUNT
+- name: TOACTYR
+  type: DECIMAL
+  nullable: false
+  length: 4
+  scale: 0
+  description: TO ACCT YEAR
+- name: PAYMENT_METHOD
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: PAYMENT METHOD
+  default: ''' '''
+- name: PAYCLT
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: PAYEE CLIENT NUMBER
+  default: ''' '''
+- name: NET_LCEAMT
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: NET LCEAMT
+- name: MPERIOD
+  type: DECIMAL
+  nullable: false
+  length: 4
+  scale: 0
+  description: PERIOD
+- name: LOANVALUE
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: LOAN VALUE
+- name: LOANSUM
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: LOAN SUM
+- name: LOANLETNO
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: LOAN LETTER NUMBER
+  default: ''' '''
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: GENPLNE03
+  type: CHAR
+  nullable: false
+  length: 60
+  ccsid: 838
+  description: TN(GENPLNE) GENERAL LINE
+  default: ''' '''
+- name: GENPLNE02
+  type: CHAR
+  nullable: false
+  length: 60
+  ccsid: 838
+  description: TN(GENPLNE) GENERAL LINE
+  default: ''' '''
+- name: GENPLNE01
+  type: CHAR
+  nullable: false
+  length: 60
+  ccsid: 838
+  description: TN(GENPLNE) GENERAL LINE
+  default: ''' '''
+- name: EFFDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: EFFECTIVE DATE
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+- name: CHQFRMDTE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: CHEQUE FROM DATE
+- name: CHDRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CONTRACT NUMBER
+  default: ''' '''
+- name: CHDRCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: CONT HEADER COMPANY
+  default: ''' '''
+- name: CANFLAG
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: CANCEL FLAG
+  default: ''' '''
+- name: BANKKEY
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: BANK KEY
+  default: ''' '''
+- name: BANKACCKEY
+  type: CHAR
+  nullable: false
+  length: 20
+  ccsid: 838
+  description: BANK ACCOUNT KEY
+  default: ''' '''
+- name: BANKDESC
+  type: CHAR
+  nullable: false
+  length: 60
+  ccsid: 838
+  description: BANK DESCRIPTION
+  default: ''' '''
+constraints:
+  primary_key:
+    columns:
+    - CHDRNUM
+    - TRANNO
+journaling:
+  enabled: true

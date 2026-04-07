@@ -1,0 +1,80 @@
+# TACDPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TACDPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TACDPF
+columns:
+- name: TPAYPERD
+  type: DECIMAL
+  nullable: false
+  length: 1
+  scale: 0
+  description: PAYMENT PERIOD
+- name: TODATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: END DATE
+- name: TNPAYPRD
+  type: DECIMAL
+  nullable: false
+  length: 1
+  scale: 0
+  description: NORMAL PAYMENT PERIOD
+- name: TCHANNEL
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 37
+  description: CHANNEL CODE
+  default: ''' '''
+- name: PERENDDT
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: PERIOD END DATE
+- name: PAYDTE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: PAYMENT DATE
+- name: FRMDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: START DATE
+- name: ACYMFLG
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 37
+  description: ACCOUNTING YEAR/MONTH FLAG
+  default: ''' '''
+- name: ACCTYR
+  type: DECIMAL
+  nullable: false
+  length: 4
+  scale: 0
+  description: ACCOUNTING YEAR
+- name: ACCTMNTH
+  type: DECIMAL
+  nullable: false
+  length: 2
+  scale: 0
+  description: ACCOUNTING MONTH
+- name: ZPARTNER
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 37
+  description: PARTNER
+  default: ''' '''
+journaling:
+  enabled: true

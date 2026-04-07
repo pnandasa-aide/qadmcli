@@ -1,0 +1,106 @@
+# TFDFLUPPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TFDFLUPPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TFDFLUPPF
+columns:
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 8
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+- name: ZAUTOIND
+  type: CHAR
+  nullable: false
+  length: 1
+- name: TRANSACTION_TIME
+  type: DECIMAL
+  nullable: false
+  length: 6
+  scale: 0
+- name: TRANSACTION_DATE
+  type: DECIMAL
+  nullable: false
+  length: 6
+  scale: 0
+- name: TERMID
+  type: CHAR
+  nullable: false
+  length: 4
+- name: USER
+  type: DECIMAL
+  nullable: false
+  length: 6
+  scale: 0
+- name: CLAMNUM
+  type: CHAR
+  nullable: false
+  length: 8
+- name: FUPREMK
+  type: CHAR
+  nullable: false
+  length: 40
+- name: FUPREMDT
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+- name: FUPSTAT
+  type: CHAR
+  nullable: false
+  length: 1
+- name: FUPCODE
+  type: CHAR
+  nullable: false
+  length: 3
+- name: JLIFE
+  type: CHAR
+  nullable: false
+  length: 2
+- name: LIFE
+  type: CHAR
+  nullable: false
+  length: 2
+- name: FUPTYPE
+  type: CHAR
+  nullable: false
+  length: 1
+- name: TRANNO
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+- name: FUPNO
+  type: DECIMAL
+  nullable: false
+  length: 2
+  scale: 0
+- name: CHDRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+- name: CHDRCOY
+  type: CHAR
+  nullable: false
+  length: 1
+constraints:
+  primary_key:
+    columns:
+    - CHDRCOY
+    - CHDRNUM
+    - FUPNO
+    - TRANNO
+    - FUPTYPE
+    - LIFE
+journaling:
+  enabled: true

@@ -1,0 +1,64 @@
+# GXHIMAXSUM table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: GXHIMAXSUM
+  library: GSLIBTST
+  description: Converted from Syniti metadata - GXHIMAXSUM
+columns:
+- name: SUMINSU
+  type: DECIMAL
+  nullable: false
+  length: 15
+  scale: 2
+  description: SUM INSURED
+- name: PRODTYP
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: PRODUCT CODE
+  default: ''' '''
+- name: PLANNO
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: PLAN NUMBER
+  default: ''' '''
+- name: MBRNO
+  type: CHAR
+  nullable: false
+  length: 5
+  ccsid: 838
+  description: MEMBER NUMBER
+  default: ''' '''
+- name: EFFDATE04
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: EFFDATE MAX
+- name: DTETRM04
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: DTETRM MAX
+- name: DPNTNO
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: DEPENDENT NUMBER
+  default: ''' '''
+- name: CHDRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CONTRACT NUMBER
+  default: ''' '''
+journaling:
+  enabled: true

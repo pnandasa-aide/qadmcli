@@ -1,0 +1,217 @@
+# ZECTPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: ZECTPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - ZECTPF
+columns:
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TIMESTAMP
+  default: CURRENT_TIMESTAMP
+- name: CLNTNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CLIENT NUMBER
+  default: ''' '''
+- name: CHDRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CONTRACT NUMBER
+  default: ''' '''
+- name: CHDRCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: CONT HEADER COMPANY
+  default: ''' '''
+- name: SUMINSU16
+  type: DECIMAL
+  nullable: false
+  length: 15
+  scale: 2
+  description: TN(SUMINSU) SUM INSURED
+- name: SUMINSU15
+  type: DECIMAL
+  nullable: false
+  length: 15
+  scale: 2
+  description: TN(SUMINSU) SUM INSURED
+- name: SUMINSU14
+  type: DECIMAL
+  nullable: false
+  length: 15
+  scale: 2
+  description: TN(SUMINSU) SUM INSURED
+- name: SUMINSU13
+  type: DECIMAL
+  nullable: false
+  length: 15
+  scale: 2
+  description: TN(SUMINSU) SUM INSURED
+- name: SUMINSU12
+  type: DECIMAL
+  nullable: false
+  length: 15
+  scale: 2
+  description: TN(SUMINSU) SUM INSURED
+- name: SUMINSU11
+  type: DECIMAL
+  nullable: false
+  length: 15
+  scale: 2
+  description: TN(SUMINSU) SUM INSURED
+- name: SUMINSU10
+  type: DECIMAL
+  nullable: false
+  length: 15
+  scale: 2
+  description: TN(SUMINSU) SUM INSURED
+- name: SUMINSU09
+  type: DECIMAL
+  nullable: false
+  length: 15
+  scale: 2
+  description: TN(SUMINSU) SUM INSURED
+- name: SUMINSU08
+  type: DECIMAL
+  nullable: false
+  length: 15
+  scale: 2
+  description: TN(SUMINSU) SUM INSURED
+- name: SUMINSU07
+  type: DECIMAL
+  nullable: false
+  length: 15
+  scale: 2
+  description: TN(SUMINSU) SUM INSURED
+- name: SUMINSU06
+  type: DECIMAL
+  nullable: false
+  length: 15
+  scale: 2
+  description: TN(SUMINSU) SUM INSURED
+- name: SUMINSU05
+  type: DECIMAL
+  nullable: false
+  length: 15
+  scale: 2
+  description: TN(SUMINSU) SUM INSURED
+- name: SUMINSU04
+  type: DECIMAL
+  nullable: false
+  length: 15
+  scale: 2
+  description: TN(SUMINSU) SUM INSURED
+- name: SUMINSU03
+  type: DECIMAL
+  nullable: false
+  length: 15
+  scale: 2
+  description: TN(SUMINSU) SUM INSURED
+- name: SUMINSU02
+  type: DECIMAL
+  nullable: false
+  length: 15
+  scale: 2
+  description: TN(SUMINSU) SUM INSURED
+- name: SUMINSU01
+  type: DECIMAL
+  nullable: false
+  length: 15
+  scale: 2
+  description: TN(SUMINSU) SUM INSURED
+- name: SUBSNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: SUBSIDIARY NUMBER
+  default: ''' '''
+- name: SUBSCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: SUBSIDIARY COMPANY
+  default: ''' '''
+- name: RINTERNET
+  type: CHAR
+  nullable: false
+  length: 50
+  ccsid: 838
+  description: INTERNET ADDRESS
+  default: ''' '''
+- name: PLANNO
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: PLAN NUMBER
+  default: ''' '''
+- name: MBRNO
+  type: CHAR
+  nullable: false
+  length: 5
+  ccsid: 838
+  description: MEMBER NUMBER
+  default: ''' '''
+- name: ISSDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: EPP SCHEME ISSUE DATE
+- name: EFFDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: EFFECTIVE DATE
+- name: DPNTNO
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: DEPENDENT NUMBER
+  default: ''' '''
+- name: COYSRVAC
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: SERVICING STAFF
+  default: ''' '''
+constraints:
+  primary_key:
+    columns:
+    - CHDRNUM
+    - SUBSNUM
+    - MBRNO
+    - DPNTNO
+journaling:
+  enabled: true

@@ -1,0 +1,56 @@
+# DESCPFACT table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: DESCPFACT
+  library: GSLIBTST
+  description: Converted from Syniti metadata - DESCPFACT
+columns:
+- name: LONGDESC
+  type: CHAR
+  nullable: true
+  length: 30
+- name: SHORTDESC
+  type: CHAR
+  nullable: true
+  length: 10
+- name: TRANID
+  type: CHAR
+  nullable: true
+  length: 14
+- name: LANGUAGE
+  type: CHAR
+  nullable: true
+  length: 1
+- name: ITEMSEQ
+  type: CHAR
+  nullable: true
+  length: 2
+- name: DESCITEM
+  type: CHAR
+  nullable: true
+  length: 8
+- name: DESCTABL
+  type: CHAR
+  nullable: true
+  length: 5
+- name: DESCCOY
+  type: CHAR
+  nullable: true
+  length: 1
+- name: DESCPFX
+  type: CHAR
+  nullable: true
+  length: 2
+constraints:
+  primary_key:
+    columns:
+    - DESCPFX
+    - DESCCOY
+    - DESCTABL
+    - DESCITEM
+    - ITEMSEQ
+    - LANGUAGE
+journaling:
+  enabled: true

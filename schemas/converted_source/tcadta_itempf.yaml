@@ -1,0 +1,107 @@
+# ITEMPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: ITEMPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - ITEMPF
+columns:
+- name: VALIDFLAG
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: VALID FLAG
+  default: ''' '''
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: TRANID
+  type: CHAR
+  nullable: false
+  length: 14
+  ccsid: 838
+  description: TRAN ID
+  default: ''' '''
+- name: TABLEPROG
+  type: CHAR
+  nullable: false
+  length: 6
+  ccsid: 838
+  description: EXTRA DATA SCREEN PROGRAM FOR TABLE
+  default: ''' '''
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: ITMTO
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: ITEM TO DATE
+- name: ITMFRM
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: ITEM FROM DATE
+- name: ITEMTABL
+  type: CHAR
+  nullable: false
+  length: 5
+  ccsid: 838
+  description: ITEM TABLE
+  default: ''' '''
+- name: ITEMSEQ
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: ITEM SEQUENCE
+  default: ''' '''
+- name: ITEMPFX
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: ITEM PREFIX
+  default: ''' '''
+- name: ITEMITEM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: ITEM ITEM
+  default: ''' '''
+- name: ITEMCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: ITEM COMPANY
+  default: ''' '''
+- name: GENAREA
+  type: CHAR
+  nullable: false
+  length: 500
+  ccsid: 838
+  description: GENERAL AREA
+  default: ''' '''
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+journaling:
+  enabled: true

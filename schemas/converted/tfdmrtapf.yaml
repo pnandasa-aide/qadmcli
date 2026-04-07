@@ -1,0 +1,28 @@
+# TFDMRTAPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TFDMRTAPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TFDMRTAPF
+columns:
+- name: BNKREF
+  type: CHAR
+  nullable: true
+  length: 8
+- name: PRAT
+  type: DECIMAL
+  nullable: true
+  length: 6
+  scale: 0
+- name: CHDRNUM
+  type: CHAR
+  nullable: true
+  length: 8
+constraints:
+  primary_key:
+    columns:
+    - CHDRNUM
+journaling:
+  enabled: true

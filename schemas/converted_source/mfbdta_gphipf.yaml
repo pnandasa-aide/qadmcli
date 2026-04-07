@@ -1,0 +1,226 @@
+# GPHIPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: GPHIPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - GPHIPF
+columns:
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: USER
+  type: DECIMAL
+  nullable: false
+  length: 6
+  scale: 0
+  description: USER NUMBER
+- name: TRANSACTION_TIME
+  type: DECIMAL
+  nullable: false
+  length: 6
+  scale: 0
+  description: TRANSACTION TIME
+- name: TRANSACTION_DATE
+  type: DECIMAL
+  nullable: false
+  length: 6
+  scale: 0
+  description: TRANSACTION DATE
+- name: TRANNO
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+  description: TRANSACTION NUMBER
+- name: TERMID
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: TERMINAL ID
+  default: ''' '''
+- name: SPECTRM
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: SPECIAL TERMS
+  default: ''' '''
+- name: RFUNDPC02
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: TN(RFUNDPC) EXPERIENCE REFUND %
+- name: RFUNDPC01
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: TN(RFUNDPC) EXPERIENCE REFUND %
+- name: RFUNDFLG
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: EXPERIENCE REFUND FLG
+  default: ''' '''
+- name: PRODTYP
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: PRODUCT CODE
+  default: ''' '''
+- name: LMTPCT
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 2
+  description: '% LIMIT TO WAIVE U/W FOR INC IN SI'
+- name: LMTAMT
+  type: DECIMAL
+  nullable: false
+  length: 11
+  scale: 0
+  description: AMOUNT TO WAIVE
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: GCLRPERD
+  type: DECIMAL
+  nullable: false
+  length: 2
+  scale: 0
+  description: CLEARING PERIOD FOR EXPERIENCE REFUND
+- name: EFFDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: EFFECTIVE DATE
+- name: DTETRM
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: DATE TERMINATED
+- name: DISCRATE
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 2
+  description: DISCOUNT RATE
+- name: DISCAMT
+  type: DECIMAL
+  nullable: false
+  length: 11
+  scale: 2
+  description: DISCOUNT AMOUNT
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+- name: COVLMT04
+  type: DECIMAL
+  nullable: false
+  length: 11
+  scale: 0
+  description: TN(COVLMT) FREE COVER LIMIT
+- name: COVLMT03
+  type: DECIMAL
+  nullable: false
+  length: 11
+  scale: 0
+  description: TN(COVLMT) FREE COVER LIMIT
+- name: COVLMT02
+  type: DECIMAL
+  nullable: false
+  length: 11
+  scale: 0
+  description: TN(COVLMT) FREE COVER LIMIT
+- name: COVLMT01
+  type: DECIMAL
+  nullable: false
+  length: 11
+  scale: 0
+  description: TN(COVLMT) FREE COVER LIMIT
+- name: COVAGE04
+  type: DECIMAL
+  nullable: false
+  length: 2
+  scale: 0
+  description: TN(COVAGE) FREE COVER LIMIT - UP TO AGE
+- name: COVAGE03
+  type: DECIMAL
+  nullable: false
+  length: 2
+  scale: 0
+  description: TN(COVAGE) FREE COVER LIMIT - UP TO AGE
+- name: COVAGE02
+  type: DECIMAL
+  nullable: false
+  length: 2
+  scale: 0
+  description: TN(COVAGE) FREE COVER LIMIT - UP TO AGE
+- name: COVAGE01
+  type: DECIMAL
+  nullable: false
+  length: 2
+  scale: 0
+  description: TN(COVAGE) FREE COVER LIMIT - UP TO AGE
+- name: CMRATE
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 2
+  description: COMMISSION RATE
+- name: CHDRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CONTRACT NUMBER
+  default: ''' '''
+- name: CHDRCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: CONT HEADER COMPANY
+  default: ''' '''
+- name: ARFUNDPC
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: ADVANCE EXPERIENCE REFUND %
+- name: ADEXPFLG
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: ADVANCE EXP.REFUND FLAG - YES OR NO
+  default: ''' '''
+constraints:
+  primary_key:
+    columns:
+    - CHDRCOY
+    - CHDRNUM
+    - PRODTYP
+    - EFFDATE
+journaling:
+  enabled: true

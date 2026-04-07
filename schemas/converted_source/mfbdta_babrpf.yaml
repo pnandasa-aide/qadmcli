@@ -1,0 +1,246 @@
+# BABRPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: BABRPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - BABRPF
+columns:
+- name: ZCHRGCDE05
+  type: CHAR
+  nullable: false
+  length: 6
+  ccsid: 838
+  description: TN(ZCHRGCDE) CHARGE CODE
+  default: ''' '''
+- name: ZCHRGCDE04
+  type: CHAR
+  nullable: false
+  length: 6
+  ccsid: 838
+  description: TN(ZCHRGCDE) CHARGE CODE
+  default: ''' '''
+- name: ZCHRGCDE03
+  type: CHAR
+  nullable: false
+  length: 6
+  ccsid: 838
+  description: TN(ZCHRGCDE) CHARGE CODE
+  default: ''' '''
+- name: ZCHRGCDE02
+  type: CHAR
+  nullable: false
+  length: 6
+  ccsid: 838
+  description: TN(ZCHRGCDE) CHARGE CODE
+  default: ''' '''
+- name: ZCHRGCDE01
+  type: CHAR
+  nullable: false
+  length: 6
+  ccsid: 838
+  description: TN(ZCHRGCDE) CHARGE CODE
+  default: ''' '''
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: FACTHOUS05
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TN(FACTHOUS) FACTORING HOUSE 1
+  default: ''' '''
+- name: FACTHOUS04
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TN(FACTHOUS) FACTORING HOUSE 1
+  default: ''' '''
+- name: FACTHOUS03
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TN(FACTHOUS) FACTORING HOUSE 1
+  default: ''' '''
+- name: FACTHOUS02
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TN(FACTHOUS) FACTORING HOUSE 1
+  default: ''' '''
+- name: FACTHOUS01
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TN(FACTHOUS) FACTORING HOUSE 1
+  default: ''' '''
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+- name: CURRCODE10
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: TN(CURRCODE) CURRENCY CODE
+  default: ''' '''
+- name: CURRCODE09
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: TN(CURRCODE) CURRENCY CODE
+  default: ''' '''
+- name: CURRCODE08
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: TN(CURRCODE) CURRENCY CODE
+  default: ''' '''
+- name: CURRCODE07
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: TN(CURRCODE) CURRENCY CODE
+  default: ''' '''
+- name: CURRCODE06
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: TN(CURRCODE) CURRENCY CODE
+  default: ''' '''
+- name: CURRCODE05
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: TN(CURRCODE) CURRENCY CODE
+  default: ''' '''
+- name: CURRCODE04
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: TN(CURRCODE) CURRENCY CODE
+  default: ''' '''
+- name: CURRCODE03
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: TN(CURRCODE) CURRENCY CODE
+  default: ''' '''
+- name: CURRCODE02
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: TN(CURRCODE) CURRENCY CODE
+  default: ''' '''
+- name: CURRCODE01
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: TN(CURRCODE) CURRENCY CODE
+  default: ''' '''
+- name: CTRYCODE
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: COUNTRY CODE
+  default: ''' '''
+- name: BANK_PHONE
+  type: CHAR
+  nullable: false
+  length: 16
+  ccsid: 838
+  description: BANK/BRANCH TELEPHONE NUMBER
+  default: ''' '''
+- name: BANK_POSTCODE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: BANK/BRANCH POSTCODE
+  default: ''' '''
+- name: BANK_ADDR05
+  type: CHAR
+  nullable: false
+  length: 30
+  ccsid: 838
+  description: TN(BBRADDR) BANK/BRANCH ADDRESS
+  default: ''' '''
+- name: BANK_ADDR04
+  type: CHAR
+  nullable: false
+  length: 30
+  ccsid: 838
+  description: TN(BBRADDR) BANK/BRANCH ADDRESS
+  default: ''' '''
+- name: BANK_ADDR03
+  type: CHAR
+  nullable: false
+  length: 30
+  ccsid: 838
+  description: TN(BBRADDR) BANK/BRANCH ADDRESS
+  default: ''' '''
+- name: BANK_ADDR02
+  type: CHAR
+  nullable: false
+  length: 30
+  ccsid: 838
+  description: TN(BBRADDR) BANK/BRANCH ADDRESS
+  default: ''' '''
+- name: BANK_ADDR01
+  type: CHAR
+  nullable: false
+  length: 30
+  ccsid: 838
+  description: TN(BBRADDR) BANK/BRANCH ADDRESS
+  default: ''' '''
+- name: BANKKEY
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: BANK KEY
+  default: ''' '''
+- name: BANKDESC
+  type: CHAR
+  nullable: false
+  length: 60
+  ccsid: 838
+  description: BANK DESCRIPTION
+  default: ''' '''
+constraints:
+  primary_key:
+    columns:
+    - BANKKEY
+journaling:
+  enabled: true

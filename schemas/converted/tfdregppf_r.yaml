@@ -1,0 +1,68 @@
+# TFDREGPPF_R table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TFDREGPPF_R
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TFDREGPPF_R
+columns:
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 8
+- name: CRTABLE
+  type: CHAR
+  nullable: false
+  length: 4
+- name: CLAIMEVD
+  type: CHAR
+  nullable: false
+  length: 18
+- name: RGPYSTAT
+  type: CHAR
+  nullable: false
+  length: 2
+- name: PYMT
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+- name: PAYCLT
+  type: CHAR
+  nullable: false
+  length: 8
+- name: VALIDFLAG
+  type: CHAR
+  nullable: false
+  length: 1
+- name: RGPYNUM
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+- name: RIDER
+  type: CHAR
+  nullable: false
+  length: 2
+- name: COVERAGE
+  type: CHAR
+  nullable: false
+  length: 2
+- name: LIFE
+  type: CHAR
+  nullable: false
+  length: 2
+- name: CHDRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+- name: RRN
+  type: BIGINT
+  nullable: true
+constraints:
+  primary_key:
+    columns:
+    - RRN
+journaling:
+  enabled: true

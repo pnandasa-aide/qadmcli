@@ -1,0 +1,113 @@
+# PANASONIC table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: PANASONIC
+  library: GSLIBTST
+  description: Converted from Syniti metadata - PANASONIC
+columns:
+- name: TLMBRSHR01
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TLMBRSHR TOTAL
+- name: TLHMOSHR01
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TLHMOSHR TOTAL
+- name: SURNAME
+  type: CHAR
+  nullable: false
+  length: 30
+  ccsid: 838
+  description: SURNAME
+  default: ''' '''
+- name: SHORTDESC
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: SHORT DESCRIPTION
+  default: ''' '''
+- name: PRODTYP
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: PRODUCT CODE
+  default: ''' '''
+- name: PLANNO
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: PLAN NUMBER
+  default: ''' '''
+- name: MBRNO
+  type: CHAR
+  nullable: false
+  length: 5
+  ccsid: 838
+  description: MEMBER NUMBER
+  default: ''' '''
+- name: LSURNAME
+  type: CHAR
+  nullable: false
+  length: 60
+  ccsid: 838
+  description: LONG SURNAME
+  default: ''' '''
+- name: GIVNAME
+  type: CHAR
+  nullable: false
+  length: 20
+  ccsid: 838
+  description: GIVEN NAME
+  default: ''' '''
+- name: EMPNO
+  type: CHAR
+  nullable: false
+  length: 12
+  ccsid: 838
+  description: EMPLOYEE NUMBER
+  default: ''' '''
+- name: DPNTNO
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: DEPENDENT NUMBER
+  default: ''' '''
+- name: COWNNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CONTRACT OWNER NUMBER
+  default: ''' '''
+- name: CLNTNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CLIENT NUMBER
+  default: ''' '''
+- name: CHDRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CONTRACT NUMBER
+  default: ''' '''
+- name: AMTYEAR
+  type: DECIMAL
+  nullable: false
+  length: 10
+  scale: 0
+  description: AMOUNT PER YEAR
+journaling:
+  enabled: true

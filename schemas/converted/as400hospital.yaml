@@ -1,0 +1,37 @@
+# AS400HOSPITAL table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: AS400HOSPITAL
+  library: GSLIBTST
+  description: Converted from Syniti metadata - AS400HOSPITAL
+columns:
+- name: HOSPITALCODE
+  type: VARCHAR
+  nullable: true
+  length: 50
+- name: DESCRIPTION
+  type: VARCHAR
+  nullable: true
+  length: 2000
+- name: FAXNUMBER
+  type: VARCHAR
+  nullable: true
+  length: 50
+- name: HOSPITALTYPE
+  type: VARCHAR
+  nullable: true
+  length: 10
+- name: HOSPITALNAME
+  type: VARCHAR
+  nullable: true
+  length: 100
+constraints:
+  primary_key:
+    columns:
+    - HOSPITALTYPE
+    - FAXNUMBER
+    - HOSPITALCODE
+journaling:
+  enabled: true

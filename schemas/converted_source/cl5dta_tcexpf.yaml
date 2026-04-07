@@ -1,0 +1,418 @@
+# TCEXPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TCEXPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TCEXPF
+columns:
+- name: ZDOCNO30
+  type: CHAR
+  nullable: false
+  length: 15
+  ccsid: 838
+  description: TN(ZDOCNO) DOCUMENT NUMBER
+  default: ''' '''
+- name: ZDOCNO29
+  type: CHAR
+  nullable: false
+  length: 15
+  ccsid: 838
+  description: TN(ZDOCNO) DOCUMENT NUMBER
+  default: ''' '''
+- name: ZDOCNO28
+  type: CHAR
+  nullable: false
+  length: 15
+  ccsid: 838
+  description: TN(ZDOCNO) DOCUMENT NUMBER
+  default: ''' '''
+- name: ZDOCNO27
+  type: CHAR
+  nullable: false
+  length: 15
+  ccsid: 838
+  description: TN(ZDOCNO) DOCUMENT NUMBER
+  default: ''' '''
+- name: ZDOCNO26
+  type: CHAR
+  nullable: false
+  length: 15
+  ccsid: 838
+  description: TN(ZDOCNO) DOCUMENT NUMBER
+  default: ''' '''
+- name: ZDOCNO25
+  type: CHAR
+  nullable: false
+  length: 15
+  ccsid: 838
+  description: TN(ZDOCNO) DOCUMENT NUMBER
+  default: ''' '''
+- name: ZDOCNO24
+  type: CHAR
+  nullable: false
+  length: 15
+  ccsid: 838
+  description: TN(ZDOCNO) DOCUMENT NUMBER
+  default: ''' '''
+- name: ZDOCNO23
+  type: CHAR
+  nullable: false
+  length: 15
+  ccsid: 838
+  description: TN(ZDOCNO) DOCUMENT NUMBER
+  default: ''' '''
+- name: ZDOCNO22
+  type: CHAR
+  nullable: false
+  length: 15
+  ccsid: 838
+  description: TN(ZDOCNO) DOCUMENT NUMBER
+  default: ''' '''
+- name: ZDOCNO21
+  type: CHAR
+  nullable: false
+  length: 15
+  ccsid: 838
+  description: TN(ZDOCNO) DOCUMENT NUMBER
+  default: ''' '''
+- name: ZDOCNO20
+  type: CHAR
+  nullable: false
+  length: 15
+  ccsid: 838
+  description: TN(ZDOCNO) DOCUMENT NUMBER
+  default: ''' '''
+- name: ZDOCNO19
+  type: CHAR
+  nullable: false
+  length: 15
+  ccsid: 838
+  description: TN(ZDOCNO) DOCUMENT NUMBER
+  default: ''' '''
+- name: ZDOCNO18
+  type: CHAR
+  nullable: false
+  length: 15
+  ccsid: 838
+  description: TN(ZDOCNO) DOCUMENT NUMBER
+  default: ''' '''
+- name: ZDOCNO17
+  type: CHAR
+  nullable: false
+  length: 15
+  ccsid: 838
+  description: TN(ZDOCNO) DOCUMENT NUMBER
+  default: ''' '''
+- name: ZDOCNO16
+  type: CHAR
+  nullable: false
+  length: 15
+  ccsid: 838
+  description: TN(ZDOCNO) DOCUMENT NUMBER
+  default: ''' '''
+- name: ZDOCNO15
+  type: CHAR
+  nullable: false
+  length: 15
+  ccsid: 838
+  description: TN(ZDOCNO) DOCUMENT NUMBER
+  default: ''' '''
+- name: ZDOCNO14
+  type: CHAR
+  nullable: false
+  length: 15
+  ccsid: 838
+  description: TN(ZDOCNO) DOCUMENT NUMBER
+  default: ''' '''
+- name: ZDOCNO13
+  type: CHAR
+  nullable: false
+  length: 15
+  ccsid: 838
+  description: TN(ZDOCNO) DOCUMENT NUMBER
+  default: ''' '''
+- name: ZDOCNO12
+  type: CHAR
+  nullable: false
+  length: 15
+  ccsid: 838
+  description: TN(ZDOCNO) DOCUMENT NUMBER
+  default: ''' '''
+- name: ZDOCNO11
+  type: CHAR
+  nullable: false
+  length: 15
+  ccsid: 838
+  description: TN(ZDOCNO) DOCUMENT NUMBER
+  default: ''' '''
+- name: ZDOCNO10
+  type: CHAR
+  nullable: false
+  length: 15
+  ccsid: 838
+  description: TN(ZDOCNO) DOCUMENT NUMBER
+  default: ''' '''
+- name: ZDOCNO09
+  type: CHAR
+  nullable: false
+  length: 15
+  ccsid: 838
+  description: TN(ZDOCNO) DOCUMENT NUMBER
+  default: ''' '''
+- name: ZDOCNO08
+  type: CHAR
+  nullable: false
+  length: 15
+  ccsid: 838
+  description: TN(ZDOCNO) DOCUMENT NUMBER
+  default: ''' '''
+- name: ZDOCNO07
+  type: CHAR
+  nullable: false
+  length: 15
+  ccsid: 838
+  description: TN(ZDOCNO) DOCUMENT NUMBER
+  default: ''' '''
+- name: ZDOCNO06
+  type: CHAR
+  nullable: false
+  length: 15
+  ccsid: 838
+  description: TN(ZDOCNO) DOCUMENT NUMBER
+  default: ''' '''
+- name: ZDOCNO05
+  type: CHAR
+  nullable: false
+  length: 15
+  ccsid: 838
+  description: TN(ZDOCNO) DOCUMENT NUMBER
+  default: ''' '''
+- name: ZDOCNO04
+  type: CHAR
+  nullable: false
+  length: 15
+  ccsid: 838
+  description: TN(ZDOCNO) DOCUMENT NUMBER
+  default: ''' '''
+- name: ZDOCNO03
+  type: CHAR
+  nullable: false
+  length: 15
+  ccsid: 838
+  description: TN(ZDOCNO) DOCUMENT NUMBER
+  default: ''' '''
+- name: ZDOCNO02
+  type: CHAR
+  nullable: false
+  length: 15
+  ccsid: 838
+  description: TN(ZDOCNO) DOCUMENT NUMBER
+  default: ''' '''
+- name: ZDOCNO01
+  type: CHAR
+  nullable: false
+  length: 15
+  ccsid: 838
+  description: TN(ZDOCNO) DOCUMENT NUMBER
+  default: ''' '''
+- name: UWNOTE
+  type: CHAR
+  nullable: false
+  length: 150
+  ccsid: 838
+  description: UWNOTE
+  default: ''' '''
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: TQUOTENO
+  type: CHAR
+  nullable: false
+  length: 15
+  ccsid: 838
+  description: QUOTATION NUMBER
+  default: ''' '''
+- name: TOTHDESC
+  type: CHAR
+  nullable: false
+  length: 75
+  ccsid: 838
+  description: OTHER DESC
+  default: ''' '''
+- name: STFLAG10
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: TN(STFLAG) STATUS FLAG
+  default: ''' '''
+- name: STFLAG09
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: TN(STFLAG) STATUS FLAG
+  default: ''' '''
+- name: STFLAG08
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: TN(STFLAG) STATUS FLAG
+  default: ''' '''
+- name: STFLAG07
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: TN(STFLAG) STATUS FLAG
+  default: ''' '''
+- name: STFLAG06
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: TN(STFLAG) STATUS FLAG
+  default: ''' '''
+- name: STFLAG05
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: TN(STFLAG) STATUS FLAG
+  default: ''' '''
+- name: STFLAG04
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: TN(STFLAG) STATUS FLAG
+  default: ''' '''
+- name: STFLAG03
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: TN(STFLAG) STATUS FLAG
+  default: ''' '''
+- name: STFLAG02
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: TN(STFLAG) STATUS FLAG
+  default: ''' '''
+- name: STFLAG01
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: TN(STFLAG) STATUS FLAG
+  default: ''' '''
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: DATSUB10
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: TN(DATSUB) DATSUB
+- name: DATSUB09
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: TN(DATSUB) DATSUB
+- name: DATSUB08
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: TN(DATSUB) DATSUB
+- name: DATSUB07
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: TN(DATSUB) DATSUB
+- name: DATSUB06
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: TN(DATSUB) DATSUB
+- name: DATSUB05
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: TN(DATSUB) DATSUB
+- name: DATSUB04
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: TN(DATSUB) DATSUB
+- name: DATSUB03
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: TN(DATSUB) DATSUB
+- name: DATSUB02
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: TN(DATSUB) DATSUB
+- name: DATSUB01
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: TN(DATSUB) DATSUB
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+- name: CHGDESC
+  type: CHAR
+  nullable: false
+  length: 30
+  ccsid: 838
+  description: CHGDESC
+  default: ''' '''
+- name: CHDRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CONTRACT NUMBER
+  default: ''' '''
+- name: CHDRCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: CONT HEADER COMPANY
+  default: ''' '''
+constraints:
+  primary_key:
+    columns:
+    - CHDRNUM
+journaling:
+  enabled: true

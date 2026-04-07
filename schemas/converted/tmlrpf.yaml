@@ -1,0 +1,118 @@
+# TMLRPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TMLRPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TMLRPF
+columns:
+- name: TYEARNO
+  type: DECIMAL
+  nullable: false
+  length: 2
+  scale: 0
+  description: NUMBER OF YEAR
+- name: TSALEUNT
+  type: CHAR
+  nullable: false
+  length: 5
+  ccsid: 838
+  description: SALE UNIT CODE
+  default: ''' '''
+- name: TSALEUNIT
+  type: CHAR
+  nullable: false
+  length: 5
+  ccsid: 838
+  description: AGENT SALE UNIT CODE
+  default: ''' '''
+- name: TOTLPREM
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TOTAL PREMIUM
+- name: TOFFCECD
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: OFFICE CODE
+  default: ''' '''
+- name: TOFFCCDE
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: OFFICE CODE
+  default: ''' '''
+- name: TCHANNEL
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: CHANNEL CODE
+  default: ''' '''
+- name: TAGRRPCD
+  type: CHAR
+  nullable: false
+  length: 5
+  ccsid: 838
+  description: AGENT GROUP CODE
+  default: ''' '''
+- name: TAGGRPCD
+  type: CHAR
+  nullable: false
+  length: 5
+  ccsid: 838
+  description: AGENT GROUP CODE
+  default: ''' '''
+- name: SERVAGNT
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: SERVICING AGENT
+  default: ''' '''
+- name: INSTLNO
+  type: DECIMAL
+  nullable: false
+  length: 2
+  scale: 0
+  description: INSTALMENT NUMBER
+- name: DATESUB
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: DATE SUBMITTED
+- name: CRTABLE
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: COVERAGE/RIDER TABLE
+  default: ''' '''
+- name: CMRATE
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 2
+  description: COMMISSION RATE
+- name: CHDRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CONTRACT NUMBER
+  default: ''' '''
+- name: AGNTNUMO
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: ORIGINAL AGENT NUMBER
+  default: ''' '''
+journaling:
+  enabled: true

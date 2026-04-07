@@ -1,0 +1,74 @@
+# TFDTFLXPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TFDTFLXPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TFDTFLXPF
+columns:
+- name: TTOTPAY
+  type: DECIMAL
+  nullable: true
+  length: 18
+  scale: 2
+- name: TOTTHADJ
+  type: DECIMAL
+  nullable: true
+  length: 18
+  scale: 2
+- name: TMDCLWBK
+  type: DECIMAL
+  nullable: true
+  length: 18
+  scale: 2
+- name: TFLKCHRG
+  type: DECIMAL
+  nullable: true
+  length: 18
+  scale: 2
+- name: TPOLCHRG
+  type: DECIMAL
+  nullable: true
+  length: 18
+  scale: 2
+- name: INST_PREM
+  type: DECIMAL
+  nullable: true
+  length: 18
+  scale: 2
+- name: TREDMPTN
+  type: DECIMAL
+  nullable: true
+  length: 18
+  scale: 2
+- name: NOF_NUITS
+  type: DECIMAL
+  nullable: true
+  length: 18
+  scale: 5
+- name: FREEDATE
+  type: DECIMAL
+  nullable: true
+  length: 8
+  scale: 0
+- name: TRANDATE
+  type: DECIMAL
+  nullable: true
+  length: 8
+  scale: 0
+- name: BATCTRCDE
+  type: VARCHAR
+  nullable: true
+  length: 4
+- name: CHDRNUM
+  type: VARCHAR
+  nullable: true
+  length: 8
+- name: TRANNO
+  type: DECIMAL
+  nullable: true
+  length: 18
+  scale: 0
+journaling:
+  enabled: true

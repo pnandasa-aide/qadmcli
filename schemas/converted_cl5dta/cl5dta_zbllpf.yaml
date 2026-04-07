@@ -1,0 +1,265 @@
+# ZBLLPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: ZBLLPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - ZBLLPF
+columns:
+- name: ZMEMTO
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: MEMBER NUMBER TO
+  default: ''' '''
+- name: ZMEMFRM
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: MEMBER NUMBER FROM
+  default: ''' '''
+- name: ZMANDTO
+  type: CHAR
+  nullable: false
+  length: 5
+  ccsid: 838
+  description: MANDATE NUMBER TO
+  default: ''' '''
+- name: ZMANDFRM
+  type: CHAR
+  nullable: false
+  length: 5
+  ccsid: 838
+  description: MANDATE NUMBER FROM
+  default: ''' '''
+- name: ZCHDRTO
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CONTRACT NUMBER TO
+  default: ''' '''
+- name: ZCHDRFRM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CONTRACT NUMBER FROM
+  default: ''' '''
+- name: VALIDFLAG
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: VALID FLAG
+  default: ''' '''
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: TRANSACTION_DATE
+  type: DECIMAL
+  nullable: false
+  length: 6
+  scale: 0
+  description: TRANSACTION DATE
+- name: TRANS_CODE
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: TRANS CODE
+  default: ''' '''
+- name: TRANNO
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+  description: TRANSACTION NUMBER
+- name: PAYTO
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: PAYMENT METHOD TO
+  default: ''' '''
+- name: PAYFROM
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: PAYMENT METHOD FROM
+  default: ''' '''
+- name: PAYERTO
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CONTRACT PAYER NUMBER TO
+  default: ''' '''
+- name: PAYERFRM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CONTRACT PAYER NUMBER FROM
+  default: ''' '''
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: INSTPREM
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: INSTALMENT PREMIUM
+- name: INSTPRAMT
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: INSTALMENT PREMIUM
+- name: GRUPNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: GROUP NUMBER
+  default: ''' '''
+- name: GRPNO
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: GROUP NUMBER                        (P3)
+  default: ''' '''
+- name: FREQ_TO
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: FREQUENCY TO
+  default: ''' '''
+- name: FREQ_FROM
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: FREQUENCY FROM
+  default: ''' '''
+- name: EFFDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: EFFECTIVE DATE
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+- name: CRTUSER
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: CREATE USER
+  default: ''' '''
+- name: CHDRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CONTRACT NUMBER
+  default: ''' '''
+- name: CHDRCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: CONT HEADER COMPANY
+  default: ''' '''
+- name: BDAYTO
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: BILLING DAY OF MONTH TO
+  default: ''' '''
+- name: BDAYFRM
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: BILLING DAY OF MONTH FROM
+  default: ''' '''
+- name: OFACTHOUS
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 37
+  description: OLD FACTHOUS
+  default: ''' '''
+- name: OBANKKEY
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 37
+  description: OLD BANK KEY
+  default: ''' '''
+- name: OBANKDSC
+  type: CHAR
+  nullable: false
+  length: 30
+  ccsid: 37
+  description: OLD BANK ACCOUNT DESC
+  default: ''' '''
+- name: OBANKACCNO
+  type: CHAR
+  nullable: false
+  length: 20
+  ccsid: 37
+  description: OLD BANK ACCOUNT NUMBER
+  default: ''' '''
+- name: FACTHOUS
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 37
+  description: FACTORING HOUSE 1
+  default: ''' '''
+- name: BANKKEY
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 37
+  description: BANK KEY
+  default: ''' '''
+- name: BANKACCNO
+  type: CHAR
+  nullable: false
+  length: 20
+  ccsid: 37
+  description: BANK ACCOUNT NUMBER
+  default: ''' '''
+- name: BANKACCDSC
+  type: CHAR
+  nullable: false
+  length: 30
+  ccsid: 37
+  description: BANK ACCOUNT DESC
+  default: ''' '''
+journaling:
+  enabled: true

@@ -1,0 +1,23 @@
+# TFDSALUTCL5 table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TFDSALUTCL5
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TFDSALUTCL5
+columns:
+- name: LONGDESC
+  type: CHAR
+  nullable: false
+  length: 30
+- name: SHORTDESC
+  type: CHAR
+  nullable: false
+  length: 10
+- name: DESCITEM
+  type: CHAR
+  nullable: false
+  length: 8
+journaling:
+  enabled: true

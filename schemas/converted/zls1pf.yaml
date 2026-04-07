@@ -1,0 +1,434 @@
+# ZLS1PF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: ZLS1PF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - ZLS1PF
+columns:
+- name: ZDAYS
+  type: DECIMAL
+  nullable: false
+  length: 6
+  scale: 0
+  description: '#DAYS'
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: TVPNAMES
+  type: CHAR
+  nullable: false
+  length: 80
+  ccsid: 838
+  description: VP NAME
+  default: ''' '''
+- name: TVPNAMEP
+  type: CHAR
+  nullable: false
+  length: 80
+  ccsid: 838
+  description: VP NAME
+  default: ''' '''
+- name: TVPCODES
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: VP CODE
+  default: ''' '''
+- name: TVPCODEP
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: VP CODE
+  default: ''' '''
+- name: TSALESUNT
+  type: CHAR
+  nullable: false
+  length: 5
+  ccsid: 838
+  description: AGENT SALES UNIT CODE
+  default: ''' '''
+- name: TPRDGROUP
+  type: CHAR
+  nullable: false
+  length: 30
+  ccsid: 838
+  description: PRODUCT GROUP
+  default: ''' '''
+- name: TPOSTSTNS
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: POSITION CODE
+  default: ''' '''
+- name: TPOSTSTNP
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: POSITION CODE
+  default: ''' '''
+- name: TLICEXPDTS
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: LICENSE EXPIRY DATE
+- name: TLICEXPDTP
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: LICENSE EXPIRY DATE
+- name: TALNAMES
+  type: CHAR
+  nullable: false
+  length: 80
+  ccsid: 838
+  description: AL NAME
+  default: ''' '''
+- name: TALNAMEP
+  type: CHAR
+  nullable: false
+  length: 80
+  ccsid: 838
+  description: AL NAME
+  default: ''' '''
+- name: TALCODES
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: AL CODE
+  default: ''' '''
+- name: TALCODEP
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: AL CODE
+  default: ''' '''
+- name: TAGSLUNT
+  type: CHAR
+  nullable: false
+  length: 5
+  ccsid: 838
+  description: AGENT SALES UNIT CODE
+  default: ''' '''
+- name: TAGNAMES
+  type: CHAR
+  nullable: false
+  length: 80
+  ccsid: 838
+  description: AGENT NAME
+  default: ''' '''
+- name: TAGNAMEP
+  type: CHAR
+  nullable: false
+  length: 80
+  ccsid: 838
+  description: AGENT NAME
+  default: ''' '''
+- name: SUMINS
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: SUM INSURED
+- name: STATCODE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: STATUS CODE
+  default: ''' '''
+- name: STATCD
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: POLICY STATUS
+  default: ''' '''
+- name: SRCEBUSS
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: SOURCE OF BUSINESS SERVICING
+  default: ''' '''
+- name: SRCEBUS
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: ACCOUNT TYPE
+  default: ''' '''
+- name: SELLAGENT
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: SERVICING AGENT
+  default: ''' '''
+- name: RIDER
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: RIDER NUMBER
+  default: ''' '''
+- name: RISK_CESS_DATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: RISK CESSATION DATE
+- name: PYMT
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: PAYMENT AMOUNT
+- name: PYCN
+  type: DECIMAL
+  nullable: false
+  length: 10
+  scale: 0
+  description: COUNT CLM
+- name: PTDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: PAID TO DATE
+- name: PSTATCODE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: PREMIUM STATUS CODE
+  default: ''' '''
+- name: PRDDESC
+  type: CHAR
+  nullable: false
+  length: 200
+  ccsid: 838
+  description: PRODUCT DESCRIPTION
+  default: ''' '''
+- name: PRDAGENT
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: PRODUCTION AGENT
+  default: ''' '''
+- name: PERIODST
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: START PERIOD
+- name: PERIODED
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: END PERIOD
+- name: PERCENTN
+  type: DECIMAL
+  nullable: false
+  length: 12
+  scale: 9
+  description: PERCENTAGE
+- name: LOSSRATIO
+  type: DECIMAL
+  nullable: false
+  length: 10
+  scale: 7
+  description: LOSSRATIO
+- name: LIFE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: LIFE NUMBER
+  default: ''' '''
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: GBALO
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: OUTSTANDING BALANCE
+- name: GBACN
+  type: DECIMAL
+  nullable: false
+  length: 10
+  scale: 0
+  description: COUNT CLM
+- name: EPREM
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: EARNED PREMIUM
+- name: EDAYS
+  type: DECIMAL
+  nullable: false
+  length: 6
+  scale: 0
+  description: '#DAYS'
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+- name: DATEDUE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: DATE DUE
+- name: DATEDETER
+  type: CHAR
+  nullable: false
+  length: 30
+  ccsid: 838
+  description: DATE USED FOR DETERMINING
+  default: ''' '''
+- name: CURRFROM
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: CURRENT FROM
+- name: CRTABLE
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: COVERAGE/RIDER TABLE
+  default: ''' '''
+- name: CRRCD
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: COV/RIDER RISK COMMENCE DATE
+- name: COVERAGE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: COVERAGE NUMBER
+  default: ''' '''
+- name: CLTSEX
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: CLIENT SEX
+  default: ''' '''
+- name: CLAMVAL
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TOTAL CLAIM VALUE
+- name: CHDRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CONTRACT NUMBER
+  default: ''' '''
+- name: BILLMODE
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: BILLMODE
+  default: ''' '''
+- name: BILLFREQ
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: BILLING FREQUENCY
+  default: ''' '''
+- name: BALO
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: BALANCE OUTSTANDING
+- name: BACN
+  type: DECIMAL
+  nullable: false
+  length: 10
+  scale: 0
+  description: COUNT CLM
+- name: ARACDEP
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: PREVIOUS AREA CODE
+  default: ''' '''
+- name: ARACDE
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: AREA CODE LIFE AGENT
+  default: ''' '''
+- name: ANNL
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: ANNUAL PREMIUM
+- name: ANB_AT_CCD
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: AGE ATTAINED AT CONT. COMM. DATE
+- name: AGRPS
+  type: CHAR
+  nullable: false
+  length: 5
+  ccsid: 838
+  description: GROUP CODE SERVICING
+  default: ''' '''
+- name: AGRPP
+  type: CHAR
+  nullable: false
+  length: 5
+  ccsid: 838
+  description: GROUP CODE PRODUCING
+  default: ''' '''
+- name: AGEPREM
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: AGE
+journaling:
+  enabled: true

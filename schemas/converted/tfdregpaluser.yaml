@@ -1,0 +1,47 @@
+# TFDREGPALUSER table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TFDREGPALUSER
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TFDREGPALUSER
+columns:
+- name: USERPRF08
+  type: CHAR
+  nullable: true
+  length: 8
+- name: DATESUB
+  type: DECIMAL
+  nullable: true
+  length: 8
+  scale: 0
+- name: TRANNO
+  type: DECIMAL
+  nullable: true
+  length: 5
+  scale: 0
+- name: BATCTRCDE
+  type: CHAR
+  nullable: true
+  length: 4
+- name: USRPRF
+  type: CHAR
+  nullable: true
+  length: 10
+- name: TRANNO04
+  type: DECIMAL
+  nullable: true
+  length: 5
+  scale: 0
+- name: RGPYNUM
+  type: DECIMAL
+  nullable: true
+  length: 5
+  scale: 0
+- name: CHDRNUM
+  type: CHAR
+  nullable: true
+  length: 8
+journaling:
+  enabled: true

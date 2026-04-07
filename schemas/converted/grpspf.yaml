@@ -1,0 +1,256 @@
+# GRPSPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: GRPSPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - GRPSPF
+columns:
+- name: VALIDFLAG
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: VALID FLAG
+  default: ''' '''
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: USER
+  type: DECIMAL
+  nullable: false
+  length: 6
+  scale: 0
+  description: USER NUMBER
+- name: TRANSACTION_TIME
+  type: DECIMAL
+  nullable: false
+  length: 6
+  scale: 0
+  description: TRANSACTION TIME
+- name: TRANSACTION_DATE
+  type: DECIMAL
+  nullable: false
+  length: 6
+  scale: 0
+  description: TRANSACTION DATE
+- name: TERMID
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: TERMINAL ID
+  default: ''' '''
+- name: PTDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: PAID TO DATE
+- name: PREMDISC
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: PREMIUM DISCOUNT METHOD
+  default: ''' '''
+- name: MEMBREQ
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: MEMBER REQUIRED
+  default: ''' '''
+- name: MANDREF
+  type: CHAR
+  nullable: false
+  length: 5
+  ccsid: 838
+  description: MANDATE REFERENCE NUMBER
+  default: ''' '''
+- name: LEAD_DAYS
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: BILLING LEAD DAYS
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: GRUPNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: GROUP NUMBER
+  default: ''' '''
+- name: GRUPNAME
+  type: CHAR
+  nullable: false
+  length: 47
+  ccsid: 838
+  description: GROUP NAME
+  default: ''' '''
+- name: GRUPCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: GROUP COMPANY
+  default: ''' '''
+- name: GRP_DUE_DAY
+  type: DECIMAL
+  nullable: false
+  length: 2
+  scale: 0
+  description: GROUP DUE DAY
+- name: FOR_ATT_OF
+  type: CHAR
+  nullable: false
+  length: 30
+  ccsid: 838
+  description: FOR THE ATTENTION OF
+  default: ''' '''
+- name: FACTHOUS
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: FACTORING HOUSE 1
+  default: ''' '''
+- name: DTECRT
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: DATE CREATED
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+- name: CURRTO
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: CURRENT TO
+- name: CURRFROM
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: CURRENT FROM
+- name: CURRCODE
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: CURRENCY CODE
+  default: ''' '''
+- name: CLNTNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CLIENT NUMBER
+  default: ''' '''
+- name: CASHDISC
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: CASH DISCOUNT METHOD
+  default: ''' '''
+- name: BTDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: BILLED TO DATE
+- name: BILLSEQ
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: BILL SEQUENCE CODE
+  default: ''' '''
+- name: BILLNET
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: NET OR GROSS BILLING INDICATOR
+  default: ''' '''
+- name: BILLMONTH
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: BILLING MONTH OF YEAR
+  default: ''' '''
+- name: BILLFREQ
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: BILLING FREQUENCY
+  default: ''' '''
+- name: BILLDAY
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: BILLING DAY OF MONTH
+  default: ''' '''
+- name: BILLDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: BILLING DATE
+- name: BILLCHNL
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: BILLING CHANNEL
+  default: ''' '''
+- name: BILLCD
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: BILLING RENEWAL DATE
+- name: BANKKEY
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: BANK KEY
+  default: ''' '''
+- name: BANKACCKEY
+  type: CHAR
+  nullable: false
+  length: 20
+  ccsid: 838
+  description: BANK ACCOUNT KEY
+  default: ''' '''
+constraints:
+  primary_key:
+    columns:
+    - GRUPCOY
+    - GRUPNUM
+journaling:
+  enabled: true

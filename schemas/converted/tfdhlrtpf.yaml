@@ -1,0 +1,75 @@
+# TFDHLRTPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TFDHLRTPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TFDHLRTPF
+columns:
+- name: CLTOT
+  type: DECIMAL
+  nullable: true
+  length: 17
+  scale: 2
+- name: DTOTPRE
+  type: DECIMAL
+  nullable: true
+  length: 15
+  scale: 2
+- name: DATIME
+  type: VARCHAR
+  nullable: true
+  length: 8
+- name: PRTYATCH
+  type: CHAR
+  nullable: true
+  length: 7
+- name: PRTFLG
+  type: CHAR
+  nullable: true
+  length: 2
+- name: LOSSPER
+  type: DECIMAL
+  nullable: true
+  length: 7
+  scale: 2
+- name: EFFDATE
+  type: DECIMAL
+  nullable: true
+  length: 8
+  scale: 0
+- name: GCLRPDTE
+  type: DECIMAL
+  nullable: true
+  length: 8
+  scale: 0
+- name: CRTABLE
+  type: CHAR
+  nullable: true
+  length: 4
+- name: LSTAT
+  type: CHAR
+  nullable: true
+  length: 2
+- name: TERMMAX
+  type: DECIMAL
+  nullable: true
+  length: 2
+  scale: 0
+- name: AGNTNUM
+  type: CHAR
+  nullable: true
+  length: 8
+- name: ACYEAR
+  type: DECIMAL
+  nullable: true
+  length: 4
+  scale: 0
+- name: ACMONTH
+  type: DECIMAL
+  nullable: true
+  length: 2
+  scale: 0
+journaling:
+  enabled: true

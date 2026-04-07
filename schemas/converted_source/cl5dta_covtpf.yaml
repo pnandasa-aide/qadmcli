@@ -1,0 +1,372 @@
+# COVTPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: COVTPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - COVTPF
+columns:
+- name: ZLINSTPREM
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: LOADED INSTALMENT PREMIUM
+- name: ZDIVOPT
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: DIVIDEND OPTIONS
+  default: ''' '''
+- name: ZBINSTPREM
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: INSTALLMENT PREMIUM
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: USER
+  type: DECIMAL
+  nullable: false
+  length: 6
+  scale: 0
+  description: USER NUMBER
+- name: TRANSACTION_TIME
+  type: DECIMAL
+  nullable: false
+  length: 6
+  scale: 0
+  description: TRANSACTION TIME
+- name: TRANSACTION_DATE
+  type: DECIMAL
+  nullable: false
+  length: 6
+  scale: 0
+  description: TRANSACTION DATE
+- name: TERMID
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: TERMINAL ID
+  default: ''' '''
+- name: SUMINS
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: SUM INSURED
+- name: SINGP
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: SINGLE PREMIUM
+- name: SEX02
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: TN(SEX) SEX
+  default: ''' '''
+- name: SEX01
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: TN(SEX) SEX
+  default: ''' '''
+- name: SEQNBR
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: TRANSACTION RECORD SEQUENCE NUMBER
+- name: RESERVE_UNITS_DATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: RESERVE UNITS ALLOCATION DATE
+- name: RESERVE_UNITS_IND
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: RESERVE UNITS INDICATOR
+  default: ''' '''
+- name: RIDER
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: RIDER NUMBER
+  default: ''' '''
+- name: RISK_CESS_TERM
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: RISK CESSATION TERM
+- name: RISK_CESS_DATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: RISK CESSATION DATE
+- name: RISK_CESS_AGE
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: RISK CESSATION AGE
+- name: POLINC
+  type: DECIMAL
+  nullable: false
+  length: 4
+  scale: 0
+  description: POLICIES INCLUDED IN PLAN
+- name: PLAN_SUFFIX
+  type: DECIMAL
+  nullable: false
+  length: 4
+  scale: 0
+  description: PLAN SUFFIX
+- name: PREM_CESS_TERM
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: PREMIUM CESSATION TERM
+- name: PREM_CESS_DATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: PREMIUM CESSATION DATE
+- name: PREM_CESS_AGE
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: PREMIUM CESSATION AGE
+- name: PAYRSEQNO
+  type: DECIMAL
+  nullable: false
+  length: 1
+  scale: 0
+  description: PAYER SEQUENCE NUMBER
+- name: PAYMTH
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: PAYMENT METHOD
+  default: ''' '''
+- name: PAYCURR
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: PAYMENT CURRENCY
+  default: ''' '''
+- name: PAYCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: PAYEE CLIENT COMPANY
+  default: ''' '''
+- name: PAYCLT
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: PAYEE CLIENT NUMBER
+  default: ''' '''
+- name: NUMAPP
+  type: DECIMAL
+  nullable: false
+  length: 4
+  scale: 0
+  description: APPLICABLE NUMBER OF POLICIES IN PLAN
+- name: MORTCLS
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: MORTALITY CLASS
+  default: ''' '''
+- name: LIFE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: LIFE NUMBER
+  default: ''' '''
+- name: LIENCD
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: LIEN CODE
+  default: ''' '''
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: JLIFE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: JOINT LIFE NUMBER
+  default: ''' '''
+- name: INSTPREM
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: INSTALMENT PREMIUM
+- name: FACTHOUS
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: FACTORING HOUSE 1
+  default: ''' '''
+- name: EFFDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: EFFECTIVE DATE
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+- name: CRTABLE
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: COVERAGE/RIDER TABLE
+  default: ''' '''
+- name: COVERAGE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: COVERAGE NUMBER
+  default: ''' '''
+- name: CNTCURR
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: CURRENCY
+  default: ''' '''
+- name: CHDRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CONTRACT NUMBER
+  default: ''' '''
+- name: CHDRCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: CONT HEADER COMPANY
+  default: ''' '''
+- name: BILLFREQ
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: BILLING FREQUENCY
+  default: ''' '''
+- name: BILLCHNL
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: BILLING CHANNEL
+  default: ''' '''
+- name: BEN_CESS_TERM
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: BENEFIT CESSATION TERM
+- name: BEN_CESS_DATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: BENEFIT CESSATION DATE
+- name: BEN_CESS_AGE
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: BENEFIT CESSATION AGE
+- name: BAPPMETH
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: BONUS APPLICATION METHOD
+  default: ''' '''
+- name: BANKKEY
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: BANK KEY
+  default: ''' '''
+- name: BANKACCKEY
+  type: CHAR
+  nullable: false
+  length: 20
+  ccsid: 838
+  description: BANK ACCOUNT KEY
+  default: ''' '''
+- name: ANB_AT_CCD02
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: TN(ANBCCD) AGE ATTAINED AT CONT. COMM. DATE
+- name: ANB_AT_CCD01
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: TN(ANBCCD) AGE ATTAINED AT CONT. COMM. DATE
+constraints:
+  primary_key:
+    columns:
+    - CHDRCOY
+    - CHDRNUM
+    - LIFE
+    - COVERAGE
+    - RIDER
+    - PLAN_SUFFIX
+journaling:
+  enabled: true

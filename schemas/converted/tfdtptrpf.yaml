@@ -1,0 +1,69 @@
+# TFDTPTRPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TFDTPTRPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TFDTPTRPF
+columns:
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+- name: BATCBATCH
+  type: CHAR
+  nullable: false
+  length: 5
+- name: BATCTRCDE
+  type: CHAR
+  nullable: false
+  length: 4
+- name: BATCACTMN
+  type: DECIMAL
+  nullable: false
+  length: 2
+  scale: 0
+- name: BATCACTYR
+  type: DECIMAL
+  nullable: false
+  length: 4
+  scale: 0
+- name: BATCBRN
+  type: CHAR
+  nullable: false
+  length: 2
+- name: TRANSACTION_TIME
+  type: DECIMAL
+  nullable: false
+  length: 6
+  scale: 0
+- name: TRANSACTION_DATE
+  type: DECIMAL
+  nullable: false
+  length: 6
+  scale: 0
+- name: PTRNEFF
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+- name: TRANNO
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+- name: CHDRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+- name: CHDRCOY
+  type: CHAR
+  nullable: false
+  length: 1
+journaling:
+  enabled: true

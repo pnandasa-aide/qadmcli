@@ -1,0 +1,29 @@
+# TFDGPGETEXT table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TFDGPGETEXT
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TFDGPGETEXT
+columns:
+- name: GENPLINE
+  type: CHAR
+  nullable: false
+  length: 75
+- name: SEQNOGP
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+- name: EFFDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+- name: POL
+  type: CHAR
+  nullable: false
+  length: 8
+journaling:
+  enabled: true

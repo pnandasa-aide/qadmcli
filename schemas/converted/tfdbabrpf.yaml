@@ -1,0 +1,51 @@
+# TFDBABRPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TFDBABRPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TFDBABRPF
+columns:
+- name: BBRPCODE
+  type: CHAR
+  nullable: true
+  length: 10
+- name: BBRADDR05
+  type: CHAR
+  nullable: true
+  length: 30
+- name: BBRADDR04
+  type: CHAR
+  nullable: true
+  length: 30
+- name: BBRADDR03
+  type: CHAR
+  nullable: true
+  length: 30
+- name: BBRADDR02
+  type: CHAR
+  nullable: true
+  length: 30
+- name: BBRADDR01
+  type: CHAR
+  nullable: true
+  length: 30
+- name: FACTHOUS01
+  type: CHAR
+  nullable: true
+  length: 2
+- name: BABRCD
+  type: CHAR
+  nullable: true
+  length: 60
+- name: BANKKEY
+  type: CHAR
+  nullable: true
+  length: 10
+constraints:
+  primary_key:
+    columns:
+    - BANKKEY
+journaling:
+  enabled: true

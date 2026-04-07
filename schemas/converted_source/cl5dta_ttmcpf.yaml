@@ -1,0 +1,477 @@
+# TTMCPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TTMCPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TTMCPF
+columns:
+- name: ZLSTUPDT
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: LAST UPDATE DATE
+- name: TYEARNO
+  type: DECIMAL
+  nullable: false
+  length: 2
+  scale: 0
+  description: NUMBER OF YEAR
+- name: TVATFLAG
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: VAT FLAG
+  default: ''' '''
+- name: TTSRRATE
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 2
+  description: COMMISSION RATE TSR
+- name: TTSRPAMT
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: COMMISSION AMT FYP/RPY TSR
+- name: TTSRAAMT
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: COMMISSION AMT AFYP/ARPY TSR
+- name: TSVFPAMT
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: SERVICE FEE AMOUNT FYP/RPY
+- name: TSVFEERT
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 2
+  description: SERVICE FEE RATE
+- name: TSVFAAMT
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: SERVICE FEE AMOUNT AFYP/ARPY
+- name: TSALEUNT
+  type: CHAR
+  nullable: false
+  length: 5
+  ccsid: 838
+  description: SALE UNIT CODE
+  default: ''' '''
+- name: TSALEUNIT
+  type: CHAR
+  nullable: false
+  length: 5
+  ccsid: 838
+  description: AGENT SALE UNIT CODE
+  default: ''' '''
+- name: TRANSACTION_TIME
+  type: DECIMAL
+  nullable: false
+  length: 6
+  scale: 0
+  description: TRANSACTION TIME
+- name: TREFKEYB
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: REF.KEY B
+  default: ''' '''
+- name: TREFKEYA
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: REF.KEY A
+  default: ''' '''
+- name: TRANSACTION_DATE
+  type: DECIMAL
+  nullable: false
+  length: 6
+  scale: 0
+  description: TRANSACTION DATE
+- name: TRANNO
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+  description: TRANSACTION NUMBER
+- name: TOTLPREM
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TOTAL PREMIUM
+- name: TORIDUED
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: ORIGINAL DUE DATE
+- name: TOFFCECD
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: OFFICE CODE
+  default: ''' '''
+- name: TOFFCCDE
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: OFFICE CODE
+  default: ''' '''
+- name: TKEYCODE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: SALE UNIT KEY CODE
+  default: ''' '''
+- name: TEXFPAMT
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: EXTRA FEE AMOUNT FYP/RPY
+- name: TEXFEERT
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 2
+  description: EXTRA FEE RATE
+- name: TEXFAAMT
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: EXTRA FEE AMOUNT AFYP/ARPY
+- name: TCOMMKEY
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: COMMISSION CALCULATION KEY
+  default: ''' '''
+- name: TCMKYVER
+  type: DECIMAL
+  nullable: false
+  length: 2
+  scale: 0
+  description: COMMISSION KEY VERSION
+- name: TCMCLVER
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: COMMISSION CALCULATION VERSION
+  default: ''' '''
+- name: TCHANNEL
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: CHANNEL CODE
+  default: ''' '''
+- name: TARYPREM
+  type: DECIMAL
+  nullable: false
+  length: 15
+  scale: 2
+  description: RENEWAL ANNUAL PREMIUM
+- name: TAGRRPCD
+  type: CHAR
+  nullable: false
+  length: 5
+  ccsid: 838
+  description: AGENT GROUP CODE
+  default: ''' '''
+- name: TAGPRDRT
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 2
+  description: AGENCY PRODUCTION COUNT RATE
+- name: TAGPRDAM
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: AGENT PRODUCTION COUNT AMT
+- name: TAGGRPCD
+  type: CHAR
+  nullable: false
+  length: 5
+  ccsid: 838
+  description: AGENT GROUP CODE
+  default: ''' '''
+- name: TAFYPREM
+  type: DECIMAL
+  nullable: false
+  length: 15
+  scale: 2
+  description: 1ST YEAR ANNUAL PREMIUM
+- name: TAFYPFLG
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: AFYP/ARYF FLAG
+  default: ''' '''
+- name: SUMINS
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: SUM INSURED
+- name: STATCDE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: STATUS CODE
+  default: ''' '''
+- name: SRCEBUS
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: ACCOUNT TYPE
+  default: ''' '''
+- name: SPLIT_BCOMM
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 2
+  description: SPLIT BASIC COMMISSION PERCENTAGE
+- name: SHORTPRM
+  type: DECIMAL
+  nullable: false
+  length: 11
+  scale: 2
+  description: SHORTAGE PREMIUM
+- name: SERVAGNT
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: SERVICING AGENT
+  default: ''' '''
+- name: RIDER
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: RIDER NUMBER
+  default: ''' '''
+- name: RISK_CESS_TERM
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: RISK CESSATION TERM
+- name: PSTATCODE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: PREMIUM STATUS CODE
+  default: ''' '''
+- name: PRCPNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: PREMIUM RECEIPT NUMBER
+  default: ''' '''
+- name: PLAN_SUFFIX
+  type: DECIMAL
+  nullable: false
+  length: 4
+  scale: 0
+  description: PLAN SUFFIX
+- name: PREM_CESS_TERM
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: PREMIUM CESSATION TERM
+- name: LIFE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: LIFE NUMBER
+  default: ''' '''
+- name: LIFCNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: LIFE CLIENT NUMBER
+  default: ''' '''
+- name: JLIFE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: JOINT LIFE NUMBER
+  default: ''' '''
+- name: INSTLNO
+  type: DECIMAL
+  nullable: false
+  length: 2
+  scale: 0
+  description: INSTALMENT NUMBER
+- name: FREQ
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: FREQUENCY
+  default: ''' '''
+- name: EXTR
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: EXTRA PREMIUM
+- name: EFFDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: EFFECTIVE DATE
+- name: DATESUB
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: DATE SUBMITTED
+- name: CRTABLE
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: COVERAGE/RIDER TABLE
+  default: ''' '''
+- name: COVERAGE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: COVERAGE NUMBER
+  default: ''' '''
+- name: CMRATE
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 2
+  description: COMMISSION RATE
+- name: COMM_AMT
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: COMMISSION AMT
+- name: CHDRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CONTRACT NUMBER
+  default: ''' '''
+- name: CHDRCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: CONT HEADER COMPANY
+  default: ''' '''
+- name: CAMPAIGN
+  type: CHAR
+  nullable: false
+  length: 6
+  ccsid: 838
+  description: CAMPAIGN
+  default: ''' '''
+- name: BUSCDE
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: BUSINESS CODE
+  default: ''' '''
+- name: BATCTRCDE
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: BATCH TRANSACTION CODE
+  default: ''' '''
+- name: BATCBRN
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: BATCH BRANCH
+  default: ''' '''
+- name: BATCBATCH
+  type: CHAR
+  nullable: false
+  length: 5
+  ccsid: 838
+  description: BATCH BATCH
+  default: ''' '''
+- name: BATCACTYR
+  type: DECIMAL
+  nullable: false
+  length: 4
+  scale: 0
+  description: BATCH ACCOUNT YEAR
+- name: BATCACTMN
+  type: DECIMAL
+  nullable: false
+  length: 2
+  scale: 0
+  description: BATCH ACCOUNT MONTH
+- name: BASPRM
+  type: DECIMAL
+  nullable: false
+  length: 13
+  scale: 2
+  description: BASIC PREMIUM
+- name: ANB_AT_CCD
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: AGE ATTAINED AT CONT. COMM. DATE
+- name: AGNTNUMO
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: ORIGINAL AGENT NUMBER
+  default: ''' '''
+- name: AFYPCOMM
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: COMMISSION AMT AFYP/ARPY
+journaling:
+  enabled: true

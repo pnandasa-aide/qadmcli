@@ -1,0 +1,227 @@
+# TFISPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TFISPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TFISPF
+columns:
+- name: ZPARTNER
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: PARTNER
+  default: ''' '''
+- name: VALIDFLAG
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: VALID FLAG
+  default: ''' '''
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: TTITLET
+  type: CHAR
+  nullable: false
+  length: 6
+  ccsid: 838
+  description: TITLE THAI
+  default: ''' '''
+- name: TTITLEE
+  type: CHAR
+  nullable: false
+  length: 6
+  ccsid: 838
+  description: TITLE ENG
+  default: ''' '''
+- name: TSLSUNAMEE
+  type: CHAR
+  nullable: false
+  length: 30
+  ccsid: 838
+  description: SURNAME ENG
+  default: ''' '''
+- name: TSLSUNAME
+  type: CHAR
+  nullable: false
+  length: 30
+  ccsid: 838
+  description: SURNAME
+  default: ''' '''
+- name: TSLPOSTCDE
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: SALE POSITION CODE
+  default: ''' '''
+- name: TSLPOSDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: DATE POSITION
+- name: TSLNAMEE
+  type: CHAR
+  nullable: false
+  length: 20
+  ccsid: 838
+  description: SALE NAME ENG
+  default: ''' '''
+- name: TSLNAME
+  type: CHAR
+  nullable: false
+  length: 20
+  ccsid: 838
+  description: SALE NAME
+  default: ''' '''
+- name: TSLAREACDE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: AREA CODE
+  default: ''' '''
+- name: TSALUNIT
+  type: CHAR
+  nullable: false
+  length: 5
+  ccsid: 838
+  description: SALE UNIT CODE
+  default: ''' '''
+- name: TSALENUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: SALE NUMBER
+  default: ''' '''
+- name: TSALEBR
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: BRANCH
+  default: ''' '''
+- name: TRMCDE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: AGENT TERMINATION CODE
+  default: ''' '''
+- name: TLICEXPDT
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: LICENSE EXPIRY DATE
+- name: TLAGLICNO
+  type: CHAR
+  nullable: false
+  length: 15
+  ccsid: 838
+  description: LIFE AGENT LICENSE NUMBER
+  default: ''' '''
+- name: TEMAIL
+  type: CHAR
+  nullable: false
+  length: 50
+  ccsid: 838
+  description: EMAIL ADDRESS
+  default: ''' '''
+- name: TAGRRPCD
+  type: CHAR
+  nullable: false
+  length: 5
+  ccsid: 838
+  description: AGENT GROUP CODE
+  default: ''' '''
+- name: TAGNUMS
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: AGENT NUMBER
+  default: ''' '''
+- name: SRCEBUS
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: ACCOUNT TYPE
+  default: ''' '''
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: EFFDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: EFFECTIVE DATE
+- name: DTETRM
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: DATE TERMINATED
+- name: DTEAPP
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: DATE APPOINTED
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+- name: AGTYPE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: AGENT TYPE
+  default: ''' '''
+- name: AGNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: AGENT NUMBER
+  default: ''' '''
+- name: AGNTCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: AGENT COMPANY
+  default: ''' '''
+- name: AEFFDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: EFFECTIVE DATE
+constraints:
+  primary_key:
+    columns:
+    - AGNTCOY
+    - TSALENUM
+journaling:
+  enabled: true

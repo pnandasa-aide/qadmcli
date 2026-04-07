@@ -1,0 +1,649 @@
+# GLMXPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: GLMXPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - GLMXPF
+columns:
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: UAMT60
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMT59
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMT58
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMT57
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMT56
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMT55
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMT54
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMT53
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMT52
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMT51
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMT50
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMT49
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMT48
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMT47
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMT46
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMT45
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMT44
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMT43
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMT42
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMT41
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMT40
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMT39
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMT38
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMT37
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMT36
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMT35
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMT34
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMT33
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMT32
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMT31
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMT30
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMT29
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMT28
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMT27
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMT26
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMT25
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMT24
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMT23
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMT22
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMT21
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMT20
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMT19
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMT18
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMT17
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMT16
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMT15
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMT14
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMT13
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMT12
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMT11
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMT10
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMT09
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMT08
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMT07
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMT06
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMT05
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMT04
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMT03
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMT02
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMT01
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TN(UAMT) GL UNEARNED AMOUNT
+- name: UAMTOT
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: GL UNEARNED TOTAL
+- name: TRANNO
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+  description: TRANSACTION NUMBER
+- name: START_DATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: START DATE
+- name: SACSTYP03
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TN(SACSTYP) SUB-ACCOUNT TYPE
+  default: ''' '''
+- name: SACSTYP02
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TN(SACSTYP) SUB-ACCOUNT TYPE
+  default: ''' '''
+- name: SACSTYP01
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TN(SACSTYP) SUB-ACCOUNT TYPE
+  default: ''' '''
+- name: SACSCODE03
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TN(SACSCODE) SUB-ACCOUNT CODE
+  default: ''' '''
+- name: SACSCODE02
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TN(SACSCODE) SUB-ACCOUNT CODE
+  default: ''' '''
+- name: SACSCODE01
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TN(SACSCODE) SUB-ACCOUNT CODE
+  default: ''' '''
+- name: RLDGPFX
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: SUB LEDGER PREFIX
+  default: ''' '''
+- name: RLDGCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: SUB LEDGER COMPANY
+  default: ''' '''
+- name: RLDGACCT
+  type: CHAR
+  nullable: false
+  length: 16
+  ccsid: 838
+  description: SUB LEDGER ACCOUNT ENTITY
+  default: ''' '''
+- name: RDOCPFX
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: DOCUMENT PREFIX
+  default: ''' '''
+- name: RDOCNUM
+  type: CHAR
+  nullable: false
+  length: 9
+  ccsid: 838
+  description: DOCUMENT NUMBER
+  default: ''' '''
+- name: RDOCCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: DOCUMENT COMPANY
+  default: ''' '''
+- name: POSTFLG
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: POST FLAG
+  default: ''' '''
+- name: POLNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: POLICY NUMBER
+  default: ''' '''
+- name: ORIG_RATE
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 9
+  description: ORIGINAL EXCHANGE RATE (FILES)
+- name: JRNSEQ
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: JOURNAL SEQUENCE NUMBER
+- name: JOBNO
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: JOB NUMBER
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: JOBNAME
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: GLUNCUR
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: GL UNEARNED ACCOUNT CURRENCY
+  default: ''' '''
+- name: GLUNCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: GL UNEARNED ACCOUNT COMPANY
+  default: ''' '''
+- name: GLUNCDE
+  type: CHAR
+  nullable: false
+  length: 14
+  ccsid: 838
+  description: GL UNEARNED ACCOUNT CODE
+  default: ''' '''
+- name: GENTCUR
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: GL EARNED ACCOUNT CURRENCY
+  default: ''' '''
+- name: GENTCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: GL EARNED ACCOUNT COMPANY
+  default: ''' '''
+- name: GENTCDE
+  type: CHAR
+  nullable: false
+  length: 14
+  ccsid: 838
+  description: GL EARNED ACCOUNT CODE
+  default: ''' '''
+- name: GENLCUR
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: GL CURRENCY
+  default: ''' '''
+- name: GENLCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: GL COMPANY
+  default: ''' '''
+- name: GENLCDE
+  type: CHAR
+  nullable: false
+  length: 14
+  ccsid: 838
+  description: GL CODE
+  default: ''' '''
+- name: EXPIRY_DATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: EXPIRY DATE
+- name: ERMETH
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: EARN METH
+  default: ''' '''
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+- name: BATCTRCDE
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: BATCH TRANSACTION CODE
+  default: ''' '''
+- name: BATCCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: BATCH COMPANY
+  default: ''' '''
+- name: BATCBRN
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: BATCH BRANCH
+  default: ''' '''
+- name: BATCBATCH
+  type: CHAR
+  nullable: false
+  length: 5
+  ccsid: 838
+  description: BATCH BATCH
+  default: ''' '''
+- name: BATCACTYR
+  type: DECIMAL
+  nullable: false
+  length: 4
+  scale: 0
+  description: BATCH ACCOUNT YEAR
+- name: BATCACTMN
+  type: DECIMAL
+  nullable: false
+  length: 2
+  scale: 0
+  description: BATCH ACCOUNT MONTH
+journaling:
+  enabled: true

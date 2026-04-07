@@ -1,0 +1,99 @@
+# DOCTPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: DOCTPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - DOCTPF
+columns:
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: SURNAME
+  type: CHAR
+  nullable: false
+  length: 30
+  ccsid: 838
+  description: SURNAME
+  default: ''' '''
+- name: PARAMETER_E
+  type: CHAR
+  nullable: false
+  length: 40
+  ccsid: 838
+  description: PARAMETER E
+  default: ''' '''
+- name: PARAMETER_D
+  type: CHAR
+  nullable: false
+  length: 40
+  ccsid: 838
+  description: PARAMETER D
+  default: ''' '''
+- name: PARAMETER_C
+  type: CHAR
+  nullable: false
+  length: 40
+  ccsid: 838
+  description: PARAMETER C
+  default: ''' '''
+- name: PARAMETER_B
+  type: CHAR
+  nullable: false
+  length: 40
+  ccsid: 838
+  description: PARAMETER B
+  default: ''' '''
+- name: PARAMETER_A
+  type: CHAR
+  nullable: false
+  length: 40
+  ccsid: 838
+  description: PARAMETER A
+  default: ''' '''
+- name: LSALUT
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: LONG SALUTATION
+  default: ''' '''
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: GIVNAME
+  type: CHAR
+  nullable: false
+  length: 20
+  ccsid: 838
+  description: GIVEN NAME
+  default: ''' '''
+- name: DOCTOR
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: DOCTOE LICENSE CODE
+  default: ''' '''
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+constraints:
+  primary_key:
+    columns:
+    - DOCTOR
+journaling:
+  enabled: true

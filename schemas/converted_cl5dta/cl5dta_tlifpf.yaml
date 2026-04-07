@@ -1,0 +1,117 @@
+# TLIFPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TLIFPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TLIFPF
+columns:
+- name: VALIDFLAG
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: VALID FLAG
+  default: ''' '''
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: WEIGHT
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 2
+  description: WEIGHT
+- name: TRANNO
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+  description: TRANSACTION NUMBER
+- name: HEIGHT
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 2
+  description: HEIGHT
+- name: TBMI
+  type: DECIMAL
+  nullable: false
+  length: 4
+  scale: 2
+  description: BODY MASS INDEX
+- name: LIFE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: LIFE NUMBER
+  default: ''' '''
+- name: LIFCNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: LIFE CLIENT NUMBER
+  default: ''' '''
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: JLIFE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: JOINT LIFE NUMBER
+  default: ''' '''
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+- name: CURRTO
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: CURRENT TO
+- name: CURRFROM
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: CURRENT FROM
+- name: CHDRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CONTRACT NUMBER
+  default: ''' '''
+- name: CHDRCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: CONT HEADER COMPANY
+  default: ''' '''
+constraints:
+  primary_key:
+    columns:
+    - CHDRCOY
+    - CHDRNUM
+    - LIFE
+    - JLIFE
+journaling:
+  enabled: true

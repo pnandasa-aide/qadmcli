@@ -1,0 +1,651 @@
+# TCORPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TCORPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TCORPF
+columns:
+- name: ZLINSTPREM
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: LOADED INSTALMENT PREMIUM
+- name: ZBINSTPREM
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: INSTALLMENT PREMIUM
+- name: VAR_SUM_INSURED
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: VARIABLE SUM INSURED
+- name: VALIDFLAG
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: VALID FLAG
+  default: ''' '''
+- name: USER
+  type: DECIMAL
+  nullable: false
+  length: 6
+  scale: 0
+  description: USER NUMBER
+- name: TRANSACTION_TIME
+  type: DECIMAL
+  nullable: false
+  length: 6
+  scale: 0
+  description: TRANSACTION TIME
+- name: TRANSACTION_DATE
+  type: DECIMAL
+  nullable: false
+  length: 6
+  scale: 0
+  description: TRANSACTION DATE
+- name: TRANNO
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+  description: TRANSACTION NUMBER
+- name: TOT_MTHLY_BENEFIT
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TOTAL MONTHLY BENEFIT
+- name: TERMID
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: TERMINAL ID
+  default: ''' '''
+- name: SUMINS
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: SUM INSURED
+- name: STAT_SUBSECT
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: STATUTORY SUBSECTION
+  default: ''' '''
+- name: STAT_SUMINS
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: STATISTICAL SUM INSURED
+- name: STAT_SECT
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: STATUTORY SECTION
+  default: ''' '''
+- name: STAT_FUND
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: STATUTORY FUND
+  default: ''' '''
+- name: STATREASN
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: STATUS CHANGE REASON
+  default: ''' '''
+- name: STATCODE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: STATUS CODE
+  default: ''' '''
+- name: SINGP
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: SINGLE PREMIUM
+- name: SICURR
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: CURRENCY CODE
+  default: ''' '''
+- name: SEX
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: SEX
+  default: ''' '''
+- name: RESERVE_UNITS_DATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: RESERVE UNITS ALLOCATION DATE
+- name: RTRNYRS
+  type: DECIMAL
+  nullable: false
+  length: 2
+  scale: 0
+  description: RENEWABLE TERM - YEARS
+- name: RESERVE_UNITS_IND
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: RESERVE UNITS INDICATOR
+  default: ''' '''
+- name: RERATE_FROM_DATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: RERATE FROM DATE
+- name: RERATE_DATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: RERATE DATE
+- name: RIDER
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: RIDER NUMBER
+  default: ''' '''
+- name: REPTCD06
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: TN(REPTCD) REPORTING CODE
+  default: ''' '''
+- name: REPTCD05
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: TN(REPTCD) REPORTING CODE
+  default: ''' '''
+- name: REPTCD04
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: TN(REPTCD) REPORTING CODE
+  default: ''' '''
+- name: REPTCD03
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: TN(REPTCD) REPORTING CODE
+  default: ''' '''
+- name: REPTCD02
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: TN(REPTCD) REPORTING CODE
+  default: ''' '''
+- name: REPTCD01
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: TN(REPTCD) REPORTING CODE
+  default: ''' '''
+- name: RISK_CESS_TERM_MTH
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: RISK CESSATION TERM MONTHS
+- name: RISK_CESS_TERM_DAY
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: RISK CESSATION TERM DAYS
+- name: RISK_CESS_TERM
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: RISK CESSATION TERM
+- name: RISK_CESS_DATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: RISK CESSATION DATE
+- name: RISK_CESS_AGE
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: RISK CESSATION AGE
+- name: RISK_CESS_AGE_MTH
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: RISK CESSATION AGE MONTHS
+- name: RISK_CESS_AGE_DAY
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: RISK CESSATION AGE DAYS
+- name: RATING_CLASS
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: RATING CLASS
+  default: ''' '''
+- name: PSTATCODE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: PREMIUM STATUS CODE
+  default: ''' '''
+- name: PREM_CURRENCY
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: PREMIUM CURRENCY
+  default: ''' '''
+- name: PLAN_SUFFIX
+  type: DECIMAL
+  nullable: false
+  length: 4
+  scale: 0
+  description: PLAN SUFFIX
+- name: PREM_CESS_TERM_MTH
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: PREM CESSATION TERM MONTHS
+- name: PREM_CESS_TERM_DAY
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: PREM CESSATION TERM DAYS
+- name: PREM_CESS_TERM
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: PREMIUM CESSATION TERM
+- name: PREM_CESS_DATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: PREMIUM CESSATION DATE
+- name: PREM_CESS_AGE
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: PREMIUM CESSATION AGE
+- name: PREM_CESS_AGE_MTH
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: PREM CESSATION AGE MONTHS
+- name: PREM_CESS_AGE_DAY
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: PREM CESSATION AGE DAYS
+- name: PAYRSEQNO
+  type: DECIMAL
+  nullable: false
+  length: 1
+  scale: 0
+  description: PAYER SEQUENCE NUMBER
+- name: NEXT_ACT_DATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: NEXT ACTIVITY DATE
+- name: MORTCLS
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: MORTALITY CLASS
+  default: ''' '''
+- name: LIFE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: LIFE NUMBER
+  default: ''' '''
+- name: LIENCD
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: LIEN CODE
+  default: ''' '''
+- name: JL_LS_IND
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: JOINT LIFE, LAST SURVIVOR INDICATOR
+  default: ''' '''
+- name: JLIFE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: JOINT LIFE NUMBER
+  default: ''' '''
+- name: INSTPREM
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: INSTALMENT PREMIUM
+- name: INDEXATION_IND
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: INDEXATION INDICATOR
+  default: ''' '''
+- name: INIT_UNIT_INCRS_DATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: INITIAL UNIT INCREASE DATE
+- name: INIT_UNIT_CANC_DATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: INITIAL UNIT CANCELLATION DATE
+- name: FUND_SPLIT_PLAN
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: VIRTUAL FUND SPLIT PLAN
+  default: ''' '''
+- name: EXTRA_ALLOC_DATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: EXTRA ALLOCATION DATE
+- name: EST_MAT_VALUE02
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(EMV) ESTIMATED MATURITY VALUE
+- name: EST_MAT_VALUE01
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(EMV) ESTIMATED MATURITY VALUE
+- name: EST_MAT_INT02
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(EMVINT) ESTIMATED MATURITY VALUE INTEREST
+- name: EST_MAT_INT01
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(EMVINT) ESTIMATED MATURITY VALUE INTEREST
+- name: EST_MAT_DATE02
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: TN(EMVDTE) ESTIMATED MATURITY DATE
+- name: EST_MAT_DATE01
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: TN(EMVDTE) ESTIMATED MATURITY DATE
+- name: DEFER_PERD_IND
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: DEFERMENT PERIOD INDICATOR
+  default: ''' '''
+- name: DEFER_PERD_CODE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: DEFERMENT PERIOD CODE
+  default: ''' '''
+- name: DEFER_PERD_AMT
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: DEFERMENT PERIOD AMOUNT
+- name: CURRTO
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: CURRENT TO
+- name: CURRFROM
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: CURRENT FROM
+- name: CRTABLE
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: COVERAGE/RIDER TABLE
+  default: ''' '''
+- name: CRRCD
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: COV/RIDER RISK COMMENCE DATE
+- name: CR_INSTAMT05
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(CRINST) COV/RIDER INSTALMENT AMOUNT
+- name: CR_INSTAMT04
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(CRINST) COV/RIDER INSTALMENT AMOUNT
+- name: CR_INSTAMT03
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(CRINST) COV/RIDER INSTALMENT AMOUNT
+- name: CR_INSTAMT02
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(CRINST) COV/RIDER INSTALMENT AMOUNT
+- name: CR_INSTAMT01
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(CRINST) COV/RIDER INSTALMENT AMOUNT
+- name: COVERAGE_DEBT
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: COVERAGE DEBT
+- name: CPI_DATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: CPI DATE
+- name: COVERAGE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: COVERAGE NUMBER
+  default: ''' '''
+- name: CHARGE_OPTIONS_IND
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: UNIT CHARGES OPTION INDICATOR
+  default: ''' '''
+- name: CHDRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CONTRACT NUMBER
+  default: ''' '''
+- name: CHDRCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: CONT HEADER COMPANY
+  default: ''' '''
+- name: UNIT_STATEMENT_DATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: UNIT STATEMENT DATE
+- name: REVIEW_PROCESSING
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: REVIEW PROCESSING DATE
+- name: CONVERT_INITIAL_UNITS
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: CONVERSION OF INITIAL UNITS DATE
+- name: ANNIV_PROC_DATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: ANNIVERSARY PROCESSING DATE
+- name: CAMPAIGN
+  type: CHAR
+  nullable: false
+  length: 6
+  ccsid: 838
+  description: CAMPAIGN
+  default: ''' '''
+- name: BONUS_IND
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: BONUS INDICATOR
+  default: ''' '''
+- name: BEN_CESS_TERM
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: BENEFIT CESSATION TERM
+- name: BEN_CESS_DATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: BENEFIT CESSATION DATE
+- name: BEN_CESS_AGE
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: BENEFIT CESSATION AGE
+- name: BEN_BILL_DATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: BENEFIT BILLING DATE
+- name: BAPPMETH
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: BONUS APPLICATION METHOD
+  default: ''' '''
+- name: ANB_AT_CCD
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: AGE ATTAINED AT CONT. COMM. DATE
+constraints:
+  primary_key:
+    columns:
+    - CHDRCOY
+    - CHDRNUM
+    - LIFE
+    - COVERAGE
+    - RIDER
+    - PLAN_SUFFIX
+journaling:
+  enabled: true

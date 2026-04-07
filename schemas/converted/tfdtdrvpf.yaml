@@ -1,0 +1,44 @@
+# TFDTDRVPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TFDTDRVPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TFDTDRVPF
+columns:
+- name: DATIME
+  type: VARCHAR
+  nullable: true
+  length: 8
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+- name: TRECREV
+  type: CHAR
+  nullable: false
+  length: 1
+- name: TDOCREV
+  type: CHAR
+  nullable: false
+  length: 1
+- name: CHDRNUM
+  type: CHAR
+  nullable: true
+  length: 8
+- name: CHDRCOY
+  type: CHAR
+  nullable: true
+  length: 1
+constraints:
+  primary_key:
+    columns:
+    - CHDRCOY
+    - CHDRNUM
+journaling:
+  enabled: true

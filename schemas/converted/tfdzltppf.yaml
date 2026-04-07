@@ -1,0 +1,66 @@
+# TFDZLTPPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TFDZLTPPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TFDZLTPPF
+columns:
+- name: DATIME
+  type: VARCHAR
+  nullable: true
+  length: 8
+- name: JOB_NAME
+  type: VARCHAR
+  nullable: true
+  length: 10
+- name: USER_PROFILE
+  type: VARCHAR
+  nullable: true
+  length: 10
+- name: CRTABLE
+  type: VARCHAR
+  nullable: true
+  length: 4
+- name: TINCURDT
+  type: DECIMAL
+  nullable: true
+  length: 8
+  scale: 0
+- name: RGPYNUM
+  type: DECIMAL
+  nullable: true
+  length: 5
+  scale: 0
+- name: RIDER
+  type: VARCHAR
+  nullable: true
+  length: 2
+- name: COVERAGE
+  type: VARCHAR
+  nullable: true
+  length: 2
+- name: LIFE
+  type: VARCHAR
+  nullable: true
+  length: 2
+- name: CHDRNUM
+  type: VARCHAR
+  nullable: true
+  length: 8
+- name: DOCTNUM
+  type: VARCHAR
+  nullable: true
+  length: 8
+- name: TRANDATE
+  type: DECIMAL
+  nullable: true
+  length: 8
+  scale: 0
+- name: DOCMBR
+  type: VARCHAR
+  nullable: true
+  length: 10
+journaling:
+  enabled: true

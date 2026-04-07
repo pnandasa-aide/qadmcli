@@ -1,0 +1,72 @@
+# TRURPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TRURPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TRURPF
+columns:
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 37
+  description: USER PROFILE
+  default: ''' '''
+- name: TPAYINDT
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: PAY-IN DATE
+- name: RDOCPFX
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 37
+  description: DOCUMENT PREFIX
+  default: ''' '''
+- name: RDOCNUM
+  type: CHAR
+  nullable: false
+  length: 9
+  ccsid: 37
+  description: DOCUMENT NUMBER
+  default: ''' '''
+- name: RDOCCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 37
+  description: DOCUMENT COMPANY
+  default: ''' '''
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 37
+  description: JOB NAME
+  default: ''' '''
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 37
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+- name: CRTUSER
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 37
+  description: CREATE USER
+  default: ''' '''
+constraints:
+  primary_key:
+    columns:
+    - RDOCPFX
+    - RDOCCOY
+    - RDOCNUM
+journaling:
+  enabled: true

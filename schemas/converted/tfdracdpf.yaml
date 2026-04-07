@@ -1,0 +1,87 @@
+# TFDRACDPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TFDRACDPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TFDRACDPF
+columns:
+- name: RECOVAMT
+  type: DECIMAL
+  nullable: true
+  length: 17
+  scale: 2
+- name: RREVDT
+  type: DECIMAL
+  nullable: true
+  length: 8
+  scale: 0
+- name: REASPER
+  type: DECIMAL
+  nullable: true
+  length: 5
+  scale: 2
+- name: CMDATE
+  type: DECIMAL
+  nullable: true
+  length: 8
+  scale: 0
+- name: CTDATE
+  type: DECIMAL
+  nullable: true
+  length: 8
+  scale: 0
+- name: RAAMOUNT
+  type: DECIMAL
+  nullable: true
+  length: 17
+  scale: 2
+- name: RNGMNT
+  type: CHAR
+  nullable: true
+  length: 4
+- name: RETYPE
+  type: CHAR
+  nullable: true
+  length: 1
+- name: CURRTO
+  type: DECIMAL
+  nullable: true
+  length: 8
+  scale: 0
+- name: CURRFROM
+  type: DECIMAL
+  nullable: true
+  length: 8
+  scale: 0
+- name: VALIDFLAG
+  type: CHAR
+  nullable: true
+  length: 1
+- name: RIDER
+  type: CHAR
+  nullable: true
+  length: 2
+- name: COVERAGE
+  type: CHAR
+  nullable: true
+  length: 2
+- name: LIFE
+  type: CHAR
+  nullable: true
+  length: 2
+- name: CHDRNUM
+  type: CHAR
+  nullable: true
+  length: 8
+constraints:
+  primary_key:
+    columns:
+    - CHDRNUM
+    - COVERAGE
+    - RIDER
+    - CURRFROM
+    - CURRTO
+journaling:
+  enabled: true

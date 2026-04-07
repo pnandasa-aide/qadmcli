@@ -1,0 +1,255 @@
+# ZASAPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: ZASAPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - ZASAPF
+columns:
+- name: UPDDATE
+  type: CHAR
+  nullable: false
+  length: 20
+  ccsid: 838
+  description: UPDDATE
+  default: ''' '''
+- name: UPDATEBY
+  type: CHAR
+  nullable: false
+  length: 20
+  ccsid: 838
+  description: UPDATEBY
+  default: ''' '''
+- name: UNITDATE
+  type: CHAR
+  nullable: false
+  length: 20
+  ccsid: 838
+  description: UNITDATE
+  default: ''' '''
+- name: TSALESUNT
+  type: CHAR
+  nullable: false
+  length: 5
+  ccsid: 838
+  description: AGENT SALES UNIT CODE
+  default: ''' '''
+- name: TEAMDATE
+  type: CHAR
+  nullable: false
+  length: 20
+  ccsid: 838
+  description: TEAMDATE
+  default: ''' '''
+- name: STSDATE
+  type: CHAR
+  nullable: false
+  length: 20
+  ccsid: 838
+  description: STSDATE
+  default: ''' '''
+- name: SRCEBUS
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: ACCOUNT TYPE
+  default: ''' '''
+- name: RPTDTE
+  type: CHAR
+  nullable: false
+  length: 20
+  ccsid: 838
+  description: REPORT TO DATE
+  default: ''' '''
+- name: REPORTTO
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: REPORTING TO
+  default: ''' '''
+- name: RECRUIT
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: RECRUIT
+  default: ''' '''
+- name: REASON
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: REASON
+  default: ''' '''
+- name: PRPTDT
+  type: CHAR
+  nullable: false
+  length: 20
+  ccsid: 838
+  description: PRPTDT
+  default: ''' '''
+- name: PREPORT
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: PREPORT
+  default: ''' '''
+- name: PPOSTNDT
+  type: CHAR
+  nullable: false
+  length: 20
+  ccsid: 838
+  description: PPOSTNDT
+  default: ''' '''
+- name: PPOSTNCO
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: PPOSTNCO
+  default: ''' '''
+- name: POSTNDATE
+  type: CHAR
+  nullable: false
+  length: 20
+  ccsid: 838
+  description: POSTNDATE
+  default: ''' '''
+- name: POSTNCO
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: POSTNCO
+  default: ''' '''
+- name: PLEVELMTH
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: PLEVELMTH
+- name: PLEVELDT
+  type: CHAR
+  nullable: false
+  length: 20
+  ccsid: 838
+  description: PLEVELDT
+  default: ''' '''
+- name: PLEVELCO
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: PLEVELCO
+  default: ''' '''
+- name: MEMNO
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: MEMNO
+- name: LEVELMTH
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: LEVELMTH
+- name: LEVELDATE
+  type: CHAR
+  nullable: false
+  length: 16
+  ccsid: 838
+  description: LEVELDATE
+  default: ''' '''
+- name: LEVELCO
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: LEVELCO
+  default: ''' '''
+- name: HISTORYCO
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: HISTORYCO
+  default: ''' '''
+- name: EMPCO
+  type: CHAR
+  nullable: false
+  length: 6
+  ccsid: 838
+  description: EMPCO
+  default: ''' '''
+- name: CREDTE
+  type: CHAR
+  nullable: false
+  length: 20
+  ccsid: 838
+  description: CREDTE
+  default: ''' '''
+- name: ASSTATUS
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: ASSTATUS
+- name: ASGEN
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: ASGEN
+- name: ARADATE
+  type: CHAR
+  nullable: false
+  length: 20
+  ccsid: 838
+  description: ARADATE
+  default: ''' '''
+- name: ARACDE
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: AREA CODE LIFE AGENT
+  default: ''' '''
+- name: APPDATE
+  type: CHAR
+  nullable: false
+  length: 20
+  ccsid: 838
+  description: APPDATE
+  default: ''' '''
+- name: AGTYPE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: AGENT TYPE
+  default: ''' '''
+- name: AGNTNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: AGENT NUMBER
+  default: ''' '''
+- name: AGNTBR
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: AGENT BRANCH
+  default: ''' '''
+constraints:
+  primary_key:
+    columns:
+    - AGNTNUM
+journaling:
+  enabled: true

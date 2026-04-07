@@ -1,0 +1,36 @@
+# TFDACBLLOANAO table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TFDACBLLOANAO
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TFDACBLLOANAO
+columns:
+- name: SACSCURB01
+  type: DECIMAL
+  nullable: true
+  length: 20
+  scale: 2
+- name: SACSTYP
+  type: CHAR
+  nullable: true
+  length: 2
+- name: SACSCODE
+  type: CHAR
+  nullable: true
+  length: 2
+- name: POLICY
+  type: CHAR
+  nullable: true
+  length: 8
+- name: OVERFLOW
+  type: CHAR
+  nullable: true
+  length: 1
+- name: BREAKLVL
+  type: CHAR
+  nullable: true
+  length: 1
+journaling:
+  enabled: true

@@ -1,0 +1,37 @@
+# TXRNPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TXRNPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TXRNPF
+columns:
+- name: TRANNO
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+  description: TRANSACTION NUMBER
+- name: PTRNEFF
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: PTRN EFFECTIVE DATE
+- name: CHDRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CONTRACT NUMBER
+  default: ''' '''
+- name: BATCTRCDE
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: BATCH TRANSACTION CODE
+  default: ''' '''
+journaling:
+  enabled: true

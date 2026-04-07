@@ -1,0 +1,160 @@
+# TCDFPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TCDFPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TCDFPF
+columns:
+- name: RECVD_DATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: DATE CLAIM RECEIVED
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: TINCURDT
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: INCURRED DATE
+- name: THOSPNM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: HOSPITAL CODE
+  default: ''' '''
+- name: TDOCTORNM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: DOCTOR CODE
+  default: ''' '''
+- name: TDIAGCDE
+  type: CHAR
+  nullable: false
+  length: 5
+  ccsid: 838
+  description: DIAGNOSIS CODE
+  default: ''' '''
+- name: TACCDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: ACCIDENT DATE
+- name: RIDER
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: RIDER NUMBER
+  default: ''' '''
+- name: RGPYNUM
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+  description: REGULAR PAYMENT SEQUENCE NUMBER
+- name: RGPYMOP
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: REGULAR PAYMENT METHOD OF PAYMENT
+  default: ''' '''
+- name: LIFE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: LIFE NUMBER
+  default: ''' '''
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: HCLAIMEVD
+  type: CHAR
+  nullable: false
+  length: 18
+  ccsid: 838
+  description: CLAIM EVIDENCE
+  default: ''' '''
+- name: DOCTNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: DOCUMENT NUMBER
+  default: ''' '''
+- name: DISCHGDT
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: DISCHARGE DATE
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+- name: DATESUB
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: DATE SUBMITTED
+- name: COVERAGE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: COVERAGE NUMBER
+  default: ''' '''
+- name: CLAIMEVD
+  type: CHAR
+  nullable: false
+  length: 18
+  ccsid: 838
+  description: CLAIM EVIDENCE
+  default: ''' '''
+- name: CHDRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CONTRACT NUMBER
+  default: ''' '''
+- name: ADMITDT
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: ADMIT DATE
+constraints:
+  primary_key:
+    columns:
+    - CHDRNUM
+    - LIFE
+    - COVERAGE
+    - RIDER
+    - RGPYNUM
+    - DOCTNUM
+journaling:
+  enabled: true

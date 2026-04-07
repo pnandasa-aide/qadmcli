@@ -1,0 +1,513 @@
+# UTRNPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: UTRNPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - UTRNPF
+columns:
+- name: UNIT_VIRTUAL_FUND
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: UNIT LINKED FUND
+  default: ''' '''
+- name: USTMNO
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+  description: UNIT STATEMENT NUMBER
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: USER
+  type: DECIMAL
+  nullable: false
+  length: 6
+  scale: 0
+  description: USER NUMBER
+- name: UNIT_TYPE
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: UNIT TYPE
+  default: ''' '''
+- name: UNIT_SUB_ACCOUNT
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: UNIT SUB ACCOUNT
+  default: ''' '''
+- name: UNIQUE_KEY
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+  description: UNIQUE KEY
+- name: UNIT_BARE_PRICE
+  type: DECIMAL
+  nullable: false
+  length: 9
+  scale: 5
+  description: UNIT BARE PRICE
+- name: TRANSACTION_TIME
+  type: DECIMAL
+  nullable: false
+  length: 6
+  scale: 0
+  description: TRANSACTION TIME
+- name: TRNAMT
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TRANSACTION AMOUNT
+- name: TRIGGER_KEY
+  type: CHAR
+  nullable: false
+  length: 20
+  ccsid: 838
+  description: TRIGGER KEY
+  default: ''' '''
+- name: TRIGGER_MODULE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TRIGGER MODULE
+  default: ''' '''
+- name: TRANSACTION_DATE
+  type: DECIMAL
+  nullable: false
+  length: 6
+  scale: 0
+  description: TRANSACTION DATE
+- name: TRANNO
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+  description: TRANSACTION NUMBER
+- name: TPERSUR
+  type: DECIMAL
+  nullable: false
+  length: 11
+  scale: 8
+  description: UNIT SURRENDER PERCENTAGE
+- name: TERMID
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: TERMINAL ID
+  default: ''' '''
+- name: TALOCRTE
+  type: DECIMAL
+  nullable: false
+  length: 16
+  scale: 8
+  description: ALLOCATION RATE
+- name: SWITCH_INDICATOR
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: SWITCH INDICATOR
+  default: ''' '''
+- name: SVP
+  type: DECIMAL
+  nullable: false
+  length: 7
+  scale: 5
+  description: SURRENDER PENALTY FACTOR
+- name: STRPDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: STATEMENT REPORT DATE
+- name: SACSTYP
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: SUB-ACCOUNT TYPE
+  default: ''' '''
+- name: SACSCODE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: SUB-ACCOUNT CODE
+  default: ''' '''
+- name: RIDER
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: RIDER NUMBER
+  default: ''' '''
+- name: PRICE_USED
+  type: DECIMAL
+  nullable: false
+  length: 9
+  scale: 5
+  description: PRICE USED
+- name: PRICE_DATE_USED
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: DATE OF PRICING DETAILS USED
+- name: PROC_SEQ_NO
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: PROCESSING SEQUENCE NUMBER
+- name: PLAN_SUFFIX
+  type: DECIMAL
+  nullable: false
+  length: 4
+  scale: 0
+  description: PLAN SUFFIX
+- name: SURRENDER_PERCENT
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 2
+  description: UNIT SURRENDER PERCENTAGE
+- name: PC_UNITS
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 2
+  description: PREMIUM SPLIT PERCENTAGE TO UNITS
+- name: ORGTRNO
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+  description: ORIGINAL TRANSACTION NUMBER
+- name: ORGTRCDE
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: ORIGINAL TRANSACTION CODE
+  default: ''' '''
+- name: NOF_UNITS
+  type: DECIMAL
+  nullable: false
+  length: 16
+  scale: 5
+  description: NUMBER OF UNITS
+- name: NOF_DUNITS
+  type: DECIMAL
+  nullable: false
+  length: 16
+  scale: 5
+  description: NUMBER OF DEEMED UNITS
+- name: NOW_DEFER_IND
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: NOW OR DEFFERED UNIT INDICATOR
+  default: ''' '''
+- name: MONIES_DATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: ASSOCIATED MONIES DATE
+- name: LIFE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: LIFE NUMBER
+  default: ''' '''
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: JOBNO_PRICE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: JOB NUMBER OF PRICING DETAILS
+- name: INCIPRM02
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(INCIPRM) INCREASE PREMIUM TO WHICH DETAILS REFE
+- name: INCIPRM01
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(INCIPRM) INCREASE PREMIUM TO WHICH DETAILS REFE
+- name: INCI_PERD02
+  type: DECIMAL
+  nullable: false
+  length: 1
+  scale: 0
+  description: TN(INCIPERD) INCREASES PERIOD TO WHICH DETAILS REF
+- name: INCI_PERD01
+  type: DECIMAL
+  nullable: false
+  length: 1
+  scale: 0
+  description: TN(INCIPERD) INCREASES PERIOD TO WHICH DETAILS REF
+- name: INCI_NUM
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: SEQUENTIAL NUMBER OF THE INCREASE RECORD
+- name: HRIDER
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: HIDDEN RIDER
+  default: ''' '''
+- name: HLIFE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  default: ''' '''
+- name: HCRTABLE
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: HIDDEN COVERAGE CODE
+  default: ''' '''
+- name: HCOVERAGE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: HIDDEN COVERAGE
+  default: ''' '''
+- name: GENLCDE
+  type: CHAR
+  nullable: false
+  length: 14
+  ccsid: 838
+  description: GL CODE
+  default: ''' '''
+- name: FUND_RATE
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 9
+  description: FUND RATE
+- name: FUNDPOOL
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: FUND POOL
+  default: ''' '''
+- name: FUND_AMOUNT
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: FUND AMOUNT
+- name: FUND_CURRENCY
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: FUND CURRENCY
+  default: ''' '''
+- name: FEEDBACK_IND
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: COMPLETED BY FEEDBACK INDICATOR
+  default: ''' '''
+- name: ENHANC_PC
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 2
+  description: ENHANCED PERCENTAGE
+- name: DISCOUNT_FACTOR
+  type: DECIMAL
+  nullable: false
+  length: 7
+  scale: 5
+  description: INITIAL UNIT DISCOUNT FACTOR
+- name: DEALCDTE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: DEALING COMPLETION DATE
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+- name: CRTABLE
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: COVERAGE/RIDER TABLE
+  default: ''' '''
+- name: CR_COM_DATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: COV/RIDER COMMENCE DATE
+- name: COVERAGE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: COVERAGE NUMBER
+  default: ''' '''
+- name: COVDBTIND
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: COVERAGE DEBT INDICATOR
+  default: ''' '''
+- name: CONTRACT_TYPE
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: CONTRACT TYPE
+  default: ''' '''
+- name: CNTCURR
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: CURRENCY
+  default: ''' '''
+- name: CONTRACT_AMOUNT
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: CONTRACT AMOUNT
+- name: CAN_INIT_UNIT_IND
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: CANCEL INITIAL UNITS INDICATOR
+  default: ''' '''
+- name: CHDRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CONTRACT NUMBER
+  default: ''' '''
+- name: CHDRCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: CONT HEADER COMPANY
+  default: ''' '''
+- name: SCHEDULE_NUMBER
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: BATCH SCHEDULE NUMBER
+- name: SCHEDULE_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: BATCH SCHEDULE NAME
+  default: ''' '''
+- name: BATCTRCDE
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: BATCH TRANSACTION CODE
+  default: ''' '''
+- name: BATCCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: BATCH COMPANY
+  default: ''' '''
+- name: BATCBRN
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: BATCH BRANCH
+  default: ''' '''
+- name: BATCBATCH
+  type: CHAR
+  nullable: false
+  length: 5
+  ccsid: 838
+  description: BATCH BATCH
+  default: ''' '''
+- name: BATCACTYR
+  type: DECIMAL
+  nullable: false
+  length: 4
+  scale: 0
+  description: BATCH ACCOUNT YEAR
+- name: BATCACTMN
+  type: DECIMAL
+  nullable: false
+  length: 2
+  scale: 0
+  description: BATCH ACCOUNT MONTH
+- name: ALOCRATE
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 2
+  description: ALLOCATION RATE
+constraints:
+  primary_key:
+    columns:
+    - CHDRNUM
+    - HLIFE
+    - HCOVERAGE
+    - HRIDER
+    - UNIT_VIRTUAL_FUND
+    - UNIT_SUB_ACCOUNT
+    - TRANNO
+journaling:
+  enabled: true

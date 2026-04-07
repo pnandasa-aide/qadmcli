@@ -1,0 +1,41 @@
+# ITEMPFACT table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: ITEMPFACT
+  library: GSLIBTST
+  description: Converted from Syniti metadata - ITEMPFACT
+columns:
+- name: GENAREA
+  type: CHAR
+  nullable: true
+  length: 500
+- name: ITEMTO
+  type: DECIMAL
+  nullable: true
+  length: 8
+  scale: 0
+- name: ITEMFRM
+  type: DECIMAL
+  nullable: true
+  length: 8
+  scale: 0
+- name: VALIDFLAG
+  type: CHAR
+  nullable: true
+  length: 1
+- name: ITEMITEM
+  type: CHAR
+  nullable: true
+  length: 8
+- name: ITEMTABL
+  type: CHAR
+  nullable: true
+  length: 5
+- name: ITEMPFX
+  type: CHAR
+  nullable: true
+  length: 2
+journaling:
+  enabled: true

@@ -1,0 +1,32 @@
+# SALUTMFB table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: SALUTMFB
+  library: GSLIBTST
+  description: Converted from Syniti metadata - SALUTMFB
+columns:
+- name: SHORTDESC
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: SHORT DESCRIPTION
+  default: ''' '''
+- name: LONGDESC
+  type: CHAR
+  nullable: false
+  length: 30
+  ccsid: 838
+  description: TABLE ITEM LONG DESCRIPTION
+  default: ''' '''
+- name: DESCITEM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: TABLE ITEM
+  default: ''' '''
+journaling:
+  enabled: true

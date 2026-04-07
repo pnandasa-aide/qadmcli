@@ -1,0 +1,94 @@
+# BNFMPFACT table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: BNFMPFACT
+  library: GSLIBTST
+  description: Converted from Syniti metadata - BNFMPFACT
+columns:
+- name: TRANNO
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+- name: DPNTDEDC
+  type: DECIMAL
+  nullable: false
+  length: 10
+  scale: 0
+- name: DPNTCOPY
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+- name: MBRDEDUC
+  type: DECIMAL
+  nullable: false
+  length: 10
+  scale: 0
+- name: MBRCOPAY
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+- name: REFER
+  type: CHAR
+  nullable: false
+  length: 2
+- name: ENDDT
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+- name: STRTDT
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+- name: NETLEVEL
+  type: CHAR
+  nullable: false
+  length: 2
+- name: PROVCAP
+  type: CHAR
+  nullable: false
+  length: 2
+- name: CLAMTYPE
+  type: CHAR
+  nullable: false
+  length: 2
+- name: BENCDE
+  type: CHAR
+  nullable: false
+  length: 4
+- name: PLANNO
+  type: CHAR
+  nullable: false
+  length: 3
+- name: PRODTYP
+  type: CHAR
+  nullable: false
+  length: 4
+- name: CHDRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+- name: CHDRCOY
+  type: CHAR
+  nullable: false
+  length: 1
+constraints:
+  primary_key:
+    columns:
+    - CHDRCOY
+    - CHDRNUM
+    - PRODTYP
+    - PLANNO
+    - BENCDE
+    - CLAMTYPE
+    - PROVCAP
+    - NETLEVEL
+    - STRTDT
+journaling:
+  enabled: true

@@ -1,0 +1,73 @@
+# TFDTLSUPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TFDTLSUPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TFDTLSUPF
+columns:
+- name: DATIME
+  type: VARCHAR
+  nullable: true
+  length: 8
+- name: JOBNM
+  type: VARCHAR
+  nullable: true
+  length: 10
+- name: USRPRF
+  type: VARCHAR
+  nullable: true
+  length: 10
+- name: PRTYATCH
+  type: VARCHAR
+  nullable: true
+  length: 7
+- name: PRTFLG
+  type: VARCHAR
+  nullable: true
+  length: 2
+- name: LOSSPER
+  type: DECIMAL
+  nullable: true
+  length: 7
+  scale: 2
+- name: EFFDATE
+  type: DECIMAL
+  nullable: true
+  length: 8
+  scale: 0
+- name: GCLRPDTE
+  type: DECIMAL
+  nullable: true
+  length: 8
+  scale: 0
+- name: CRTABLE
+  type: VARCHAR
+  nullable: true
+  length: 4
+- name: LSTAT
+  type: VARCHAR
+  nullable: true
+  length: 2
+- name: TERMMAX
+  type: DECIMAL
+  nullable: true
+  length: 2
+  scale: 0
+- name: TSALEUNT
+  type: VARCHAR
+  nullable: true
+  length: 5
+- name: ACYEAR
+  type: DECIMAL
+  nullable: true
+  length: 4
+  scale: 0
+- name: ACMONTH
+  type: DECIMAL
+  nullable: true
+  length: 2
+  scale: 0
+journaling:
+  enabled: true

@@ -1,0 +1,47 @@
+# TFDTFRSPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TFDTFRSPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TFDTFRSPF
+columns:
+- name: ZMORTPCT
+  type: DECIMAL
+  nullable: true
+  length: 3
+  scale: 0
+- name: PTRNCDE
+  type: DECIMAL
+  nullable: true
+  length: 4
+  scale: 0
+- name: PRDRATE
+  type: DECIMAL
+  nullable: true
+  length: 17
+  scale: 2
+- name: INSUCLSCDE
+  type: CHAR
+  nullable: true
+  length: 1
+- name: INSURESEX
+  type: CHAR
+  nullable: true
+  length: 1
+- name: INSUREAGE
+  type: DECIMAL
+  nullable: true
+  length: 3
+  scale: 0
+- name: PRDPLAN
+  type: CHAR
+  nullable: true
+  length: 7
+- name: RATEID
+  type: CHAR
+  nullable: true
+  length: 4
+journaling:
+  enabled: true

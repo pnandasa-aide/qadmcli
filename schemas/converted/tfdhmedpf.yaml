@@ -1,0 +1,44 @@
+# TFDHMEDPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TFDHMEDPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TFDHMEDPF
+columns:
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 8
+- name: SRCEBUS
+  type: CHAR
+  nullable: false
+  length: 2
+- name: VALIDFLAG
+  type: CHAR
+  nullable: false
+  length: 1
+- name: KEYSEQ
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+- name: AGNTNUM
+  type: CHAR
+  nullable: false
+  length: 8
+- name: CHDRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+- name: MEDFNUM
+  type: CHAR
+  nullable: false
+  length: 9
+- name: HOSPCODE
+  type: CHAR
+  nullable: false
+  length: 8
+journaling:
+  enabled: true

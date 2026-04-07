@@ -1,0 +1,50 @@
+# TFDTRURPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TFDTRURPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TFDTRURPF
+columns:
+- name: DATIME
+  type: CHAR
+  nullable: false
+  length: 26
+- name: JOB_NAME
+  type: VARCHAR
+  nullable: false
+  length: 10
+- name: USER_PROFILE
+  type: VARCHAR
+  nullable: false
+  length: 10
+- name: TPAYINDT
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+- name: CRTUSER
+  type: VARCHAR
+  nullable: false
+  length: 10
+- name: RDOCNUM
+  type: VARCHAR
+  nullable: false
+  length: 9
+- name: RDOCCOY
+  type: VARCHAR
+  nullable: false
+  length: 1
+- name: RDOCPFX
+  type: VARCHAR
+  nullable: false
+  length: 2
+constraints:
+  primary_key:
+    columns:
+    - RDOCPFX
+    - RDOCCOY
+    - RDOCNUM
+journaling:
+  enabled: true

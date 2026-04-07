@@ -1,0 +1,137 @@
+# TATPPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TATPPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TATPPF
+columns:
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: TYPECAL
+  type: DECIMAL
+  nullable: false
+  length: 2
+  scale: 0
+  description: TYPE CAL
+- name: SUMPERATE
+  type: DECIMAL
+  nullable: false
+  length: 10
+  scale: 0
+  description: SA PER RATE
+- name: PRDRATE
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: PRODUCT PREMIUM RATE
+- name: PRDRANDB
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: PRODUCT SUM INSURED
+- name: PRDPLAN
+  type: CHAR
+  nullable: false
+  length: 7
+  ccsid: 838
+  description: PRODUCT PLAN
+  default: ''' '''
+- name: PRDCDE
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: PRODUCT CODE
+  default: ''' '''
+- name: PREM_CESS_TERM
+  type: DECIMAL
+  nullable: false
+  length: 2
+  scale: 0
+  description: PREMIUM CESSATION TERM
+- name: KEY
+  type: DECIMAL
+  nullable: false
+  length: 2
+  scale: 0
+  description: KEY
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: ITEMTABL
+  type: CHAR
+  nullable: false
+  length: 5
+  ccsid: 838
+  description: ITEM TABLE
+  default: ''' '''
+- name: ITEMITEM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: ITEM ITEM
+  default: ''' '''
+- name: INSURESEX
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: INSURED SEX
+  default: ''' '''
+- name: INSUREAGE
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: INSURED AGE
+- name: INSUCLSCDE
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: INSURED CLASS
+  default: ''' '''
+- name: HOLDERSEX
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: HOLDER SEX
+  default: ''' '''
+- name: HOLDERAGE
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: HOLDER AGE
+  default: ''' '''
+- name: HOLDCLSCDE
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: HOLDER CLASS
+  default: ''' '''
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+journaling:
+  enabled: true

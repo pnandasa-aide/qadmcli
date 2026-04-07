@@ -1,0 +1,237 @@
+# TMFRPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TMFRPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TMFRPF
+columns:
+- name: ZINPDTE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: INPUT DATE
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: TSUBMDT
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: CLIENT SUBMIT DATE
+- name: TSTSUSR
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: LAST STATUS UPDATE USER
+  default: ''' '''
+- name: TSTSUPD
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: LAST STATUS UPDATE
+- name: TRESULT
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: RESULT
+  default: ''' '''
+- name: TLAPSDTE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: LAPSED DATE
+- name: TFFFLAG
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: FREELOOK FLAG
+  default: ''' '''
+- name: TFFDAY
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+  description: NUMBER OF DAY FROM CLIENT RCV. DATE
+- name: STATDTE05
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: TN(STATDTE) STATUS DATE
+- name: STATDTE04
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: TN(STATDTE) STATUS DATE
+- name: STATDTE03
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: TN(STATDTE) STATUS DATE
+- name: STATDTE02
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: TN(STATDTE) STATUS DATE
+- name: STATDTE01
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: TN(STATDTE) STATUS DATE
+- name: RMKCDE
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: REMARK CODE
+  default: ''' '''
+- name: RGHEADER
+  type: CHAR
+  nullable: false
+  length: 140
+  ccsid: 838
+  description: REPORT GENERATED HEADER
+  default: ''' '''
+- name: LIFENAME
+  type: CHAR
+  nullable: false
+  length: 47
+  ccsid: 838
+  description: LIFE CLIENT NAME
+  default: ''' '''
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: IDNFREE
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: IDENTIFIED OF FREE LOOK
+  default: ''' '''
+- name: DEPCODE
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: DEPARTMENT CODE
+  default: ''' '''
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+- name: CRTUSER
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: CREATE USER
+  default: ''' '''
+- name: CODEDESC
+  type: CHAR
+  nullable: false
+  length: 30
+  ccsid: 838
+  description: CODE DESCRIPTION
+  default: ''' '''
+- name: CLTPHONE02
+  type: CHAR
+  nullable: false
+  length: 16
+  ccsid: 838
+  description: TN(CLTPHONE) TELEPHONE NO
+  default: ''' '''
+- name: CLTPHONE01
+  type: CHAR
+  nullable: false
+  length: 16
+  ccsid: 838
+  description: TN(CLTPHONE) TELEPHONE NO
+  default: ''' '''
+- name: CHDRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CONTRACT NUMBER
+  default: ''' '''
+- name: BLINE05
+  type: CHAR
+  nullable: false
+  length: 60
+  ccsid: 838
+  description: TN(BLINE) SECOND LINE
+  default: ''' '''
+- name: BLINE04
+  type: CHAR
+  nullable: false
+  length: 60
+  ccsid: 838
+  description: TN(BLINE) SECOND LINE
+  default: ''' '''
+- name: BLINE03
+  type: CHAR
+  nullable: false
+  length: 60
+  ccsid: 838
+  description: TN(BLINE) SECOND LINE
+  default: ''' '''
+- name: BLINE02
+  type: CHAR
+  nullable: false
+  length: 60
+  ccsid: 838
+  description: TN(BLINE) SECOND LINE
+  default: ''' '''
+- name: BLINE01
+  type: CHAR
+  nullable: false
+  length: 60
+  ccsid: 838
+  description: TN(BLINE) SECOND LINE
+  default: ''' '''
+- name: BILLFREQ
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: BILLING FREQUENCY
+  default: ''' '''
+- name: ASOURCE
+  type: CHAR
+  nullable: false
+  length: 6
+  ccsid: 838
+  description: SOURCE
+  default: ''' '''
+constraints:
+  primary_key:
+    columns:
+    - CHDRNUM
+    - ZINPDTE
+journaling:
+  enabled: true

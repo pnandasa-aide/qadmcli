@@ -1,0 +1,257 @@
+# HBNFPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: HBNFPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - HBNFPF
+columns:
+- name: WAIVERPREM
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: WAIVER OF PREMIUM
+  default: ''' '''
+- name: VALIDFLAG
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: VALID FLAG
+  default: ''' '''
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: TPLANB
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: PLAN CODE
+  default: ''' '''
+- name: RIDER
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: RIDER NUMBER
+  default: ''' '''
+- name: RELATION10
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TN(RELATION) RELATIONSHIP TO LIFE INSURED
+  default: ''' '''
+- name: RELATION09
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TN(RELATION) RELATIONSHIP TO LIFE INSURED
+  default: ''' '''
+- name: RELATION08
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TN(RELATION) RELATIONSHIP TO LIFE INSURED
+  default: ''' '''
+- name: RELATION07
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TN(RELATION) RELATIONSHIP TO LIFE INSURED
+  default: ''' '''
+- name: RELATION06
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TN(RELATION) RELATIONSHIP TO LIFE INSURED
+  default: ''' '''
+- name: RELATION05
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TN(RELATION) RELATIONSHIP TO LIFE INSURED
+  default: ''' '''
+- name: RELATION04
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TN(RELATION) RELATIONSHIP TO LIFE INSURED
+  default: ''' '''
+- name: RELATION03
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TN(RELATION) RELATIONSHIP TO LIFE INSURED
+  default: ''' '''
+- name: RELATION02
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TN(RELATION) RELATIONSHIP TO LIFE INSURED
+  default: ''' '''
+- name: RELATION01
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TN(RELATION) RELATIONSHIP TO LIFE INSURED
+  default: ''' '''
+- name: MORTCLS
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: MORTALITY CLASS
+  default: ''' '''
+- name: LIVESNO
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: LIVES NO
+  default: ''' '''
+- name: LIFE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: LIFE NUMBER
+  default: ''' '''
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+- name: CRTABLE
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: COVERAGE/RIDER TABLE
+  default: ''' '''
+- name: COVERAGE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: COVERAGE NUMBER
+  default: ''' '''
+- name: CLNTNUM10
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: TN(CLNTNUM) CLIENT NUMBER
+  default: ''' '''
+- name: CLNTNUM09
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: TN(CLNTNUM) CLIENT NUMBER
+  default: ''' '''
+- name: CLNTNUM08
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: TN(CLNTNUM) CLIENT NUMBER
+  default: ''' '''
+- name: CLNTNUM07
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: TN(CLNTNUM) CLIENT NUMBER
+  default: ''' '''
+- name: CLNTNUM06
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: TN(CLNTNUM) CLIENT NUMBER
+  default: ''' '''
+- name: CLNTNUM05
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: TN(CLNTNUM) CLIENT NUMBER
+  default: ''' '''
+- name: CLNTNUM04
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: TN(CLNTNUM) CLIENT NUMBER
+  default: ''' '''
+- name: CLNTNUM03
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: TN(CLNTNUM) CLIENT NUMBER
+  default: ''' '''
+- name: CLNTNUM02
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: TN(CLNTNUM) CLIENT NUMBER
+  default: ''' '''
+- name: CLNTNUM01
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: TN(CLNTNUM) CLIENT NUMBER
+  default: ''' '''
+- name: CHDRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CONTRACT NUMBER
+  default: ''' '''
+- name: CHDRCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: CONT HEADER COMPANY
+  default: ''' '''
+constraints:
+  primary_key:
+    columns:
+    - CHDRCOY
+    - CHDRNUM
+    - LIFE
+    - COVERAGE
+    - RIDER
+journaling:
+  enabled: true

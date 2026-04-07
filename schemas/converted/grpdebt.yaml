@@ -1,0 +1,32 @@
+# GRPDEBT table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: GRPDEBT
+  library: GSLIBTST
+  description: Converted from Syniti metadata - GRPDEBT
+columns:
+- name: THADSC
+  type: CHAR
+  nullable: false
+  length: 800
+  ccsid: 838
+  description: Thai Desc.
+  default: ''' '''
+- name: ENGDSC
+  type: CHAR
+  nullable: false
+  length: 800
+  ccsid: 838
+  description: Eng. Desc.
+  default: ''' '''
+- name: DBTCDE
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: Debt Code
+  default: ''' '''
+journaling:
+  enabled: true

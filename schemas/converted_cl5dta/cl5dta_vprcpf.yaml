@@ -1,0 +1,128 @@
+# VPRCPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: VPRCPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - VPRCPF
+columns:
+- name: UNIT_VIRTUAL_FUND
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: UNIT LINKED FUND
+  default: ''' '''
+- name: VALIDFLAG
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: VALID FLAG
+  default: ''' '''
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: UPDATE_DATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: LAST UPDATE DATE FOR UNIT PRICES
+- name: UNIT_OFFER_PRICE
+  type: DECIMAL
+  nullable: false
+  length: 9
+  scale: 5
+  description: UNIT OFFER PRICE
+- name: UNIT_TYPE
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: UNIT TYPE (INITIAL OR ACCUMULATION)
+  default: ''' '''
+- name: UNIT_BARE_PRICE
+  type: DECIMAL
+  nullable: false
+  length: 9
+  scale: 5
+  description: UNIT BARE PRICE
+- name: UNIT_BID_PRICE
+  type: DECIMAL
+  nullable: false
+  length: 9
+  scale: 5
+  description: UNIT BID PRICE
+- name: TUNAVPR
+  type: DECIMAL
+  nullable: false
+  length: 9
+  scale: 5
+  description: UNIT NAV PRICE
+- name: TRANSACTION_TIME
+  type: DECIMAL
+  nullable: false
+  length: 6
+  scale: 0
+  description: TRANSACTION TIME
+- name: TRANNO
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+  description: TRANSACTION NUMBER
+- name: PROCFLAG
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: PROCESS FLAG
+  default: ''' '''
+- name: JOBNO
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: JOB NUMBER
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: EFFDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: EFFECTIVE DATE
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+- name: COMPANY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: SIGN-ON COMPANY
+  default: ''' '''
+constraints:
+  primary_key:
+    columns:
+    - UNIT_VIRTUAL_FUND
+    - EFFDATE
+    - JOBNO
+    - UPDATE_DATE
+journaling:
+  enabled: true

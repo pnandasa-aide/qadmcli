@@ -1,0 +1,410 @@
+# AGNTPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: AGNTPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - AGNTPF
+columns:
+- name: ZSTAFFCD
+  type: CHAR
+  nullable: false
+  length: 6
+  ccsid: 838
+  description: HANDLING STAFF CODE
+  default: ''' '''
+- name: ZFGCMTBN
+  type: CHAR
+  nullable: false
+  length: 5
+  ccsid: 838
+  description: COMMISSION TABLE (NET)
+  default: ''' '''
+- name: ZDISTRICT
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: DISTRICT
+  default: ''' '''
+- name: ZBKIND
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: BANK/NON BANK INDICATOR
+  default: ''' '''
+- name: VALIDFLAG
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: VALID FLAG
+  default: ''' '''
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: TRANID
+  type: CHAR
+  nullable: false
+  length: 14
+  ccsid: 838
+  description: TRAN ID
+  default: ''' '''
+- name: TAKOAGNT
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TAKE OVER AGENT
+  default: ''' '''
+- name: STATEMENT_REQD
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: STATEMENT REQD
+  default: ''' '''
+- name: STLBASIS
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: SETTLEMENT BASIS
+  default: ''' '''
+- name: CHDRSTCDE
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: STATISTICAL CODE E
+  default: ''' '''
+- name: CHDRSTCDD
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: STATISTICAL CODE D
+  default: ''' '''
+- name: CHDRSTCDC
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: STATISTICAL CODE C
+  default: ''' '''
+- name: CHDRSTCDB
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: STATISTICAL CODE B
+  default: ''' '''
+- name: CHDRSTCDA
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: STATISTICAL CODE A
+  default: ''' '''
+- name: START_DATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: START DATE
+- name: RLRPFX
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: PREFIX
+  default: ''' '''
+- name: RLRCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: COMPANY
+  default: ''' '''
+- name: RLRACC
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: ACCOUNT
+  default: ''' '''
+- name: RIDESC
+  type: CHAR
+  nullable: false
+  length: 30
+  ccsid: 838
+  description: REINSURANCE DESCRIPTION
+  default: ''' '''
+- name: REPORTTO
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: REPORTING TO
+  default: ''' '''
+- name: REPORTAG06
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: TN(REPORTAG) REPORTING AGENT
+  default: ''' '''
+- name: REPORTAG05
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: TN(REPORTAG) REPORTING AGENT
+  default: ''' '''
+- name: REPORTAG04
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: TN(REPORTAG) REPORTING AGENT
+  default: ''' '''
+- name: REPORTAG03
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: TN(REPORTAG) REPORTING AGENT
+  default: ''' '''
+- name: REPORTAG02
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: TN(REPORTAG) REPORTING AGENT
+  default: ''' '''
+- name: REPORTAG01
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: TN(REPORTAG) REPORTING AGENT
+  default: ''' '''
+- name: REPLVL
+  type: DECIMAL
+  nullable: false
+  length: 1
+  scale: 0
+  description: REPORTING LEVEL
+- name: REPAGENT06
+  type: CHAR
+  nullable: false
+  length: 12
+  ccsid: 838
+  description: TN(REPAGENT) REPORTING AGENT 1
+  default: ''' '''
+- name: REPAGENT05
+  type: CHAR
+  nullable: false
+  length: 12
+  ccsid: 838
+  description: TN(REPAGENT) REPORTING AGENT 1
+  default: ''' '''
+- name: REPAGENT04
+  type: CHAR
+  nullable: false
+  length: 12
+  ccsid: 838
+  description: TN(REPAGENT) REPORTING AGENT 1
+  default: ''' '''
+- name: REPAGENT03
+  type: CHAR
+  nullable: false
+  length: 12
+  ccsid: 838
+  description: TN(REPAGENT) REPORTING AGENT 1
+  default: ''' '''
+- name: REPAGENT02
+  type: CHAR
+  nullable: false
+  length: 12
+  ccsid: 838
+  description: TN(REPAGENT) REPORTING AGENT 1
+  default: ''' '''
+- name: REPAGENT01
+  type: CHAR
+  nullable: false
+  length: 12
+  ccsid: 838
+  description: TN(REPAGENT) REPORTING AGENT 1
+  default: ''' '''
+- name: MSAGNT
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: MASTER AGENT
+  default: ''' '''
+- name: LIFAGNT
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: LIFE AGENT
+  default: ''' '''
+- name: LICENCE
+  type: CHAR
+  nullable: false
+  length: 15
+  ccsid: 838
+  description: LICENCE
+  default: ''' '''
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: FGCOMMTABL
+  type: CHAR
+  nullable: false
+  length: 5
+  ccsid: 838
+  description: COMMISSION TABLE
+  default: ''' '''
+- name: FGAGNT
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: FIRE AND GENERAL AGENT
+  default: ''' '''
+- name: EXPIRY_NOTICE
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: EXPIRY NOTICE
+  default: ''' '''
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+- name: DATEEND
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: END DATE
+- name: CRTERM
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: COVR/RIDER TERMINATION INDICATOR
+  default: ''' '''
+- name: CRLIMIT
+  type: DECIMAL
+  nullable: false
+  length: 7
+  scale: 0
+  description: CREDIT LIMIT
+- name: CREDITTRM
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: CREDIT TERM
+- name: CONTPERS
+  type: CHAR
+  nullable: false
+  length: 20
+  ccsid: 838
+  description: CONTACT PERSON NAME
+  default: ''' '''
+- name: CLNTPFX
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: CLIENT PREFIX
+  default: ''' '''
+- name: CLNTNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CLIENT NUMBER
+  default: ''' '''
+- name: CLNTCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: CLIENT COMPANY
+  default: ''' '''
+- name: ACCOUNT_RECONCILIATION
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: ACCOUNT RECONCILIATION
+  default: ''' '''
+- name: AGTYPE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: AGENT TYPE
+  default: ''' '''
+- name: AGNTREL
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: AGENT RELATIONSHIP
+  default: ''' '''
+- name: AGNTPFX
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: AGENT PREFIX
+  default: ''' '''
+- name: AGNTNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: AGENT NUMBER
+  default: ''' '''
+- name: AGNTCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: AGENT COMPANY
+  default: ''' '''
+- name: AGNTBR
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: AGENT BRANCH
+  default: ''' '''
+constraints:
+  primary_key:
+    columns:
+    - AGNTCOY
+    - AGNTNUM
+journaling:
+  enabled: true

@@ -1,0 +1,52 @@
+# TFDTCDFPF_R table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TFDTCDFPF_R
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TFDTCDFPF_R
+columns:
+- name: DATIME
+  type: VARCHAR
+  nullable: true
+  length: 8
+- name: DOCTNUM
+  type: CHAR
+  nullable: false
+  length: 8
+- name: RGPYNUM
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+- name: RIDER
+  type: CHAR
+  nullable: false
+  length: 2
+- name: COVERAGE
+  type: CHAR
+  nullable: false
+  length: 2
+- name: LIFE
+  type: CHAR
+  nullable: false
+  length: 2
+- name: CHDRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+- name: RRN
+  type: BIGINT
+  nullable: true
+constraints:
+  primary_key:
+    columns:
+    - DOCTNUM
+    - CHDRNUM
+    - LIFE
+    - COVERAGE
+    - RIDER
+    - RGPYNUM
+journaling:
+  enabled: true

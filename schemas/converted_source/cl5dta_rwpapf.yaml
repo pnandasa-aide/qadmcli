@@ -1,0 +1,692 @@
+# RWPAPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: RWPAPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - RWPAPF
+columns:
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: TYEARNO
+  type: DECIMAL
+  nullable: false
+  length: 2
+  scale: 0
+  description: NUMBER OF YEAR
+- name: TLCPRM
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+  description: TOTAL PREMIUM
+- name: TLAGLICNO
+  type: CHAR
+  nullable: false
+  length: 15
+  ccsid: 838
+  description: LIFE AGENT LICENSE NUMBER
+  default: ''' '''
+- name: SUMINS06
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(SUMINS) SUM INSURED
+- name: SUMINS05
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(SUMINS) SUM INSURED
+- name: SUMINS04
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(SUMINS) SUM INSURED
+- name: SUMINS03
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(SUMINS) SUM INSURED
+- name: SUMINS02
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(SUMINS) SUM INSURED
+- name: SUMINS01
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(SUMINS) SUM INSURED
+- name: CHDRSTCDB
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: STATISTICAL CODE B
+  default: ''' '''
+- name: CHDRSTCDA
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: STATISTICAL CODE A
+  default: ''' '''
+- name: RIDER06
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TN(RIDER) RIDER NUMBER
+  default: ''' '''
+- name: RIDER05
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TN(RIDER) RIDER NUMBER
+  default: ''' '''
+- name: RIDER04
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TN(RIDER) RIDER NUMBER
+  default: ''' '''
+- name: RIDER03
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TN(RIDER) RIDER NUMBER
+  default: ''' '''
+- name: RIDER02
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TN(RIDER) RIDER NUMBER
+  default: ''' '''
+- name: RIDER01
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TN(RIDER) RIDER NUMBER
+  default: ''' '''
+- name: PAYEENME
+  type: CHAR
+  nullable: false
+  length: 50
+  ccsid: 838
+  description: PAYEE CLIENT NAME
+  default: ''' '''
+- name: OWNERNAME
+  type: CHAR
+  nullable: false
+  length: 47
+  ccsid: 838
+  description: POLICY OWNER NAME
+  default: ''' '''
+- name: LIFE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: LIFE NUMBER
+  default: ''' '''
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: JLIFE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: JOINT LIFE NUMBER
+  default: ''' '''
+- name: INSTPREM06
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(INSTPREM) INSTALMENT PREMIUM
+- name: INSTPREM05
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(INSTPREM) INSTALMENT PREMIUM
+- name: INSTPREM04
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(INSTPREM) INSTALMENT PREMIUM
+- name: INSTPREM03
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(INSTPREM) INSTALMENT PREMIUM
+- name: INSTPREM02
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(INSTPREM) INSTALMENT PREMIUM
+- name: INSTPREM01
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(INSTPREM) INSTALMENT PREMIUM
+- name: ENDDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: EOF PROCESS DATE
+- name: ENDDAT
+  type: CHAR
+  nullable: false
+  length: 19
+  ccsid: 838
+  description: ENDDAT
+  default: ''' '''
+- name: EFFDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: EFFECTIVE DATE
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+- name: DATESUB
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: DATE SUBMITTED
+- name: DATEFF
+  type: CHAR
+  nullable: false
+  length: 19
+  ccsid: 838
+  description: DATEFF
+  default: ''' '''
+- name: CRTABLE06
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: TN(CRTABLE) COVERAGE/RIDER TABLE
+  default: ''' '''
+- name: CRTABLE05
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: TN(CRTABLE) COVERAGE/RIDER TABLE
+  default: ''' '''
+- name: CRTABLE04
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: TN(CRTABLE) COVERAGE/RIDER TABLE
+  default: ''' '''
+- name: CRTABLE03
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: TN(CRTABLE) COVERAGE/RIDER TABLE
+  default: ''' '''
+- name: CRTABLE02
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: TN(CRTABLE) COVERAGE/RIDER TABLE
+  default: ''' '''
+- name: CRTABLE01
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: TN(CRTABLE) COVERAGE/RIDER TABLE
+  default: ''' '''
+- name: COVERAGE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: COVERAGE NUMBER
+  default: ''' '''
+- name: CLNTNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CLIENT NUMBER
+  default: ''' '''
+- name: CHDRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CONTRACT NUMBER
+  default: ''' '''
+- name: ANB_AT_CCD
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: AGE ATTAINED AT CONT. COMM. DATE
+- name: AGTNAME
+  type: CHAR
+  nullable: false
+  length: 47
+  ccsid: 838
+  description: AGENT NAME
+  default: ''' '''
+- name: AGNTNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: AGENT NUMBER
+  default: ''' '''
+- name: AGE
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: AGE
+- name: SUMINS20
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(SUMINS) SUM INSURED
+- name: SUMINS19
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(SUMINS) SUM INSURED
+- name: SUMINS18
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(SUMINS) SUM INSURED
+- name: SUMINS17
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(SUMINS) SUM INSURED
+- name: SUMINS16
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(SUMINS) SUM INSURED
+- name: SUMINS15
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(SUMINS) SUM INSURED
+- name: SUMINS14
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(SUMINS) SUM INSURED
+- name: SUMINS13
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(SUMINS) SUM INSURED
+- name: SUMINS12
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(SUMINS) SUM INSURED
+- name: SUMINS11
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(SUMINS) SUM INSURED
+- name: SUMINS10
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(SUMINS) SUM INSURED
+- name: SUMINS09
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(SUMINS) SUM INSURED
+- name: SUMINS08
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(SUMINS) SUM INSURED
+- name: SUMINS07
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(SUMINS) SUM INSURED
+- name: RIDER20
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TN(RIDER) RIDER NUMBER
+  default: ''' '''
+- name: RIDER19
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TN(RIDER) RIDER NUMBER
+  default: ''' '''
+- name: RIDER18
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TN(RIDER) RIDER NUMBER
+  default: ''' '''
+- name: RIDER17
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TN(RIDER) RIDER NUMBER
+  default: ''' '''
+- name: RIDER16
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TN(RIDER) RIDER NUMBER
+  default: ''' '''
+- name: RIDER15
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TN(RIDER) RIDER NUMBER
+  default: ''' '''
+- name: RIDER14
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TN(RIDER) RIDER NUMBER
+  default: ''' '''
+- name: RIDER13
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TN(RIDER) RIDER NUMBER
+  default: ''' '''
+- name: RIDER12
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TN(RIDER) RIDER NUMBER
+  default: ''' '''
+- name: RIDER11
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TN(RIDER) RIDER NUMBER
+  default: ''' '''
+- name: RIDER10
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TN(RIDER) RIDER NUMBER
+  default: ''' '''
+- name: RIDER09
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TN(RIDER) RIDER NUMBER
+  default: ''' '''
+- name: RIDER08
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TN(RIDER) RIDER NUMBER
+  default: ''' '''
+- name: RIDER07
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TN(RIDER) RIDER NUMBER
+  default: ''' '''
+- name: INSTPREM20
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(INSTPREM) INSTALMENT PREMIUM
+- name: INSTPREM19
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(INSTPREM) INSTALMENT PREMIUM
+- name: INSTPREM18
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(INSTPREM) INSTALMENT PREMIUM
+- name: INSTPREM17
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(INSTPREM) INSTALMENT PREMIUM
+- name: INSTPREM16
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(INSTPREM) INSTALMENT PREMIUM
+- name: INSTPREM15
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(INSTPREM) INSTALMENT PREMIUM
+- name: INSTPREM14
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(INSTPREM) INSTALMENT PREMIUM
+- name: INSTPREM13
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(INSTPREM) INSTALMENT PREMIUM
+- name: INSTPREM12
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(INSTPREM) INSTALMENT PREMIUM
+- name: INSTPREM11
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(INSTPREM) INSTALMENT PREMIUM
+- name: INSTPREM10
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(INSTPREM) INSTALMENT PREMIUM
+- name: INSTPREM09
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(INSTPREM) INSTALMENT PREMIUM
+- name: INSTPREM08
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(INSTPREM) INSTALMENT PREMIUM
+- name: INSTPREM07
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(INSTPREM) INSTALMENT PREMIUM
+- name: CRTABLE20
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: TN(CRTABLE) COVERAGE/RIDER TABLE
+  default: ''' '''
+- name: CRTABLE19
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: TN(CRTABLE) COVERAGE/RIDER TABLE
+  default: ''' '''
+- name: CRTABLE18
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: TN(CRTABLE) COVERAGE/RIDER TABLE
+  default: ''' '''
+- name: CRTABLE17
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: TN(CRTABLE) COVERAGE/RIDER TABLE
+  default: ''' '''
+- name: CRTABLE16
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: TN(CRTABLE) COVERAGE/RIDER TABLE
+  default: ''' '''
+- name: CRTABLE15
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: TN(CRTABLE) COVERAGE/RIDER TABLE
+  default: ''' '''
+- name: CRTABLE14
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: TN(CRTABLE) COVERAGE/RIDER TABLE
+  default: ''' '''
+- name: CRTABLE13
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: TN(CRTABLE) COVERAGE/RIDER TABLE
+  default: ''' '''
+- name: CRTABLE12
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: TN(CRTABLE) COVERAGE/RIDER TABLE
+  default: ''' '''
+- name: CRTABLE11
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: TN(CRTABLE) COVERAGE/RIDER TABLE
+  default: ''' '''
+- name: CRTABLE10
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: TN(CRTABLE) COVERAGE/RIDER TABLE
+  default: ''' '''
+- name: CRTABLE09
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: TN(CRTABLE) COVERAGE/RIDER TABLE
+  default: ''' '''
+- name: CRTABLE08
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: TN(CRTABLE) COVERAGE/RIDER TABLE
+  default: ''' '''
+- name: CRTABLE07
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: TN(CRTABLE) COVERAGE/RIDER TABLE
+  default: ''' '''
+journaling:
+  enabled: true

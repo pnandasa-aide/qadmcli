@@ -1,0 +1,60 @@
+# TFDTMPOPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TFDTMPOPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TFDTMPOPF
+columns:
+- name: DATIME
+  type: VARCHAR
+  nullable: true
+  length: 8
+- name: JOBNM
+  type: CHAR
+  nullable: true
+  length: 10
+- name: USRPRF
+  type: CHAR
+  nullable: true
+  length: 10
+- name: BANKACCDSC
+  type: CHAR
+  nullable: true
+  length: 30
+- name: BANKACCKEY
+  type: CHAR
+  nullable: true
+  length: 20
+- name: BANKKEY
+  type: CHAR
+  nullable: true
+  length: 10
+- name: ZPAYMTH
+  type: CHAR
+  nullable: true
+  length: 1
+- name: PAYCLT
+  type: CHAR
+  nullable: true
+  length: 8
+- name: CURRFROM
+  type: DECIMAL
+  nullable: true
+  length: 8
+  scale: 0
+- name: VALIDFLAG
+  type: CHAR
+  nullable: true
+  length: 1
+- name: CHDRNUM
+  type: CHAR
+  nullable: true
+  length: 8
+- name: CHDRCOY
+  type: CHAR
+  nullable: true
+  length: 1
+journaling:
+  enabled: true

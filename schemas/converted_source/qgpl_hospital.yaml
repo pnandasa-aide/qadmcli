@@ -1,0 +1,42 @@
+# HOSPITAL table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: HOSPITAL
+  library: GSLIBTST
+  description: Converted from Syniti metadata - HOSPITAL
+columns:
+- name: HOSPITALCODE
+  type: CHAR
+  nullable: true
+  length: 8
+  ccsid: 37
+- name: HOSPITALNAME
+  type: CHAR
+  nullable: true
+  length: 100
+  ccsid: 838
+- name: HOSPITALTYPE
+  type: CHAR
+  nullable: true
+  length: 10
+  ccsid: 838
+- name: FAXNUMBER
+  type: CHAR
+  nullable: true
+  length: 50
+  ccsid: 838
+- name: DESCRIPTION
+  type: CHAR
+  nullable: true
+  length: 10
+  ccsid: 838
+constraints:
+  primary_key:
+    columns:
+    - HOSPITALTYPE
+    - HOSPITALCODE
+    - FAXNUMBER
+journaling:
+  enabled: true

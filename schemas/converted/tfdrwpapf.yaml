@@ -1,0 +1,92 @@
+# TFDRWPAPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TFDRWPAPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TFDRWPAPF
+columns:
+- name: AGNTNUM
+  type: CHAR
+  nullable: true
+  length: 8
+- name: SUMINS06
+  type: DECIMAL
+  nullable: true
+  length: 17
+  scale: 2
+- name: SUMINS02
+  type: DECIMAL
+  nullable: true
+  length: 17
+  scale: 2
+- name: SUMINS01
+  type: DECIMAL
+  nullable: true
+  length: 17
+  scale: 2
+- name: TLCPRM
+  type: DECIMAL
+  nullable: true
+  length: 18
+  scale: 2
+- name: OWNERNAME
+  type: CHAR
+  nullable: true
+  length: 47
+- name: AGE
+  type: DECIMAL
+  nullable: true
+  length: 3
+  scale: 0
+- name: STCA
+  type: CHAR
+  nullable: true
+  length: 3
+- name: ENDDAT
+  type: CHAR
+  nullable: true
+  length: 19
+- name: DATEFF
+  type: CHAR
+  nullable: true
+  length: 19
+- name: DATESUB
+  type: DECIMAL
+  nullable: true
+  length: 8
+  scale: 0
+- name: SUMINS05
+  type: DECIMAL
+  nullable: true
+  length: 17
+  scale: 2
+- name: SUMINS04
+  type: DECIMAL
+  nullable: true
+  length: 17
+  scale: 2
+- name: ENDDATE
+  type: DECIMAL
+  nullable: true
+  length: 8
+  scale: 0
+- name: EFFDATE
+  type: DECIMAL
+  nullable: true
+  length: 8
+  scale: 0
+- name: CHDRNUM
+  type: CHAR
+  nullable: true
+  length: 8
+constraints:
+  primary_key:
+    columns:
+    - CHDRNUM
+    - EFFDATE
+    - ENDDATE
+    - DATESUB
+journaling:
+  enabled: true

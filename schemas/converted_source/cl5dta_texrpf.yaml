@@ -1,0 +1,118 @@
+# TEXRPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TEXRPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TEXRPF
+columns:
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: TRANDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: TRAN DATE
+- name: RDOCPFX
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: DOCUMENT PREFIX
+  default: ''' '''
+- name: RDOCNUM
+  type: CHAR
+  nullable: false
+  length: 9
+  ccsid: 838
+  description: DOCUMENT NUMBER
+  default: ''' '''
+- name: RDOCCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: DOCUMENT COMPANY
+  default: ''' '''
+- name: RCPTREV
+  type: CHAR
+  nullable: false
+  length: 9
+  ccsid: 838
+  description: REVERSE RECEIPT NUMBER
+  default: ''' '''
+- name: ORIGAMT
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: AMOUNT IN ORIGINAL CURRENCY
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: EFFDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: EFFECTIVE DATE
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+- name: CHDRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CONTRACT NUMBER
+  default: ''' '''
+- name: CHDRCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: CONT HEADER COMPANY
+  default: ''' '''
+- name: BANKCODE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: BANK CODE
+  default: ''' '''
+- name: AGNTNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: AGENT NUMBER
+  default: ''' '''
+- name: ACCTAMT
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: AMOUNT  IN ACCOUNTING CURRENCY
+constraints:
+  primary_key:
+    columns:
+    - RDOCPFX
+    - RDOCCOY
+    - RDOCNUM
+journaling:
+  enabled: true

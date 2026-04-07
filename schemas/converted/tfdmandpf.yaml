@@ -1,0 +1,50 @@
+# TFDMANDPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TFDMANDPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TFDMANDPF
+columns:
+- name: TRDT
+  type: DECIMAL
+  nullable: true
+  length: 6
+  scale: 0
+- name: EFFDATE
+  type: DECIMAL
+  nullable: true
+  length: 8
+  scale: 0
+- name: MANDAMT
+  type: DECIMAL
+  nullable: true
+  length: 17
+  scale: 2
+- name: MANDSTAT
+  type: CHAR
+  nullable: true
+  length: 2
+- name: BANKACCKEY
+  type: CHAR
+  nullable: true
+  length: 20
+- name: BANKKEY
+  type: CHAR
+  nullable: true
+  length: 10
+- name: VALIDFLAG
+  type: CHAR
+  nullable: true
+  length: 1
+- name: MANDREF
+  type: CHAR
+  nullable: true
+  length: 5
+- name: PAYRNUM
+  type: CHAR
+  nullable: true
+  length: 8
+journaling:
+  enabled: true

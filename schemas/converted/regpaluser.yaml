@@ -1,0 +1,63 @@
+# REGPALUSER table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: REGPALUSER
+  library: GSLIBTST
+  description: Converted from Syniti metadata - REGPALUSER
+columns:
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: USERPRF08
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: substr(t02.usrprf,1,8)
+  default: ''' '''
+- name: TRANNO04
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+  description: TRANNO MAX
+- name: TRANNO
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+  description: TRANSACTION NUMBER
+- name: RGPYNUM
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+  description: REGULAR PAYMENT SEQUENCE NUMBER
+- name: DATESUB
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: DATE SUBMITTED
+- name: CHDRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CONTRACT NUMBER
+  default: ''' '''
+- name: BATCTRCDE
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: BATCH TRANSACTION CODE
+  default: ''' '''
+journaling:
+  enabled: true

@@ -1,0 +1,185 @@
+# GAPHPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: GAPHPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - GAPHPF
+columns:
+- name: VALIDFLAG
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: VALID FLAG
+  default: ''' '''
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: UPDTYPE
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: UPDATE TYPE (N-NEW,C-CHANGE,T-TERMINATE)
+  default: ''' '''
+- name: TRANNO
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+  description: TRANSACTION NUMBER
+- name: SUBSNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: SUBSIDIARY NUMBER
+  default: ''' '''
+- name: SUBSCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: SUBSIDIARY COMPANY
+  default: ''' '''
+- name: SRCDATA
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: SOURCE OF DATA (M-MANUAL, A-AUTO)
+  default: ''' '''
+- name: RESNCD
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: REASON CODE USED BY GROUP BACKEND SYSTEM
+  default: ''' '''
+- name: PRODTYP
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: PRODUCT CODE
+  default: ''' '''
+- name: PRMAMTRT
+  type: DECIMAL
+  nullable: false
+  length: 10
+  scale: 2
+  description: PREMIUM AMOUNT / RATE
+- name: PLANNO
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: PLAN NUMBER
+  default: ''' '''
+- name: MBRNO
+  type: CHAR
+  nullable: false
+  length: 5
+  ccsid: 838
+  description: MEMBER NUMBER
+  default: ''' '''
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: INDICX
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: PREMIUM R-RATE OR A-AMOUNT INDICATOR
+  default: ''' '''
+- name: HSUMINSU
+  type: DECIMAL
+  nullable: false
+  length: 13
+  scale: 0
+  description: HEADCOUNT SUM INSURED
+- name: HEADCNTIND
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: HEADCOUNT IND (M-MEMBER, H-HEADCOUNT)
+  default: ''' '''
+- name: EFFDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: EFFECTIVE DATE
+- name: DTETRM
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: DATE TERMINATED
+- name: DPNTNO
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: DEPENDENT NUMBER
+  default: ''' '''
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+- name: CHDRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CONTRACT NUMBER
+  default: ''' '''
+- name: CHDRCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: CONT HEADER COMPANY
+  default: ''' '''
+- name: BATCTRCD
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: BATCTRCD
+  default: ''' '''
+- name: APREM
+  type: DECIMAL
+  nullable: false
+  length: 15
+  scale: 2
+  description: ANNUALISED NORMAL PREMIUM
+- name: AEXTPRMR
+  type: DECIMAL
+  nullable: false
+  length: 15
+  scale: 2
+  description: ANNUALISED EXTRA PREMIUM BY RATE
+- name: AEXTPRM
+  type: DECIMAL
+  nullable: false
+  length: 15
+  scale: 2
+  description: ANNUALISED EXTRA PREMIUM
+journaling:
+  enabled: true

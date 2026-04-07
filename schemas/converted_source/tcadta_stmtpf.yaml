@@ -1,0 +1,775 @@
+# STMTPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: STMTPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - STMTPF
+columns:
+- name: VALID_FLAG
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: VALID FLAG
+  default: ''' '''
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: UNIQUE_KEY
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+  description: UNIQUE KEY
+- name: TRANSACTION_ID
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 0
+  description: TRANSACTION ID
+- name: TRAN_DATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: TRAN DATE
+- name: TRANS_CODE
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: TRANS CODE
+  default: ''' '''
+- name: TRANNO
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+  description: TRANSACTION NUMBER
+- name: CHDRSTCDE
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: STATISTICAL CODE E
+  default: ''' '''
+- name: CHDRSTCDD
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: STATISTICAL CODE D
+  default: ''' '''
+- name: CHDRSTCDC
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: STATISTICAL CODE C
+  default: ''' '''
+- name: CHDRSTCDB
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: STATISTICAL CODE B
+  default: ''' '''
+- name: CHDRSTCDA
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: STATISTICAL CODE A
+  default: ''' '''
+- name: CLNTSTMT_DESC
+  type: CHAR
+  nullable: false
+  length: 50
+  ccsid: 838
+  description: CLNTSTMT DESC
+  default: ''' '''
+- name: DESCRIPTION
+  type: CHAR
+  nullable: false
+  length: 50
+  ccsid: 838
+  description: DESCRIPTION
+  default: ''' '''
+- name: STOFACCT_DESC
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: STOFACCT DESC
+  default: ''' '''
+- name: LEDGLIST_DESC
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: LEDGLIST DESC
+  default: ''' '''
+- name: SUBACTYPE15
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TN(SAC) SUBACTYPE
+  default: ''' '''
+- name: SUBACTYPE14
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TN(SAC) SUBACTYPE
+  default: ''' '''
+- name: SUBACTYPE13
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TN(SAC) SUBACTYPE
+  default: ''' '''
+- name: SUBACTYPE12
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TN(SAC) SUBACTYPE
+  default: ''' '''
+- name: SUBACTYPE11
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TN(SAC) SUBACTYPE
+  default: ''' '''
+- name: SUBACTYPE10
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TN(SAC) SUBACTYPE
+  default: ''' '''
+- name: SUBACTYPE09
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TN(SAC) SUBACTYPE
+  default: ''' '''
+- name: SUBACTYPE08
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TN(SAC) SUBACTYPE
+  default: ''' '''
+- name: SUBACTYPE07
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TN(SAC) SUBACTYPE
+  default: ''' '''
+- name: SUBACTYPE06
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TN(SAC) SUBACTYPE
+  default: ''' '''
+- name: SUBACTYPE05
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TN(SAC) SUBACTYPE
+  default: ''' '''
+- name: SUBACTYPE04
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TN(SAC) SUBACTYPE
+  default: ''' '''
+- name: SUBACTYPE03
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TN(SAC) SUBACTYPE
+  default: ''' '''
+- name: SUBACTYPE02
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TN(SAC) SUBACTYPE
+  default: ''' '''
+- name: SUBACTYPE01
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TN(SAC) SUBACTYPE
+  default: ''' '''
+- name: SUB_ACCOUNT
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: SUB ACCOUNT
+  default: ''' '''
+- name: RISKNUMBER
+  type: DECIMAL
+  nullable: false
+  length: 4
+  scale: 0
+  description: RISKNUMBER
+- name: RISKCLASS
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: RISKCLASS
+  default: ''' '''
+- name: RITYPE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: REINSURER TYPE
+  default: ''' '''
+- name: RECON_CODE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: RECONCILIATN CODE
+  default: ''' '''
+- name: POLPFX
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: POLICY PREFIX
+  default: ''' '''
+- name: POLNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: POLICY NUMBER
+  default: ''' '''
+- name: POLCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: POLICY COY
+  default: ''' '''
+- name: OTHERPFX
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: OTHER PFX
+  default: ''' '''
+- name: OTHERNUM
+  type: CHAR
+  nullable: false
+  length: 14
+  ccsid: 838
+  description: OTHER NUM
+  default: ''' '''
+- name: OTHERCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: OTHER COY
+  default: ''' '''
+- name: OTHERCCY
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: OTHERCCY
+  default: ''' '''
+- name: ORIGDATA_FT
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: ORIGDATA FT
+  default: ''' '''
+- name: ORIG_CCY
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: ORIGINAL CCY
+  default: ''' '''
+- name: NET_LCEAMT
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: NET LCEAMT
+- name: NET_AMT
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: NETT AMT
+- name: MARRY_UNIQUEKEY
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+  description: MARRY UNIQUEKEY
+- name: MARRYFLAG
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: MARRY FLAG
+  default: ''' '''
+- name: MARYACTYR
+  type: DECIMAL
+  nullable: false
+  length: 4
+  scale: 0
+  description: MARRY ACCOUNTING YEAR
+- name: MARYACTMN
+  type: DECIMAL
+  nullable: false
+  length: 2
+  scale: 0
+  description: MARRY ACCOUNTING MONTH
+- name: TRNAMT_LCE15
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(LCE) TRNAMT LCE
+- name: TRNAMT_LCE14
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(LCE) TRNAMT LCE
+- name: TRNAMT_LCE13
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(LCE) TRNAMT LCE
+- name: TRNAMT_LCE12
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(LCE) TRNAMT LCE
+- name: TRNAMT_LCE11
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(LCE) TRNAMT LCE
+- name: TRNAMT_LCE10
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(LCE) TRNAMT LCE
+- name: TRNAMT_LCE09
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(LCE) TRNAMT LCE
+- name: TRNAMT_LCE08
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(LCE) TRNAMT LCE
+- name: TRNAMT_LCE07
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(LCE) TRNAMT LCE
+- name: TRNAMT_LCE06
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(LCE) TRNAMT LCE
+- name: TRNAMT_LCE05
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(LCE) TRNAMT LCE
+- name: TRNAMT_LCE04
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(LCE) TRNAMT LCE
+- name: TRNAMT_LCE03
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(LCE) TRNAMT LCE
+- name: TRNAMT_LCE02
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(LCE) TRNAMT LCE
+- name: TRNAMT_LCE01
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(LCE) TRNAMT LCE
+- name: LCE_CCY
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: LCE CCY
+  default: ''' '''
+- name: KEYSUPPD
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: KEY SUPPLIED FLAG
+  default: ''' '''
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: JOB_ID
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: S38 RUN ID
+  default: ''' '''
+- name: JNLFLAG
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: JOURNAL FLAG
+  default: ''' '''
+- name: GROSPREM_LCEAMT
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: GROSPREM LCEAMT
+- name: GROSPREM_AMT
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: GROSPREM AMT
+- name: ENDORSETYP
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: ENDORSEMENT TYPE
+  default: ''' '''
+- name: EFFECTDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: EFFECTDATE
+- name: DUEDATE
+  type: CHAR
+  nullable: false
+  length: 6
+  ccsid: 838
+  description: DUE DATE
+  default: ''' '''
+- name: TRANTYPE_CODE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: TRANTYPE CODE
+  default: ''' '''
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+- name: CASHREQN_TYPE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: CASHREQN TYPE
+  default: ''' '''
+- name: CRATE
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 9
+  description: CURRENCY RATE
+- name: CONTRACT_TYPE
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: CONTRACT TYPE
+  default: ''' '''
+- name: COMM_LCEAMT
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: COMM LCEAMT
+- name: COMM_AMT
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: COMMISSION AMT
+- name: CLTPFX
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: CLIENT PREFIX
+  default: ''' '''
+- name: CLTNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CLIENT NUMBER
+  default: ''' '''
+- name: CLTCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: CLIENT COY
+  default: ''' '''
+- name: CHQPFX
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: CHEQUE PREFIX
+  default: ''' '''
+- name: CHQNUM
+  type: CHAR
+  nullable: false
+  length: 9
+  ccsid: 838
+  description: CHEQUE NUMBER
+  default: ''' '''
+- name: CHQCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: CHEQUE COY
+  default: ''' '''
+- name: BATCHTRCODE
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: BATCHTRCODE
+  default: ''' '''
+- name: BATCHPFX
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: BATCHPFX
+  default: ''' '''
+- name: BATCHCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: BATCHCOY
+  default: ''' '''
+- name: BATCHBRANCH
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: BATCHBRANCH
+  default: ''' '''
+- name: BATCHBATCH
+  type: CHAR
+  nullable: false
+  length: 5
+  ccsid: 838
+  description: BATCHBATCH
+  default: ''' '''
+- name: BATCHACCTYR
+  type: DECIMAL
+  nullable: false
+  length: 4
+  scale: 0
+  description: BATCHACCTYR
+- name: BATCHACCMTH
+  type: DECIMAL
+  nullable: false
+  length: 2
+  scale: 0
+  description: BATCHACCMTH
+- name: BROKERSREF
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: BROKERS REFERENCE
+  default: ''' '''
+- name: TRNAMT15
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(AMT) TRAN AMT
+- name: TRNAMT14
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(AMT) TRAN AMT
+- name: TRNAMT13
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(AMT) TRAN AMT
+- name: TRNAMT12
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(AMT) TRAN AMT
+- name: TRNAMT11
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(AMT) TRAN AMT
+- name: TRNAMT10
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(AMT) TRAN AMT
+- name: TRNAMT09
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(AMT) TRAN AMT
+- name: TRNAMT08
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(AMT) TRAN AMT
+- name: TRNAMT07
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(AMT) TRAN AMT
+- name: TRNAMT06
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(AMT) TRAN AMT
+- name: TRNAMT05
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(AMT) TRAN AMT
+- name: TRNAMT04
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(AMT) TRAN AMT
+- name: TRNAMT03
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(AMT) TRAN AMT
+- name: TRNAMT02
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(AMT) TRAN AMT
+- name: TRNAMT01
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(AMT) TRAN AMT
+- name: AGECODE
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: AGE CODE
+  default: ''' '''
+- name: ACCPFX
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: ACNO PREFIX
+  default: ''' '''
+- name: ACCNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: ACNO NUMBER
+  default: ''' '''
+- name: ACCCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: AGENT ACCOUNT COY
+  default: ''' '''
+journaling:
+  enabled: true

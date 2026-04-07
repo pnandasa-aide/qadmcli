@@ -1,0 +1,143 @@
+# TMEDPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TMEDPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TMEDPF
+columns:
+- name: ZINPDTE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: INPUT DATE
+- name: VALIDFLAG
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: VALID FLAG
+  default: ''' '''
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: TSTATUS
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: STATUS
+  default: ''' '''
+- name: SRCEBUS
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: ACCOUNT TYPE
+  default: ''' '''
+- name: REQNNO
+  type: CHAR
+  nullable: false
+  length: 9
+  ccsid: 838
+  description: REQN NUMBER
+  default: ''' '''
+- name: PAYFLAG
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: INST PAYED FLAG
+  default: ''' '''
+- name: PAYCLT
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: PAYEE CLIENT NUMBER
+  default: ''' '''
+- name: OVERAMT
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+  description: OVER AMOUNT
+- name: MEDFNUM
+  type: CHAR
+  nullable: false
+  length: 9
+  ccsid: 838
+  description: MEDICAL
+  default: ''' '''
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: HOSPCODE
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: HOSPITAL MEDICAL
+  default: ''' '''
+- name: GRFLAG
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: GRFLAG
+  default: ''' '''
+- name: DIFAMT
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+  description: DIFFERENC AMOUNT
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+- name: CONTRACT_AMOUNT
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: CONTRACT AMOUNT
+- name: CLTOT
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TOTAL AMOUNT CLAIMED
+- name: APRVDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: APPROVAL DATE
+- name: AGNTNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: AGENT NUMBER
+  default: ''' '''
+constraints:
+  primary_key:
+    columns:
+    - HOSPCODE
+    - MEDFNUM
+journaling:
+  enabled: true

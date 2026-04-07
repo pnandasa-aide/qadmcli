@@ -1,0 +1,59 @@
+# TFDDOCTPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TFDDOCTPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TFDDOCTPF
+columns:
+- name: DATIME
+  type: VARCHAR
+  nullable: true
+  length: 8
+- name: USER_PROFILE
+  type: CHAR
+  nullable: true
+  length: 10
+- name: PARAMETER_E
+  type: CHAR
+  nullable: true
+  length: 40
+- name: PARAMETER_D
+  type: CHAR
+  nullable: true
+  length: 40
+- name: PARAMETER_C
+  type: CHAR
+  nullable: true
+  length: 40
+- name: PARAMETER_B
+  type: CHAR
+  nullable: true
+  length: 40
+- name: PARAMETER_A
+  type: CHAR
+  nullable: true
+  length: 40
+- name: SURNAME
+  type: CHAR
+  nullable: true
+  length: 30
+- name: GIVNAME
+  type: CHAR
+  nullable: true
+  length: 20
+- name: LSALUT
+  type: CHAR
+  nullable: true
+  length: 8
+- name: DOCTOR
+  type: CHAR
+  nullable: true
+  length: 8
+constraints:
+  primary_key:
+    columns:
+    - DOCTOR
+journaling:
+  enabled: true

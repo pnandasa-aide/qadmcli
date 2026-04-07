@@ -1,0 +1,191 @@
+# ZRSTPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: ZRSTPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - ZRSTPF
+columns:
+- name: ZRAMOUNT02
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(ZRAMOUNT) AMOUNT
+- name: ZRAMOUNT01
+  type: DECIMAL
+  nullable: false
+  length: 17
+  scale: 2
+  description: TN(ZRAMOUNT) AMOUNT
+- name: XTRANNO
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+  description: TRANSACTION NUMBER
+- name: USTMNO
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+  description: UNIT STATEMENT NUMBER
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 37
+  description: USER PROFILE
+  default: ''' '''
+- name: TRANNO
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+  description: TRANSACTION NUMBER
+- name: TRANDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: TRAN DATE
+- name: SEQNO
+  type: DECIMAL
+  nullable: false
+  length: 2
+  scale: 0
+  description: SEQUENCE NO
+- name: SACSTYP
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 37
+  description: SUB-ACCOUNT TYPE
+  default: ''' '''
+- name: RIDER
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 37
+  description: RIDER NUMBER
+  default: ''' '''
+- name: ORGTRCDE
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 37
+  description: ORIGINAL TRANSACTION CODE
+  default: ''' '''
+- name: LIFE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 37
+  description: LIFE NUMBER
+  default: ''' '''
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 37
+  description: JOB NAME
+  default: ''' '''
+- name: JLIFE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 37
+  description: JOINT LIFE NUMBER
+  default: ''' '''
+- name: HRIDER
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 37
+  description: HIDDEN RIDER
+  default: ''' '''
+- name: HLIFE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 37
+  default: ''' '''
+- name: HCRTABLE
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 37
+  description: HIDDEN COVERAGE CODE
+  default: ''' '''
+- name: HCOVERAGE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 37
+  description: HIDDEN COVERAGE
+  default: ''' '''
+- name: FUNDPOOL
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 37
+  description: FUND POOL
+  default: ''' '''
+- name: FEEDBACK_IND
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 37
+  description: COMPLETED BY FEEDBACK INDICATOR
+  default: ''' '''
+- name: DEALCDTE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: DEALING COMPLETION DATE
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 37
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+- name: COVERAGE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 37
+  description: COVERAGE NUMBER
+  default: ''' '''
+- name: COVDBTIND
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 37
+  description: COVERAGE DEBT INDICATOR
+  default: ''' '''
+- name: CHDRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 37
+  description: CONTRACT NUMBER
+  default: ''' '''
+- name: CHDRCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 37
+  description: CONT HEADER COMPANY
+  default: ''' '''
+- name: BATCTRCDE
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 37
+  description: BATCH TRANSACTION CODE
+  default: ''' '''
+journaling:
+  enabled: true

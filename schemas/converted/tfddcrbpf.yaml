@@ -1,0 +1,57 @@
+# TFDDCRBPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TFDDCRBPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TFDDCRBPF
+columns:
+- name: DATIME
+  type: VARCHAR
+  nullable: true
+  length: 8
+- name: BNKACKEY03
+  type: CHAR
+  nullable: true
+  length: 20
+- name: BNKACKEY02
+  type: CHAR
+  nullable: true
+  length: 20
+- name: BNKACKEY01
+  type: CHAR
+  nullable: true
+  length: 20
+- name: BANKKEY03
+  type: CHAR
+  nullable: true
+  length: 10
+- name: BANKKEY02
+  type: CHAR
+  nullable: true
+  length: 10
+- name: BANKKEY01
+  type: CHAR
+  nullable: true
+  length: 10
+- name: CLNTNUM
+  type: CHAR
+  nullable: true
+  length: 8
+- name: CLNTCOY
+  type: CHAR
+  nullable: true
+  length: 1
+- name: CLNTPFX
+  type: CHAR
+  nullable: true
+  length: 2
+constraints:
+  primary_key:
+    columns:
+    - CLNTPFX
+    - CLNTCOY
+    - CLNTNUM
+journaling:
+  enabled: true

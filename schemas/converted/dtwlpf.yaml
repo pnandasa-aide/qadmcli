@@ -1,0 +1,77 @@
+# DTWLPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: DTWLPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - DTWLPF
+columns:
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: STRTDT
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: START DATE
+- name: STFLAG
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: STATUS FLAG
+  default: ''' '''
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: GCOCCNO
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: CLAIMS OCCURANCE NO
+  default: ''' '''
+- name: ENDDATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: EOF PROCESS DATE
+- name: DOCTOR
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: DOCTOE LICENSE CODE
+  default: ''' '''
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+- name: CLAMNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CLAIM NUMBER
+  default: ''' '''
+constraints:
+  primary_key:
+    columns:
+    - CLAMNUM
+    - GCOCCNO
+journaling:
+  enabled: true

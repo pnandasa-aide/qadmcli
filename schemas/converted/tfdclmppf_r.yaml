@@ -1,0 +1,35 @@
+# TFDCLMPPF_R table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TFDCLMPPF_R
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TFDCLMPPF_R
+columns:
+- name: PAYAMT
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 2
+- name: PAYCLT
+  type: CHAR
+  nullable: false
+  length: 8
+- name: GCOCCNO
+  type: CHAR
+  nullable: false
+  length: 2
+- name: CLAMNUM
+  type: CHAR
+  nullable: false
+  length: 8
+- name: RRN
+  type: BIGINT
+  nullable: true
+constraints:
+  primary_key:
+    columns:
+    - RRN
+journaling:
+  enabled: true

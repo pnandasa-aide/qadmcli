@@ -1,0 +1,73 @@
+# TSTFPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TSTFPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TSTFPF
+columns:
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: TJPAVSCD
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: JP ADVISER NAME
+  default: ''' '''
+- name: TCRSTFCD
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: CR STAFF CODE
+  default: ''' '''
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+- name: CHDRPFX
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: CONT HEADER PREFIX
+  default: ''' '''
+- name: CHDRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CONTRACT NUMBER
+  default: ''' '''
+- name: CHDRCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: CONT HEADER COMPANY
+  default: ''' '''
+constraints:
+  primary_key:
+    columns:
+    - CHDRPFX
+    - CHDRCOY
+    - CHDRNUM
+journaling:
+  enabled: true

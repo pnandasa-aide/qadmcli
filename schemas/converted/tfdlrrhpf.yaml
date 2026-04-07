@@ -1,0 +1,84 @@
+# TFDLRRHPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TFDLRRHPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TFDLRRHPF
+columns:
+- name: RREVDT
+  type: DECIMAL
+  nullable: true
+  length: 8
+  scale: 0
+- name: SSREASF
+  type: DECIMAL
+  nullable: true
+  length: 17
+  scale: 2
+- name: SSREAST
+  type: DECIMAL
+  nullable: true
+  length: 17
+  scale: 2
+- name: SSRETN
+  type: DECIMAL
+  nullable: true
+  length: 17
+  scale: 2
+- name: TRANNO
+  type: DECIMAL
+  nullable: true
+  length: 5
+  scale: 0
+- name: VALIDFLAG
+  type: CHAR
+  nullable: true
+  length: 1
+- name: CURRTO
+  type: DECIMAL
+  nullable: true
+  length: 8
+  scale: 0
+- name: CURRFROM
+  type: DECIMAL
+  nullable: true
+  length: 8
+  scale: 0
+- name: LRKCLS
+  type: CHAR
+  nullable: true
+  length: 4
+- name: RIDER
+  type: CHAR
+  nullable: true
+  length: 2
+- name: COVERAGE
+  type: CHAR
+  nullable: true
+  length: 2
+- name: LIFE
+  type: CHAR
+  nullable: true
+  length: 2
+- name: CHDRNUM
+  type: CHAR
+  nullable: true
+  length: 8
+- name: CLNTNUM
+  type: CHAR
+  nullable: true
+  length: 8
+constraints:
+  primary_key:
+    columns:
+    - CLNTNUM
+    - CHDRNUM
+    - LIFE
+    - COVERAGE
+    - RIDER
+    - LRKCLS
+    - TRANNO
+journaling:
+  enabled: true

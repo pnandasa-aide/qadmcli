@@ -1,0 +1,64 @@
+# TCMSPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TCMSPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TCMSPF
+columns:
+- name: TTXNCDE
+  type: DECIMAL
+  nullable: false
+  length: 1
+  scale: 0
+  description: TRANSACTION CODE
+- name: TSALEUNT
+  type: CHAR
+  nullable: false
+  length: 5
+  ccsid: 838
+  description: SALE UNIT CODE
+  default: ''' '''
+- name: TRANNO
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+  description: TRANSACTION NUMBER
+- name: TAGGROUP
+  type: CHAR
+  nullable: false
+  length: 5
+  ccsid: 838
+  description: AGENT GROUP CODE
+  default: ''' '''
+- name: PRCPNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: PREMIUM RECEIPT NUMBER
+  default: ''' '''
+- name: CMPRCNT
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 2
+  description: COMMISSION PERCENTAGE
+- name: CHDRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CONTRACT NUMBER
+  default: ''' '''
+- name: AGTNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: AGENT NUMBER
+  default: ''' '''
+journaling:
+  enabled: true

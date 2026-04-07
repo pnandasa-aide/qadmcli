@@ -1,0 +1,45 @@
+# TRIDMAX table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TRIDMAX
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TRIDMAX
+columns:
+- name: PRODTYP
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: PRODUCT CODE
+  default: ''' '''
+- name: OVERFLOW
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: OVERFLOW FLAG
+  default: ''' '''
+- name: EFFDATE04
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: EFFDATE MAX
+- name: CHDRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CONTRACT NUMBER
+  default: ''' '''
+- name: BREAKLVL
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: BREAK LEVEL
+  default: ''' '''
+journaling:
+  enabled: true

@@ -1,0 +1,58 @@
+# TFDZAGBPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TFDZAGBPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TFDZAGBPF
+columns:
+- name: DATIME
+  type: CHAR
+  nullable: false
+  length: 26
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+- name: SUPCODE
+  type: CHAR
+  nullable: false
+  length: 8
+- name: TSRCODE
+  type: CHAR
+  nullable: false
+  length: 8
+- name: VALIDFLAG
+  type: CHAR
+  nullable: false
+  length: 1
+- name: AGNTKEY
+  type: CHAR
+  nullable: false
+  length: 8
+- name: SBRDESC
+  type: CHAR
+  nullable: false
+  length: 40
+- name: BANKBRN
+  type: CHAR
+  nullable: false
+  length: 8
+- name: CHDRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+constraints:
+  primary_key:
+    columns:
+    - CHDRNUM
+    - BANKBRN
+    - SBRDESC
+    - AGNTKEY
+journaling:
+  enabled: true

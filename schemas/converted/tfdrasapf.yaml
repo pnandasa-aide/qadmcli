@@ -1,0 +1,82 @@
+# TFDRASAPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TFDRASAPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TFDRASAPF
+columns:
+- name: NXTPAY
+  type: DECIMAL
+  nullable: true
+  length: 8
+  scale: 0
+- name: STMTDT
+  type: DECIMAL
+  nullable: true
+  length: 8
+  scale: 0
+- name: REASST
+  type: CHAR
+  nullable: true
+  length: 1
+- name: TERMDT
+  type: DECIMAL
+  nullable: true
+  length: 8
+  scale: 0
+- name: COMMDT
+  type: DECIMAL
+  nullable: true
+  length: 8
+  scale: 0
+- name: TRDT
+  type: DECIMAL
+  nullable: true
+  length: 6
+  scale: 0
+- name: MINSTA
+  type: DECIMAL
+  nullable: true
+  length: 17
+  scale: 2
+- name: AGNTNUM
+  type: CHAR
+  nullable: true
+  length: 8
+- name: DTEPAY
+  type: DECIMAL
+  nullable: true
+  length: 8
+  scale: 0
+- name: RAPAYFRQ
+  type: CHAR
+  nullable: true
+  length: 2
+- name: RAPAYMTH
+  type: CHAR
+  nullable: true
+  length: 1
+- name: PAYCLT
+  type: CHAR
+  nullable: true
+  length: 8
+- name: CLNTNUM
+  type: CHAR
+  nullable: true
+  length: 8
+- name: VALIDFLAG
+  type: CHAR
+  nullable: true
+  length: 1
+- name: RASNUM
+  type: CHAR
+  nullable: true
+  length: 8
+constraints:
+  primary_key:
+    columns:
+    - RASNUM
+journaling:
+  enabled: true

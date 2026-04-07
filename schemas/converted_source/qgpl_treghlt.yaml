@@ -1,0 +1,73 @@
+# TREGHLT table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: TREGHLT
+  library: GSLIBTST
+  description: Converted from Syniti metadata - TREGHLT
+columns:
+- name: TREGCODE04
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: TN(TREGCODE) REGULAR CALIM REASON CODE
+  default: ''' '''
+- name: TREGCODE03
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: TN(TREGCODE) REGULAR CALIM REASON CODE
+  default: ''' '''
+- name: TREGCODE02
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: TN(TREGCODE) REGULAR CALIM REASON CODE
+  default: ''' '''
+- name: TREGCODE01
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: TN(TREGCODE) REGULAR CALIM REASON CODE
+  default: ''' '''
+- name: RIDER
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: RIDER NUMBER
+  default: ''' '''
+- name: RGPYNUM
+  type: DECIMAL
+  nullable: false
+  length: 5
+  scale: 0
+  description: REGULAR PAYMENT SEQUENCE NUMBER
+- name: LIFE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: LIFE NUMBER
+  default: ''' '''
+- name: COVERAGE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: COVERAGE NUMBER
+  default: ''' '''
+- name: CHDRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CONTRACT NUMBER
+  default: ''' '''
+journaling:
+  enabled: true

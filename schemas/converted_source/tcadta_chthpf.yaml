@@ -1,0 +1,92 @@
+# CHTHPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: CHTHPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - CHTHPF
+columns:
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: GERJOIN
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: GROUP ER JOIN DATE
+- name: GEREND
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: GROUP ER END DATE
+- name: GERCSUB
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: GROUP ER CALCULATE BY SUB
+  default: ''' '''
+- name: GERCDE
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: GROUP ER CODE
+  default: ''' '''
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+- name: CLMVRULE
+  type: CHAR
+  nullable: false
+  length: 6
+  ccsid: 838
+  description: CLAIM VALIDATION RULE
+  default: ''' '''
+- name: CHDRPFX
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: CONT HEADER PREFIX
+  default: ''' '''
+- name: CHDRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CONTRACT NUMBER
+  default: ''' '''
+- name: CHDRCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: CONT HEADER COMPANY
+  default: ''' '''
+constraints:
+  primary_key:
+    columns:
+    - CHDRPFX
+    - CHDRCOY
+    - CHDRNUM
+journaling:
+  enabled: true

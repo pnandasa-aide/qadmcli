@@ -1,0 +1,401 @@
+# GCLHPF table
+# Converted from Syniti metadata
+# Library: GSLIBTST
+
+table:
+  name: GCLHPF
+  library: GSLIBTST
+  description: Converted from Syniti metadata - GCLHPF
+columns:
+- name: CLIENT_CLAIM_REF
+  type: CHAR
+  nullable: false
+  length: 20
+  ccsid: 838
+  description: CLIENT CLAIM REFERENCE NO
+  default: ''' '''
+- name: RECVD_DATE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: DATE CLAIM RECEIVED
+- name: WHOPAID
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: WHO PAID
+  default: ''' '''
+- name: USER_PROFILE
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: USER PROFILE
+  default: ''' '''
+- name: TPRCVPND
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: THIRD PARTY RECOVERY PENDING
+  default: ''' '''
+- name: TLMBRSHR
+  type: DECIMAL
+  nullable: false
+  length: 15
+  scale: 2
+  description: TOTAL MEMBER SHARE
+- name: TLHMOSHR
+  type: DECIMAL
+  nullable: false
+  length: 15
+  scale: 2
+  description: TOTAL HMO SHARE
+- name: TIMEMM
+  type: DECIMAL
+  nullable: false
+  length: 2
+  scale: 0
+  description: TIME OF VISIT (MINIUTES)
+- name: TIMEHH
+  type: DECIMAL
+  nullable: false
+  length: 2
+  scale: 0
+  description: TIME OF VISIT (HOURS)
+- name: THIRDRCVY
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: THIRD PARTY RECOVERY - PENDING
+  default: ''' '''
+- name: THIRDPARTY
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: THIRD PARTY - CLIENT NUMBER
+  default: ''' '''
+- name: REVLINK
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: REVERSE LINK
+  default: ''' '''
+- name: REVERSAL_IND
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: REVERSAL INDICTOR
+  default: ''' '''
+- name: REQNTYPE
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: PAYMENT REQUEST TYPE
+  default: ''' '''
+- name: REFERRER
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: REFERRED BY
+  default: ''' '''
+- name: PROVORG
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: PROVIDER ORGANISATION CLIENT NUMBER
+  default: ''' '''
+- name: PROVNET
+  type: CHAR
+  nullable: false
+  length: 6
+  ccsid: 838
+  description: PROVIDER NETWORK-ID
+  default: ''' '''
+- name: PRODTYP
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: PRODUCT CODE
+  default: ''' '''
+- name: PREAUTNO
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: PRE-AUTHORISATION NUMBER
+  default: ''' '''
+- name: PLANNO
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: PLAN NUMBER
+  default: ''' '''
+- name: PENDFROM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: PENDING FROM
+  default: ''' '''
+- name: MMPROD
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: MAJOR MEDICAL PRODUCT
+  default: ''' '''
+- name: MCTO
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: MEDICAL LEAVE TO
+- name: MCFROM
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: MEDICAL LEAVE FROM
+- name: MBRTYPE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: MEMBER TYPE
+  default: ''' '''
+- name: MBRNO
+  type: CHAR
+  nullable: false
+  length: 5
+  ccsid: 838
+  description: MEMBER NUMBER
+  default: ''' '''
+- name: JOB_NAME
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: JOB NAME
+  default: ''' '''
+- name: HMOSHRMM
+  type: DECIMAL
+  nullable: false
+  length: 15
+  scale: 2
+  description: HMO SHARE FROM MAJOR MEDICAL
+- name: GRSKCLS
+  type: CHAR
+  nullable: false
+  length: 4
+  ccsid: 838
+  description: GROUP RI RISK CLASS
+  default: ''' '''
+- name: GDEDUCT
+  type: DECIMAL
+  nullable: false
+  length: 10
+  scale: 0
+  description: PER CLAIM DEDUCTIBLE
+- name: GCSTS
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: CLAIM STATUS
+  default: ''' '''
+- name: GCOPRSCD
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: REASON CODE
+  default: ''' '''
+- name: GCOCCNO
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: CLAIMS OCCURANCE NO
+  default: ''' '''
+- name: GCFRPDTE
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: FIRST REPORT DATE
+- name: GCDTHCLM
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: DEATH CLAIM INDICATOR
+  default: ''' '''
+- name: GCDIAGCD
+  type: CHAR
+  nullable: false
+  length: 5
+  ccsid: 838
+  description: DIAGNOSIS CODE
+  default: ''' '''
+- name: GCAUTHBY
+  type: CHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: AUTHORISED BY
+  default: ''' '''
+- name: DTEVISIT
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: DATE OF VISIT
+- name: DTEKNOWN
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: DATE MEDICAL CONDITION FIRST KNOWN
+- name: DTEDCHRG
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: DATE OF DISCHARGE
+- name: DPNTNO
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: DEPENDENT NUMBER
+  default: ''' '''
+- name: DATIME
+  type: VARCHAR
+  nullable: false
+  length: 10
+  ccsid: 838
+  description: TIMESTAMP
+  default: '''1900-01-01-00.00.00.000000'''
+- name: DATEAUTH
+  type: DECIMAL
+  nullable: false
+  length: 8
+  scale: 0
+  description: DATE AUTHORISED
+- name: CRDTCARD
+  type: CHAR
+  nullable: false
+  length: 20
+  ccsid: 838
+  description: CREDIT CARD NUMBER
+  default: ''' '''
+- name: CRATE
+  type: DECIMAL
+  nullable: false
+  length: 18
+  scale: 9
+  description: CURRENCY RATE
+- name: COPAY
+  type: DECIMAL
+  nullable: false
+  length: 3
+  scale: 0
+  description: CO-PAYMENT PERCENT
+- name: CLNTNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CLIENT NUMBER
+  default: ''' '''
+- name: CLNTCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: CLIENT COMPANY
+  default: ''' '''
+- name: CLMCOY
+  type: CHAR
+  nullable: false
+  length: 1
+  ccsid: 838
+  description: CLAIM COMPANY
+  default: ''' '''
+- name: CLAMTYPE
+  type: CHAR
+  nullable: false
+  length: 2
+  ccsid: 838
+  description: CLAIM TYPE
+  default: ''' '''
+- name: CLAMNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CLAIM NUMBER
+  default: ''' '''
+- name: CLAIMCUR
+  type: CHAR
+  nullable: false
+  length: 3
+  ccsid: 838
+  description: CLAIM CURRENCY
+  default: ''' '''
+- name: CHDRNUM
+  type: CHAR
+  nullable: false
+  length: 8
+  ccsid: 838
+  description: CONTRACT NUMBER
+  default: ''' '''
+- name: AREACDE
+  type: CHAR
+  nullable: false
+  length: 5
+  ccsid: 838
+  description: AREA CODE TYPE
+  default: ''' '''
+- name: APAIDAMT
+  type: DECIMAL
+  nullable: false
+  length: 13
+  scale: 2
+  description: ALREADY PAID AMOUNT
+- name: AAD
+  type: DECIMAL
+  nullable: false
+  length: 10
+  scale: 0
+  description: ANNUAL AGGREGATE DEDUCTIBLE
+constraints:
+  primary_key:
+    columns:
+    - CLMCOY
+    - CLAMNUM
+    - GCOCCNO
+    - CLNTNUM
+    - MBRNO
+    - CHDRNUM
+    - DPNTNO
+    - CLNTCOY
+    - GCSTS
+    - CLAIMCUR
+    - CRATE
+    - GCDIAGCD
+    - PROVORG
+journaling:
+  enabled: true

@@ -3,11 +3,20 @@
 Convert Syniti Metadata XML to qadmcli YAML Schema Format
 
 Usage:
-    python convert_syniti_to_qadmcli.py <input_xml> [--output-dir <dir>] [--library <name>]
+    python convert_syniti_to_qadmcli.py <input_xml> [--output-dir <dir>] [--library <name>] [--connection-type <source|target>]
 
-Example:
+Examples:
+    # Convert only source tables (DB2)
     python convert_syniti_to_qadmcli.py schemas/syniti/MetaData_20230608.xml \
-        --output-dir schemas/converted --library GSLIBTST
+        --output-dir schemas/converted --library GSLIBTST --connection-type source
+
+    # Convert only target tables (MSSQL)
+    python convert_syniti_to_qadmcli.py schemas/syniti/MetaData_20230608.xml \
+        --output-dir schemas/mssql --library dbo --connection-type target
+
+    # Convert specific schema from source
+    python convert_syniti_to_qadmcli.py schemas/syniti/MetaData_20230608.xml \
+        --output-dir schemas/cl5dta --library GSLIBTST --connection-type source --schema CL5DTA
 """
 
 import argparse
@@ -49,10 +58,61 @@ SYNITI_TO_DB2_TYPE_MAP = {
 }
 
 
-def parse_syniti_xml(xml_path: str) -> dict[int, dict[str, Any]]:
-    """Parse Syniti metadata XML and extract table/field information."""
+def get_connections(root: ET.Element) -> dict[int, dict[str, Any]]:
+    """Extract connection information from Syniti XML."""
+    connections = {}
+    for conn in root.findall(".//DBMMConnections"):
+        conn_id = int(conn.findtext("ConnectionID", "0"))
+        name = conn.findtext("Name", "")
+        is_source = conn.findtext("IsSource", "N").upper() == "Y"
+        conn_type = conn.findtext("Type", "")
+        connections[conn_id] = {
+            "name": name,
+            "is_source": is_source,
+            "type": conn_type,
+        }
+    return connections
+
+
+def get_schemas(root: ET.Element) -> dict[int, dict[str, Any]]:
+    """Extract schema information from Syniti XML."""
+    schemas = {}
+    for schema in root.findall(".//DBMMSchemas"):
+        schema_id = int(schema.findtext("SchemaID", "0"))
+        conn_id = int(schema.findtext("ConnectionID", "0"))
+        name = schema.findtext("Name", "")
+        schemas[schema_id] = {"name": name, "connection_id": conn_id}
+    return schemas
+
+
+def parse_syniti_xml(
+    xml_path: str,
+    connection_type: str | None = None,
+    schema_filter: str | None = None,
+) -> dict[int, dict[str, Any]]:
+    """Parse Syniti metadata XML and extract table/field information.
+    
+    Args:
+        xml_path: Path to Syniti metadata XML file
+        connection_type: Filter by 'source' or 'target' connection
+        schema_filter: Filter by specific schema name
+    """
     tree = ET.parse(xml_path)
     root = tree.getroot()
+    
+    # Get connection and schema info
+    connections = get_connections(root)
+    schemas = get_schemas(root)
+    
+    # Filter connection IDs based on connection_type
+    filtered_conn_ids = set()
+    for conn_id, conn_info in connections.items():
+        if connection_type is None:
+            filtered_conn_ids.add(conn_id)
+        elif connection_type.lower() == "source" and conn_info["is_source"]:
+            filtered_conn_ids.add(conn_id)
+        elif connection_type.lower() == "target" and not conn_info["is_source"]:
+            filtered_conn_ids.add(conn_id)
     
     # Extract tables
     tables = {}
@@ -60,10 +120,23 @@ def parse_syniti_xml(xml_path: str) -> dict[int, dict[str, Any]]:
         table_id = int(table_elem.findtext("TableID", "0"))
         table_name = table_elem.findtext("Name", "")
         sys_name = table_elem.findtext("SysName", table_name)
+        conn_id = int(table_elem.findtext("ConnectionID", "0"))
+        schema_id = int(table_elem.findtext("SchemaID", "0"))
+        
+        # Skip if not in filtered connections
+        if conn_id not in filtered_conn_ids:
+            continue
+        
+        # Get schema name and filter if specified
+        schema_name = schemas.get(schema_id, {}).get("name", "")
+        if schema_filter and schema_name.upper() != schema_filter.upper():
+            continue
         
         tables[table_id] = {
             "name": table_name.upper(),
             "sys_name": sys_name.upper() if sys_name else table_name.upper(),
+            "schema": schema_name.upper(),
+            "connection_id": conn_id,
             "columns": [],
             "primary_keys": [],
         }
@@ -205,6 +278,20 @@ def main():
         help="Target library name (default: GSLIBTST)"
     )
     parser.add_argument(
+        "--connection-type", "-c",
+        choices=["source", "target"],
+        help="Filter by connection type: 'source' (IsSource=Y) or 'target' (IsSource=N)"
+    )
+    parser.add_argument(
+        "--schema", "-s",
+        help="Filter by specific schema name (e.g., CL5DTA, TCADTA)"
+    )
+    parser.add_argument(
+        "--no-schema-prefix",
+        action="store_true",
+        help="Don't include schema prefix in filename (default: include schema)"
+    )
+    parser.add_argument(
         "--no-journaling",
         action="store_true",
         help="Disable journaling in generated schemas"
@@ -216,9 +303,18 @@ def main():
     
     args = parser.parse_args()
     
-    # Parse Syniti XML
+    # Parse Syniti XML with filters
     print(f"Parsing {args.input_xml}...")
-    tables = parse_syniti_xml(args.input_xml)
+    if args.connection_type:
+        print(f"  Filtering by connection type: {args.connection_type}")
+    if args.schema:
+        print(f"  Filtering by schema: {args.schema}")
+    
+    tables = parse_syniti_xml(
+        args.input_xml,
+        connection_type=args.connection_type,
+        schema_filter=args.schema,
+    )
     print(f"Found {len(tables)} tables")
     
     # Create output directory
@@ -227,6 +323,7 @@ def main():
     
     # Convert tables
     converted_count = 0
+    skipped_count = 0
     for table_id, table_info in tables.items():
         # Skip if specific table requested
         if args.table and table_info["name"].upper() != args.table.upper():
@@ -235,6 +332,7 @@ def main():
         # Skip tables with no columns
         if not table_info["columns"]:
             print(f"Skipping {table_info['name']} - no columns found")
+            skipped_count += 1
             continue
         
         # Convert to qadmcli schema
@@ -244,13 +342,18 @@ def main():
             enable_journaling=not args.no_journaling,
         )
         
-        # Write YAML file
-        output_file = output_dir / f"{table_info['name'].lower()}.yaml"
+        # Build filename with schema prefix to avoid duplicates
+        schema_prefix = f"{table_info['schema'].lower()}_" if table_info.get('schema') and not args.no_schema_prefix else ""
+        filename = f"{schema_prefix}{table_info['name'].lower()}.yaml"
+        output_file = output_dir / filename
+        
         write_yaml_schema(schema, output_file)
         print(f"Created: {output_file}")
         converted_count += 1
     
     print(f"\nConverted {converted_count} tables to {output_dir}")
+    if skipped_count > 0:
+        print(f"Skipped {skipped_count} tables (no columns)")
     print(f"\nExample usage:")
     print(f"  qadmcli table create -s {output_dir}/<table>.yaml --dry-run")
 
