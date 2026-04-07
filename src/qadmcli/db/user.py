@@ -418,9 +418,15 @@ class UserManager:
     def create_user(self, username: str, password: str | None = None) -> dict[str, Any]:
         """Create a new user profile."""
         # Use CRTUSRPRF command via QCMDEXC
-        password_param = f"PASSWORD {password}" if password else ""
+        # Note: Password must be enclosed in quotes if it contains special characters
+        if password:
+            password_param = f"PASSWORD('{password}')"
+        else:
+            password_param = ""
         
         cmd = f"CRTUSRPRF USRPRF({username.upper()}) {password_param} STATUS(*ENABLED)"
+        
+        logger.debug(f"Executing command: CRTUSRPRF USRPRF({username.upper()}) ...")
         
         # Execute via QCMDEXC
         sql = "CALL QSYS2.QCMDEXC(?, ?)"
