@@ -278,15 +278,41 @@ qadmcli journal entries -n CUSTOMERS -l MYLIB --limit 50 --format json
 
 Get detailed journal info:
 ```bash
-# Normal mode (may be slow for large journals)
+# Normal mode (shows entry range - may be slow for large journals)
 qadmcli journal info -n CUSTOMERS -l MYLIB
 
-# Fast mode (skips entry range query)
+# Fast mode (skips entry range query for better performance)
 qadmcli journal info -n CUSTOMERS -l MYLIB --fast
 
 # JSON output
 qadmcli journal info -n CUSTOMERS -l MYLIB --json
 ```
+
+**Example output:**
+```
++------ Detailed Journal Information -------+
+| Table: MYLIB.CUSTOMERS                    |
+|                                           |
+| Journal Status:                           |
+|   Journaled: Yes                          |
+|   Journal: MYLIB.JRN                      |
+|   Receiver: MYLIB.JRNRCV0001              |
+|   Receiver Attached: 2026-03-05 12:03:30  |
+|   Receiver Detached: Still attached       |
+|                                           |
+| Table Entry Range:                        |
+|   Oldest Sequence: 71288177               |
+|   Newest Sequence: 71296431               |
+|   Oldest Time: 2026-03-05 12:03:30.436000 |
+|   Newest Time: 2026-03-05 12:03:30.559808 |
+|   Total Entries: 8252                     |
++-------------------------------------------+
+```
+
+The entry range shows the oldest and newest journal sequences for this specific table, useful for:
+- CDC replication starting points
+- Determining how much change data is available
+- Troubleshooting replication lag
 
 List all journals:
 ```bash
