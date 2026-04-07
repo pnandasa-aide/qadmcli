@@ -462,6 +462,67 @@ class UserManager:
         logger.info(f"Changed password for user {username}")
         return {"user": username.upper(), "password_changed": True}
     
+    def modify_user(
+        self,
+        username: str,
+        user_class: str | None = None,
+        status: str | None = None,
+        group_profile: str | None = None,
+        text_description: str | None = None
+    ) -> dict[str, Any]:
+        """Modify user profile attributes.
+        
+        Args:
+            username: User to modify
+            user_class: User class (*USER, *PGMR, *SYSOPR, *SECADM, *SECOFR)
+            status: User status (*ENABLED or *DISABLED)
+            group_profile: Group profile name or *NONE
+            text_description: Text description (up to 50 characters)
+            
+        Returns:
+            Dictionary with modification results
+        """
+        changes = []
+        params = []
+        
+        # Build the CHGUSRPRF command
+        if user_class:
+            params.append(f"USRCLS({user_class.upper()})")
+            changes.append(f"User class set to {user_class.upper()}")
+        
+        if status:
+            params.append(f"STATUS({status.upper()})")
+            changes.append(f"Status set to {status.upper()}")
+        
+        if group_profile:
+            if group_profile.upper() == "*NONE":
+                params.append("GRPPRF(*NONE)")
+                changes.append("Group profile removed")
+            else:
+                params.append(f"GRPPRF({group_profile.upper()})")
+                changes.append(f"Group profile set to {group_profile.upper()}")
+        
+        if text_description:
+            # Truncate to 50 chars if needed
+            desc = text_description[:50]
+            params.append(f"TEXT('{desc}')")
+            changes.append(f"Description updated")
+        
+        # Build and execute command
+        cmd = f"CHGUSRPRF USRPRF({username.upper()}) {' '.join(params)}"
+        
+        sql = "CALL QSYS2.QCMDEXC(?, ?)"
+        cmd_bytes = cmd.encode('utf-8')
+        cursor = self.conn.execute(sql, (cmd, len(cmd_bytes)))
+        cursor.close()
+        
+        logger.info(f"Modified user {username}: {', '.join(changes)}")
+        return {
+            "user": username.upper(),
+            "modified": True,
+            "changes": changes
+        }
+    
     def grant_object_authority(self, username: str, library: str, object_name: str, authority: str, object_type: str = "*FILE") -> dict[str, Any]:
         """Grant object authority to user.
         

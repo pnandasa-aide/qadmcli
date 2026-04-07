@@ -2398,6 +2398,60 @@ def user_password(
         sys.exit(1)
 
 
+@user.command("modify")
+@click.option("--user", "-u", required=True, help="Username to modify")
+@click.option("--class", "user_class", help="User class (*USER, *PGMR, *SYSOPR, *SECADM, *SECOFR)")
+@click.option("--status", "user_status", type=click.Choice(["*ENABLED", "*DISABLED"]), help="Enable or disable user")
+@click.option("--group", "group_profile", help="Group profile name")
+@click.option("--text", "text_description", help="Text description for user")
+@click.pass_context
+def user_modify(
+    ctx: click.Context,
+    user: str,
+    user_class: str | None,
+    user_status: str | None,
+    group_profile: str | None,
+    text_description: str | None
+) -> None:
+    """Modify user profile attributes."""
+    config_path = ctx.obj["config_path"]
+    
+    # Check that at least one option is provided
+    if not any([user_class, user_status, group_profile, text_description]):
+        console.print("[red]Error: At least one modification option must be provided[/red]")
+        console.print("Use --class, --status, --group, or --text")
+        sys.exit(1)
+    
+    try:
+        config = load_config(config_path)
+        
+        with AS400ConnectionManager(config) as conn:
+            from .db.user import UserManager
+            user_mgr = UserManager(conn)
+            
+            result = user_mgr.modify_user(
+                user,
+                user_class=user_class,
+                status=user_status,
+                group_profile=group_profile,
+                text_description=text_description
+            )
+            
+            console.print(f"[green]User {user} modified successfully[/green]")
+            
+            # Show what was changed
+            if result.get("changes"):
+                for change in result["changes"]:
+                    console.print(f"  • {change}")
+        
+    except ConnectionError as e:
+        console.print(f"[red]Connection error: {e.message}[/red]")
+        sys.exit(1)
+    except Exception as e:
+        console.print(f"[red]Error: {e}[/red]")
+        sys.exit(1)
+
+
 @user.command("permission")
 @click.option("--user", "-u", required=True, help="Username")
 @click.option("--library", "-l", help="Filter by library")
