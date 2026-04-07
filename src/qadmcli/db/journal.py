@@ -376,6 +376,8 @@ class JournalManager:
             pass
         
         # Try with system name first
+        # OBJECT column format: "TABLE_NAME     LIBRARY_NAME    TABLE_NAME     "
+        # It's 30 chars with the table name appearing twice and lots of padding
         sql = """
             SELECT 
                 MIN(SEQUENCE_NUMBER),
@@ -389,16 +391,17 @@ class JournalManager:
                     JOURNAL_NAME => ?
                 )
             )
-            WHERE OBJECT = ?
+            WHERE OBJECT LIKE ?
         """
         try:
-            # OBJECT column contains "TABLE_NAME LIBRARY_NAME" format with trailing spaces
-            object_value = f"{system_name} {info.table_library}"
-            logger.debug(f"Querying table entry range for OBJECT='{object_value}'")
+            # Use LIKE pattern to match the table name anywhere in the OBJECT column
+            # The OBJECT format is: "TABLE_NAME<spaces>LIBRARY_NAME<spaces>TABLE_NAME<spaces>"
+            object_pattern = f"%{system_name}%"
+            logger.debug(f"Querying table entry range for OBJECT LIKE '{object_pattern}'")
             cursor = self.conn.execute(sql, (
                 info.journal_library, 
                 info.journal_name, 
-                object_value
+                object_pattern
             ))
             row = cursor.fetchone()
             cursor.close()
@@ -412,12 +415,12 @@ class JournalManager:
                 logger.debug(f"Found {row[2]} entries for table")
             else:
                 logger.debug("No entries found with system name, trying SQL name")
-                # Try with SQL name - also need "TABLE LIBRARY" format
-                sql_object_value = f"{info.table_name} {info.table_library}"
+                # Try with SQL name
+                sql_object_pattern = f"%{info.table_name}%"
                 cursor = self.conn.execute(sql, (
                     info.journal_library, 
                     info.journal_name, 
-                    sql_object_value
+                    sql_object_pattern
                 ))
                 row = cursor.fetchone()
                 cursor.close()
