@@ -95,7 +95,34 @@ cp .env.example .env
 # Edit .env with your credentials
 ```
 
-### 3. Table Schema Configuration
+### 3. Global CLI Options
+
+The following options can be used with any command:
+
+```bash
+# Border style for panel displays (useful for Windows PowerShell)
+qadmcli --border-style ascii table check -n CUSTOMERS -l MYLIB
+
+# Verbose output
+qadmcli --verbose table list -l MYLIB
+
+# JSON output
+qadmcli --json user check -u USER001
+
+# Custom config file
+qadmcli --config /path/to/connection.yaml table check -n CUSTOMERS -l MYLIB
+```
+
+**Note:** Global options must be placed **before** the subcommand:
+```bash
+# Correct:
+qadmcli --border-style ascii user check -u USER001
+
+# Incorrect:
+qadmcli user check -u USER001 --border-style ascii  # WRONG
+```
+
+### 4. Table Schema Configuration
 
 Create table definitions in YAML or SQL format:
 
@@ -684,6 +711,57 @@ List user permissions:
 qadmcli user permission -u USER001
 qadmcli user permission -u USER001 -l MYLIB
 ```
+
+#### Use Case: Fixing User Permissions
+
+When a user needs access to both tables and journals (required for CDC/replication scenarios):
+
+**Step 1: Check current permissions**
+```bash
+# Check user has table and journal permissions
+qadmcli --border-style ascii user check -u USER001 -l MYLIB
+
+# Output shows:
+# - Table permissions (*FILE)
+# - Journal permissions (*JRN, *JRNRCV)
+```
+
+**Step 2: Grant table permissions (if missing)**
+```bash
+# Grant all authority on all tables
+qadmcli user grant -u USER001 -g "*ALL" -l MYLIB -n "*" -t *FILE
+
+# Or grant specific tables
+qadmcli user grant -u USER001 -g "*CHANGE" -l MYLIB -n "CUST*" -t *FILE
+```
+
+**Step 3: Grant journal permissions (required for CDC)**
+```bash
+# First, find the journal name
+qadmcli journal info -n CUSTOMERS -l MYLIB
+# Output shows: Journal: MYLIB.MYJRN
+
+# Grant authority on the journal
+qadmcli user grant -u USER001 -g "*ALL" -l MYLIB -n MYJRN -t *JRN
+
+# Grant authority on journal receivers (use wildcard for all)
+qadmcli user grant -u USER001 -g "*ALL" -l MYLIB -n "MYJRN*" -t *JRNRCV
+```
+
+**Step 4: Verify permissions**
+```bash
+# Check-table shows consolidated view
+qadmcli user check-table -u USER001 -n CUSTOMERS -l MYLIB
+```
+
+**Common Permission Issues:**
+
+| Issue | Solution |
+|-------|----------|
+| "No journal permissions found" | Grant *JRN and *JRNRCV permissions |
+| "User lacks authority" on journal | Use `user grant` with `-t *JRN` |
+| "Cannot access journal receiver" | Grant `-t *JRNRCV` with wildcard name |
+| Unicode border display issues | Use `--border-style ascii` before subcommand |
 
 ### Mockup Data Commands
 
