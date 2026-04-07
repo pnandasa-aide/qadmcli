@@ -348,6 +348,42 @@ class DataGenerator:
         # Track paired column indices for consistent row selection
         self._paired_indices: dict[str, int] = {}
     
+    def detect_pattern(self, column_name: str, data_type: str,
+                        hint: Optional[str] = None) -> str:
+        """Detect which pattern will be used for a column without generating data.
+        
+        Returns the pattern name that would be used for data generation.
+        """
+        # Check for hint first - it overrides automatic detection
+        if hint:
+            hint_lower = hint.lower().strip()
+            if hint_lower:
+                return f"hint:{hint_lower}"
+        
+        # Find matching pattern
+        for pattern in self.patterns:
+            if pattern.matches(column_name, data_type):
+                return pattern.name
+        
+        # Fallback based on data type
+        return self._fallback_pattern_name(data_type)
+    
+    def _fallback_pattern_name(self, data_type: str) -> str:
+        """Get pattern name for fallback based on data type."""
+        type_upper = data_type.upper()
+        if "CHAR" in type_upper or "GRAPHIC" in type_upper:
+            return "string"
+        elif "INT" in type_upper or "SMALLINT" in type_upper:
+            return "integer"
+        elif "DECIMAL" in type_upper or "NUMERIC" in type_upper or "FLOAT" in type_upper:
+            return "decimal"
+        elif "DATE" in type_upper or "TIME" in type_upper:
+            return "datetime"
+        elif "BLOB" in type_upper or "BINARY" in type_upper:
+            return "binary"
+        else:
+            return "default"
+    
     def generate_for_column(self, column_name: str, data_type: str, 
                            length: Optional[int] = None, 
                            scale: Optional[int] = None,

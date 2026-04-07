@@ -192,20 +192,25 @@ def table_check(ctx: click.Context, name: str, library: str) -> None:
                         border_style="green"
                     ))
                     
-                    # Show columns with PK indicator
+                    # Show columns with PK indicator and mockup pattern
                     if columns:
+                        from .utils.data_generator import DataGenerator
+                        dg = DataGenerator()
+                        
                         col_rows = []
                         for c in columns:
                             pk_indicator = "🔑" if c["name"] in pk_columns else ""
+                            pattern = dg.detect_pattern(c["name"], c["type"], c.get("hint"))
                             col_rows.append([
                                 f"{c['name']} {pk_indicator}".strip(),
                                 c["type"],
                                 str(c["length"]) if c["length"] else "",
-                                "Yes" if c["nullable"] else "No"
+                                "Yes" if c["nullable"] else "No",
+                                pattern
                             ])
                         console.print(print_table(
                             console,
-                            ["Column", "Type", "Length", "Nullable"],
+                            ["Column", "Type", "Length", "Nullable", "Mockup Pattern"],
                             col_rows,
                             title=f"Columns in {library}.{name}"
                         ))
