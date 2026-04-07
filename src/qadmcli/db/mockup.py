@@ -112,6 +112,10 @@ class MockupManager:
     def generate_mock_data(self, table_name: str, library: str,
                           config: MockupConfig) -> dict[str, Any]:
         """Generate mock data for a table."""
+        # Store table info for batch execution
+        self._table_name = table_name
+        self._library = library
+        
         # Validate schema if validation rules are provided
         if self.schema_validation:
             validation_errors = self.validate_schema(table_name, library)
@@ -528,38 +532,41 @@ class MockupManager:
         
         return f"DELETE FROM {library}.{table_name} WHERE {where};"
     
-    def _execute_batch(self, batch: list, operation: str, 
+    def _execute_batch(self, batch: list, operation: str,
                       pk_columns: Optional[list[str]] = None):
         """Execute a batch of operations."""
         if not batch:
             return
-        
+            
+        # Get stored table info
+        table_name = getattr(self, '_table_name', '')
+        library = getattr(self, '_library', '')
+            
         try:
             if operation == "INSERT":
                 for row_data in batch:
-                    sql = self._build_insert_sql("", "", row_data)
-                    # Extract table info from SQL
+                    sql = self._build_insert_sql(table_name, library, row_data)
                     cursor = self.conn.execute(sql.rstrip(';'))
                     cursor.close()
-            
+                
             elif operation == "UPDATE":
                 for item in batch:
-                    row_id = item["id"]
+                    pk_values = item["pk_values"]
                     update_data = item["data"]
                     if update_data:
-                        sql = self._build_update_sql("", "", update_data, pk_columns or [], row_id)
+                        sql = self._build_update_sql(table_name, library, update_data, pk_columns or [], pk_values)
                         cursor = self.conn.execute(sql.rstrip(';'))
                         cursor.close()
-            
+                
             elif operation == "DELETE":
-                for row_id in batch:
-                    sql = self._build_delete_sql("", "", pk_columns or [], row_id)
+                for pk_values in batch:
+                    sql = self._build_delete_sql(table_name, library, pk_columns or [], pk_values)
                     cursor = self.conn.execute(sql.rstrip(';'))
                     cursor.close()
-            
+                
             self.conn.commit()
             logger.debug(f"Executed batch of {len(batch)} {operation} operations")
-        
+            
         except Exception as e:
             logger.error(f"Error executing batch {operation}: {e}")
             raise
