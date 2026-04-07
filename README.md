@@ -371,9 +371,10 @@ Check permissions for a specific table (includes journal permissions):
 qadmcli user check-table -u USER001 -n CUSTOMERS -l MYLIB
 
 # Output shows:
-# - Table permission (*FILE)
+# - Table permission (*FILE) with authority sources
 # - Journal permission (*JRN) - even if in different library
 # - Journal receiver permission (*JRNRCV)
+# - User's special authorities and group profile
 ```
 
 **Example output:**
@@ -382,23 +383,70 @@ qadmcli user check-table -u USER001 -n CUSTOMERS -l MYLIB
 | Checking permissions for USER001 on MYLIB.CUSTOMERS |
 +--------------------------------------------------+
 
-Table
- Object          | Type  | Authority
------------------+-------+-----------
- MYLIB.CUSTOMERS | *FILE | *ALL
+         User Information
+ Attribute           | Value
+---------------------+-------------
+ Special Authorities | *ALLOBJ
 
-Journal
- Object     | Type | Authority
-------------+------+-----------
- MYLIB.JRN  | *JRN | *ALL
+                      Table Permissions
+ Property            | Value
+---------------------+---------------------------------------
+ Object              | MYLIB.CUSTOMERS
+ Type                | *FILE
+ Effective Authority | *ALL
+ Primary Source      | Object Ownership
+ Authority Details   |   - Direct User Grant: *ALL
+                     |   - *PUBLIC: *EXCLUDE
+                     |   - Special Authority (*ALLOBJ): *ALL
+                     |   - Object Ownership: *ALL (Owner)
 
-Journal Receiver
- Object            | Type    | Authority
--------------------+---------+-----------
- MYLIB.JRNRCV0001  | *JRNRCV | *ALL
+                     Journal Permissions
+ Property            | Value
+---------------------+---------------------------------------
+ Object              | MYLIB.JRN
+ Type                | *JRN
+ Effective Authority | *ALL
+ Primary Source      | Direct User Grant
+ Authority Details   |   - Direct User Grant: *ALL
+                     |   - *PUBLIC: *ALL
+                     |   - Special Authority (*ALLOBJ): *ALL
 
 User has full permissions on table and journal objects.
 ```
+
+**Authority Sources Explained:**
+
+The command checks multiple authority sources to determine effective permissions:
+
+| Source | Description |
+|--------|-------------|
+| **Direct User Grant** | Authority explicitly granted to the user via GRTOBJAUT |
+| **Group Profile** | Authority inherited from user's group profile membership |
+| **\*PUBLIC** | Public authority that applies to all users |
+| **Special Authority (\*ALLOBJ)** | All-object special authority grants *ALL on all objects |
+| **Object Ownership** | Object owner automatically has *ALL authority |
+
+**IBM i Authority Levels:**
+
+| Authority | Description | Common Uses |
+|-----------|-------------|-------------|
+| **\*ALL** | Full control - read, add, update, delete, execute, manage | Administrators, object owners |
+| **\*CHANGE** | Read, add, update, delete | Power users, application users |
+| **\*USE** | Read and execute only | Report users, read-only access |
+| **\*EXCLUDE** | No access | Blocked users |
+
+**Authority Hierarchy (highest to lowest):**
+```
+*ALL > *CHANGE > *USE > *EXCLUDE
+```
+
+The effective authority is the highest level from all sources. For example, if:
+- Direct grant: *USE
+- Group profile: *CHANGE
+- *PUBLIC: *EXCLUDE
+- *ALLOBJ special authority: *ALL
+
+Then **Effective Authority = *ALL** (from *ALLOBJ)
 
 This is especially useful for CDC and replication scenarios where you need to verify permissions on all related objects.
 
