@@ -177,7 +177,7 @@ class DatePattern(DataPattern):
             "DATE", "CREATED_DATE", "UPDATED_DATE", "BIRTH_DATE", "DOB",
             "ORDER_DATE", "EFFECTIVE_DATE", "LAST_LOGIN_DATE"
         ]
-        self.data_type_patterns = ["DATE", "TIMESTAMP"]
+        self.data_type_patterns = ["DATE", "TIMESTAMP", "TIMESTMP"]
     
     def generate(self, length: Optional[int] = None, scale: Optional[int] = None) -> datetime:
         # Generate random date within last 2 years
@@ -384,7 +384,7 @@ class DataGenerator:
             return "integer"
         elif "DECIMAL" in type_upper or "NUMERIC" in type_upper or "FLOAT" in type_upper:
             return "decimal"
-        elif "DATE" in type_upper or "TIME" in type_upper:
+        elif "DATE" in type_upper or "TIME" in type_upper or "TIMESTMP" in type_upper:
             return "datetime"
         elif "BLOB" in type_upper or "BINARY" in type_upper:
             return "binary"

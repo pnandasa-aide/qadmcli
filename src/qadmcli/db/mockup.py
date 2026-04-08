@@ -172,6 +172,17 @@ class MockupManager:
         
         # Get row IDs for updates/deletes (now returns list of lists for composite key support)
         row_ids = self._get_random_row_ids(table_name, library, update_count + delete_count)
+        logger.info(f"Retrieved {len(row_ids)} row IDs for updates/deletes (requested {update_count + delete_count})")
+        
+        if len(row_ids) < update_count + delete_count:
+            logger.warning(f"Not enough rows for all updates/deletes. Will process {len(row_ids)} rows instead of {update_count + delete_count}")
+            # Adjust counts proportionally
+            total_needed = update_count + delete_count
+            if len(row_ids) > 0:
+                ratio = len(row_ids) / total_needed
+                update_count = max(1, int(update_count * ratio))
+                delete_count = max(0, len(row_ids) - update_count)
+                logger.info(f"Adjusted counts: {update_count} updates, {delete_count} deletes")
         
         # Generate UPDATE operations
         for i in range(min(update_count, len(row_ids))):
@@ -316,6 +327,8 @@ class MockupManager:
         
         Returns list of lists, where each inner list contains values for all PK columns.
         Supports composite primary keys.
+        
+        Note: IBM i DB2 doesn't support TABLESAMPLE, so we use RAND() instead.
         """
         # Get primary key columns
         pk_columns = self._get_primary_key(table_name, library)
@@ -325,41 +338,66 @@ class MockupManager:
         
         # Build column list for SELECT
         pk_cols_str = ", ".join(pk_columns)
+        
+        # Get table row count to determine appropriate sampling strategy
+        try:
+            count_sql = f"SELECT COUNT(*) FROM {library}.{table_name}"
+            cursor = self.conn.execute(count_sql)
+            total_rows = cursor.fetchone()[0]
+            cursor.close()
+            logger.debug(f"Table {library}.{table_name} has {total_rows} rows")
+        except Exception as e:
+            logger.debug(f"Could not get row count: {e}")
+            total_rows = None
+        
+        # IBM i DB2 doesn't support TABLESAMPLE, use RAND() with ORDER BY instead
+        # Adjust RAND() threshold based on table size to get enough rows
+        if total_rows and total_rows > 0:
+            # Target: get at least count * 2 rows to be safe
+            target_rows = count * 2
+            # RAND() returns 0-1, we want to filter enough rows
+            # If table has 1000 rows and we want 100, we need ~10% sample
+            rand_threshold = min(0.5, max(0.01, target_rows / total_rows))
+            logger.debug(f"Using RAND() with threshold {rand_threshold:.4f}")
+        else:
+            rand_threshold = 0.1  # Default 10% if we don't know table size
             
-        # Use TABLESAMPLE for efficient random sampling on large tables
+        # Method 1: Use RAND() with WHERE clause and ORDER BY RAND()
         sql = f"""
             SELECT {pk_cols_str} FROM {library}.{table_name}
-            TABLESAMPLE SYSTEM(0.01)
-            FETCH FIRST {count * 10} ROWS ONLY
+            WHERE RAND() < {rand_threshold}
+            ORDER BY RAND()
+            FETCH FIRST {count} ROWS ONLY
         """
         try:
             cursor = self.conn.execute(sql)
-            rows = [list(row) for row in cursor.fetchall()]  # Get all PK column values
+            rows = [list(row) for row in cursor.fetchall()]
             cursor.close()
-                
-            # Randomly sample from the results
-            if len(rows) >= count:
-                import random
-                return random.sample(rows, count)
-            elif rows:
-                return rows
-        except Exception as e:
-            logger.debug(f"TABLESAMPLE failed: {e}, trying alternative")
+            logger.debug(f"RAND() WHERE method returned {len(rows)} rows")
             
-        # Alternative: Use RAND() with WHERE clause for better performance
+            if len(rows) >= count:
+                return rows
+            elif rows:
+                logger.warning(f"Only got {len(rows)} rows from RAND(), need {count}")
+                # Continue to fallback
+        except Exception as e:
+            logger.debug(f"RAND() with WHERE failed: {e}, trying alternative")
+            
+        # Method 2: Simple ORDER BY RAND() without WHERE (slower but works)
         try:
             sql = f"""
                 SELECT {pk_cols_str} FROM {library}.{table_name}
-                WHERE RAND() < 0.001
+                ORDER BY RAND()
                 FETCH FIRST {count} ROWS ONLY
             """
             cursor = self.conn.execute(sql)
             rows = [list(row) for row in cursor.fetchall()]
             cursor.close()
+            logger.debug(f"ORDER BY RAND() method returned {len(rows)} rows")
             if rows:
                 return rows
         except Exception as e:
-            logger.debug(f"RAND() with WHERE failed: {e}")
+            logger.debug(f"ORDER BY RAND() failed: {e}")
             
         # For single-column PK: Final fallback using MIN/MAX range
         if len(pk_columns) == 1:
@@ -462,6 +500,8 @@ class MockupManager:
     def _build_insert_sql(self, table_name: str, library: str, 
                          row_data: dict) -> str:
         """Build INSERT SQL statement."""
+        from datetime import datetime, date
+        
         columns = ", ".join(row_data.keys())
         values = []
         
@@ -473,6 +513,14 @@ class MockupManager:
                 values.append(f"'{escaped}'")
             elif isinstance(val, (int, float)):
                 values.append(str(val))
+            elif isinstance(val, datetime):
+                # Format datetime for DB2: 'YYYY-MM-DD HH:MM:SS.microseconds'
+                formatted = val.strftime('%Y-%m-%d %H:%M:%S.%f')
+                values.append(f"'{formatted}'")
+            elif isinstance(val, date):
+                # Format date for DB2: 'YYYY-MM-DD'
+                formatted = val.strftime('%Y-%m-%d')
+                values.append(f"'{formatted}'")
             else:
                 values.append(f"'{str(val)}'")
         
@@ -486,6 +534,8 @@ class MockupManager:
         
         Supports composite primary keys by using all PK columns in WHERE clause.
         """
+        from datetime import datetime, date
+        
         if not update_data:
             return ""
         
@@ -498,6 +548,14 @@ class MockupManager:
                 set_clauses.append(f"{col} = '{escaped}'")
             elif isinstance(val, (int, float)):
                 set_clauses.append(f"{col} = {val}")
+            elif isinstance(val, datetime):
+                # Format datetime for DB2: 'YYYY-MM-DD HH:MM:SS.microseconds'
+                formatted = val.strftime('%Y-%m-%d %H:%M:%S.%f')
+                set_clauses.append(f"{col} = '{formatted}'")
+            elif isinstance(val, date):
+                # Format date for DB2: 'YYYY-MM-DD'
+                formatted = val.strftime('%Y-%m-%d')
+                set_clauses.append(f"{col} = '{formatted}'")
             else:
                 set_clauses.append(f"{col} = '{str(val)}'")
         
@@ -568,6 +626,7 @@ class MockupManager:
                     update_data = item["data"]
                     if update_data:
                         sql = self._build_update_sql(table_name, library, update_data, pk_columns or [], pk_values)
+                        logger.debug(f"UPDATE SQL: {sql}")
                         cursor = self.conn.execute(sql.rstrip(';'))
                         cursor.close()
                 
