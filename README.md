@@ -1422,6 +1422,145 @@ qadmcli sql execute -q "SELECT TABLE_NAME FROM QSYS2.SYSTABLES WHERE TABLE_SCHEM
 qadmcli sql execute -q "SELECT OBJNAME, OBJOWNER FROM TABLE(QSYS2.OBJECT_STATISTICS('QSYS', '*LIB', 'EZPIPE'))"
 ```
 
+### Useful MSSQL Queries
+
+**Check if table has primary key:**
+```bash
+qadmcli sql query -q "SELECT tc.table_name, kc.column_name, tc.constraint_name FROM information_schema.table_constraints tc JOIN information_schema.key_column_usage kc ON tc.constraint_name = kc.constraint_name WHERE tc.constraint_type = 'PRIMARY KEY' AND tc.table_name = 'CUSTOMERS'" --target mssql
+```
+
+**List all tables with primary keys:**
+```bash
+qadmcli sql query -q "SELECT t.TABLE_NAME, c.COLUMN_NAME FROM INFORMATION_SCHEMA.TABLES t LEFT JOIN INFORMATION_SCHEMA.KEY_COLUMN_USAGE c ON t.TABLE_NAME = c.TABLE_NAME AND OBJECTPROPERTY(OBJECT_ID(c.CONSTRAINT_SCHEMA + '.' + c.CONSTRAINT_NAME), 'IsPrimaryKey') = 1 WHERE t.TABLE_SCHEMA = 'dbo' AND t.TABLE_TYPE = 'BASE TABLE' ORDER BY t.TABLE_NAME" --target mssql
+```
+
+**Check if CDC is enabled on database:**
+```bash
+qadmcli sql query -q "SELECT name, is_cdc_enabled FROM sys.databases WHERE name = 'GSTargetDB'" --target mssql
+```
+
+**Check CDC enabled tables:**
+```bash
+qadmcli sql query -q "SELECT name, is_tracked_by_cdc FROM sys.tables WHERE is_tracked_by_cdc = 1" --target mssql
+```
+
+**Check table row counts:**
+```bash
+qadmcli sql query -q "SELECT t.name AS table_name, p.rows AS row_count FROM sys.tables t INNER JOIN sys.partitions p ON t.object_id = p.object_id WHERE p.index_id IN (0, 1) AND t.name = 'CUSTOMERS'" --target mssql
+```
+
+**Check column data types:**
+```bash
+qadmcli sql query -q "SELECT COLUMN_NAME, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH, IS_NULLABLE FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'CUSTOMERS' AND TABLE_SCHEMA = 'dbo'" --target mssql
+```
+
+**Find tables containing a specific column:**
+```bash
+qadmcli sql query -q "SELECT TABLE_NAME, COLUMN_NAME, DATA_TYPE FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%CUST%' AND TABLE_SCHEMA = 'dbo' ORDER BY TABLE_NAME" --target mssql
+```
+
+**Find column by exact name across all tables:**
+```bash
+qadmcli sql query -q "SELECT TABLE_NAME, COLUMN_NAME, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME = 'CUST_ID' AND TABLE_SCHEMA = 'dbo' ORDER BY TABLE_NAME" --target mssql
+```
+
+### MSSQL Change Tracking (CT)
+
+**Check CT status on database and table:**
+```bash
+# Check if Change Tracking is enabled
+qadmcli mssql ct status -t CUSTOMERS -s dbo
+
+# Output shows:
+# - Database CT status
+# - Table CT status
+# - Retention period
+# - Auto cleanup setting
+```
+
+**Query changes using version:**
+```bash
+# Get all changes since version 0
+qadmcli mssql ct changes -t CUSTOMERS -s dbo --since-version 0
+
+# Get changes since specific version
+qadmcli mssql ct changes -t CUSTOMERS -s dbo --since-version 12345
+
+# Limit results
+qadmcli mssql ct changes -t CUSTOMERS -s dbo --since-version 0 --limit 100
+```
+
+**Query changes using timestamp:**
+```bash
+# Get changes since specific timestamp
+qadmcli mssql ct changes -t CUSTOMERS -s dbo --since "2025-04-09 10:00:00"
+
+# Date only (defaults to 00:00:00)
+qadmcli mssql ct changes -t CUSTOMERS -s dbo --since "2025-04-09"
+```
+
+**Output format options:**
+```bash
+# Table format (default)
+qadmcli mssql ct changes -t CUSTOMERS -s dbo --since-version 0
+
+# JSON format
+qadmcli mssql ct changes -t CUSTOMERS -s dbo --since-version 0 --format json
+```
+
+**CT Change Tracking Workflow:**
+```bash
+# 1. Check CT is enabled
+qadmcli mssql ct status -t CUSTOMERS
+
+# 2. Get current version as baseline
+qadmcli mssql ct changes -t CUSTOMERS --since-version 0 --limit 1
+# Note: Current CT Version: 100
+
+# 3. After application changes, query new changes
+qadmcli mssql ct changes -t CUSTOMERS --since-version 100
+
+# 4. Process changes by operation type:
+#    I = Insert (add new records)
+#    U = Update (modify existing records)
+#    D = Delete (remove records)
+```
+
+**Enable/Disable Change Tracking via CLI:**
+
+```bash
+# Enable CT on database (requires ALTER DATABASE permission)
+qadmcli mssql ct enable-db
+qadmcli mssql ct enable-db -r 7 --no-auto-cleanup
+
+# Enable CT with admin credentials
+qadmcli mssql ct enable-db -U sa -P <password>
+
+# Enable CT on table (requires ALTER permission, table must have PK)
+qadmcli mssql ct enable-table -t CUSTOMERS
+qadmcli mssql ct enable-table -t CUSTOMERS -s dbo --no-track-columns
+
+# Enable CT on table with admin credentials
+qadmcli mssql ct enable-table -t CUSTOMERS -U admin -P <password>
+
+# Disable CT on table
+qadmcli mssql ct disable-table -t CUSTOMERS
+
+# Disable CT on database (removes all CT history)
+qadmcli mssql ct disable-db
+```
+
+**Enable Change Tracking via SQL (alternative):**
+```sql
+-- Enable CT on database
+ALTER DATABASE [GSTargetDB] SET CHANGE_TRACKING = ON
+(CHANGE_RETENTION = 2 DAYS, AUTO_CLEANUP = ON);
+
+-- Enable CT on table
+ALTER TABLE [dbo].[CUSTOMERS] ENABLE CHANGE_TRACKING
+WITH (TRACK_COLUMNS_UPDATED = ON);
+```
+
 ## Project Structure
 
 ```
@@ -1434,7 +1573,9 @@ qadmcli/
 │   │   ├── schema.py     # Table operations
 │   │   ├── journal.py    # Journal operations
 │   │   ├── user.py       # User management
-│   │   └── mockup.py     # Mockup data generation
+│   │   ├── mockup.py     # Mockup data generation
+│   │   ├── mssql.py      # MSSQL connection and schema
+│   │   └── mssql_ct.py   # MSSQL Change Tracking
 │   ├── models/           # Data models
 │   │   ├── connection.py
 │   │   ├── table.py
@@ -1447,7 +1588,12 @@ qadmcli/
 │   ├── connection.yaml.example
 │   ├── schema/           # Table schema examples
 │   └── data/             # Sample data files for mockup (CSV)
-├── schemas/              # Mountable schema folder for container
+├── schemas/              # Schema definitions for mockup
+│   └── insurance.yaml    # Insurance tables schema
+├── scripts/              # Helper scripts
+│   ├── mssql_ct_setup.sql    # CT test setup
+│   ├── test_mssql_ct.py      # CT test script
+│   └── mockup_with_fk.py     # FK-aware mockup wrapper
 ├── tests/                # Test suite
 ├── Containerfile         # Container build
 ├── podman-compose.yaml   # Podman compose config
@@ -1459,6 +1605,27 @@ qadmcli/
 - [Insurance Domain Schema](docs/insurance-schema.md) - Complete insurance business schema with customers, products, subscriptions, payments, and claims
 
 ## Changelog
+
+### v0.3.1 (2025-04-09)
+
+#### New Features
+- **MSSQL Change Tracking Support**: New `qadmcli mssql ct` commands for monitoring data changes
+  - `qadmcli mssql ct status` - Check CT enabled status on database and tables
+  - `qadmcli mssql ct changes` - Query CHANGETABLE for INSERT/UPDATE/DELETE operations
+  - `qadmcli mssql ct enable-db` / `disable-db` - Enable/disable CT on database with `-U`/`-P` admin credentials
+  - `qadmcli mssql ct enable-table` / `disable-table` - Enable/disable CT on tables with admin credentials
+  - Supports version-based and timestamp-based change queries
+  - JSON and table output formats
+- **FK-Aware Mockup Wrapper** (`scripts/mockup_with_fk.py`): Generate mock data with valid foreign key references
+  - Schema registry with YAML support
+  - Automatic dependency ordering
+  - SQL-based generation for child tables with FK constraints
+
+#### Improvements
+- **Mockup Generate Options**: Changed `-n` (name) → `-t` (table), `-t` (transactions) → `-n` (number) for clarity
+- **Admin Credential Support**: MSSQL CT commands support `-U` and `-P` options for privilege escalation (similar to AS400 commands)
+- **Smart Credential Routing**: `qadmcli.ps1` automatically detects target database type and only requires relevant credentials (AS400 or MSSQL)
+- **New MSSQL Commands**: Added `mssql test` and `mssql query` for more intuitive MSSQL operations (alternative to `sql query --target mssql`)
 
 ### v0.2.0 (2025-04-09)
 

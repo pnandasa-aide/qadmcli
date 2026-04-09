@@ -605,39 +605,86 @@ class MockupManager:
     
     def _execute_batch(self, batch: list, operation: str,
                       pk_columns: Optional[list[str]] = None):
-        """Execute a batch of operations."""
+        """Execute a batch of operations with enhanced FK error handling."""
         if not batch:
             return
             
         # Get stored table info
         table_name = getattr(self, '_table_name', '')
         library = getattr(self, '_library', '')
+        
+        # Track FK errors
+        fk_errors = []
+        other_errors = []
+        success_count = 0
             
         try:
             if operation == "INSERT":
                 for row_data in batch:
-                    sql = self._build_insert_sql(table_name, library, row_data)
-                    cursor = self.conn.execute(sql.rstrip(';'))
-                    cursor.close()
+                    try:
+                        sql = self._build_insert_sql(table_name, library, row_data)
+                        cursor = self.conn.execute(sql.rstrip(';'))
+                        cursor.close()
+                        success_count += 1
+                    except Exception as row_e:
+                        error_str = str(row_e).upper()
+                        # Check for FK constraint violations
+                        if any(kw in error_str for kw in ['FOREIGN KEY', 'CONSTRAINT', 'PARENT KEY', 'PARENT ROW']):
+                            fk_errors.append(f"FK violation for row {row_data}: {row_e}")
+                            logger.warning(f"FK constraint violation in {library}.{table_name}: {row_e}")
+                        else:
+                            other_errors.append(f"Error for row {row_data}: {row_e}")
+                            raise  # Re-raise non-FK errors
                 
             elif operation == "UPDATE":
                 for item in batch:
                     pk_values = item["pk_values"]
                     update_data = item["data"]
                     if update_data:
-                        sql = self._build_update_sql(table_name, library, update_data, pk_columns or [], pk_values)
-                        logger.debug(f"UPDATE SQL: {sql}")
-                        cursor = self.conn.execute(sql.rstrip(';'))
-                        cursor.close()
+                        try:
+                            sql = self._build_update_sql(table_name, library, update_data, pk_columns or [], pk_values)
+                            logger.debug(f"UPDATE SQL: {sql}")
+                            cursor = self.conn.execute(sql.rstrip(';'))
+                            cursor.close()
+                            success_count += 1
+                        except Exception as row_e:
+                            error_str = str(row_e).upper()
+                            if any(kw in error_str for kw in ['FOREIGN KEY', 'CONSTRAINT', 'PARENT KEY']):
+                                fk_errors.append(f"FK violation for PK {pk_values}: {row_e}")
+                                logger.warning(f"FK constraint violation in {library}.{table_name}: {row_e}")
+                            else:
+                                other_errors.append(f"Error for PK {pk_values}: {row_e}")
+                                raise
                 
             elif operation == "DELETE":
                 for pk_values in batch:
-                    sql = self._build_delete_sql(table_name, library, pk_columns or [], pk_values)
-                    cursor = self.conn.execute(sql.rstrip(';'))
-                    cursor.close()
+                    try:
+                        sql = self._build_delete_sql(table_name, library, pk_columns or [], pk_values)
+                        cursor = self.conn.execute(sql.rstrip(';'))
+                        cursor.close()
+                        success_count += 1
+                    except Exception as row_e:
+                        error_str = str(row_e).upper()
+                        # DELETE often fails due to child records (FK violations)
+                        if any(kw in error_str for kw in ['FOREIGN KEY', 'CONSTRAINT', 'CHILD RECORD', 'REFERENTIAL']):
+                            fk_errors.append(f"FK violation (child records exist) for PK {pk_values}: {row_e}")
+                            logger.warning(f"Cannot delete {library}.{table_name} row {pk_values} - child records exist")
+                        else:
+                            other_errors.append(f"Error for PK {pk_values}: {row_e}")
+                            raise
                 
             self.conn.commit()
-            logger.debug(f"Executed batch of {len(batch)} {operation} operations")
+            
+            # Log summary
+            total = len(batch)
+            failed = len(fk_errors) + len(other_errors)
+            logger.info(f"Batch {operation}: {success_count}/{total} succeeded, {failed} failed ({len(fk_errors)} FK errors)")
+            
+            # Raise exception if there were FK errors (but operation partially succeeded)
+            if fk_errors and success_count == 0:
+                raise Exception(f"All {operation} operations failed due to FK constraints. First error: {fk_errors[0]}")
+            elif fk_errors:
+                logger.warning(f"Partial success: {success_count}/{total} {operation} operations succeeded. {len(fk_errors)} FK constraint violations ignored.")
             
         except Exception as e:
             logger.error(f"Error executing batch {operation}: {e}")

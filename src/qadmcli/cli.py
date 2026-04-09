@@ -3,6 +3,7 @@
 import getpass
 import os
 import sys
+from datetime import datetime
 from pathlib import Path
 from typing import Any, Optional
 
@@ -2749,11 +2750,11 @@ def _load_schema_hints(schema_path: str) -> tuple[dict[str, str], dict[str, Any]
 
 
 @mockup.command("generate")
-@click.option("--name", "-n", required=True, help="Table name (e.g., TB_02)")
+@click.option("--table", "-t", required=True, help="Table name (e.g., TB_02)")
 @click.option("--library", "-l", required=True, help="Library/schema name (e.g., EZPIPE)")
 @click.option("--schema", "-s", help="Schema YAML file for column hints and validation")
 @click.option("--skip-validation", is_flag=True, help="Skip schema validation when using --schema")
-@click.option("--transactions", "-t", default=1000, show_default=True, help="Total number of transactions to generate")
+@click.option("--number", "-n", default=1000, show_default=True, help="Total number of transactions to generate")
 @click.option("--insert-ratio", default=50, show_default=True, help="Percentage of INSERT operations (0-100)")
 @click.option("--update-ratio", default=30, show_default=True, help="Percentage of UPDATE operations (0-100)")
 @click.option("--delete-ratio", default=20, show_default=True, help="Percentage of DELETE operations (0-100)")
@@ -2762,11 +2763,11 @@ def _load_schema_hints(schema_path: str) -> tuple[dict[str, str], dict[str, Any]
 @click.pass_context
 def mockup_generate(
     ctx: click.Context,
-    name: str,
+    table: str,
     library: str,
     schema: Optional[str],
     skip_validation: bool,
-    transactions: int,
+    number: int,
     insert_ratio: int,
     update_ratio: int,
     delete_ratio: int,
@@ -2793,17 +2794,17 @@ def mockup_generate(
     \b
     Examples:
         # Dry run - preview SQL without executing
-        qadmcli mockup generate -n TB_02 -l EZPIPE --dry-run -t 10
+        qadmcli mockup generate -t TB_02 -l EZPIPE --dry-run -n 10
 
         # Generate 1000 transactions with default ratios (50% insert, 30% update, 20% delete)
-        qadmcli mockup generate -n CUSTOMERS -l MYLIB -t 1000
+        qadmcli mockup generate -t CUSTOMERS -l MYLIB -n 1000
 
         # Custom transaction mix - 60% inserts, 30% updates, 10% deletes
-        qadmcli mockup generate -n ORDERS -l MYLIB -t 500 \\
+        qadmcli mockup generate -t ORDERS -l MYLIB -n 500 \\
             --insert-ratio 60 --update-ratio 30 --delete-ratio 10
 
         # Use schema file for custom column hints
-        qadmcli mockup generate -n PRODUCTS -l MYLIB -s config/schema/products.yaml -t 100
+        qadmcli mockup generate -t PRODUCTS -l MYLIB -s config/schema/products.yaml -n 100
 
     \b
     Notes:
@@ -2829,7 +2830,7 @@ def mockup_generate(
             insert_ratio=insert_ratio,
             update_ratio=update_ratio,
             delete_ratio=delete_ratio,
-            total_transactions=transactions,
+            total_transactions=number,
             batch_size=batch_size,
             dry_run=dry_run
         )
@@ -2847,13 +2848,13 @@ def mockup_generate(
         with AS400ConnectionManager(config) as conn:
             mock_mgr = MockupManager(conn, schema_hints, schema_validation)
 
-            console.print(f"[blue]Generating mock data for {library}.{name}...[/blue]")
-            console.print(f"  Transactions: {transactions} (Insert: {insert_ratio}%, Update: {update_ratio}%, Delete: {delete_ratio}%)")
+            console.print(f"[blue]Generating mock data for {library}.{table}...[/blue]")
+            console.print(f"  Transactions: {number} (Insert: {insert_ratio}%, Update: {update_ratio}%, Delete: {delete_ratio}%)")
             console.print(f"  Batch size: {batch_size}")
             if dry_run:
                 console.print(f"  [yellow]Dry run mode - generating SQL only[/yellow]")
 
-            results = mock_mgr.generate_mock_data(name, library, mockup_config)
+            results = mock_mgr.generate_mock_data(table, library, mockup_config)
             
             if dry_run:
                 # Output SQL statements
@@ -3123,6 +3124,606 @@ def sql_query(ctx: click.Context, query: str, target: str, limit: int, offset: i
         finally:
             # Always close connection
             conn_manager.disconnect()
+    
+    except Exception as e:
+        console.print(f"[red]Error: {e}[/red]")
+        sys.exit(1)
+
+
+@cli.group()
+def mssql() -> None:
+    """MSSQL-specific commands."""
+    pass
+
+
+@mssql.command("test")
+@click.pass_context
+def mssql_test(ctx: click.Context) -> None:
+    """Test connection to MSSQL database.
+    
+    Examples:
+        qadmcli mssql test
+    """
+    config_path = ctx.obj["config_path"]
+    output_json = ctx.obj["output_json"]
+    
+    try:
+        config = load_config(config_path)
+        
+        if not config.mssql:
+            console.print("[red]Error: MSSQL configuration not found in connection.yaml[/red]")
+            sys.exit(1)
+        
+        from .db.mssql import MSSQLConnection
+        
+        console.print(f"[dim]Testing connection to MSSQL: {config.mssql.host}:{config.mssql.port}...[/dim]")
+        
+        with MSSQLConnection(config.mssql) as conn:
+            # Get server info
+            with conn.get_cursor() as cursor:
+                cursor.execute("""
+                    SELECT 
+                        @@VERSION as version,
+                        DB_NAME() as database_name,
+                        @@SERVERNAME as server_name,
+                        GETDATE() as server_time
+                """)
+                row = cursor.fetchone()
+                
+                if output_json:
+                    import json
+                    result = {
+                        "host": config.mssql.host,
+                        "port": config.mssql.port,
+                        "database": row[1],
+                        "server": row[2],
+                        "version": row[0].split('\n')[0] if row[0] else None,
+                        "status": "connected"
+                    }
+                    console.print(json.dumps(result, indent=2))
+                else:
+                    # Display in panel
+                    from rich.panel import Panel
+                    
+                    version_short = row[0].split('\n')[0] if row[0] else "Unknown"
+                    
+                    info_lines = [
+                        f"[cyan]Host:[/cyan] {config.mssql.host}:{config.mssql.port}",
+                        f"[cyan]Database:[/cyan] {row[1]}",
+                        f"[cyan]Server:[/cyan] {row[2]}",
+                        f"[cyan]Version:[/cyan] {version_short}",
+                        f"[cyan]Status:[/cyan] [green]Connected[/green]",
+                    ]
+                    
+                    console.print(Panel(
+                        "\n".join(info_lines),
+                        title="[bold green]MSSQL Connection Test[/bold green]",
+                        border_style="green"
+                    ))
+    
+    except Exception as e:
+        if output_json:
+            import json
+            console.print(json.dumps({"status": "error", "error": str(e)}))
+        else:
+            console.print(f"[red]Connection failed: {e}[/red]")
+        sys.exit(1)
+
+
+@mssql.command("query")
+@click.option("--query", "-q", required=True, help="SQL SELECT query to execute")
+@click.option("--limit", "-l", type=int, default=100, help="Maximum rows to return (default: 100)")
+@click.option("--offset", "-o", type=int, default=0, help="Number of rows to skip (default: 0)")
+@click.option("--format", "-f", "output_format", type=click.Choice(["table", "csv", "json"]), default="table", help="Output format")
+@click.pass_context
+def mssql_query(ctx: click.Context, query: str, limit: int, offset: int, output_format: str) -> None:
+    """Execute a SELECT query on MSSQL database.
+    
+    This is a convenience alias for 'sql query --target mssql'.
+    
+    Examples:
+        qadmcli mssql query -q "SELECT * FROM dbo.CUSTOMERS"
+        qadmcli mssql query -q "SELECT * FROM dbo.CUSTOMERS" --limit 10
+        qadmcli mssql query -q "SELECT * FROM dbo.CUSTOMERS" --format json
+    """
+    # Delegate to sql_query with target=mssql
+    ctx.invoke(sql_query, query=query, target="mssql", limit=limit, offset=offset, output_format=output_format)
+
+
+@mssql.group()
+def ct() -> None:
+    """MSSQL Change Tracking commands."""
+    pass
+
+
+@ct.command("status")
+@click.option("--table", "-t", required=True, help="Table name (e.g., CUSTOMERS)")
+@click.option("--schema", "-s", default="dbo", show_default=True, help="Schema name")
+@click.pass_context
+def mssql_ct_status(ctx: click.Context, table: str, schema: str) -> None:
+    """Check if Change Tracking is enabled on database and table.
+    
+    Examples:
+        qadmcli mssql ct status -t CUSTOMERS
+        qadmcli mssql ct status -t CUSTOMERS -s dbo
+    """
+    config_path = ctx.obj["config_path"]
+    
+    try:
+        config = load_config(config_path)
+        
+        if not config.mssql:
+            console.print("[red]Error: MSSQL configuration not found in connection.yaml[/red]")
+            sys.exit(1)
+        
+        from .db.mssql import MSSQLConnection
+        from .db.mssql_ct import MSSQLChangeTracking
+        
+        with MSSQLConnection(config.mssql) as conn:
+            ct = MSSQLChangeTracking(conn)
+            status = ct.get_table_ct_status(table, schema)
+            
+            # Display status
+            console.print(f"[bold]Change Tracking Status for {schema}.{table}[/bold]")
+            console.print(f"  Database: {status.database_name}")
+            console.print(f"  CT Enabled on Database: {'[green]Yes[/green]' if status.is_enabled_on_database else '[red]No[/red]'}")
+            
+            if status.is_enabled_on_database:
+                console.print(f"  CT Enabled on Table: {'[green]Yes[/green]' if status.is_enabled_on_table else '[red]No[/red]'}")
+                console.print(f"  Retention Period: {status.retention_period_days} days" if status.retention_period_days else "  Retention Period: N/A")
+                console.print(f"  Auto Cleanup: {'Yes' if status.auto_cleanup else 'No'}" if status.auto_cleanup is not None else "  Auto Cleanup: N/A")
+            
+            if not status.is_enabled_on_database:
+                console.print("\n[yellow]To enable CT on database:[/yellow]")
+                console.print(f"  ALTER DATABASE [{status.database_name}] SET CHANGE_TRACKING = ON")
+                console.print("  (CHANGE_RETENTION = 2 DAYS, AUTO_CLEANUP = ON)")
+            elif not status.is_enabled_on_table:
+                console.print("\n[yellow]To enable CT on table:[/yellow]")
+                console.print(f"  ALTER TABLE [{schema}].[{table}] ENABLE CHANGE_TRACKING")
+    
+    except Exception as e:
+        console.print(f"[red]Error: {e}[/red]")
+        sys.exit(1)
+
+
+@ct.command("changes")
+@click.option("--table", "-t", required=True, help="Table name (e.g., CUSTOMERS)")
+@click.option("--schema", "-s", default="dbo", show_default=True, help="Schema name")
+@click.option("--since", help="Get changes since timestamp (YYYY-MM-DD HH:MM:SS)")
+@click.option("--since-version", type=int, help="Get changes since specific version")
+@click.option("--limit", "-l", type=int, default=1000, help="Maximum changes to return (default: 1000)")
+@click.option("--format", "-f", "output_format", type=click.Choice(["table", "json"]), default="table", help="Output format")
+@click.pass_context
+def mssql_ct_changes(
+    ctx: click.Context,
+    table: str,
+    schema: str,
+    since: Optional[str],
+    since_version: Optional[int],
+    limit: int,
+    output_format: str
+) -> None:
+    """Get Change Tracking changes for a table.
+    
+    Returns:
+        SYS_CHANGE_VERSION, SYS_CHANGE_OPERATION (I/U/D), Primary Key values,
+        SYS_CHANGE_CONTEXT (if available)
+    
+    Examples:
+        qadmcli mssql ct changes -t CUSTOMERS --since "2025-04-09 10:00:00"
+        qadmcli mssql ct changes -t CUSTOMERS --since-version 12345
+        qadmcli mssql ct changes -t CUSTOMERS --since "2025-04-09" --format json
+    """
+    config_path = ctx.obj["config_path"]
+    output_json = ctx.obj["output_json"]
+    
+    try:
+        config = load_config(config_path)
+        
+        if not config.mssql:
+            console.print("[red]Error: MSSQL configuration not found in connection.yaml[/red]")
+            sys.exit(1)
+        
+        from .db.mssql import MSSQLConnection
+        from .db.mssql_ct import MSSQLChangeTracking
+        
+        # Parse timestamp if provided
+        since_timestamp = None
+        if since:
+            try:
+                since_timestamp = datetime.strptime(since, "%Y-%m-%d %H:%M:%S")
+            except ValueError:
+                try:
+                    since_timestamp = datetime.strptime(since, "%Y-%m-%d")
+                except ValueError:
+                    console.print("[red]Error: Invalid timestamp format. Use YYYY-MM-DD HH:MM:SS or YYYY-MM-DD[/red]")
+                    sys.exit(1)
+        
+        with MSSQLConnection(config.mssql) as conn:
+            ct = MSSQLChangeTracking(conn)
+            
+            # Check CT status first
+            status = ct.get_table_ct_status(table, schema)
+            if not status.is_enabled_on_database:
+                console.print("[red]Error: Change Tracking is not enabled on the database[/red]")
+                sys.exit(1)
+            if not status.is_enabled_on_table:
+                console.print(f"[red]Error: Change Tracking is not enabled on table {schema}.{table}[/red]")
+                sys.exit(1)
+            
+            # Get current and min versions
+            current_version = ct.get_current_version()
+            min_version = ct.get_min_valid_version(table, schema)
+            
+            console.print(f"[dim]Current CT Version: {current_version}, Min Valid Version: {min_version}[/dim]")
+            
+            # Get changes
+            changes = ct.get_changes(
+                table_name=table,
+                schema=schema,
+                since_version=since_version,
+                since_timestamp=since_timestamp
+            )
+            
+            # Limit results
+            if len(changes) > limit:
+                changes = changes[:limit]
+                console.print(f"[yellow]Warning: Limited to {limit} changes (total available: {len(changes)})[/yellow]")
+            
+            if not changes:
+                console.print("[yellow]No changes found[/yellow]")
+                return
+            
+            # Format and display
+            if output_format == "json" or output_json:
+                results = []
+                for change in changes:
+                    result = {
+                        "SYS_CHANGE_VERSION": change.sys_change_version,
+                        "SYS_CHANGE_OPERATION": change.sys_change_operation,
+                        "SYS_CHANGE_COLUMNS": change.sys_change_columns,
+                        "SYS_CHANGE_CONTEXT": change.sys_change_context,
+                        "PRIMARY_KEY_VALUES": change.primary_key_values
+                    }
+                    results.append(result)
+                print_json(console, results)
+            else:
+                # Table output
+                from .utils.formatters import print_table
+                
+                formatted = ct.format_changes_table(changes)
+                if formatted:
+                    columns = list(formatted[0].keys())
+                    rows = [[str(row.get(col, "")) for col in columns] for row in formatted]
+                    
+                    console.print(print_table(
+                        console,
+                        columns,
+                        rows,
+                        title=f"Change Tracking Changes for {schema}.{table} ({len(changes)} rows)"
+                    ))
+                
+                # Summary
+                op_counts = {}
+                for change in changes:
+                    op = change.sys_change_operation
+                    op_counts[op] = op_counts.get(op, 0) + 1
+                
+                summary = ", ".join(f"{op}={count}" for op, count in op_counts.items())
+                console.print(f"[green]Operations: {summary}[/green]")
+    
+    except Exception as e:
+        console.print(f"[red]Error: {e}[/red]")
+        sys.exit(1)
+
+
+@ct.command("enable-db")
+@click.option("--retention", "-r", type=int, default=2, show_default=True, help="Retention period in days")
+@click.option("--auto-cleanup/--no-auto-cleanup", default=True, show_default=True, help="Enable auto cleanup")
+@click.option("--admin-user", "-U", help="SQL Server admin user with ALTER DATABASE permission")
+@click.option("--admin-password", "-P", help="Password for admin user")
+@click.pass_context
+def mssql_ct_enable_db(
+    ctx: click.Context,
+    retention: int,
+    auto_cleanup: bool,
+    admin_user: Optional[str],
+    admin_password: Optional[str]
+) -> None:
+    """Enable Change Tracking on the database.
+    
+    Requires ALTER DATABASE permission (sysadmin or db_owner).
+    
+    Examples:
+        qadmcli mssql ct enable-db
+        qadmcli mssql ct enable-db -r 7 --no-auto-cleanup
+        qadmcli mssql ct enable-db -U sa -P <password>
+    """
+    config_path = ctx.obj["config_path"]
+    
+    try:
+        config = load_config(config_path)
+        
+        if not config.mssql:
+            console.print("[red]Error: MSSQL configuration not found in connection.yaml[/red]")
+            sys.exit(1)
+        
+        from .db.mssql import MSSQLConnection
+        from .db.mssql_ct import MSSQLChangeTracking
+        
+        # Use admin credentials if provided
+        mssql_config = config.mssql
+        if admin_user:
+            from .models.connection import MSSQLConnection as MSSQLConnectionModel
+            mssql_config = MSSQLConnectionModel(
+                host=config.mssql.host,
+                port=config.mssql.port,
+                username=admin_user,
+                password=admin_password or "",
+                database=config.mssql.database
+            )
+        
+        with MSSQLConnection(mssql_config) as conn:
+            ct = MSSQLChangeTracking(conn)
+            
+            # Check current status
+            status = ct.get_database_ct_status()
+            if status["is_enabled"]:
+                console.print(f"[yellow]Change Tracking is already enabled on database '{status['database_name']}'[/yellow]")
+                console.print(f"  Retention Period: {status['retention_period']} {status['retention_period_units']}")
+                console.print(f"  Auto Cleanup: {'Yes' if status['auto_cleanup'] else 'No'}")
+                return
+            
+            # Enable CT
+            console.print(f"[cyan]Enabling Change Tracking on database '{status['database_name']}'...[/cyan]")
+            console.print(f"  Retention: {retention} days")
+            console.print(f"  Auto Cleanup: {'Yes' if auto_cleanup else 'No'}")
+            
+            try:
+                ct.enable_database_ct(retention_days=retention, auto_cleanup=auto_cleanup)
+                console.print(f"[green]Change Tracking enabled successfully![/green]")
+            except Exception as e:
+                error_msg = str(e)
+                if "permission" in error_msg.lower() or "denied" in error_msg.lower():
+                    console.print("[red]Error: Insufficient permissions to enable Change Tracking[/red]")
+                    console.print("[dim]This operation requires ALTER DATABASE permission (sysadmin or db_owner role)[/dim]")
+                    if not admin_user:
+                        console.print("[dim]Tip: Use -U and -P to provide admin credentials[/dim]")
+                raise
+    
+    except Exception as e:
+        console.print(f"[red]Error: {e}[/red]")
+        sys.exit(1)
+
+
+@ct.command("disable-db")
+@click.confirmation_option(prompt="Are you sure you want to disable Change Tracking on the database?")
+@click.option("--admin-user", "-U", help="SQL Server admin user with ALTER DATABASE permission")
+@click.option("--admin-password", "-P", help="Password for admin user")
+@click.pass_context
+def mssql_ct_disable_db(
+    ctx: click.Context,
+    admin_user: Optional[str],
+    admin_password: Optional[str]
+) -> None:
+    """Disable Change Tracking on the database.
+    
+    WARNING: This will remove all CT history. Requires ALTER DATABASE permission.
+    
+    Examples:
+        qadmcli mssql ct disable-db
+        qadmcli mssql ct disable-db -U sa -P <password>
+    """
+    config_path = ctx.obj["config_path"]
+    
+    try:
+        config = load_config(config_path)
+        
+        if not config.mssql:
+            console.print("[red]Error: MSSQL configuration not found in connection.yaml[/red]")
+            sys.exit(1)
+        
+        from .db.mssql import MSSQLConnection
+        from .db.mssql_ct import MSSQLChangeTracking
+        
+        # Use admin credentials if provided
+        mssql_config = config.mssql
+        if admin_user:
+            from .models.connection import MSSQLConnection as MSSQLConnectionModel
+            mssql_config = MSSQLConnectionModel(
+                host=config.mssql.host,
+                port=config.mssql.port,
+                username=admin_user,
+                password=admin_password or "",
+                database=config.mssql.database
+            )
+        
+        with MSSQLConnection(mssql_config) as conn:
+            ct = MSSQLChangeTracking(conn)
+            
+            # Check current status
+            status = ct.get_database_ct_status()
+            if not status["is_enabled"]:
+                console.print(f"[yellow]Change Tracking is already disabled on database '{status['database_name']}'[/yellow]")
+                return
+            
+            # Disable CT
+            console.print(f"[cyan]Disabling Change Tracking on database '{status['database_name']}'...[/cyan]")
+            
+            try:
+                ct.disable_database_ct()
+                console.print(f"[green]Change Tracking disabled successfully![/green]")
+            except Exception as e:
+                error_msg = str(e)
+                if "permission" in error_msg.lower() or "denied" in error_msg.lower():
+                    console.print("[red]Error: Insufficient permissions to disable Change Tracking[/red]")
+                    console.print("[dim]This operation requires ALTER DATABASE permission (sysadmin or db_owner role)[/dim]")
+                    if not admin_user:
+                        console.print("[dim]Tip: Use -U and -P to provide admin credentials[/dim]")
+                raise
+    
+    except Exception as e:
+        console.print(f"[red]Error: {e}[/red]")
+        sys.exit(1)
+
+
+@ct.command("enable-table")
+@click.option("--table", "-t", required=True, help="Table name (e.g., CUSTOMERS)")
+@click.option("--schema", "-s", default="dbo", show_default=True, help="Schema name")
+@click.option("--track-columns/--no-track-columns", default=True, show_default=True, help="Track column changes")
+@click.option("--admin-user", "-U", help="SQL Server admin user with ALTER permission on the table")
+@click.option("--admin-password", "-P", help="Password for admin user")
+@click.pass_context
+def mssql_ct_enable_table(
+    ctx: click.Context,
+    table: str,
+    schema: str,
+    track_columns: bool,
+    admin_user: Optional[str],
+    admin_password: Optional[str]
+) -> None:
+    """Enable Change Tracking on a table.
+    
+    Requires ALTER permission on the table and table must have a primary key.
+    
+    Examples:
+        qadmcli mssql ct enable-table -t CUSTOMERS
+        qadmcli mssql ct enable-table -t CUSTOMERS -s dbo --no-track-columns
+        qadmcli mssql ct enable-table -t CUSTOMERS -U admin -P <password>
+    """
+    config_path = ctx.obj["config_path"]
+    
+    try:
+        config = load_config(config_path)
+        
+        if not config.mssql:
+            console.print("[red]Error: MSSQL configuration not found in connection.yaml[/red]")
+            sys.exit(1)
+        
+        from .db.mssql import MSSQLConnection
+        from .db.mssql_ct import MSSQLChangeTracking
+        
+        # Use admin credentials if provided
+        mssql_config = config.mssql
+        if admin_user:
+            from .models.connection import MSSQLConnection as MSSQLConnectionModel
+            mssql_config = MSSQLConnectionModel(
+                host=config.mssql.host,
+                port=config.mssql.port,
+                username=admin_user,
+                password=admin_password or "",
+                database=config.mssql.database
+            )
+        
+        with MSSQLConnection(mssql_config) as conn:
+            ct = MSSQLChangeTracking(conn)
+            
+            # Check database CT status first
+            db_status = ct.get_database_ct_status()
+            if not db_status["is_enabled"]:
+                console.print(f"[red]Error: Change Tracking is not enabled on the database[/red]")
+                console.print(f"[dim]Run 'qadmcli mssql ct enable-db' first[/dim]")
+                sys.exit(1)
+            
+            # Check current table status
+            status = ct.get_table_ct_status(table, schema)
+            if status.is_enabled_on_table:
+                console.print(f"[yellow]Change Tracking is already enabled on table '{schema}.{table}'[/yellow]")
+                return
+            
+            # Enable CT on table
+            console.print(f"[cyan]Enabling Change Tracking on table '{schema}.{table}'...[/cyan]")
+            console.print(f"  Track Columns: {'Yes' if track_columns else 'No'}")
+            
+            try:
+                ct.enable_table_ct(table, schema, track_columns_updated=track_columns)
+                console.print(f"[green]Change Tracking enabled successfully on '{schema}.{table}'![/green]")
+            except Exception as e:
+                error_msg = str(e)
+                if "primary key" in error_msg.lower():
+                    console.print("[red]Error: Table does not have a primary key[/red]")
+                    console.print("[dim]Change Tracking requires the table to have a primary key[/dim]")
+                elif "permission" in error_msg.lower() or "denied" in error_msg.lower():
+                    console.print("[red]Error: Insufficient permissions to enable Change Tracking on table[/red]")
+                    console.print("[dim]This operation requires ALTER permission on the table[/dim]")
+                    if not admin_user:
+                        console.print("[dim]Tip: Use -U and -P to provide admin credentials[/dim]")
+                raise
+    
+    except Exception as e:
+        console.print(f"[red]Error: {e}[/red]")
+        sys.exit(1)
+
+
+@ct.command("disable-table")
+@click.option("--table", "-t", required=True, help="Table name (e.g., CUSTOMERS)")
+@click.option("--schema", "-s", default="dbo", show_default=True, help="Schema name")
+@click.confirmation_option(prompt="Are you sure you want to disable Change Tracking on this table?")
+@click.option("--admin-user", "-U", help="SQL Server admin user with ALTER permission on the table")
+@click.option("--admin-password", "-P", help="Password for admin user")
+@click.pass_context
+def mssql_ct_disable_table(
+    ctx: click.Context,
+    table: str,
+    schema: str,
+    admin_user: Optional[str],
+    admin_password: Optional[str]
+) -> None:
+    """Disable Change Tracking on a table.
+    
+    Requires ALTER permission on the table.
+    
+    Examples:
+        qadmcli mssql ct disable-table -t CUSTOMERS
+        qadmcli mssql ct disable-table -t CUSTOMERS -U admin -P <password>
+    """
+    config_path = ctx.obj["config_path"]
+    
+    try:
+        config = load_config(config_path)
+        
+        if not config.mssql:
+            console.print("[red]Error: MSSQL configuration not found in connection.yaml[/red]")
+            sys.exit(1)
+        
+        from .db.mssql import MSSQLConnection
+        from .db.mssql_ct import MSSQLChangeTracking
+        
+        # Use admin credentials if provided
+        mssql_config = config.mssql
+        if admin_user:
+            from .models.connection import MSSQLConnection as MSSQLConnectionModel
+            mssql_config = MSSQLConnectionModel(
+                host=config.mssql.host,
+                port=config.mssql.port,
+                username=admin_user,
+                password=admin_password or "",
+                database=config.mssql.database
+            )
+        
+        with MSSQLConnection(mssql_config) as conn:
+            ct = MSSQLChangeTracking(conn)
+            
+            # Check current table status
+            status = ct.get_table_ct_status(table, schema)
+            if not status.is_enabled_on_table:
+                console.print(f"[yellow]Change Tracking is already disabled on table '{schema}.{table}'[/yellow]")
+                return
+            
+            # Disable CT on table
+            console.print(f"[cyan]Disabling Change Tracking on table '{schema}.{table}'...[/cyan]")
+            
+            try:
+                ct.disable_table_ct(table, schema)
+                console.print(f"[green]Change Tracking disabled successfully on '{schema}.{table}'![/green]")
+            except Exception as e:
+                error_msg = str(e)
+                if "permission" in error_msg.lower() or "denied" in error_msg.lower():
+                    console.print("[red]Error: Insufficient permissions to disable Change Tracking on table[/red]")
+                    console.print("[dim]This operation requires ALTER permission on the table[/dim]")
+                    if not admin_user:
+                        console.print("[dim]Tip: Use -U and -P to provide admin credentials[/dim]")
+                raise
     
     except Exception as e:
         console.print(f"[red]Error: {e}[/red]")

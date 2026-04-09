@@ -36,6 +36,10 @@ class MSSQLConnection:
 
     def _build_connection_string(self) -> str:
         """Build ODBC connection string."""
+        return self.build_connection_string()
+    
+    def build_connection_string(self) -> str:
+        """Build ODBC connection string (public method)."""
         # Try ODBC Driver 18 first (newer), fallback to 17
         drivers = ["ODBC Driver 18 for SQL Server", "ODBC Driver 17 for SQL Server"]
         available_drivers = pyodbc.drivers()

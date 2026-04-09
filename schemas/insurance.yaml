@@ -1,0 +1,194 @@
+# Insurance Tables Schema for FK-Aware Mockup Generation
+# This schema defines tables, columns, FK relationships, and generation strategies
+
+library: GSLIBTST
+
+tables:
+  # CUSTOMERS - reference-only table (pre-existing, not generated)
+  # Included so FK references can be resolved
+  - name: CUSTOMERS
+    strategy: reference
+    row_count: 0
+    depends_on: []
+    columns:
+      - name: CUST_ID
+        type: int
+        is_pk: true
+      - name: FIRST_NAME
+        type: string
+        length: 50
+      - name: LAST_NAME
+        type: string
+        length: 50
+      - name: EMAIL
+        type: string
+        length: 100
+
+  # INSURANCE_PRODUCTS - parent table, use qadmcli mockup
+  - name: INSURANCE_PRODUCTS
+    strategy: mockup
+    row_count: 10
+    depends_on: []
+    columns:
+      - name: PRODUCT_ID
+        type: int
+        is_pk: true
+        is_identity: true
+      - name: PRODUCT_CODE
+        type: string
+        length: 20
+        generator: "PROD{random_int(1000, 9999)}"
+      - name: PRODUCT_NAME
+        type: string
+        length: 100
+        generator: "random_choice(['Life Insurance', 'Health Insurance', 'Car Insurance', 'Home Insurance'])"
+      - name: PRODUCT_TYPE
+        type: string
+        length: 20
+        generator: "random_choice(['LIFE', 'HEALTH', 'AUTO', 'PROPERTY'])"
+      - name: BASE_PREMIUM
+        type: decimal
+        generator: "random_decimal(100, 1000, 2)"
+      - name: STATUS
+        type: string
+        length: 10
+        generator: "random_choice(['ACTIVE', 'INACTIVE'])"
+
+  # SUBSCRIPTIONS - child table with FKs, use FK-aware SQL generation
+  - name: SUBSCRIPTIONS
+    strategy: sql_fk
+    row_count: 20
+    depends_on:
+      - INSURANCE_PRODUCTS
+      - CUSTOMERS
+    columns:
+      - name: SUBSCRIPTION_ID
+        type: int
+        is_pk: true
+        is_identity: true
+      - name: CUST_ID
+        type: int
+        fk_ref:
+          table: CUSTOMERS
+          column: CUST_ID
+      - name: PRODUCT_ID
+        type: int
+        fk_ref:
+          table: INSURANCE_PRODUCTS
+          column: PRODUCT_ID
+      - name: START_DATE
+        type: date
+        generator: "today()"
+      - name: END_DATE
+        type: date
+        generator: "today_plus_years(1)"
+      - name: PREMIUM_AMOUNT
+        type: decimal
+        generator: "random_decimal(500, 5000, 2)"
+      - name: STATUS
+        type: string
+        length: 20
+        generator: "random_choice(['ACTIVE', 'PENDING', 'SUSPENDED'])"
+
+  # PAYMENTS - child table with FK
+  - name: PAYMENTS
+    strategy: sql_fk
+    row_count: 50
+    depends_on:
+      - SUBSCRIPTIONS
+    columns:
+      - name: PAYMENT_ID
+        type: int
+        is_pk: true
+        is_identity: true
+      - name: SUBSCRIPTION_ID
+        type: int
+        fk_ref:
+          table: SUBSCRIPTIONS
+          column: SUBSCRIPTION_ID
+      - name: PAYMENT_DATE
+        type: date
+        generator: "today()"
+      - name: AMOUNT
+        type: decimal
+        generator: "random_decimal(100, 1000, 2)"
+      - name: PAYMENT_METHOD
+        type: string
+        length: 20
+        generator: "random_choice(['CASH', 'CREDIT', 'DEBIT', 'BANK_TRANSFER'])"
+      - name: STATUS
+        type: string
+        length: 20
+        generator: "random_choice(['PAID', 'PENDING', 'FAILED'])"
+
+  # CLAIMS - child table with FK
+  - name: CLAIMS
+    strategy: sql_fk
+    row_count: 15
+    depends_on:
+      - SUBSCRIPTIONS
+    columns:
+      - name: CLAIM_ID
+        type: int
+        is_pk: true
+        is_identity: true
+      - name: SUBSCRIPTION_ID
+        type: int
+        fk_ref:
+          table: SUBSCRIPTIONS
+          column: SUBSCRIPTION_ID
+      - name: CLAIM_DATE
+        type: date
+        generator: "today()"
+      - name: CLAIM_AMOUNT
+        type: decimal
+        generator: "random_decimal(1000, 50000, 2)"
+      - name: CLAIM_TYPE
+        type: string
+        length: 30
+        generator: "random_choice(['MEDICAL', 'ACCIDENT', 'PROPERTY_DAMAGE', 'THEFT'])"
+      - name: STATUS
+        type: string
+        length: 20
+        generator: "random_choice(['PENDING', 'APPROVED', 'REJECTED', 'PROCESSING'])"
+      - name: DESCRIPTION
+        type: string
+        length: 500
+        generator: "random_text('Claim description', 1, 9999)"
+
+  # CLAIM_DOCUMENTS - child table with FK
+  - name: CLAIM_DOCUMENTS
+    strategy: sql_fk
+    row_count: 30
+    depends_on:
+      - CLAIMS
+    columns:
+      - name: DOCUMENT_ID
+        type: int
+        is_pk: true
+        is_identity: true
+      - name: CLAIM_ID
+        type: int
+        fk_ref:
+          table: CLAIMS
+          column: CLAIM_ID
+      - name: DOCUMENT_TYPE
+        type: string
+        length: 30
+        generator: "random_choice(['RECEIPT', 'INVOICE', 'REPORT', 'PHOTO', 'CERTIFICATE'])"
+      - name: FILE_PATH
+        type: string
+        length: 255
+        generator: "random_text('/docs/claim_', 1000, 9999, '.pdf')"
+      - name: UPLOAD_DATE
+        type: timestamp
+        generator: "now()"
+
+# Generator functions reference:
+# - today(): Current date
+# - today_plus_years(n): Current date + n years
+# - now(): Current timestamp
+# - random_int(min, max): Random integer
+# - random_decimal(min, max, scale): Random decimal
+# - random_choice([...]): Random selection from list
+# - random_text(prefix, min, max, suffix): Random text with number range
