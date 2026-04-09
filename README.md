@@ -1075,7 +1075,43 @@ TMBGOLD,กองทุนเปิดทีเอ็มบี โกลด์,T
 
 ### SQL Commands
 
-Execute SQL queries directly against the AS400:
+#### SQL Query (SELECT with formatted output)
+
+Execute SELECT queries with formatted output, pagination, and multiple output formats:
+
+```bash
+# AS400/DB2 queries (default)
+qadmcli sql query -q "SELECT * FROM GSLIBTST.CUSTOMERS FETCH FIRST 10 ROWS ONLY"
+qadmcli sql query -q "SELECT COUNT(*) FROM GSLIBTST.CUSTOMERS"
+qadmcli sql query -q "SELECT CUST_ID, FIRST_NAME, EMAIL FROM GSLIBTST.CUSTOMERS WHERE CUST_ID < 200"
+
+# MSSQL queries
+qadmcli sql query -q "SELECT TOP 10 * FROM dbo.CUSTOMERS ORDER BY CREATED_AT DESC" --target mssql
+qadmcli sql query -q "SELECT COUNT(*) FROM dbo.CUSTOMERS" --target mssql
+qadmcli sql query -q "SELECT TOP 10 * FROM dbo.CUSTOMERS WHERE CREATED_AT > DATEADD(minute, -5, GETDATE())" --target mssql
+
+# Output formats
+qadmcli sql query -q "SELECT * FROM GSLIBTST.CUSTOMERS" --format json
+qadmcli sql query -q "SELECT * FROM GSLIBTST.CUSTOMERS" --format csv
+qadmcli sql query -q "SELECT * FROM GSLIBTST.CUSTOMERS" --format table  # default
+
+# Pagination (AS400 uses FETCH FIRST, MSSQL uses TOP)
+qadmcli sql query -q "SELECT * FROM GSLIBTST.CUSTOMERS" --limit 20 --offset 10
+qadmcli sql query -q "SELECT * FROM dbo.CUSTOMERS" --target mssql --limit 50
+
+# ASCII border style for Windows PowerShell
+qadmcli --border-style ascii sql query -q "SELECT * FROM GSLIBTST.CUSTOMERS FETCH FIRST 5 ROWS ONLY"
+```
+
+**Features:**
+- **Multi-database support**: AS400/DB2 (default) and MSSQL (`--target mssql`)
+- **Output formats**: Table (default), JSON, CSV
+- **Pagination**: `--limit` and `--offset` options
+- **SELECT-only**: Only SELECT queries allowed (use `sql execute` for other SQL)
+
+#### SQL Execute (General SQL)
+
+Execute any SQL query directly:
 
 ```bash
 # Execute a simple query
@@ -1101,7 +1137,7 @@ qadmcli sql execute -q "SELECT JOURNAL_NAME, JOURNAL_LIBRARY, JOURNAL_IMAGES FRO
 - Testing SQL before using in applications
 - Exploring database metadata
 
-> **Note:** Use with caution on production systems. The SQL execute command runs with the credentials configured in your connection.yaml.
+> **Note:** Use with caution on production systems. The SQL commands run with the credentials configured in your connection.yaml.
 
 ### Global Options
 
