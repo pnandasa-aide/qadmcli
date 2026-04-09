@@ -16,21 +16,48 @@ class SchemaManager:
     def __init__(self, connection: AS400ConnectionManager):
         self.conn = connection
     
-    def table_exists(self, table_name: str, library: str) -> bool:
-        """Check if table exists in specified library."""
+    def _resolve_table_name(self, table_name: str, library: str) -> str | None:
+        """Resolve SQL name to system name. Returns system name or None if not found."""
+        # First try as system name
         sql = """
-            SELECT COUNT(*) 
+            SELECT SYSTEM_TABLE_NAME 
             FROM QSYS2.SYSTABLES 
-            WHERE SYSTEM_TABLE_NAME = ? 
-            AND SYSTEM_TABLE_SCHEMA = ?
+            WHERE SYSTEM_TABLE_NAME = ? AND SYSTEM_TABLE_SCHEMA = ?
         """
         cursor = self.conn.execute(sql, (table_name.upper(), library.upper()))
         row = cursor.fetchone()
         cursor.close()
-        return row[0] > 0
+        if row:
+            return str(row[0])
+        
+        # Try as SQL name
+        sql = """
+            SELECT SYSTEM_TABLE_NAME 
+            FROM QSYS2.SYSTABLES 
+            WHERE TABLE_NAME = ? AND TABLE_SCHEMA = ?
+        """
+        cursor = self.conn.execute(sql, (table_name.upper(), library.upper()))
+        row = cursor.fetchone()
+        cursor.close()
+        if row:
+            return str(row[0])
+        
+        return None
+    
+    def table_exists(self, table_name: str, library: str) -> bool:
+        """Check if table exists in specified library (accepts SQL or system name)."""
+        return self._resolve_table_name(table_name, library) is not None
     
     def get_table_info(self, table_name: str, library: str) -> TableInfo | None:
-        """Get table information from system catalogs including journal info."""
+        """Get table information from system catalogs including journal info.
+        
+        Accepts either SQL name or system name.
+        """
+        # Resolve table name (SQL name -> system name)
+        system_name = self._resolve_table_name(table_name, library)
+        if not system_name:
+            return None
+        
         # Use OBJECT_STATISTICS for accurate info including journal status
         sql = """
             SELECT 
@@ -43,7 +70,7 @@ class SchemaManager:
             FROM TABLE(QSYS2.OBJECT_STATISTICS(?, 'FILE', ?))
             WHERE OBJTYPE = '*FILE'
         """
-        cursor = self.conn.execute(sql, (library.upper(), table_name.upper()))
+        cursor = self.conn.execute(sql, (library.upper(), system_name))
         row = cursor.fetchone()
         cursor.close()
         
@@ -79,9 +106,13 @@ class SchemaManager:
         )
     
     def get_table_row_count(self, table_name: str, library: str) -> int | None:
-        """Get row count for a table."""
+        """Get row count for a table (accepts SQL or system name)."""
         try:
-            cursor = self.conn.execute(f"SELECT COUNT(*) FROM {library}.{table_name}")
+            # Resolve table name
+            system_name = self._resolve_table_name(table_name, library)
+            if not system_name:
+                return None
+            cursor = self.conn.execute(f"SELECT COUNT(*) FROM {library}.{system_name}")
             row = cursor.fetchone()
             cursor.close()
             return row[0] if row else None
@@ -89,7 +120,12 @@ class SchemaManager:
             return None
     
     def get_columns(self, table_name: str, library: str) -> list[dict[str, Any]]:
-        """Get column information for a table."""
+        """Get column information for a table (accepts SQL or system name)."""
+        # Resolve table name
+        system_name = self._resolve_table_name(table_name, library)
+        if not system_name:
+            return []
+        
         sql = """
             SELECT 
                 c.SYSTEM_COLUMN_NAME,
@@ -106,7 +142,7 @@ class SchemaManager:
             AND c.SYSTEM_TABLE_SCHEMA = ?
             ORDER BY c.ORDINAL_POSITION
         """
-        cursor = self.conn.execute(sql, (table_name.upper(), library.upper()))
+        cursor = self.conn.execute(sql, (system_name, library.upper()))
         columns = []
         for row in cursor.fetchall():
             # Convert Java strings to Python strings
@@ -131,7 +167,12 @@ class SchemaManager:
         return columns
     
     def get_primary_key(self, table_name: str, library: str) -> list[str]:
-        """Get primary key columns for a table."""
+        """Get primary key columns for a table (accepts SQL or system name)."""
+        # Resolve table name
+        system_name = self._resolve_table_name(table_name, library)
+        if not system_name:
+            return []
+        
         sql = """
             SELECT k.COLUMN_NAME
             FROM QSYS2.SYSKEYCST k
@@ -143,7 +184,7 @@ class SchemaManager:
             ORDER BY k.ORDINAL_POSITION
         """
         try:
-            cursor = self.conn.execute(sql, (table_name.upper(), library.upper()))
+            cursor = self.conn.execute(sql, (system_name, library.upper()))
             pk_columns = [str(row[0]) for row in cursor.fetchall()]
             cursor.close()
             return pk_columns

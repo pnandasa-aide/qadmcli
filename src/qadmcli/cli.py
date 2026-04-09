@@ -247,12 +247,16 @@ def table_check(ctx: click.Context, name: str, library: str) -> None:
                     print_json(console, data)
                 else:
                     # Build text parts safely
+                    # Use actual system name from info, not the input name
+                    system_name = info.name if info else name
+                    sql_name = info.sql_name if info else None
+                    
                     parts = [
                         ("Table: ", "bold"), f"{library}.{name}", "\n",
-                        ("System Name: ", "bold"), name, "\n",
+                        ("System Name: ", "bold"), system_name, "\n",
                     ]
-                    if info and info.sql_name and info.sql_name != name:
-                        parts.extend([("SQL Name: ", "bold"), info.sql_name, "\n"])
+                    if sql_name and sql_name != system_name:
+                        parts.extend([("SQL Name: ", "bold"), sql_name, "\n"])
                     parts.extend([
                         ("Exists: ", "bold"), ("Yes", "green"), "\n",
                         ("Row Count: ", "bold"), f"{row_count:,}" if row_count is not None else "N/A", "\n",
@@ -295,10 +299,19 @@ def table_check(ctx: click.Context, name: str, library: str) -> None:
                         from .utils.data_generator import DataGenerator
                         dg = DataGenerator()
                         
+                        # Use ASCII indicators when border style is ASCII
+                        border_style = ctx.obj.get("border_style", "unicode")
+                        if border_style == "ascii":
+                            pk_indicator_char = "[PK]"
+                            identity_indicator_char = "[ID]"
+                        else:
+                            pk_indicator_char = "🔑"
+                            identity_indicator_char = "⚡"
+                        
                         col_rows = []
                         for c in columns:
-                            pk_indicator = "🔑" if c["name"] in pk_columns else ""
-                            identity_indicator = "⚡" if c.get("is_identity") or c.get("is_generated") else ""
+                            pk_indicator = pk_indicator_char if c["name"] in pk_columns else ""
+                            identity_indicator = identity_indicator_char if c.get("is_identity") or c.get("is_generated") else ""
                             pattern = dg.detect_pattern(c["name"], c["type"], c.get("hint"))
                             col_rows.append([
                                 f"{c['name']} {pk_indicator}{identity_indicator}".strip(),
