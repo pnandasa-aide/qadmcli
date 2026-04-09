@@ -47,21 +47,63 @@ if (-not $imageExists) {
     Write-Host "📦 Using existing image: $ImageName" -ForegroundColor Cyan
 }
 
-# Build environment variables
-$envVars = @(
-    "-e", "AS400_USER=$env:AS400_USER",
-    "-e", "AS400_PASSWORD=$env:AS400_PASSWORD",
-    "-e", "MSSQL_USER=$env:MSSQL_USER",
-    "-e", "MSSQL_PASSWORD=$env:MSSQL_PASSWORD"
-)
+# Determine which credentials are needed based on command
+$filteredArgs = $Arguments | Where-Object { $_ -ne '--' }
+
+# Check if this is an MSSQL operation:
+# 1. Explicit --target mssql flag
+# 2. Command starts with 'mssql' (e.g., 'mssql ct status')
+# 3. Command contains 'mssql' anywhere (for subcommands)
+$hasTargetMSSQL = ($filteredArgs -contains '--target' -or $filteredArgs -contains '-t') -and 
+                  ($filteredArgs -contains 'mssql')
+$isMSSQLCommand = $filteredArgs.Count -gt 0 -and ($filteredArgs[0] -eq 'mssql' -or 
+                  ($filteredArgs -join ' ') -match '^mssql\s')
+$targetMSSQL = $hasTargetMSSQL -or $isMSSQLCommand
+
+# Build environment variables based on target
+$envVars = @()
+
+if ($targetMSSQL) {
+    # MSSQL target - require MSSQL credentials
+    if (-not $env:MSSQL_USER -or -not $env:MSSQL_PASSWORD) {
+        Write-Host "⚠️  Warning: MSSQL_USER and/or MSSQL_PASSWORD not set in .env file" -ForegroundColor Yellow
+        Write-Host "   These are required for --target mssql operations" -ForegroundColor Yellow
+    }
+    $envVars += @(
+        "-e", "MSSQL_USER=$env:MSSQL_USER",
+        "-e", "MSSQL_PASSWORD=$env:MSSQL_PASSWORD"
+    )
+    # Also pass AS400 credentials if available (for mixed operations)
+    if ($env:AS400_USER -and $env:AS400_PASSWORD) {
+        $envVars += @(
+            "-e", "AS400_USER=$env:AS400_USER",
+            "-e", "AS400_PASSWORD=$env:AS400_PASSWORD"
+        )
+    }
+} else {
+    # Default/AS400 target - require AS400 credentials
+    if (-not $env:AS400_USER -or -not $env:AS400_PASSWORD) {
+        Write-Host "⚠️  Warning: AS400_USER and/or AS400_PASSWORD not set in .env file" -ForegroundColor Yellow
+        Write-Host "   These are required for AS400 operations (use --target mssql for MSSQL)" -ForegroundColor Yellow
+    }
+    $envVars += @(
+        "-e", "AS400_USER=$env:AS400_USER",
+        "-e", "AS400_PASSWORD=$env:AS400_PASSWORD"
+    )
+    # Also pass MSSQL credentials if available (for mixed operations)
+    if ($env:MSSQL_USER -and $env:MSSQL_PASSWORD) {
+        $envVars += @(
+            "-e", "MSSQL_USER=$env:MSSQL_USER",
+            "-e", "MSSQL_PASSWORD=$env:MSSQL_PASSWORD"
+        )
+    }
+}
 
 # Volume mount (with :Z for SELinux)
 $volumeMount = "-v", "${PSScriptRoot}:/app:Z"
 
 # Run container
-# Filter out the '--' separator if present (used to stop PowerShell from interpreting arguments)
-$filteredArgs = $Arguments | Where-Object { $_ -ne '--' }
-Write-Host "🚀 Running: qadmcli $filteredArgs" -ForegroundColor Cyan
+Write-Host "🚀 Running: qadmcli $($filteredArgs -join ' ')" -ForegroundColor Cyan
 
 # Suppress TTY warning on Windows by redirecting stderr
 $podmanArgs = @("run", "-it", "--rm", "--name", $ContainerName) + $envVars + $volumeMount + @($ImageName) + $filteredArgs
