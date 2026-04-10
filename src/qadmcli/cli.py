@@ -163,14 +163,42 @@ def connection() -> None:
 
 
 @connection.command("test")
+@click.option("-U", "--username", help="Test connection with specific username (admin user)")
+@click.option("-P", "--password", help="Password for the specified username")
 @click.pass_context
-def connection_test(ctx: click.Context) -> None:
-    """Test connection to AS400."""
+def connection_test(ctx: click.Context, username: str | None, password: str | None) -> None:
+    """Test connection to AS400.
+    
+    Examples:
+        qadmcli connection test                  # Test with default user from config
+        qadmcli connection test -U QSECOFR       # Test with admin user (prompts for password)
+        qadmcli connection test -U QSECOFR -P pass  # Test with admin user and password
+    """
     config_path = ctx.obj["config_path"]
     output_json = ctx.obj["output_json"]
     
     try:
         config = load_config(config_path)
+        
+        # Override credentials if provided
+        if username:
+            if not password:
+                import getpass
+                password = getpass.getpass(f"Password for {username}: ")
+            
+            console.print(f"[dim]Testing connection as user: {username}[/dim]")
+            
+            # Create temporary config with override credentials
+            from .models.connection import AS400Connection
+            test_as400 = AS400Connection(
+                host=config.as400.host,
+                user=username,
+                password=password,
+                port=config.as400.port,
+                ssl=config.as400.ssl,
+                database=config.as400.database,
+            )
+            config.as400 = test_as400
         
         with AS400ConnectionManager(config) as conn:
             info = conn.test_connection()
@@ -182,6 +210,7 @@ def connection_test(ctx: click.Context) -> None:
                 ctx,
                 Text.assemble(
                     ("Host: ", "bold"), info["host"], "\n",
+                    ("User: ", "bold"), info.get("user", "N/A"), "\n",
                     ("Status: ", "bold"), ("Connected", "green"), "\n",
                     ("Version: ", "bold"), info["server_info"].get("version", "N/A"),
                 ),
@@ -3156,12 +3185,16 @@ def mssql() -> None:
 
 
 @mssql.command("test")
+@click.option("-U", "--username", help="Test connection with specific username (admin user)")
+@click.option("-P", "--password", help="Password for the specified username")
 @click.pass_context
-def mssql_test(ctx: click.Context) -> None:
+def mssql_test(ctx: click.Context, username: str | None, password: str | None) -> None:
     """Test connection to MSSQL database.
     
     Examples:
-        qadmcli mssql test
+        qadmcli mssql test                         # Test with default user from config
+        qadmcli mssql test -U sa                   # Test with admin user (prompts for password)
+        qadmcli mssql test -U sa -P 'your_password'    # Test with admin user and password
     """
     config_path = ctx.obj["config_path"]
     output_json = ctx.obj["output_json"]
@@ -3174,10 +3207,29 @@ def mssql_test(ctx: click.Context) -> None:
             sys.exit(1)
         
         from .db.mssql import MSSQLConnection
+        from .models.connection import MSSQLConnection as MSSQLConnectionModel
         
-        console.print(f"[dim]Testing connection to MSSQL: {config.mssql.host}:{config.mssql.port}...[/dim]")
+        # Override credentials if provided
+        test_config = config.mssql
+        if username:
+            if not password:
+                import getpass
+                password = getpass.getpass(f"Password for {username}: ")
+            
+            console.print(f"[dim]Testing connection as user: {username}[/dim]")
+            
+            # Create temporary config with override credentials
+            test_config = MSSQLConnectionModel(
+                host=config.mssql.host,
+                port=config.mssql.port,
+                username=username,
+                password=password,
+                database=config.mssql.database,
+            )
         
-        with MSSQLConnection(config.mssql) as conn:
+        console.print(f"[dim]Testing connection to MSSQL: {test_config.host}:{test_config.port}...[/dim]")
+        
+        with MSSQLConnection(test_config) as conn:
             # Get server info
             with conn.get_cursor() as cursor:
                 cursor.execute("""
@@ -3192,8 +3244,9 @@ def mssql_test(ctx: click.Context) -> None:
                 if output_json:
                     import json
                     result = {
-                        "host": config.mssql.host,
-                        "port": config.mssql.port,
+                        "host": test_config.host,
+                        "port": test_config.port,
+                        "user": test_config.username,
                         "database": row[1],
                         "server": row[2],
                         "version": row[0].split('\n')[0] if row[0] else None,
@@ -3207,7 +3260,8 @@ def mssql_test(ctx: click.Context) -> None:
                     version_short = row[0].split('\n')[0] if row[0] else "Unknown"
                     
                     info_lines = [
-                        f"[cyan]Host:[/cyan] {config.mssql.host}:{config.mssql.port}",
+                        f"[cyan]Host:[/cyan] {test_config.host}:{test_config.port}",
+                        f"[cyan]User:[/cyan] {test_config.username}",
                         f"[cyan]Database:[/cyan] {row[1]}",
                         f"[cyan]Server:[/cyan] {row[2]}",
                         f"[cyan]Version:[/cyan] {version_short}",
