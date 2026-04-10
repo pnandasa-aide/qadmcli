@@ -1336,16 +1336,23 @@ def journal_enable(
 @click.option("--name", "-n", required=True, help="Table name")
 @click.option("--library", "-l", required=True, help="Library name")
 @click.option("--limit", default=100, help="Number of entries to retrieve (default: 100)")
-@click.option("--format", "output_format", type=click.Choice(["sql", "json"]), default="sql", help="Output format")
+@click.option("--from-time", help="Filter entries from timestamp (ISO 8601: YYYY-MM-DD or YYYY-MM-DD HH:MM:SS)")
+@click.option("--to-time", help="Filter entries to timestamp (ISO 8601: YYYY-MM-DD or YYYY-MM-DD HH:MM:SS)")
+@click.option("--format", "output_format", type=click.Choice(["sql", "json", "summary"]), default="sql", help="Output format")
 @click.pass_context
 def journal_entries(
     ctx: click.Context,
     name: str,
     library: str,
     limit: int,
+    from_time: str | None,
+    to_time: str | None,
     output_format: str
 ) -> None:
-    """Get journal entries for a table."""
+    """Get journal entries for a table.
+    
+    Use --format summary to get operation counts (useful for comparison with MSSQL CT).
+    """
     config_path = ctx.obj["config_path"]
     
     try:
@@ -1353,29 +1360,41 @@ def journal_entries(
         
         with AS400ConnectionManager(config) as conn:
             jrn = JournalManager(conn)
-            entries = jrn.get_journal_entries(name, library, limit=limit)
             
-            if output_format == "json":
-                data = [e.model_dump() for e in entries]
-                print_json(console, data)
+            if output_format == "summary":
+                # Get summary only
+                summary = jrn.get_journal_summary(name, library, from_time, to_time)
+                print_json(console, summary)
             else:
-                # SQL format
-                if not entries:
-                    console.print("[yellow]No journal entries found for this table.[/yellow]")
+                # Get full entries
+                entries = jrn.get_journal_entries(
+                    name, library, 
+                    limit=limit,
+                    from_time=from_time,
+                    to_time=to_time
+                )
+                
+                if output_format == "json":
+                    data = [e.model_dump() for e in entries]
+                    print_json(console, data)
                 else:
-                    for entry in entries:
-                        sql = entry.to_sql()
-                        if sql:
-                            console.print(f"-- Entry {entry.entry_number} ({entry.operation}) at {entry.entry_timestamp}")
-                            console.print(f"{sql}\n")
-                        else:
-                            # Show entry info even if SQL can't be generated
-                            console.print(f"-- Entry {entry.entry_number} ({entry.entry_type or 'Unknown'}) at {entry.entry_timestamp}")
-                            console.print(f"-- Job: {entry.job_name}, User: {entry.job_user}, Program: {entry.program_name}")
-                            if entry.raw_entry_data:
-                                console.print(f"-- Raw data: {entry.raw_entry_data[:100]}...\n")
+                    # SQL format
+                    if not entries:
+                        console.print("[yellow]No journal entries found for this table.[/yellow]")
+                    else:
+                        for entry in entries:
+                            sql = entry.to_sql()
+                            if sql:
+                                console.print(f"-- Entry {entry.entry_number} ({entry.operation}) at {entry.entry_timestamp}")
+                                console.print(f"{sql}\n")
                             else:
-                                console.print("-- No data available\n")
+                                # Show entry info even if SQL can't be generated
+                                console.print(f"-- Entry {entry.entry_number} ({entry.entry_type or 'Unknown'}) at {entry.entry_timestamp}")
+                                console.print(f"-- Job: {entry.job_name}, User: {entry.job_user}, Program: {entry.program_name}")
+                                if entry.raw_entry_data:
+                                    console.print(f"-- Raw data: {entry.raw_entry_data[:100]}...\n")
+                                else:
+                                    console.print("-- No data available\n")
         
     except ConnectionError as e:
         console.print(f"[red]Connection error: {e.message}[/red]")
@@ -3292,7 +3311,7 @@ def mssql_ct_status(ctx: click.Context, table: str, schema: str) -> None:
 @click.option("--since", help="Get changes since timestamp (YYYY-MM-DD HH:MM:SS)")
 @click.option("--since-version", type=int, help="Get changes since specific version")
 @click.option("--limit", "-l", type=int, default=1000, help="Maximum changes to return (default: 1000)")
-@click.option("--format", "-f", "output_format", type=click.Choice(["table", "json"]), default="table", help="Output format")
+@click.option("--format", "-f", "output_format", type=click.Choice(["table", "json", "summary"]), default="table", help="Output format")
 @click.pass_context
 def mssql_ct_changes(
     ctx: click.Context,
@@ -3309,10 +3328,13 @@ def mssql_ct_changes(
         SYS_CHANGE_VERSION, SYS_CHANGE_OPERATION (I/U/D), Primary Key values,
         SYS_CHANGE_CONTEXT (if available)
     
+    Use --format summary for operation counts only (useful for comparison with AS400 journal).
+    
     Examples:
         qadmcli mssql ct changes -t CUSTOMERS --since "2025-04-09 10:00:00"
         qadmcli mssql ct changes -t CUSTOMERS --since-version 12345
-        qadmcli mssql ct changes -t CUSTOMERS --since "2025-04-09" --format json
+        qadmcli mssql ct changes -t CUSTOMERS --since "2025-04-09" --format summary
+        qadmcli mssql ct changes -t CUSTOMERS --format json
     """
     config_path = ctx.obj["config_path"]
     output_json = ctx.obj["output_json"]
@@ -3371,11 +3393,53 @@ def mssql_ct_changes(
                 console.print(f"[yellow]Warning: Limited to {limit} changes (total available: {len(changes)})[/yellow]")
             
             if not changes:
-                console.print("[yellow]No changes found[/yellow]")
+                if output_format == "summary":
+                    # Return empty summary
+                    summary = {
+                        "table": f"{schema}.{table}",
+                        "since": since,
+                        "since_version": since_version,
+                        "current_version": current_version,
+                        "total": 0,
+                        "inserts": 0,
+                        "updates": 0,
+                        "deletes": 0,
+                        "changes": []
+                    }
+                    print_json(console, summary)
+                else:
+                    console.print("[yellow]No changes found[/yellow]")
                 return
             
             # Format and display
-            if output_format == "json" or output_json:
+            if output_format == "summary":
+                # Summary only - for comparison with journal
+                op_counts = {"I": 0, "U": 0, "D": 0}
+                for change in changes:
+                    op = change.sys_change_operation
+                    if op in op_counts:
+                        op_counts[op] += 1
+                
+                summary = {
+                    "table": f"{schema}.{table}",
+                    "since": since,
+                    "since_version": since_version,
+                    "current_version": current_version,
+                    "total": len(changes),
+                    "inserts": op_counts["I"],
+                    "updates": op_counts["U"],
+                    "deletes": op_counts["D"],
+                    "changes": [
+                        {
+                            "version": c.sys_change_version,
+                            "operation": c.sys_change_operation,
+                            "pk": c.primary_key_values
+                        }
+                        for c in changes
+                    ]
+                }
+                print_json(console, summary)
+            elif output_format == "json" or output_json:
                 results = []
                 for change in changes:
                     result = {
