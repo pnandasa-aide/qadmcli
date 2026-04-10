@@ -3245,9 +3245,9 @@ def mssql_test(ctx: click.Context, username: str | None, password: str | None) -
     """Test connection to MSSQL database.
     
     Examples:
-        qadmcli mssql test                         # Test with default user from config
-        qadmcli mssql test -U sa                   # Test with admin user (prompts for password)
-        qadmcli mssql test -U sa -P 'your_password'    # Test with admin user and password
+        qadmcli mssql test                          # Test with default user from config
+        qadmcli mssql test -U sa                    # Test with admin user (prompts for password)
+        qadmcli mssql test -U sa -P 'your_password' # Test with admin user and password
     """
     config_path = ctx.obj["config_path"]
     output_json = ctx.obj["output_json"]
