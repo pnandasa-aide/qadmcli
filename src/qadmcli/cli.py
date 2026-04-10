@@ -3356,6 +3356,25 @@ def mssql_query(ctx: click.Context, query: str, limit: int, offset: int, output_
     ctx.invoke(sql_query, query=query, target="mssql", limit=limit, offset=offset, output_format=output_format)
 
 
+@mssql.command("execute")
+@click.option("--query", "-q", required=True, help="SQL query to execute (DDL/DML)")
+@click.pass_context
+def mssql_execute(ctx: click.Context, query: str) -> None:
+    """Execute a SQL query on MSSQL database (DDL/DML).
+    
+    Use this for CREATE, ALTER, DROP, INSERT, UPDATE, DELETE operations.
+    For SELECT queries, use 'mssql query' instead.
+    
+    Examples:
+        qadmcli mssql execute -q "CREATE TABLE dbo.TEST (ID INT)"
+        qadmcli mssql execute -q "INSERT INTO dbo.CUSTOMERS VALUES (1, 'John')"
+        qadmcli mssql execute -q "UPDATE dbo.CUSTOMERS SET STATUS='ACTIVE'"
+        qadmcli mssql execute -q "DROP TABLE dbo.TEST"
+    """
+    # Delegate to sql_execute with target=mssql
+    ctx.invoke(sql_execute, query=query, target="mssql")
+
+
 @mssql.group()
 def ct() -> None:
     """MSSQL Change Tracking commands."""
