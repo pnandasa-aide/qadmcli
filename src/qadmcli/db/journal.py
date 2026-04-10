@@ -649,8 +649,20 @@ class JournalManager:
         limit: int = 100,
         entry_type: str | None = None,
         starting_sequence: int | None = None,
+        from_time: str | None = None,
+        to_time: str | None = None,
     ) -> list[JournalEntry]:
-        """Get journal entries for a table."""
+        """Get journal entries for a table.
+        
+        Args:
+            table_name: Name of the table
+            library: Library containing the table
+            limit: Maximum number of entries to return
+            entry_type: Filter by entry type (PT=INSERT, UP=UPDATE, DL=DELETE)
+            starting_sequence: Starting sequence number
+            from_time: Filter entries from this timestamp (ISO 8601: YYYY-MM-DD or YYYY-MM-DD HH:MM:SS)
+            to_time: Filter entries to this timestamp (ISO 8601: YYYY-MM-DD or YYYY-MM-DD HH:MM:SS)
+        """
         # First get journal info
         info = self.get_journal_info(table_name, library)
         
@@ -715,6 +727,14 @@ class JournalManager:
             sql += " AND SEQUENCE_NUMBER >= ?"
             params.append(starting_sequence)
         
+        if from_time:
+            sql += " AND ENTRY_TIMESTAMP >= ?"
+            params.append(from_time)
+        
+        if to_time:
+            sql += " AND ENTRY_TIMESTAMP <= ?"
+            params.append(to_time)
+        
         sql += " ORDER BY SEQUENCE_NUMBER DESC FETCH FIRST ? ROWS ONLY"
         params.append(limit)
         
@@ -778,6 +798,116 @@ class JournalManager:
         cursor.close()
         logger.debug(f"Found {len(entries)} journal entries")
         return entries
+    
+    def get_journal_summary(
+        self,
+        table_name: str,
+        library: str,
+        from_time: str | None = None,
+        to_time: str | None = None,
+    ) -> dict:
+        """Get summary of journal entries by operation type.
+        
+        Args:
+            table_name: Name of the table
+            library: Library containing the table
+            from_time: Filter entries from this timestamp
+            to_time: Filter entries to this timestamp
+            
+        Returns:
+            Dictionary with operation counts: {total, inserts, updates, deletes, entries}
+        """
+        info = self.get_journal_info(table_name, library, skip_entry_range=True)
+        
+        if not info.is_journaled:
+            raise ValueError(f"Table {library}.{table_name} is not journaled")
+        
+        # Get system name
+        system_name = table_name.upper()
+        try:
+            cursor = self.conn.execute(
+                "SELECT SYSTEM_TABLE_NAME FROM QSYS2.SYSTABLES WHERE TABLE_NAME = ? AND TABLE_SCHEMA = ?",
+                (table_name.upper(), library.upper())
+            )
+            row = cursor.fetchone()
+            cursor.close()
+            if row and row[0]:
+                system_name = str(row[0]).strip().upper()
+        except Exception:
+            pass
+        
+        # Build summary query
+        sql = """
+            SELECT 
+                JOURNAL_CODE,
+                COUNT(*) as count
+            FROM TABLE (
+                QSYS2.DISPLAY_JOURNAL(
+                    JOURNAL_LIBRARY => ?,
+                    JOURNAL_NAME => ?,
+                    JOURNAL_ENTRY_TYPES => '*ALL'
+                )
+            )
+            WHERE OBJECT = ?
+        """
+        
+        object_value = f"{system_name} {library.upper()}"
+        params = [info.journal_library, info.journal_name, object_value]
+        
+        if from_time:
+            sql += " AND ENTRY_TIMESTAMP >= ?"
+            params.append(from_time)
+        
+        if to_time:
+            sql += " AND ENTRY_TIMESTAMP <= ?"
+            params.append(to_time)
+        
+        sql += " GROUP BY JOURNAL_CODE ORDER BY JOURNAL_CODE"
+        
+        cursor = self.conn.execute(sql, tuple(params))
+        
+        summary = {
+            'table': f"{library.upper()}.{table_name.upper()}",
+            'from_time': from_time,
+            'to_time': to_time,
+            'total': 0,
+            'inserts': 0,
+            'updates': 0,
+            'deletes': 0,
+            'commits': 0,
+            'other': 0,
+            'entries': []
+        }
+        
+        for row in cursor.fetchall():
+            code = str(row[0]).strip() if row[0] else '?'
+            count = int(row[1]) if row[1] else 0
+            
+            entry_info = {'code': code, 'count': count}
+            
+            # Map journal codes to operations
+            if code == 'PT':  # Put/Insert
+                summary['inserts'] = count
+                entry_info['operation'] = 'INSERT'
+            elif code == 'UP':  # Update (actually 'DL' with before/after images)
+                summary['updates'] = count
+                entry_info['operation'] = 'UPDATE'
+            elif code == 'DL':  # Delete
+                summary['deletes'] = count
+                entry_info['operation'] = 'DELETE'
+            elif code in ('CG', 'JF'):  # Commit/Journal File
+                summary['commits'] += count
+                entry_info['operation'] = 'COMMIT'
+            else:
+                summary['other'] += count
+                entry_info['operation'] = 'OTHER'
+            
+            summary['entries'].append(entry_info)
+            summary['total'] += count
+        
+        cursor.close()
+        
+        return summary
     
     def _parse_entry_data(self, entry: JournalEntry) -> None:
         """Parse journal entry data into before/after images."""
