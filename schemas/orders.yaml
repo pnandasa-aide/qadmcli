@@ -1,0 +1,124 @@
+# ORDERS Table Schema - Composite Primary Key Test
+# Source: AS400 GSLIBTST.ORDERS
+# Target: MSSQL dbo.orders
+# 
+# This schema tests:
+# 1. Composite primary key (ORDER_ID + CUST_ID)
+# 2. Non-null non-PK column (PRODUCT_ID)
+# 3. Regular nullable columns
+
+source:
+  library: "GSLIBTST"
+  table: "ORDERS"
+  
+target:
+  schema: "dbo"
+  table: "orders"
+
+columns:
+  - name: "ORDER_ID"
+    source_type: "INTEGER"
+    target_type: "int"
+    nullable: false
+    is_primary_key: true
+    description: "Order identifier (part of composite PK)"
+    
+  - name: "CUST_ID"
+    source_type: "INTEGER"
+    target_type: "int"
+    nullable: false
+    is_primary_key: true
+    description: "Customer identifier (part of composite PK)"
+    
+  - name: "PRODUCT_ID"
+    source_type: "INTEGER"
+    target_type: "int"
+    nullable: false
+    is_primary_key: false
+    description: "Product identifier (NOT NULL but NOT part of PK)"
+    
+  - name: "ORDER_DATE"
+    source_type: "DATE"
+    target_type: "date"
+    nullable: false
+    is_primary_key: false
+    description: "Date when order was placed"
+    
+  - name: "QUANTITY"
+    source_type: "INTEGER"
+    target_type: "int"
+    nullable: false
+    is_primary_key: false
+    description: "Order quantity"
+    
+  - name: "UNIT_PRICE"
+    source_type: "DECIMAL"
+    target_type: "decimal(10,2)"
+    nullable: false
+    is_primary_key: false
+    description: "Price per unit"
+    
+  - name: "TOTAL_AMOUNT"
+    source_type: "DECIMAL"
+    target_type: "decimal(12,2)"
+    nullable: true
+    is_primary_key: false
+    description: "Total order amount (QUANTITY * UNIT_PRICE)"
+    
+  - name: "STATUS"
+    source_type: "CHARACTER"
+    target_type: "char(1)"
+    nullable: false
+    is_primary_key: false
+    description: "Order status (P=Pending, C=Completed, X=Cancelled)"
+    
+  - name: "SHIP_DATE"
+    source_type: "DATE"
+    target_type: "date"
+    nullable: true
+    is_primary_key: false
+    description: "Date when order was shipped"
+    
+  - name: "NOTES"
+    source_type: "CHARACTER VARYING"
+    target_type: "varchar(500)"
+    nullable: true
+    is_primary_key: false
+    description: "Additional order notes"
+
+primary_key:
+  columns:
+    - "ORDER_ID"
+    - "CUST_ID"
+  constraint_name: "PK_ORDERS"
+
+indexes:
+  - name: "IDX_ORDERS_PRODUCT"
+    columns:
+      - "PRODUCT_ID"
+    unique: false
+    description: "Index on PRODUCT_ID for fast product lookup"
+    
+  - name: "IDX_ORDERS_DATE"
+    columns:
+      - "ORDER_DATE"
+    unique: false
+    description: "Index on ORDER_DATE for date range queries"
+
+create_statement: |
+  CREATE TABLE [dbo].[orders] (
+     [ORDER_ID] int NOT NULL,
+     [CUST_ID] int NOT NULL,
+     [PRODUCT_ID] int NOT NULL,
+     [ORDER_DATE] date NOT NULL,
+     [QUANTITY] int NOT NULL,
+     [UNIT_PRICE] decimal(10,2) NOT NULL,
+     [TOTAL_AMOUNT] decimal(12,2) NULL,
+     [STATUS] char(1) NOT NULL,
+     [SHIP_DATE] date NULL,
+     [NOTES] varchar(500) NULL,
+     CONSTRAINT [PK_ORDERS] PRIMARY KEY ([ORDER_ID], [CUST_ID])
+  );
+  
+  CREATE INDEX [IDX_ORDERS_PRODUCT] ON [dbo].[orders] ([PRODUCT_ID]);
+  CREATE INDEX [IDX_ORDERS_DATE] ON [dbo].[orders] ([ORDER_DATE]);
