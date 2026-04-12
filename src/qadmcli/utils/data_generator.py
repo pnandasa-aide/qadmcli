@@ -197,12 +197,28 @@ class AmountPattern(DataPattern):
         self.data_type_patterns = ["DECIMAL", "NUMERIC"]
     
     def generate(self, length: Optional[int] = None, scale: Optional[int] = None):
-        # Generate reasonable amounts
-        # Cap max value to avoid overflow issues with DECIMAL columns
-        max_digits = min(length or 10, 12)  # Cap at 12 digits for safety
-        max_val = 10 ** max_digits
-        min_val = 10
-        value = random.uniform(min_val, max_val)
+        # Generate reasonable amounts respecting DECIMAL precision
+        # length = total digits, scale = decimal places
+        
+        if length and scale is not None:
+            # Calculate max integer part based on precision
+            max_int_digits = length - scale
+            if max_int_digits > 0:
+                max_int_val = (10 ** max_int_digits) - 1
+                min_val = 1
+                int_part = random.randint(min_val, max(1, max_int_val))
+                dec_part = random.randint(0, (10 ** scale) - 1)
+                value = int_part + (dec_part / (10 ** scale))
+            else:
+                # No integer digits, just decimal part (0.xxx)
+                dec_part = random.randint(0, (10 ** scale) - 1)
+                value = dec_part / (10 ** scale)
+        else:
+            # Fallback: generate reasonable amounts
+            max_digits = min(length or 10, 12)  # Cap at 12 digits for safety
+            max_val = 10 ** max_digits
+            min_val = 10
+            value = random.uniform(min_val, max_val)
         
         # Use provided scale or default to 2 decimal places
         decimal_places = scale if scale is not None else 2
@@ -624,11 +640,25 @@ class DataGenerator:
         """Generate fallback data based on data type."""
         dtype = data_type.upper()
         
-        if dtype in ("INTEGER", "BIGINT", "SMALLINT"):
+        if dtype == "SMALLINT":
+            # SMALLINT range: -32,768 to 32,767
+            return random.randint(1, 32767)
+        
+        elif dtype in ("INTEGER", "BIGINT"):
             return random.randint(1, 1000000)
         
         elif dtype in ("DECIMAL", "NUMERIC"):
-            return round(random.uniform(1, 100000), scale or 2)
+            # Respect precision and scale constraints
+            # length = total digits, scale = decimal places
+            if length and scale is not None:
+                max_int_digits = length - scale
+                max_val = (10 ** max_int_digits) - 1
+                min_val = 1
+                int_part = random.randint(min_val, max(1, max_val))
+                dec_part = random.randint(0, (10 ** scale) - 1)
+                return round(int_part + (dec_part / (10 ** scale)), scale)
+            else:
+                return round(random.uniform(1, 100000), scale or 2)
         
         elif dtype == "DATE":
             return datetime.now() - timedelta(days=random.randint(0, 365))
@@ -640,8 +670,13 @@ class DataGenerator:
             return datetime.now() - timedelta(days=random.randint(0, 365))
         
         elif dtype in ("CHAR", "VARCHAR"):
-            max_len = min(length or 20, 100)
-            return ''.join(random.choices(string.ascii_letters, k=random.randint(1, max_len)))
+            # Respect length constraint strictly
+            max_len = length or 20
+            if max_len > 0:
+                min_len = min(1, max_len)  # Ensure min_len <= max_len
+                return ''.join(random.choices(string.ascii_letters, k=random.randint(min_len, max_len)))
+            else:
+                return ""  # Zero-length string if length is 0
         
         elif dtype in ("BINARY", "VARBINARY", "BLOB"):
             # Return hex string representation
