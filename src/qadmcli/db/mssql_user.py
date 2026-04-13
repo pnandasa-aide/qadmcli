@@ -168,6 +168,9 @@ class MSSQLUserManager:
             "mapped_database_user": None,  # NEW: Track mapped user
             "is_sysadmin": False,
             "is_db_owner": False,
+            "has_db_datareader": False,  # NEW: Can read all tables
+            "has_db_datawriter": False,  # NEW: Can write all tables
+            "has_db_ddladmin": False,    # NEW: Can modify schema
             "effective_permissions": [],
             "role_permissions": [],
             "public_permissions": []
@@ -257,6 +260,60 @@ class MSSQLUserManager:
                 
                 if cursor.fetchone()[0] > 0:
                     result["is_db_owner"] = True
+            
+            # Also check via mapped user if different
+            if (result["mapped_database_user"] and 
+                result["mapped_database_user"]["database_user_name"] != effective_username):
+                mapped_user = result["mapped_database_user"]["database_user_name"]
+                cursor.execute("""
+                    SELECT COUNT(*)
+                    FROM sys.database_role_members rm
+                    JOIN sys.database_principals r ON rm.role_principal_id = r.principal_id
+                    JOIN sys.database_principals m ON rm.member_principal_id = m.principal_id
+                    WHERE m.name = ? AND r.name = 'db_owner'
+                """, (mapped_user,))
+                
+                if cursor.fetchone()[0] > 0:
+                    result["is_db_owner"] = True
+            
+            # Check for other important database roles
+            if result["database_user_exists"] or result["mapped_database_user"]:
+                for role_name in ['db_datareader', 'db_datawriter', 'db_ddladmin']:
+                    cursor.execute("""
+                        SELECT COUNT(*)
+                        FROM sys.database_role_members rm
+                        JOIN sys.database_principals r ON rm.role_principal_id = r.principal_id
+                        JOIN sys.database_principals m ON rm.member_principal_id = m.principal_id
+                        WHERE m.name = ? AND r.name = ?
+                    """, (effective_username, role_name))
+                    
+                    if cursor.fetchone()[0] > 0:
+                        if role_name == 'db_datareader':
+                            result["has_db_datareader"] = True
+                        elif role_name == 'db_datawriter':
+                            result["has_db_datawriter"] = True
+                        elif role_name == 'db_ddladmin':
+                            result["has_db_ddladmin"] = True
+                    
+                    # Also check mapped user
+                    if (result["mapped_database_user"] and 
+                        result["mapped_database_user"]["database_user_name"] != effective_username):
+                        mapped_user = result["mapped_database_user"]["database_user_name"]
+                        cursor.execute("""
+                            SELECT COUNT(*)
+                            FROM sys.database_role_members rm
+                            JOIN sys.database_principals r ON rm.role_principal_id = r.principal_id
+                            JOIN sys.database_principals m ON rm.member_principal_id = m.principal_id
+                            WHERE m.name = ? AND r.name = ?
+                        """, (mapped_user, role_name))
+                        
+                        if cursor.fetchone()[0] > 0:
+                            if role_name == 'db_datareader':
+                                result["has_db_datareader"] = True
+                            elif role_name == 'db_datawriter':
+                                result["has_db_datawriter"] = True
+                            elif role_name == 'db_ddladmin':
+                                result["has_db_ddladmin"] = True
             
             # Get table object_id
             cursor.execute("""

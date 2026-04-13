@@ -3650,10 +3650,19 @@ def mssql_user_check_table(ctx: click.Context, user: str, table: str, schema: st
                 
                 # Special roles
                 if result["is_sysadmin"]:
-                    console.print(f"[green]✓ User {user} is sysadmin (full access to all databases)[/green]")
+                    console.print(f"[green]✓ Server role: sysadmin (full access to all databases)[/green]")
                 
                 if result["is_db_owner"]:
-                    console.print(f"[green]✓ User {user} is db_owner (full access to this database)[/green]")
+                    console.print(f"[green]✓ Database role: db_owner (full access to this database)[/green]")
+                
+                if result["has_db_datareader"]:
+                    console.print(f"[green]✓ Database role: db_datareader (can SELECT from all tables)[/green]")
+                
+                if result["has_db_datawriter"]:
+                    console.print(f"[green]✓ Database role: db_datawriter (can INSERT/UPDATE/DELETE all tables)[/green]")
+                
+                if result["has_db_ddladmin"]:
+                    console.print(f"[green]✓ Database role: db_ddladmin (can modify schema)[/green]")
                 
                 # Effective permissions
                 if result["effective_permissions"]:
@@ -3699,12 +3708,21 @@ def mssql_user_check_table(ctx: click.Context, user: str, table: str, schema: st
                 
                 # Summary
                 has_select = any(p["permission"] == "SELECT" for p in result["effective_permissions"])
-                has_full_access = result["is_sysadmin"] or result["is_db_owner"]
+                has_full_access = (result["is_sysadmin"] or 
+                                 result["is_db_owner"] or 
+                                 result["has_db_datareader"])
                 
                 if has_select or has_full_access:
                     console.print("\n[green]✓ User can SELECT from this table[/green]")
                     if has_full_access:
-                        console.print("[dim](Access via elevated role)[/dim]")
+                        reasons = []
+                        if result["is_sysadmin"]:
+                            reasons.append("sysadmin")
+                        if result["is_db_owner"]:
+                            reasons.append("db_owner")
+                        if result["has_db_datareader"]:
+                            reasons.append("db_datareader")
+                        console.print(f"[dim](Access via role: {', '.join(reasons)})[/dim]")
                 else:
                     console.print("\n[red]✗ User cannot SELECT from this table[/red]")
         
