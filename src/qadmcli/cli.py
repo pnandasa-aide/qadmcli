@@ -21,7 +21,7 @@ from .db.mssql import MSSQLConnection, MSSQLManager, MSSQLError
 from .models.connection import MSSQLConnection as MSSQLConnectionModel
 from .models.table import TableConfig
 from .utils.logger import setup_logging
-from .utils.formatters import print_table, print_json, print_ascii_panel
+from .utils.formatters import print_table, print_json, print_json_clean, print_ascii_panel
 from .utils.db_types import SchemaConverter, DatabaseType
 
 console = Console()
@@ -152,7 +152,11 @@ def cli(ctx: click.Context, config: Path, verbose: bool, output_json: bool, bord
     ctx.obj["border_style"] = border_style.lower()
     
     # Setup logging
-    log_level = "DEBUG" if verbose else "INFO"
+    # When --json flag is used, suppress INFO/DEBUG logs to keep output clean
+    if output_json:
+        log_level = "WARNING"  # Only show warnings and errors
+    else:
+        log_level = "DEBUG" if verbose else "INFO"
     setup_logging(log_level)
 
 
@@ -204,7 +208,7 @@ def connection_test(ctx: click.Context, username: str | None, password: str | No
             info = conn.test_connection()
         
         if output_json:
-            print_json(console, info)
+            print_json_clean(info)
         else:
             print_panel(
                 ctx,
@@ -274,7 +278,7 @@ def table_check(ctx: click.Context, name: str, library: str) -> None:
                     data["row_count"] = row_count
                     data["columns"] = columns
                     data["primary_key"] = pk_columns
-                    print_json(console, data)
+                    print_json_clean(data)
                 else:
                     # Build text parts safely
                     # Use actual system name from info, not the input name
@@ -359,7 +363,7 @@ def table_check(ctx: click.Context, name: str, library: str) -> None:
                         ))
             else:
                 if output_json:
-                    print_json(console, {"exists": False, "table": f"{library}.{name}"})
+                    print_json_clean({"exists": False, "table": f"{library}.{name}"})
                 else:
                     console.print(f"[yellow]Table {library}.{name} does not exist.[/yellow]")
         
@@ -503,7 +507,7 @@ def table_list(ctx: click.Context, library: str, table_type: str | None) -> None
             tables = schema.list_tables(library, table_type)
             
             if output_json:
-                print_json(console, [t.model_dump() for t in tables])
+                print_json_clean([t.model_dump() for t in tables])
             else:
                 if tables:
                     rows = []
@@ -1102,7 +1106,7 @@ def journal_check(ctx: click.Context, name: str, library: str) -> None:
             info = jrn.get_journal_info(name, library)
             
             if output_json:
-                print_json(console, info.get_summary())
+                print_json_clean(info.get_summary())
             else:
                 status_color = "green" if info.is_journaled else "yellow"
                 print_panel(
@@ -1206,7 +1210,7 @@ def journal_disable(
                         console.print(f"  [red]ERR[/red] {library}.{table.name}: {e}")
                 
                 if output_json:
-                    print_json(console, {
+                    print_json_clean({
                         "operation": "disable",
                         "pattern": name,
                         "library": library,
@@ -1226,7 +1230,7 @@ def journal_disable(
                 result = jrn.disable_journaling(name, library)
                 
                 if output_json:
-                    print_json(console, result)
+                    print_json_clean(result)
                 else:
                     console.print(f"[green]Disabled journaling for {library}.{name}[/green]")
         
@@ -1325,7 +1329,7 @@ def journal_enable(
                         console.print(f"  [red]ERR[/red] {library}.{table.name}: {e}")
                 
                 if output_json:
-                    print_json(console, {
+                    print_json_clean({
                         "operation": "enable",
                         "pattern": name,
                         "library": library,
@@ -1347,7 +1351,7 @@ def journal_enable(
                 result = jrn.enable_journaling(name, library, journal_library, journal_name, images)
                 
                 if output_json:
-                    print_json(console, result)
+                    print_json_clean(result)
                 else:
                     console.print(f"[green]Enabled journaling for {library}.{name}[/green]")
                     console.print(f"Journal: {result['journal']}")
@@ -1384,6 +1388,11 @@ def journal_entries(
     """
     config_path = ctx.obj["config_path"]
     
+    # Suppress logging for JSON output to keep it clean
+    if output_format in ("json", "summary"):
+        import logging
+        logging.getLogger("qadmcli").setLevel(logging.WARNING)
+    
     try:
         config = load_config(config_path)
         
@@ -1393,7 +1402,7 @@ def journal_entries(
             if output_format == "summary":
                 # Get summary only
                 summary = jrn.get_journal_summary(name, library, from_time, to_time)
-                print_json(console, summary)
+                print_json_clean(summary)
             else:
                 # Get full entries
                 entries = jrn.get_journal_entries(
@@ -1405,7 +1414,7 @@ def journal_entries(
                 
                 if output_format == "json":
                     data = [e.model_dump() for e in entries]
-                    print_json(console, data)
+                    print_json_clean(data)
                 else:
                     # SQL format
                     if not entries:
@@ -1450,7 +1459,7 @@ def journal_list(ctx: click.Context, library: str | None) -> None:
             journals = jrn.list_journals(library)
             
             if output_json:
-                print_json(console, [j.model_dump() for j in journals])
+                print_json_clean([j.model_dump() for j in journals])
             else:
                 if journals:
                     rows = []
@@ -1506,7 +1515,7 @@ def journal_receivers(ctx: click.Context, journal: str, library: str) -> None:
             receivers = jrn.get_receiver_chain(journal, library)
             
             if output_json:
-                print_json(console, receivers)
+                print_json_clean(receivers)
             else:
                 if receivers:
                     rows = []
@@ -1650,7 +1659,7 @@ def journal_monitor(ctx: click.Context, library: str | None, threshold: int) -> 
                 ])
             
             if output_json:
-                print_json(console, {
+                print_json_clean({
                     'journals': journals,
                     'alerts': alerts,
                     'threshold': threshold
@@ -1764,7 +1773,7 @@ def journal_info(ctx: click.Context, name: str, library: str, fast: bool) -> Non
                     logging.getLogger("qadmcli").setLevel(original_level)
                 
                 if output_json:
-                    print_json(console, {
+                    print_json_clean({
                         "pattern": name,
                         "library": library,
                         "tables": results
@@ -1774,7 +1783,7 @@ def journal_info(ctx: click.Context, name: str, library: str, fast: bool) -> Non
                 info = jrn.get_journal_info(name, library, skip_entry_range=fast)
                 
                 if output_json:
-                    print_json(console, info.model_dump())
+                    print_json_clean(info.model_dump())
                 else:
                     # Format journal images for display
                     images_display = info.journal_images or "N/A"
@@ -1968,7 +1977,7 @@ def user_list(
             users = user_mgr.list_users(filter_name=sql_filter, only_active=active_only)
             
             if output_json:
-                print_json(console, {"users": users[:limit], "total": len(users), "shown": min(len(users), limit)})
+                print_json_clean({"users": users[:limit], "total": len(users), "shown": min(len(users), limit)})
             else:
                 if not users:
                     console.print("[yellow]No users found matching the criteria.[/yellow]")
@@ -2043,7 +2052,7 @@ def user_check(
             result = user_mgr.check_user(user, library, name)
             
             if output_json:
-                print_json(console, result)
+                print_json_clean(result)
             else:
                 if result["exists"]:
                     user_class = str(result.get("user_class", "N/A"))
@@ -2136,7 +2145,7 @@ def user_check_table(
             result = user_mgr.check_table_permissions_with_journal(user, table, library)
             
             if output_json:
-                print_json(console, result)
+                print_json_clean(result)
             else:
                 # Build consolidated view
                 print_panel(
@@ -2599,7 +2608,7 @@ def user_permission(
             result = user_mgr.list_permissions(user, library)
             
             if output_json:
-                print_json(console, result)
+                print_json_clean(result)
             else:
                 print_panel(
                     ctx,
@@ -2683,7 +2692,7 @@ def library_create(
                 result["authority"] = authority
             
             if output_json:
-                print_json(console, result)
+                print_json_clean(result)
             else:
                 print_panel(
                     ctx,
@@ -2734,7 +2743,7 @@ def library_grant(
             )
             
             if output_json:
-                print_json(console, result)
+                print_json_clean(result)
             else:
                 print_panel(
                     ctx,
@@ -3472,7 +3481,7 @@ def mssql_user_check(ctx: click.Context, user: str) -> None:
             result = user_mgr.check_user(user)
             
             if output_json:
-                print_json(console, result)
+                print_json_clean(result)
             else:
                 print_panel(
                     ctx,
@@ -3621,7 +3630,7 @@ def mssql_user_check_table(ctx: click.Context, user: str, table: str, schema: st
             result = user_mgr.check_table_permissions(user, table, schema)
             
             if output_json:
-                print_json(console, result)
+                print_json_clean(result)
             else:
                 print_panel(
                     ctx,
@@ -3798,7 +3807,7 @@ def mssql_user_grant(ctx: click.Context, user: str, permission: str, table: str,
                 results.append(result)
                 
                 if output_json:
-                    print_json(console, result)
+                    print_json_clean(result)
                 else:
                     if result["success"]:
                         console.print(f"[green]✓ Granted {perm} on {schema}.{table} to {user}[/green]")
@@ -3827,13 +3836,15 @@ def ct() -> None:
 @ct.command("status")
 @click.option("--table", "-t", required=True, help="Table name (e.g., CUSTOMERS)")
 @click.option("--schema", "-s", default="dbo", show_default=True, help="Schema name")
+@click.option("--format", "-f", "output_format", type=click.Choice(["table", "json"]), default="table", help="Output format")
 @click.pass_context
-def mssql_ct_status(ctx: click.Context, table: str, schema: str) -> None:
+def mssql_ct_status(ctx: click.Context, table: str, schema: str, output_format: str) -> None:
     """Check if Change Tracking is enabled on database and table.
     
     Examples:
         qadmcli mssql ct status -t CUSTOMERS
         qadmcli mssql ct status -t CUSTOMERS -s dbo
+        qadmcli mssql ct status -t CUSTOMERS -s dbo --format json
     """
     config_path = ctx.obj["config_path"]
     
@@ -3851,23 +3862,35 @@ def mssql_ct_status(ctx: click.Context, table: str, schema: str) -> None:
             ct = MSSQLChangeTracking(conn)
             status = ct.get_table_ct_status(table, schema)
             
-            # Display status
-            console.print(f"[bold]Change Tracking Status for {schema}.{table}[/bold]")
-            console.print(f"  Database: {status.database_name}")
-            console.print(f"  CT Enabled on Database: {'[green]Yes[/green]' if status.is_enabled_on_database else '[red]No[/red]'}")
-            
-            if status.is_enabled_on_database:
-                console.print(f"  CT Enabled on Table: {'[green]Yes[/green]' if status.is_enabled_on_table else '[red]No[/red]'}")
-                console.print(f"  Retention Period: {status.retention_period_days} days" if status.retention_period_days else "  Retention Period: N/A")
-                console.print(f"  Auto Cleanup: {'Yes' if status.auto_cleanup else 'No'}" if status.auto_cleanup is not None else "  Auto Cleanup: N/A")
-            
-            if not status.is_enabled_on_database:
-                console.print("\n[yellow]To enable CT on database:[/yellow]")
-                console.print(f"  ALTER DATABASE [{status.database_name}] SET CHANGE_TRACKING = ON")
-                console.print("  (CHANGE_RETENTION = 2 DAYS, AUTO_CLEANUP = ON)")
-            elif not status.is_enabled_on_table:
-                console.print("\n[yellow]To enable CT on table:[/yellow]")
-                console.print(f"  ALTER TABLE [{schema}].[{table}] ENABLE CHANGE_TRACKING")
+            if output_format == "json":
+                # JSON output for scripting
+                from .utils.formatters import print_json_clean
+                print_json_clean({
+                    "table": f"{schema}.{table}",
+                    "database": status.database_name,
+                    "ct_enabled_on_database": status.is_enabled_on_database,
+                    "ct_enabled_on_table": status.is_enabled_on_table,
+                    "retention_period_days": status.retention_period_days,
+                    "auto_cleanup": status.auto_cleanup
+                })
+            else:
+                # Human-readable output
+                console.print(f"[bold]Change Tracking Status for {schema}.{table}[/bold]")
+                console.print(f"  Database: {status.database_name}")
+                console.print(f"  CT Enabled on Database: {'[green]Yes[/green]' if status.is_enabled_on_database else '[red]No[/red]'}")
+                
+                if status.is_enabled_on_database:
+                    console.print(f"  CT Enabled on Table: {'[green]Yes[/green]' if status.is_enabled_on_table else '[red]No[/red]'}")
+                    console.print(f"  Retention Period: {status.retention_period_days} days" if status.retention_period_days else "  Retention Period: N/A")
+                    console.print(f"  Auto Cleanup: {'Yes' if status.auto_cleanup else 'No'}" if status.auto_cleanup is not None else "  Auto Cleanup: N/A")
+                
+                if not status.is_enabled_on_database:
+                    console.print("\n[yellow]To enable CT on database:[/yellow]")
+                    console.print(f"  ALTER DATABASE [{status.database_name}] SET CHANGE_TRACKING = ON")
+                    console.print("  (CHANGE_RETENTION = 2 DAYS, AUTO_CLEANUP = ON)")
+                elif not status.is_enabled_on_table:
+                    console.print("\n[yellow]To enable CT on table:[/yellow]")
+                    console.print(f"  ALTER TABLE [{schema}].[{table}] ENABLE CHANGE_TRACKING")
     
     except Exception as e:
         console.print(f"[red]Error: {e}[/red]")
@@ -3975,7 +3998,7 @@ def mssql_ct_changes(
                         "deletes": 0,
                         "changes": []
                     }
-                    print_json(console, summary)
+                    print_json_clean(summary)
                 else:
                     console.print("[yellow]No changes found[/yellow]")
                 return
@@ -4007,7 +4030,7 @@ def mssql_ct_changes(
                         for c in changes
                     ]
                 }
-                print_json(console, summary)
+                print_json_clean(summary)
             elif output_format == "json" or output_json:
                 results = []
                 for change in changes:
@@ -4019,7 +4042,7 @@ def mssql_ct_changes(
                         "PRIMARY_KEY_VALUES": change.primary_key_values
                     }
                     results.append(result)
-                print_json(console, results)
+                print_json_clean(results)
             else:
                 # Table output
                 from .utils.formatters import print_table

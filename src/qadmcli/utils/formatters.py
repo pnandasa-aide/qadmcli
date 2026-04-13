@@ -51,7 +51,11 @@ def print_table(
 
 
 def print_json(console: Console, data: Any, indent: int = 2) -> None:
-    """Print formatted JSON to console."""
+    """Print formatted JSON to console.
+    
+    NOTE: This uses RichJSON which adds ANSI color codes for syntax highlighting.
+    For script-friendly output (no ANSI codes), use print_json_clean() instead.
+    """
     json_str = format_json(data, indent)
     console.print(RichJSON(json_str))
 
