@@ -1164,7 +1164,7 @@ def journal_disable(
             
             # Check if wildcard pattern (* and ? are shell-style, % is SQL-style)
             # Note: _ is a valid character in IBM i table names, not a wildcard
-            if '*' in name or '%' in name or '?' in name:
+            if '*' in table or '%' in table or '?' in table:
                 # Find matching tables
                 from .db.schema import SchemaManager
                 import fnmatch
@@ -1176,7 +1176,7 @@ def journal_disable(
                 tables = [t for t in all_tables if fnmatch.fnmatch(t.name, pattern)]
                 
                 if not tables:
-                    console.print(f"[yellow]No tables matching pattern '{name}' in {library}[/yellow]")
+                    console.print(f"[yellow]No tables matching pattern '{table}' in {library}[/yellow]")
                     return
                 
                 if dry_run:
@@ -1224,15 +1224,15 @@ def journal_disable(
             else:
                 # Single table
                 if dry_run:
-                    console.print(f"[blue]Dry run - would disable journaling for {library}.{name}[/blue]")
+                    console.print(f"[blue]Dry run - would disable journaling for {library}.{table}[/blue]")
                     return
                 
-                result = jrn.disable_journaling(name, library)
+                result = jrn.disable_journaling(table, library)
                 
                 if output_json:
                     print_json_clean(result)
                 else:
-                    console.print(f"[green]Disabled journaling for {library}.{name}[/green]")
+                    console.print(f"[green]Disabled journaling for {library}.{table}[/green]")
         
     except ConnectionError as e:
         console.print(f"[red]Connection error: {e.message}[/red]")
@@ -1282,7 +1282,7 @@ def journal_enable(
             
             # Check if wildcard pattern (* and ? are shell-style, % is SQL-style)
             # Note: _ is a valid character in IBM i table names, not a wildcard
-            if '*' in name or '%' in name or '?' in name:
+            if '*' in table or '%' in table or '?' in table:
                 # Find matching tables
                 from .db.schema import SchemaManager
                 import fnmatch
@@ -1294,7 +1294,7 @@ def journal_enable(
                 tables = [t for t in all_tables if fnmatch.fnmatch(t.name, pattern)]
                 
                 if not tables:
-                    console.print(f"[yellow]No tables matching pattern '{name}' in {library}[/yellow]")
+                    console.print(f"[yellow]No tables matching pattern '{table}' in {library}[/yellow]")
                     return
                 
                 if dry_run:
@@ -1345,15 +1345,15 @@ def journal_enable(
             else:
                 # Single table
                 if dry_run:
-                    console.print(f"[blue]Dry run - would enable journaling for {library}.{name} with {images}[/blue]")
+                    console.print(f"[blue]Dry run - would enable journaling for {library}.{table} with {images}[/blue]")
                     return
                 
-                result = jrn.enable_journaling(name, library, journal_library, journal_name, images)
+                result = jrn.enable_journaling(table, library, journal_library, journal_name, images)
                 
                 if output_json:
                     print_json_clean(result)
                 else:
-                    console.print(f"[green]Enabled journaling for {library}.{name}[/green]")
+                    console.print(f"[green]Enabled journaling for {library}.{table}[/green]")
                     console.print(f"Journal: {result['journal']}")
                     console.print(f"Images: {images}")
         
@@ -1401,12 +1401,12 @@ def journal_entries(
             
             if output_format == "summary":
                 # Get summary only
-                summary = jrn.get_journal_summary(name, library, from_time, to_time)
+                summary = jrn.get_journal_summary(table, library, from_time, to_time)
                 print_json_clean(summary)
             else:
                 # Get full entries
                 entries = jrn.get_journal_entries(
-                    name, library, 
+                    table, library, 
                     limit=limit,
                     from_time=from_time,
                     to_time=to_time
