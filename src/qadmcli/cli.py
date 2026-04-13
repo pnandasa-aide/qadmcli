@@ -2107,7 +2107,7 @@ Status: {status}"""
 
 @user.command("check-table")
 @click.option("--user", "-u", required=True, help="Username to check")
-@click.option("--table", "-t", "--name", "-n", required=True, help="Table name to check")
+@click.option("--table", "-t", required=True, help="Table name to check")
 @click.option("--library", "-l", required=True, help="Library containing the table")
 @click.pass_context
 def user_check_table(
