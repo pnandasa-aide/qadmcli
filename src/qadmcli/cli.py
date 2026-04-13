@@ -132,7 +132,6 @@ def get_config_path(ctx: click.Context, param: Any, value: str | None) -> Path:
     help="Path to connection config file (default: config/connection.yaml)"
 )
 @click.option("--verbose", "-v", is_flag=True, help="Enable verbose output")
-@click.option("--json", "output_json", is_flag=True, help="Output in JSON format")
 @click.option(
     "--border-style", "-b",
     type=click.Choice(["unicode", "ascii"], case_sensitive=False),
@@ -140,7 +139,7 @@ def get_config_path(ctx: click.Context, param: Any, value: str | None) -> Path:
     help="Border style for panels: unicode (default) or ascii (for Windows/PowerShell)"
 )
 @click.pass_context
-def cli(ctx: click.Context, config: Path, verbose: bool, output_json: bool, border_style: str) -> None:
+def cli(ctx: click.Context, config: Path, verbose: bool, border_style: str) -> None:
     """QADM CLI - AS400 DB2 for i Database Management Tool."""
     # Ensure context object exists
     ctx.ensure_object(dict)
@@ -148,15 +147,10 @@ def cli(ctx: click.Context, config: Path, verbose: bool, output_json: bool, bord
     # Store options in context
     ctx.obj["config_path"] = config
     ctx.obj["verbose"] = verbose
-    ctx.obj["output_json"] = output_json
     ctx.obj["border_style"] = border_style.lower()
     
     # Setup logging
-    # When --json flag is used, suppress INFO/DEBUG logs to keep output clean
-    if output_json:
-        log_level = "WARNING"  # Only show warnings and errors
-    else:
-        log_level = "DEBUG" if verbose else "INFO"
+    log_level = "DEBUG" if verbose else "INFO"
     setup_logging(log_level)
 
 
@@ -169,8 +163,9 @@ def connection() -> None:
 @connection.command("test")
 @click.option("-U", "--username", help="Test connection with specific username (admin user)")
 @click.option("-P", "--password", help="Password for the specified username")
+@click.option("--format", "-f", "output_format", type=click.Choice(["table", "json"]), default="table", help="Output format (default: table)")
 @click.pass_context
-def connection_test(ctx: click.Context, username: str | None, password: str | None) -> None:
+def connection_test(ctx: click.Context, username: str | None, password: str | None, output_format: str) -> None:
     """Test connection to AS400.
     
     Examples:
@@ -179,7 +174,6 @@ def connection_test(ctx: click.Context, username: str | None, password: str | No
         qadmcli connection test -U QSECOFR -P pass  # Test with admin user and password
     """
     config_path = ctx.obj["config_path"]
-    output_json = ctx.obj["output_json"]
     
     try:
         config = load_config(config_path)
@@ -207,7 +201,7 @@ def connection_test(ctx: click.Context, username: str | None, password: str | No
         with AS400ConnectionManager(config) as conn:
             info = conn.test_connection()
         
-        if output_json:
+        if output_format == "json":
             print_json_clean(info)
         else:
             print_panel(
@@ -244,14 +238,18 @@ def table() -> None:
 @table.command("check")
 @click.option("--table", "-t", required=True, help="Table name")
 @click.option("--library", "-l", required=True, help="Library/schema name")
+@click.option("--format", "-f", "output_format", type=click.Choice(["table", "json"]), default="table", help="Output format (default: table)")
 @click.pass_context
-def table_check(ctx: click.Context, table: str, library: str) -> None:
+def table_check(ctx: click.Context, table: str, library: str, output_format: str) -> None:
     """Check if table exists and show info."""
     import logging
     logger = logging.getLogger("qadmcli")
     
     config_path = ctx.obj["config_path"]
-    output_json = ctx.obj["output_json"]
+    
+    # Suppress logging for JSON output
+    if output_format == "json":
+        logger.setLevel(logging.WARNING)
     
     try:
         logger.debug(f"Loading config from: {config_path}")
@@ -273,7 +271,7 @@ def table_check(ctx: click.Context, table: str, library: str) -> None:
                 columns = schema.get_columns(table, library) if info else []
                 pk_columns = schema.get_primary_key(table, library)
                 logger.debug(f"Table info retrieved successfully")
-                if output_json:
+                if output_format == "json":
                     data = info.model_dump() if info else {}
                     data["row_count"] = row_count
                     data["columns"] = columns
@@ -362,7 +360,7 @@ def table_check(ctx: click.Context, table: str, library: str) -> None:
                             title=f"Columns in {library}.{table}"
                         ))
             else:
-                if output_json:
+                if output_format == "json":
                     print_json_clean({"exists": False, "table": f"{library}.{table}"})
                 else:
                     console.print(f"[yellow]Table {library}.{table} does not exist.[/yellow]")
@@ -493,11 +491,16 @@ def table_drop_create(
 @table.command("list")
 @click.option("--library", "-l", required=True, help="Library name")
 @click.option("--type", "table_type", help="Filter by table type (TABLE, VIEW, etc.)")
+@click.option("--format", "-f", "output_format", type=click.Choice(["table", "json"]), default="table", help="Output format (default: table)")
 @click.pass_context
-def table_list(ctx: click.Context, library: str, table_type: str | None) -> None:
+def table_list(ctx: click.Context, library: str, table_type: str | None, output_format: str) -> None:
     """List tables in a library."""
     config_path = ctx.obj["config_path"]
-    output_json = ctx.obj["output_json"]
+    
+    # Suppress logging for JSON output
+    if output_format == "json":
+        import logging
+        logging.getLogger("qadmcli").setLevel(logging.WARNING)
     
     try:
         config = load_config(config_path)
@@ -506,7 +509,7 @@ def table_list(ctx: click.Context, library: str, table_type: str | None) -> None
             schema = SchemaManager(conn)
             tables = schema.list_tables(library, table_type)
             
-            if output_json:
+            if output_format == "json":
                 print_json_clean([t.model_dump() for t in tables])
             else:
                 if tables:
@@ -1092,11 +1095,16 @@ def journal() -> None:
 @journal.command("check")
 @click.option("--table", "-t", required=True, help="Table name")
 @click.option("--library", "-l", required=True, help="Library name")
+@click.option("--format", "-f", "output_format", type=click.Choice(["table", "json"]), default="table", help="Output format (default: table)")
 @click.pass_context
-def journal_check(ctx: click.Context, table: str, library: str) -> None:
+def journal_check(ctx: click.Context, table: str, library: str, output_format: str) -> None:
     """Check journal status for a table."""
     config_path = ctx.obj["config_path"]
-    output_json = ctx.obj["output_json"]
+    
+    # Suppress logging for JSON output
+    if output_format == "json":
+        import logging
+        logging.getLogger("qadmcli").setLevel(logging.WARNING)
     
     try:
         config = load_config(config_path)
@@ -1105,7 +1113,7 @@ def journal_check(ctx: click.Context, table: str, library: str) -> None:
             jrn = JournalManager(conn)
             info = jrn.get_journal_info(table, library)
             
-            if output_json:
+            if output_format == "json":
                 print_json_clean(info.get_summary())
             else:
                 status_color = "green" if info.is_journaled else "yellow"
@@ -1135,12 +1143,14 @@ def journal_check(ctx: click.Context, table: str, library: str) -> None:
 @click.option("--table", "-t", required=True, help="Table name (supports wildcards: * or %)")
 @click.option("--library", "-l", required=True, help="Library name")
 @click.option("--dry-run", is_flag=True, help="Show which tables would be affected without making changes")
+@click.option("--format", "-f", "output_format", type=click.Choice(["table", "json"]), default="table", help="Output format (default: table)")
 @click.pass_context
 def journal_disable(
     ctx: click.Context,
     table: str,
     library: str,
-    dry_run: bool
+    dry_run: bool,
+    output_format: str
 ) -> None:
     """Disable journaling for one or more tables.
     
@@ -1154,7 +1164,6 @@ def journal_disable(
       qadmcli journal disable -t "%TEST%" -l MYLIB --dry-run
     """
     config_path = ctx.obj["config_path"]
-    output_json = ctx.obj["output_json"]
     
     try:
         config = load_config(config_path)
@@ -1209,7 +1218,7 @@ def journal_disable(
                         error_count += 1
                         console.print(f"  [red]ERR[/red] {library}.{table.name}: {e}")
                 
-                if output_json:
+                if output_format == "json":
                     print_json_clean({
                         "operation": "disable",
                         "pattern": name,
@@ -1229,7 +1238,7 @@ def journal_disable(
                 
                 result = jrn.disable_journaling(table, library)
                 
-                if output_json:
+                if output_format == "json":
                     print_json_clean(result)
                 else:
                     console.print(f"[green]Disabled journaling for {library}.{table}[/green]")
@@ -1250,6 +1259,7 @@ def journal_disable(
 @click.option("--images", "-i", type=click.Choice(["*BOTH", "*AFTER", "*BEFORE"]), 
               default="*AFTER", help="Journal images to capture (default: *AFTER)")
 @click.option("--dry-run", is_flag=True, help="Show which tables would be affected without making changes")
+@click.option("--format", "-f", "output_format", type=click.Choice(["table", "json"]), default="table", help="Output format (default: table)")
 @click.pass_context
 def journal_enable(
     ctx: click.Context,
@@ -1258,7 +1268,8 @@ def journal_enable(
     journal_library: str | None,
     journal_name: str | None,
     images: str,
-    dry_run: bool
+    dry_run: bool,
+    output_format: str
 ) -> None:
     """Enable journaling for one or more tables.
     
@@ -1272,7 +1283,6 @@ def journal_enable(
       qadmcli journal enable -t "%TEST%" -l MYLIB -j MYLIB --dry-run
     """
     config_path = ctx.obj["config_path"]
-    output_json = ctx.obj["output_json"]
     
     try:
         config = load_config(config_path)
@@ -1328,7 +1338,7 @@ def journal_enable(
                         error_count += 1
                         console.print(f"  [red]ERR[/red] {library}.{table.name}: {e}")
                 
-                if output_json:
+                if output_format == "json":
                     print_json_clean({
                         "operation": "enable",
                         "pattern": name,
@@ -1350,7 +1360,7 @@ def journal_enable(
                 
                 result = jrn.enable_journaling(table, library, journal_library, journal_name, images)
                 
-                if output_json:
+                if output_format == "json":
                     print_json_clean(result)
                 else:
                     console.print(f"[green]Enabled journaling for {library}.{table}[/green]")
@@ -1448,7 +1458,6 @@ def journal_entries(
 def journal_list(ctx: click.Context, library: str | None) -> None:
     """List all journals with their sizes and status."""
     config_path = ctx.obj["config_path"]
-    output_json = ctx.obj["output_json"]
     
     try:
         config = load_config(config_path)
@@ -1458,7 +1467,7 @@ def journal_list(ctx: click.Context, library: str | None) -> None:
             jrn = JournalManager(conn)
             journals = jrn.list_journals(library)
             
-            if output_json:
+            if output_format == "json":
                 print_json_clean([j.model_dump() for j in journals])
             else:
                 if journals:
@@ -1505,7 +1514,6 @@ def journal_list(ctx: click.Context, library: str | None) -> None:
 def journal_receivers(ctx: click.Context, journal: str, library: str) -> None:
     """Show journal receiver chain with cleanup recommendations."""
     config_path = ctx.obj["config_path"]
-    output_json = ctx.obj["output_json"]
     
     try:
         config = load_config(config_path)
@@ -1514,7 +1522,7 @@ def journal_receivers(ctx: click.Context, journal: str, library: str) -> None:
             jrn = JournalManager(conn)
             receivers = jrn.get_receiver_chain(journal, library)
             
-            if output_json:
+            if output_format == "json":
                 print_json_clean(receivers)
             else:
                 if receivers:
@@ -1627,7 +1635,6 @@ def journal_cleanup(ctx: click.Context, journal: str, library: str, keep: int, d
 def journal_monitor(ctx: click.Context, library: str | None, threshold: int) -> None:
     """Monitor journal sizes and alert on large journals."""
     config_path = ctx.obj["config_path"]
-    output_json = ctx.obj["output_json"]
     
     try:
         config = load_config(config_path)
@@ -1658,7 +1665,7 @@ def journal_monitor(ctx: click.Context, library: str | None, threshold: int) -> 
                     status
                 ])
             
-            if output_json:
+            if output_format == "json":
                 print_json_clean({
                     'journals': journals,
                     'alerts': alerts,
@@ -1692,8 +1699,9 @@ def journal_monitor(ctx: click.Context, library: str | None, threshold: int) -> 
 @click.option("--table", "-t", required=True, help="Table name (supports wildcards: * or %)")
 @click.option("--library", "-l", required=True, help="Library name")
 @click.option("--fast", "-f", is_flag=True, help="Skip slow entry range query (for large journals)")
+@click.option("--format", "-F", "output_format", type=click.Choice(["table", "json"]), default="table", help="Output format (default: table)")
 @click.pass_context
-def journal_info(ctx: click.Context, table: str, library: str, fast: bool) -> None:
+def journal_info(ctx: click.Context, table: str, library: str, fast: bool, output_format: str) -> None:
     """Get detailed journal information for one or more tables.
     
     Supports wildcards:
@@ -1706,7 +1714,11 @@ def journal_info(ctx: click.Context, table: str, library: str, fast: bool) -> No
       qadmcli journal info -t "TEST*" -l MYLIB
     """
     config_path = ctx.obj["config_path"]
-    output_json = ctx.obj["output_json"]
+    
+    # Suppress logging for JSON output
+    if output_format == "json":
+        import logging
+        logging.getLogger("qadmcli").setLevel(logging.WARNING)
     
     try:
         config = load_config(config_path)
@@ -1772,7 +1784,7 @@ def journal_info(ctx: click.Context, table: str, library: str, fast: bool) -> No
                     # Restore original logging level
                     logging.getLogger("qadmcli").setLevel(original_level)
                 
-                if output_json:
+                if output_format == "json":
                     print_json_clean({
                         "pattern": table,
                         "library": library,
@@ -1782,7 +1794,7 @@ def journal_info(ctx: click.Context, table: str, library: str, fast: bool) -> No
                 # Single table
                 info = jrn.get_journal_info(table, library, skip_entry_range=fast)
                 
-                if output_json:
+                if output_format == "json":
                     print_json_clean(info.model_dump())
                 else:
                     # Format journal images for display
@@ -1960,7 +1972,6 @@ def user_list(
 ) -> None:
     """List user profiles with status and library information."""
     config_path = ctx.obj["config_path"]
-    output_json = ctx.obj["output_json"]
     
     try:
         config = load_config(config_path)
@@ -1976,7 +1987,7 @@ def user_list(
             
             users = user_mgr.list_users(filter_name=sql_filter, only_active=active_only)
             
-            if output_json:
+            if output_format == "json":
                 print_json_clean({"users": users[:limit], "total": len(users), "shown": min(len(users), limit)})
             else:
                 if not users:
@@ -2040,7 +2051,6 @@ def user_check(
 ) -> None:
     """Check user existence and permissions."""
     config_path = ctx.obj["config_path"]
-    output_json = ctx.obj["output_json"]
     
     try:
         config = load_config(config_path)
@@ -2051,7 +2061,7 @@ def user_check(
             
             result = user_mgr.check_user(user, library, name)
             
-            if output_json:
+            if output_format == "json":
                 print_json_clean(result)
             else:
                 if result["exists"]:
@@ -2133,7 +2143,6 @@ def user_check_table(
     - The journal receiver
     """
     config_path = ctx.obj["config_path"]
-    output_json = ctx.obj["output_json"]
     
     try:
         config = load_config(config_path)
@@ -2144,7 +2153,7 @@ def user_check_table(
             
             result = user_mgr.check_table_permissions_with_journal(user, table, library)
             
-            if output_json:
+            if output_format == "json":
                 print_json_clean(result)
             else:
                 # Build consolidated view
@@ -2596,7 +2605,6 @@ def user_permission(
 ) -> None:
     """List user permissions and authority."""
     config_path = ctx.obj["config_path"]
-    output_json = ctx.obj["output_json"]
     
     try:
         config = load_config(config_path)
@@ -2607,7 +2615,7 @@ def user_permission(
             
             result = user_mgr.list_permissions(user, library)
             
-            if output_json:
+            if output_format == "json":
                 print_json_clean(result)
             else:
                 print_panel(
@@ -2671,7 +2679,6 @@ def library_create(
         qadmcli library create -n NEWLIB -u USER001 -a *CHANGE
     """
     config_path = ctx.obj["config_path"]
-    output_json = ctx.obj["output_json"]
     
     try:
         config = load_config(config_path)
@@ -2691,7 +2698,7 @@ def library_create(
                 result["granted_to"] = user
                 result["authority"] = authority
             
-            if output_json:
+            if output_format == "json":
                 print_json_clean(result)
             else:
                 print_panel(
@@ -2729,7 +2736,6 @@ def library_grant(
         qadmcli library grant -n MYLIB -u USER001 -a *ALL
     """
     config_path = ctx.obj["config_path"]
-    output_json = ctx.obj["output_json"]
     
     try:
         config = load_config(config_path)
@@ -2742,7 +2748,7 @@ def library_grant(
                 user, name, name, authority, "*LIB"
             )
             
-            if output_json:
+            if output_format == "json":
                 print_json_clean(result)
             else:
                 print_panel(
@@ -2967,7 +2973,6 @@ def sql_execute(ctx: click.Context, query: str, target: str, output_format: str,
         qadmcli sql execute -q "DROP TABLE ..." --target mssql # MSSQL
     """
     config_path = ctx.obj["config_path"]
-    output_json = ctx.obj["output_json"]
     
     try:
         config = load_config(config_path)
@@ -3003,7 +3008,7 @@ def sql_execute(ctx: click.Context, query: str, target: str, output_format: str,
                         rows = cursor.fetchall()
                         columns = [desc[0] for desc in cursor.description] if cursor.description else []
                         
-                        if output_json:
+                        if output_format == "json":
                             import json
                             results = []
                             for row in rows:
@@ -3021,7 +3026,7 @@ def sql_execute(ctx: click.Context, query: str, target: str, output_format: str,
                     else:
                         # DDL/DML query (CREATE, INSERT, UPDATE, DELETE)
                         row_count = cursor.rowcount
-                        if output_json:
+                        if output_format == "json":
                             import json
                             console.print(json.dumps({"status": "success", "rows_affected": row_count}))
                         else:
@@ -3131,7 +3136,6 @@ def sql_query(ctx: click.Context, query: str, target: str, limit: int, offset: i
         qadmcli sql query -q "SELECT CUST_ID, FIRST_NAME, EMAIL FROM GSLIBTST.CUSTOMERS WHERE STATUS = 'ACTIVE'"
     """
     config_path = ctx.obj["config_path"]
-    output_json = ctx.obj["output_json"]
     border_style = ctx.obj.get("border_style", "unicode")
     
     try:
@@ -3311,7 +3315,6 @@ def mssql_test(ctx: click.Context, username: str | None, password: str | None) -
         qadmcli mssql test -U sa -P 'your_password' # Test with admin user and password
     """
     config_path = ctx.obj["config_path"]
-    output_json = ctx.obj["output_json"]
     
     try:
         config = load_config(config_path)
@@ -3355,7 +3358,7 @@ def mssql_test(ctx: click.Context, username: str | None, password: str | None) -
                 """)
                 row = cursor.fetchone()
                 
-                if output_json:
+                if output_format == "json":
                     import json
                     result = {
                         "host": test_config.host,
@@ -3389,7 +3392,7 @@ def mssql_test(ctx: click.Context, username: str | None, password: str | None) -
                     ))
     
     except Exception as e:
-        if output_json:
+        if output_format == "json":
             import json
             console.print(json.dumps({"status": "error", "error": str(e)}))
         else:
@@ -3461,7 +3464,6 @@ def mssql_user_check(ctx: click.Context, user: str) -> None:
         qadmcli mssql user check -u myuser
     """
     config_path = ctx.obj["config_path"]
-    output_json = ctx.obj["output_json"]
     
     try:
         config = load_config(config_path)
@@ -3480,7 +3482,7 @@ def mssql_user_check(ctx: click.Context, user: str) -> None:
             user_mgr = MSSQLUserManager(mssql_conn)
             result = user_mgr.check_user(user)
             
-            if output_json:
+            if output_format == "json":
                 print_json_clean(result)
             else:
                 print_panel(
@@ -3610,7 +3612,6 @@ def mssql_user_check_table(ctx: click.Context, user: str, table: str, schema: st
         qadmcli mssql user check-table -u GLUESYNC01 -t CUSTOMERS -s dbo
     """
     config_path = ctx.obj["config_path"]
-    output_json = ctx.obj["output_json"]
     
     try:
         config = load_config(config_path)
@@ -3629,7 +3630,7 @@ def mssql_user_check_table(ctx: click.Context, user: str, table: str, schema: st
             user_mgr = MSSQLUserManager(mssql_conn)
             result = user_mgr.check_table_permissions(user, table, schema)
             
-            if output_json:
+            if output_format == "json":
                 print_json_clean(result)
             else:
                 print_panel(
@@ -3780,7 +3781,6 @@ def mssql_user_grant(ctx: click.Context, user: str, permission: str, table: str,
         qadmcli mssql user grant -u GLUESYNC01 -p ALL -t ORDERS
     """
     config_path = ctx.obj["config_path"]
-    output_json = ctx.obj["output_json"]
     
     try:
         config = load_config(config_path)
@@ -3806,7 +3806,7 @@ def mssql_user_grant(ctx: click.Context, user: str, permission: str, table: str,
                 result = user_mgr.grant_permission(user, perm, table, "TABLE", schema)
                 results.append(result)
                 
-                if output_json:
+                if output_format == "json":
                     print_json_clean(result)
                 else:
                     if result["success"]:
@@ -3934,7 +3934,6 @@ def mssql_ct_changes(
         qadmcli mssql ct changes -t CUSTOMERS --format json
     """
     config_path = ctx.obj["config_path"]
-    output_json = ctx.obj["output_json"]
     
     # Suppress logging for JSON/summary output
     if output_format in ("json", "summary"):
