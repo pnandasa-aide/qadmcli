@@ -3425,6 +3425,320 @@ def mssql_execute(ctx: click.Context, query: str, user: str, password: str) -> N
 
 
 @mssql.group()
+def user() -> None:
+    """MSSQL user management commands."""
+    pass
+
+
+@user.command("check")
+@click.option("--user", "-u", required=True, help="Username to check")
+@click.pass_context
+def mssql_user_check(ctx: click.Context, user: str) -> None:
+    """Check if user exists in MSSQL and get permissions.
+    
+    Shows server login, database user, roles, and explicit permissions.
+    
+    Examples:
+        qadmcli mssql user check -u GLUESYNC01
+        qadmcli mssql user check -u myuser
+    """
+    config_path = ctx.obj["config_path"]
+    output_json = ctx.obj["output_json"]
+    
+    try:
+        config = load_config(config_path)
+        
+        if not config.mssql:
+            console.print("[red]Error: MSSQL configuration not found[/red]")
+            sys.exit(1)
+        
+        from .db.mssql import MSSQLConnection
+        from .db.mssql_user import MSSQLUserManager
+        
+        mssql_conn = MSSQLConnection(config.mssql)
+        mssql_conn.connect()
+        
+        try:
+            user_mgr = MSSQLUserManager(mssql_conn)
+            result = user_mgr.check_user(user)
+            
+            if output_json:
+                print_json(console, result)
+            else:
+                print_panel(
+                    ctx,
+                    f"Checking user: {user}",
+                    title="MSSQL User Check",
+                    border_style="blue"
+                )
+                
+                # Server Login Info
+                if result["server_login_exists"]:
+                    login_info = result["server_login_info"]
+                    login_rows = [
+                        ["Name", login_info["name"]],
+                        ["Type", login_info["type"]],
+                        ["Disabled", "Yes" if login_info["is_disabled"] else "No"],
+                        ["Default Database", login_info["default_database"] or "N/A"],
+                        ["Created", login_info["create_date"] or "N/A"]
+                    ]
+                    console.print(print_table(
+                        console,
+                        ["Property", "Value"],
+                        login_rows,
+                        title="Server Login"
+                    ))
+                    
+                    # Server Roles
+                    if result["server_roles"]:
+                        roles_text = ", ".join(result["server_roles"])
+                        console.print(f"[green]Server Roles: {roles_text}[/green]")
+                    else:
+                        console.print("[yellow]No server roles assigned[/yellow]")
+                else:
+                    console.print("[red]✗ Server login does not exist[/red]")
+                
+                # Database User Info
+                if result["database_user_exists"]:
+                    db_info = result["database_user_info"]
+                    db_rows = [
+                        ["Name", db_info["name"]],
+                        ["Type", db_info["type"]],
+                        ["Default Schema", db_info["default_schema"] or "N/A"],
+                        ["Created", db_info["create_date"] or "N/A"]
+                    ]
+                    console.print(print_table(
+                        console,
+                        ["Property", "Value"],
+                        db_rows,
+                        title="Database User"
+                    ))
+                    
+                    # Database Roles
+                    if result["database_roles"]:
+                        roles_text = ", ".join(result["database_roles"])
+                        console.print(f"[green]Database Roles: {roles_text}[/green]")
+                    else:
+                        console.print("[yellow]No database roles assigned[/yellow]")
+                    
+                    # Explicit Permissions
+                    if result["explicit_permissions"]:
+                        perm_rows = []
+                        for perm in result["explicit_permissions"]:
+                            perm_rows.append([
+                                perm["permission"],
+                                perm["state"],
+                                f"{perm['schema_name']}.{perm['object_name']}" if perm["object_name"] else perm["class"],
+                            ])
+                        console.print(print_table(
+                            console,
+                            ["Permission", "State", "Object"],
+                            perm_rows,
+                            title="Explicit Permissions"
+                        ))
+                    else:
+                        console.print("[yellow]No explicit permissions found[/yellow]")
+                else:
+                    console.print("[red]✗ Database user does not exist[/red]")
+                
+                # Summary
+                if result["server_login_exists"] and result["database_user_exists"]:
+                    console.print("\n[green]✓ User is fully configured (login + database user)[/green]")
+                elif result["server_login_exists"]:
+                    console.print("\n[yellow]⚠ Server login exists but database user is missing[/yellow]")
+                    console.print("[dim]Run: CREATE USER [username] FROM LOGIN [username][/dim]")
+                else:
+                    console.print("\n[red]✗ User does not exist. Create login first:[/red]")
+                    console.print(f"[dim]CREATE LOGIN [{user}] WITH PASSWORD = 'password'[/dim]".replace('[', '\\[').replace(']', '\\]'))
+        
+        finally:
+            mssql_conn.disconnect()
+    
+    except Exception as e:
+        console.print(f"[red]Error: {e}[/red]")
+        sys.exit(1)
+
+
+@user.command("check-table")
+@click.option("--user", "-u", required=True, help="Username to check")
+@click.option("--table", "-t", required=True, help="Table name to check")
+@click.option("--schema", "-s", default="dbo", show_default=True, help="Schema name")
+@click.pass_context
+def mssql_user_check_table(ctx: click.Context, user: str, table: str, schema: str) -> None:
+    """Check user permissions for a specific table.
+    
+    Shows effective permissions, role permissions, and public permissions.
+    
+    Examples:
+        qadmcli mssql user check-table -u GLUESYNC01 -t CUSTOMERS
+        qadmcli mssql user check-table -u GLUESYNC01 -t CUSTOMERS -s dbo
+    """
+    config_path = ctx.obj["config_path"]
+    output_json = ctx.obj["output_json"]
+    
+    try:
+        config = load_config(config_path)
+        
+        if not config.mssql:
+            console.print("[red]Error: MSSQL configuration not found[/red]")
+            sys.exit(1)
+        
+        from .db.mssql import MSSQLConnection
+        from .db.mssql_user import MSSQLUserManager
+        
+        mssql_conn = MSSQLConnection(config.mssql)
+        mssql_conn.connect()
+        
+        try:
+            user_mgr = MSSQLUserManager(mssql_conn)
+            result = user_mgr.check_table_permissions(user, table, schema)
+            
+            if output_json:
+                print_json(console, result)
+            else:
+                print_panel(
+                    ctx,
+                    f"Checking permissions for {user} on {schema}.{table}",
+                    title="MSSQL Table Permission Check",
+                    border_style="blue"
+                )
+                
+                # Table existence
+                if result["table_exists"]:
+                    console.print(f"[green]✓ Table {schema}.{table} exists[/green]")
+                else:
+                    console.print(f"[red]✗ Table {schema}.{table} does not exist[/red]")
+                    return
+                
+                # User status
+                if result["user_has_login"]:
+                    console.print(f"[green]✓ User {user} has server login[/green]")
+                else:
+                    console.print(f"[red]✗ User {user} has no server login[/red]")
+                
+                if result["user_has_db_user"]:
+                    console.print(f"[green]✓ User {user} has database user[/green]")
+                else:
+                    console.print(f"[red]✗ User {user} has no database user[/red]")
+                
+                # Effective permissions
+                if result["effective_permissions"]:
+                    eff_rows = []
+                    for perm in result["effective_permissions"]:
+                        eff_rows.append([perm["permission"], perm["state"]])
+                    console.print(print_table(
+                        console,
+                        ["Permission", "State"],
+                        eff_rows,
+                        title="Effective Permissions"
+                    ))
+                else:
+                    console.print("[yellow]No effective permissions on this table[/yellow]")
+                
+                # Explicit permissions
+                if result["role_permissions"]:
+                    role_rows = []
+                    for perm in result["role_permissions"]:
+                        role_rows.append([perm["permission"], perm["state"], perm["grantee"]])
+                    console.print(print_table(
+                        console,
+                        ["Permission", "State", "Grantee"],
+                        role_rows,
+                        title="Explicit Permissions"
+                    ))
+                
+                # Public permissions
+                if result["public_permissions"]:
+                    pub_rows = []
+                    for perm in result["public_permissions"]:
+                        pub_rows.append([perm["permission"], perm["state"]])
+                    console.print(print_table(
+                        console,
+                        ["Permission", "State"],
+                        pub_rows,
+                        title="Public Permissions"
+                    ))
+                
+                # Summary
+                has_select = any(p["permission"] == "SELECT" for p in result["effective_permissions"])
+                if has_select:
+                    console.print("\n[green]✓ User can SELECT from this table[/green]")
+                else:
+                    console.print("\n[red]✗ User cannot SELECT from this table[/red]")
+        
+        finally:
+            mssql_conn.disconnect()
+    
+    except Exception as e:
+        console.print(f"[red]Error: {e}[/red]")
+        sys.exit(1)
+
+
+@user.command("grant")
+@click.option("--user", "-u", required=True, help="Username to grant permission to")
+@click.option("--permission", "-p", required=True, help="Permission to grant (e.g., SELECT, INSERT, UPDATE, DELETE, ALL)")
+@click.option("--table", "-t", required=True, help="Table name")
+@click.option("--schema", "-s", default="dbo", show_default=True, help="Schema name")
+@click.pass_context
+def mssql_user_grant(ctx: click.Context, user: str, permission: str, table: str, schema: str) -> None:
+    """Grant permission to user on a table.
+    
+    Automatically creates database user from login if it doesn't exist.
+    
+    Examples:
+        qadmcli mssql user grant -u GLUESYNC01 -p SELECT -t CUSTOMERS
+        qadmcli mssql user grant -u GLUESYNC01 -p SELECT,INSERT,UPDATE -t CUSTOMERS -s dbo
+        qadmcli mssql user grant -u GLUESYNC01 -p ALL -t ORDERS
+    """
+    config_path = ctx.obj["config_path"]
+    output_json = ctx.obj["output_json"]
+    
+    try:
+        config = load_config(config_path)
+        
+        if not config.mssql:
+            console.print("[red]Error: MSSQL configuration not found[/red]")
+            sys.exit(1)
+        
+        from .db.mssql import MSSQLConnection
+        from .db.mssql_user import MSSQLUserManager
+        
+        mssql_conn = MSSQLConnection(config.mssql)
+        mssql_conn.connect()
+        
+        try:
+            user_mgr = MSSQLUserManager(mssql_conn)
+            
+            # Handle multiple permissions (comma-separated)
+            permissions = [p.strip() for p in permission.split(",")]
+            
+            results = []
+            for perm in permissions:
+                result = user_mgr.grant_permission(user, perm, table, "TABLE", schema)
+                results.append(result)
+                
+                if output_json:
+                    print_json(console, result)
+                else:
+                    if result["success"]:
+                        console.print(f"[green]✓ Granted {perm} on {schema}.{table} to {user}[/green]")
+                        console.print(f"[dim]SQL: {result['sql_executed']}[/dim]")
+                    else:
+                        console.print(f"[red]✗ Failed to grant {perm}: {result['error']}[/red]")
+            
+            if not output_json:
+                success_count = sum(1 for r in results if r["success"])
+                console.print(f"\n{success_count}/{len(results)} permission(s) granted successfully")
+        
+        finally:
+            mssql_conn.disconnect()
+    
+    except Exception as e:
+        console.print(f"[red]Error: {e}[/red]")
+        sys.exit(1)
+
+
+@mssql.group()
 def ct() -> None:
     """MSSQL Change Tracking commands."""
     pass
