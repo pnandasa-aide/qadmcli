@@ -10,35 +10,34 @@
 
 The `user check-table` command was inconsistent with all other qadmcli commands:
 
-| Command | Table Option | Status |
-|---------|--------------|--------|
-| `mockup generate` | `-t` / `--table` | ✅ Consistent |
-| `mssql ct status` | `-t` / `--table` | ✅ Consistent |
-| `mssql ct changes` | `-t` / `--table` | ✅ Consistent |
-| `mssql ct enable-table` | `-t` / `--table` | ✅ Consistent |
-| `mssql ct disable-table` | `-t` / `--table` | ✅ Consistent |
-| **`user check-table`** | **`-n` / `--name`** | **❌ Inconsistent** |
+| Command | Table Option | Number Option | Status |
+|---------|--------------|---------------|--------|
+| `mockup generate` | `-t` / `--table` | `-n` / `--number` | ✅ Consistent |
+| `mssql ct status` | `-t` / `--table` | N/A | ✅ Consistent |
+| `mssql ct changes` | `-t` / `--table` | `-l` / `--limit` | ✅ Consistent |
+| `mssql ct enable-table` | `-t` / `--table` | N/A | ✅ Consistent |
+| `mssql ct disable-table` | `-t` / `--table` | N/A | ✅ Consistent |
+| **`user check-table`** | **`-n` / `--name`** | **N/A** | **❌ Inconsistent** |
+
+**Semantic Confusion**: `-n` was used for "name" in `user check-table` but for "number" in `mockup generate`.
 
 ---
 
 ## Solution
 
-Changed `user check-table` to use `-t` as the primary option while keeping `-n` as an alias for backward compatibility.
+Changed `user check-table` to use `-t` exclusively for table name, removing the confusing `-n` alias.
 
 ### Before
 
 ```bash
-qadmcli user check-table -u GLUESYNC01 -n CUSTOMERS2 -l GSLIBTST
+qadmcli user check-table -u GLUESYNC01 -n CUSTOMERS2 -l GSLIBTST  # ❌ Old way (no longer works)
 ```
 
-### After (Both Work)
+### After
 
 ```bash
-# New standard way (recommended)
-qadmcli user check-table -u GLUESYNC01 -t CUSTOMERS2 -l GSLIBTST
-
-# Old way still works (backward compatible)
-qadmcli user check-table -u GLUESYNC01 -n CUSTOMERS2 -l GSLIBTST
+# Only way (clear and consistent)
+qadmcli user check-table -u GLUESYNC01 -t CUSTOMERS2 -l GSLIBTST  # ✅ Correct
 ```
 
 ---
@@ -51,11 +50,11 @@ qadmcli user check-table -u GLUESYNC01 -n CUSTOMERS2 -l GSLIBTST
 
 **Line 2110**: Updated option decorator
 ```python
-# Before
+# Before (confusing -n for "name")
 @click.option("--name", "-n", required=True, help="Table name to check")
 
-# After (supports both -t and -n)
-@click.option("--table", "-t", "--name", "-n", required=True, help="Table name to check")
+# After (clear -t for "table")
+@click.option("--table", "-t", required=True, help="Table name to check")
 ```
 
 **Line 2116**: Updated function parameter
@@ -86,19 +85,19 @@ print_panel(ctx, f"Checking permissions for {user} on {library}.{table}", ...)
 $ qadmcli user check-table --help
 
 Options:
-  -u, --user TEXT               Username to check  [required]
-  -t, -n, --table, --name TEXT  Table name to check  [required]
-  -l, --library TEXT            Library containing the table  [required]
-  --help                        Show this message and exit.
+  -u, --user TEXT     Username to check  [required]
+  -t, --table TEXT    Table name to check  [required]
+  -l, --library TEXT  Library containing the table  [required]
+  --help              Show this message and exit.
 ```
 
-Notice: `-t, -n, --table, --name` - all four options work!
+Notice: Clean and simple - only `-t` / `--table` for table name!
 
 ---
 
 ## Testing
 
-### Test with -t (New Standard)
+### Test with -t (Only Option)
 
 ```bash
 $ qadmcli user check-table -u GLUESYNC01 -t CUSTOMERS2 -l GSLIBTST
@@ -116,34 +115,33 @@ $ qadmcli user check-table -u GLUESYNC01 -t CUSTOMERS2 -l GSLIBTST
  Primary Source      | Direct User Grant           
 ```
 
-### Test with -n (Backward Compatible)
+### Test with -n (Should Fail)
 
 ```bash
 $ qadmcli user check-table -u GLUESYNC01 -n CUSTOMERS2 -l GSLIBTST
 
-╭───────────────── Table Permission Check ─────────────────╮
-│ Checking permissions for GLUESYNC01 on GSLIBTST.CUSTOMERS2 │
-╰──────────────────────────────────────────────────────────╯
-
-                 Table Permissions                 
- Property            | Value                       
----------------------+-----------------------------
- Object              | GSLIBTST.CUSTOMERS2         
- Type                | *FILE                       
- Effective Authority | *ALL                        
- Primary Source      | Direct User Grant           
+Error: No such option: -n
 ```
 
-✅ Both produce identical results!
+✅ Clear semantic meaning - `-n` is no longer confused with table name!
 
 ---
 
 ## Benefits
 
 1. **Consistency**: All table-related commands now use `-t`
-2. **Memorability**: Users only need to remember one option flag
-3. **Backward Compatibility**: Existing scripts using `-n` still work
-4. **No Breaking Changes**: Both options are fully supported
+2. **Semantic Clarity**: `-n` exclusively means "number", `-t` exclusively means "table"
+3. **Memorability**: Users only need to remember one option flag per concept
+4. **No Ambiguity**: Clear separation of concerns
+
+### Option Semantics
+
+| Option | Meaning | Used In |
+|--------|---------|----------|
+| `-t` | Table name | All table-related commands |
+| `-n` | Number (count/transactions) | `mockup generate` |
+| `-l` | Library or Limit | Context-dependent |
+| `-u` | User | User-related commands |
 
 ---
 
@@ -188,24 +186,22 @@ Changes:
 
 ### For Users
 
-**No action required!** Both `-t` and `-n` work.
-
-However, for consistency in new scripts, prefer `-t`:
+**Action Required**: Update any scripts using `-n` to use `-t` instead:
 
 ```bash
-# Old (still works)
-qadmcli user check-table -u GLUESYNC01 -n CUSTOMERS2 -l GSLIBTST
+# Old (no longer works)
+qadmcli user check-table -u GLUESYNC01 -n CUSTOMERS2 -l GSLIBTST  # ❌ Error
 
-# New (recommended)
-qadmcli user check-table -u GLUESYNC01 -t CUSTOMERS2 -l GSLIBTST
+# New (correct)
+qadmcli user check-table -u GLUESYNC01 -t CUSTOMERS2 -l GSLIBTST  # ✅ Works
 ```
 
 ### For Documentation
 
-Update any documentation or examples to use `-t` as the primary option.
+Update all documentation and examples to use `-t` for table name.
 
 ---
 
-**Fixed**: 2026-04-13 03:10  
-**Impact**: None (backward compatible)  
-**Breaking Changes**: None
+**Fixed**: 2026-04-13 03:12  
+**Impact**: Breaking change (scripts must update -n to -t)  
+**Breaking Changes**: Yes (-n no longer accepted, use -t instead)

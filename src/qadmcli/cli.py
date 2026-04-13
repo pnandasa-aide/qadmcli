@@ -2962,6 +2962,10 @@ def sql_execute(ctx: click.Context, query: str, target: str, user: str, password
     try:
         config = load_config(config_path)
         
+        # Warn about trailing semicolon for AS400 (DB2 for i doesn't accept it in JDBC)
+        if target == "as400" and query.rstrip().endswith(';'):
+            console.print("[yellow]Warning: Trailing semicolon detected. DB2 for i JDBC driver may reject it. Consider removing the ';'.[/yellow]")
+        
         if target == "mssql":
             # Execute on MSSQL
             if not config.mssql:
@@ -3124,6 +3128,10 @@ def sql_query(ctx: click.Context, query: str, target: str, limit: int, offset: i
         if not query_stripped.startswith("SELECT"):
             console.print("[red]Error: Only SELECT queries are allowed. Use 'sql execute' for other SQL commands.[/red]")
             sys.exit(1)
+        
+        # Warn about trailing semicolon (DB2 for i doesn't accept it in JDBC)
+        if query.rstrip().endswith(';'):
+            console.print("[yellow]Warning: Trailing semicolon detected. DB2 for i JDBC driver may reject it. Consider removing the ';'.[/yellow]")
         
         # Use appropriate connection based on target
         if target == "mssql":
