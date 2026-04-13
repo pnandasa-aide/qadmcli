@@ -3498,6 +3498,24 @@ def mssql_user_check(ctx: click.Context, user: str) -> None:
                 else:
                     console.print("[red]✗ Server login does not exist[/red]")
                 
+                # Login-to-User Mapping
+                if result["mapped_database_user"]:
+                    mapping = result["mapped_database_user"]
+                    map_rows = [
+                        ["Server Login", mapping["login_name"]],
+                        ["Database User", mapping["database_user_name"]],
+                        ["User Type", mapping["user_type"]],
+                        ["Default Schema", mapping["default_schema"] or "N/A"]
+                    ]
+                    console.print(print_table(
+                        console,
+                        ["Property", "Value"],
+                        map_rows,
+                        title="Login-to-User Mapping"
+                    ))
+                elif result["server_login_exists"] and not result["database_user_exists"]:
+                    console.print(f"[yellow]⚠ Login '{user}' is not mapped to any database user in current database[/yellow]")
+                
                 # Database User Info
                 if result["database_user_exists"]:
                     db_info = result["database_user_info"]
@@ -3610,16 +3628,25 @@ def mssql_user_check_table(ctx: click.Context, user: str, table: str, schema: st
                     console.print(f"[red]✗ Table {schema}.{table} does not exist[/red]")
                     return
                 
-                # User status
-                if result["user_has_login"]:
-                    console.print(f"[green]✓ User {user} has server login[/green]")
+                # Server login status
+                if result["server_login_exists"]:
+                    console.print(f"[green]✓ Server login: {user}[/green]")
                 else:
-                    console.print(f"[red]✗ User {user} has no server login[/red]")
+                    console.print(f"[red]✗ Server login: {user} does not exist[/red]")
+                    return
                 
-                if result["user_has_db_user"]:
-                    console.print(f"[green]✓ User {user} has database user[/green]")
+                # Show login-to-user mapping
+                if result["mapped_database_user"]:
+                    mapping = result["mapped_database_user"]
+                    console.print(f"[green]✓ Mapped to database user: {mapping['database_user_name']} (type: {mapping['user_type']})[/green]")
+                    effective_user = mapping["database_user_name"]
+                elif result["database_user_exists"]:
+                    console.print(f"[green]✓ Database user: {user} (explicit)[/green]")
+                    effective_user = user
                 else:
-                    console.print(f"[yellow]⚠ User {user} has no explicit database user (may auto-map)[/yellow]")
+                    console.print(f"[yellow]⚠ No database user mapping found[/yellow]")
+                    console.print(f"[dim]Login '{user}' is not mapped to any user in this database[/dim]")
+                    effective_user = user
                 
                 # Special roles
                 if result["is_sysadmin"]:
@@ -3637,14 +3664,14 @@ def mssql_user_check_table(ctx: click.Context, user: str, table: str, schema: st
                         console,
                         ["Permission", "State"],
                         eff_rows,
-                        title="Effective Permissions"
+                        title=f"Effective Permissions (as {effective_user})"
                     ))
                 else:
-                    if not result["user_has_db_user"]:
-                        console.print("[yellow]⚠ Cannot check effective permissions (no explicit database user)[/yellow]")
-                        console.print("[dim]User may still have access through auto-mapping or server roles[/dim]")
+                    if not result["database_user_exists"] and not result["mapped_database_user"]:
+                        console.print(f"[yellow]⚠ Cannot check effective permissions (login '{user}' has no database user mapping)[/yellow]")
+                        console.print("[dim]User may still have access through guest account or other mechanisms[/dim]")
                     else:
-                        console.print("[yellow]No effective permissions on this table[/yellow]")
+                        console.print(f"[yellow]No effective permissions on this table (checked as {effective_user})[/yellow]")
                 
                 # Explicit permissions
                 if result["role_permissions"]:
@@ -3655,7 +3682,7 @@ def mssql_user_check_table(ctx: click.Context, user: str, table: str, schema: st
                         console,
                         ["Permission", "State", "Grantee"],
                         role_rows,
-                        title="Explicit Permissions"
+                        title=f"Explicit Permissions (for {effective_user})"
                     ))
                 
                 # Public permissions

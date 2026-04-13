@@ -22,6 +22,7 @@ class MSSQLUserManager:
             "username": username,
             "server_login_info": None,
             "database_user_info": None,
+            "mapped_database_user": None,  # NEW: Find DB user linked to login
             "server_roles": [],
             "database_roles": [],
             "explicit_permissions": []
@@ -77,6 +78,30 @@ class MSSQLUserManager:
                     "modify_date": str(row[3]) if row[3] else None,
                     "default_schema": row[4]
                 }
+            
+            # NEW: Find database user mapped to this login (via SID matching)
+            if result["server_login_exists"]:
+                cursor.execute("""
+                    SELECT 
+                        sp.name AS login_name,
+                        sp.sid AS login_sid,
+                        dp.name AS database_user_name,
+                        dp.type_desc AS user_type,
+                        dp.default_schema_name
+                    FROM sys.server_principals sp
+                    LEFT JOIN sys.database_principals dp ON sp.sid = dp.sid
+                    WHERE sp.name = ?
+                """, (username,))
+                
+                mapped_row = cursor.fetchone()
+                if mapped_row and mapped_row[2]:  # database_user_name exists
+                    result["mapped_database_user"] = {
+                        "login_name": mapped_row[0],
+                        "login_sid": mapped_row[1].hex() if mapped_row[1] else None,
+                        "database_user_name": mapped_row[2],
+                        "user_type": mapped_row[3],
+                        "default_schema": mapped_row[4]
+                    }
             
             # Get server roles (if login exists)
             if result["server_login_exists"]:
@@ -138,8 +163,9 @@ class MSSQLUserManager:
             "username": username,
             "table": f"{schema}.{table}",
             "table_exists": False,
-            "user_has_login": False,
-            "user_has_db_user": False,
+            "server_login_exists": False,
+            "database_user_exists": False,
+            "mapped_database_user": None,  # NEW: Track mapped user
             "is_sysadmin": False,
             "is_db_owner": False,
             "effective_permissions": [],
@@ -169,7 +195,7 @@ class MSSQLUserManager:
             """, (username,))
             
             if cursor.fetchone()[0] > 0:
-                result["user_has_login"] = True
+                result["server_login_exists"] = True
             
             # Check if user has database user
             cursor.execute("""
@@ -179,7 +205,33 @@ class MSSQLUserManager:
             """, (username,))
             
             if cursor.fetchone()[0] > 0:
-                result["user_has_db_user"] = True
+                result["database_user_exists"] = True
+            
+            # NEW: Find mapped database user via SID
+            if result["server_login_exists"]:
+                cursor.execute("""
+                    SELECT 
+                        sp.name AS login_name,
+                        dp.name AS database_user_name,
+                        dp.type_desc AS user_type
+                    FROM sys.server_principals sp
+                    LEFT JOIN sys.database_principals dp ON sp.sid = dp.sid
+                    WHERE sp.name = ?
+                """, (username,))
+                
+                mapped_row = cursor.fetchone()
+                if mapped_row and mapped_row[1]:  # database_user_name exists
+                    result["mapped_database_user"] = {
+                        "login_name": mapped_row[0],
+                        "database_user_name": mapped_row[1],
+                        "user_type": mapped_row[2]
+                    }
+                    # Use mapped user for permission checks
+                    effective_username = mapped_row[1]
+                else:
+                    effective_username = username
+            else:
+                effective_username = username
             
             # Check if user is sysadmin (bypasses all permissions)
             cursor.execute("""
@@ -194,14 +246,14 @@ class MSSQLUserManager:
                 result["is_sysadmin"] = True
             
             # Check if user is db_owner
-            if result["user_has_db_user"]:
+            if result["database_user_exists"]:
                 cursor.execute("""
                     SELECT COUNT(*)
                     FROM sys.database_role_members rm
                     JOIN sys.database_principals r ON rm.role_principal_id = r.principal_id
                     JOIN sys.database_principals m ON rm.member_principal_id = m.principal_id
                     WHERE m.name = ? AND r.name = 'db_owner'
-                """, (username,))
+                """, (effective_username,))
                 
                 if cursor.fetchone()[0] > 0:
                     result["is_db_owner"] = True
@@ -221,7 +273,7 @@ class MSSQLUserManager:
             object_id = table_row[0]
             
             # Get effective permissions for the user on this table (only if user exists)
-            if result["user_has_db_user"]:
+            if result["database_user_exists"] or result["mapped_database_user"]:
                 try:
                     cursor.execute("""
                         EXECUTE AS USER = ?
@@ -232,7 +284,7 @@ class MSSQLUserManager:
                         FROM fn_my_permissions(?, 'OBJECT')
                         
                         REVERT
-                    """, (username, f"{schema}.{table}"))
+                    """, (effective_username, f"{schema}.{table}"))
                     
                     for row in cursor.fetchall():
                         result["effective_permissions"].append({
