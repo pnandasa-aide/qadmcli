@@ -1693,7 +1693,7 @@ def journal_monitor(ctx: click.Context, library: str | None, threshold: int) -> 
 @click.option("--library", "-l", required=True, help="Library name")
 @click.option("--fast", "-f", is_flag=True, help="Skip slow entry range query (for large journals)")
 @click.pass_context
-def journal_info(ctx: click.Context, name: str, library: str, fast: bool) -> None:
+def journal_info(ctx: click.Context, table: str, library: str, fast: bool) -> None:
     """Get detailed journal information for one or more tables.
     
     Supports wildcards:
@@ -1715,7 +1715,7 @@ def journal_info(ctx: click.Context, name: str, library: str, fast: bool) -> Non
             jrn = JournalManager(conn)
             
             # Check if wildcard pattern (* and ? are shell-style, % is SQL-style)
-            if '*' in name or '%' in name or '?' in name:
+            if '*' in table or '%' in table or '?' in table:
                 # Find matching tables
                 from .db.schema import SchemaManager
                 import fnmatch
@@ -1723,11 +1723,11 @@ def journal_info(ctx: click.Context, name: str, library: str, fast: bool) -> Non
                 all_tables = schema_mgr.list_tables(library)
                 
                 # Filter tables by pattern
-                pattern = name.replace('%', '*')
+                pattern = table.replace('%', '*')
                 tables = [t for t in all_tables if fnmatch.fnmatch(t.name, pattern)]
                 
                 if not tables:
-                    console.print(f"[yellow]No tables matching pattern '{name}' in {library}[/yellow]")
+                    console.print(f"[yellow]No tables matching pattern '{table}' in {library}[/yellow]")
                     return
                 
                 # Process each table
@@ -1774,13 +1774,13 @@ def journal_info(ctx: click.Context, name: str, library: str, fast: bool) -> Non
                 
                 if output_json:
                     print_json_clean({
-                        "pattern": name,
+                        "pattern": table,
                         "library": library,
                         "tables": results
                     })
             else:
                 # Single table
-                info = jrn.get_journal_info(name, library, skip_entry_range=fast)
+                info = jrn.get_journal_info(table, library, skip_entry_range=fast)
                 
                 if output_json:
                     print_json_clean(info.model_dump())
@@ -1795,7 +1795,7 @@ def journal_info(ctx: click.Context, name: str, library: str, fast: bool) -> Non
                         images_display = "BEFORE (Before image only)"
                     
                     content = Text.assemble(
-                        ("Table: ", "bold"), f"{library}.{name}", "\n\n",
+                        ("Table: ", "bold"), f"{library}.{table}", "\n\n",
                         ("Journal Status:\n", "bold underline"),
                         ("  Journaled: ", "bold"), ("Yes" if info.is_journaled else "No"), "\n",
                         ("  Journal: ", "bold"), (f"{info.journal_library}.{info.journal_name}" if info.journal_library else "N/A"), "\n",
