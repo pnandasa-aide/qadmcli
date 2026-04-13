@@ -2945,10 +2945,11 @@ def sql() -> None:
 @sql.command("execute")
 @click.option("--query", "-q", required=True, help="SQL query to execute")
 @click.option("-t", "--target", type=click.Choice(["as400", "mssql"]), default="as400", help="Target database (default: as400)")
+@click.option("--format", "-f", "output_format", type=click.Choice(["table", "json"]), default="table", help="Output format (default: table)")
 @click.option("--user", "-u", default=None, help="Override username for connection")
 @click.option("--password", "-p", default=None, help="Override password for connection")
 @click.pass_context
-def sql_execute(ctx: click.Context, query: str, target: str, user: str, password: str) -> None:
+def sql_execute(ctx: click.Context, query: str, target: str, output_format: str, user: str, password: str) -> None:
     """Execute a SQL query and display results.
     
     Examples:
@@ -2978,9 +2979,11 @@ def sql_execute(ctx: click.Context, query: str, target: str, user: str, password
             mssql_config = config.mssql
             if user or password:
                 mssql_config = config.mssql.copy_with_overrides(username=user, password=password)
-                console.print(f"[yellow]Using credential override: user={user or '***'}[/yellow]")
+                if output_format != "json":  # Suppress in JSON mode
+                    console.print(f"[yellow]Using credential override: user={user or '***'}[/yellow]")
             
-            console.print(f"[dim]Executing on MSSQL: {query[:80]}...[/dim]")
+            if output_format != "json":  # Suppress in JSON mode
+                console.print(f"[dim]Executing on MSSQL: {query[:80]}...[/dim]")
             
             with MSSQLConnection(mssql_config) as conn:
                 with conn.get_cursor() as cursor:
@@ -3027,7 +3030,8 @@ def sql_execute(ctx: click.Context, query: str, target: str, user: str, password
             temp_config = deepcopy(config)
             temp_config.as400 = as400_config
             
-            console.print(f"[dim]Executing on AS400: {query[:80]}...[/dim]")
+            if output_format != "json":  # Suppress in JSON mode
+                console.print(f"[dim]Executing on AS400: {query[:80]}...[/dim]")
             
             with AS400ConnectionManager(temp_config) as conn:
                 cursor = conn.execute(query)
@@ -3039,15 +3043,16 @@ def sql_execute(ctx: click.Context, query: str, target: str, user: str, password
                 rows = cursor.fetchall()
                 cursor.close()
                 
-                if output_json:
-                    # Convert to list of dicts for JSON output
+                if output_json or output_format == "json":
+                    # Clean JSON output for scripts (no Rich formatting)
+                    from .utils.formatters import print_json_clean
                     results = []
                     for row in rows:
                         row_dict = {}
                         for i, col in enumerate(columns):
                             row_dict[str(col)] = row[i]
                         results.append(row_dict)
-                    print_json(console, results)
+                    print_json_clean(results)
                 else:
                     # Format as table
                     if rows:
@@ -3131,7 +3136,8 @@ def sql_query(ctx: click.Context, query: str, target: str, limit: int, offset: i
         
         # Warn about trailing semicolon (DB2 for i doesn't accept it in JDBC)
         if target == "as400" and query.rstrip().endswith(';'):
-            console.print("[yellow]Warning: Trailing semicolon detected. DB2 for i JDBC driver may reject it. Consider removing the ';'.[/yellow]")
+            if output_format != "json":  # Suppress in JSON mode
+                console.print("[yellow]Warning: Trailing semicolon detected. DB2 for i JDBC driver may reject it. Consider removing the ';'.[/yellow]")
         
         # Use appropriate connection based on target
         if target == "mssql":
@@ -3143,7 +3149,8 @@ def sql_query(ctx: click.Context, query: str, target: str, limit: int, offset: i
             mssql_config = config.mssql
             if user or password:
                 mssql_config = config.mssql.copy_with_overrides(username=user, password=password)
-                console.print(f"[yellow]Using credential override: user={user or '***'}[/yellow]")
+                if output_format != "json":  # Suppress in JSON mode
+                    console.print(f"[yellow]Using credential override: user={user or '***'}[/yellow]")
             conn_manager = MSSQLConnection(mssql_config)
             conn_manager.connect()
         else:
@@ -3152,7 +3159,8 @@ def sql_query(ctx: click.Context, query: str, target: str, limit: int, offset: i
             as400_config = config.as400
             if user or password:
                 as400_config = config.as400.copy_with_overrides(user=user, password=password)
-                console.print(f"[yellow]Using credential override: user={user or '***'}[/yellow]")
+                if output_format != "json":  # Suppress in JSON mode
+                    console.print(f"[yellow]Using credential override: user={user or '***'}[/yellow]")
             # Create temporary config with overridden AS400 settings
             from copy import deepcopy
             temp_config = deepcopy(config)
@@ -3204,14 +3212,15 @@ def sql_query(ctx: click.Context, query: str, target: str, limit: int, offset: i
             
             # Output based on format
             if output_format == "json" or output_json:
-                # JSON output
+                # Clean JSON output for scripts (no Rich formatting)
+                from .utils.formatters import print_json_clean
                 results = []
                 for row in rows:
                     row_dict = {}
                     for i, col in enumerate(columns):
                         row_dict[str(col)] = row[i]
                     results.append(row_dict)
-                print_json(console, results)
+                print_json_clean(results)
             elif output_format == "csv":
                 # CSV output
                 import csv

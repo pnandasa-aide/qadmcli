@@ -56,6 +56,12 @@ def print_json(console: Console, data: Any, indent: int = 2) -> None:
     console.print(RichJSON(json_str))
 
 
+def print_json_clean(data: Any, indent: int = 2) -> None:
+    """Print clean JSON to stdout (no Rich formatting, for scripts/piping)."""
+    json_str = json.dumps(data, indent=indent, default=str, ensure_ascii=False)
+    print(json_str)
+
+
 def print_ascii_panel(
     console: Console,
     content: str | Text,
