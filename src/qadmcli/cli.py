@@ -1090,10 +1090,10 @@ def journal() -> None:
 
 
 @journal.command("check")
-@click.option("--name", "-n", required=True, help="Table name")
+@click.option("--table", "-t", required=True, help="Table name")
 @click.option("--library", "-l", required=True, help="Library name")
 @click.pass_context
-def journal_check(ctx: click.Context, name: str, library: str) -> None:
+def journal_check(ctx: click.Context, table: str, library: str) -> None:
     """Check journal status for a table."""
     config_path = ctx.obj["config_path"]
     output_json = ctx.obj["output_json"]
@@ -1103,7 +1103,7 @@ def journal_check(ctx: click.Context, name: str, library: str) -> None:
         
         with AS400ConnectionManager(config) as conn:
             jrn = JournalManager(conn)
-            info = jrn.get_journal_info(name, library)
+            info = jrn.get_journal_info(table, library)
             
             if output_json:
                 print_json_clean(info.get_summary())
@@ -1112,7 +1112,7 @@ def journal_check(ctx: click.Context, name: str, library: str) -> None:
                 print_panel(
                     ctx,
                     Text.assemble(
-                        ("Table: ", "bold"), f"{library}.{name}", "\n",
+                        ("Table: ", "bold"), f"{library}.{table}", "\n",
                         ("Journaled: ", "bold"), ("Yes" if info.is_journaled else "No", status_color), "\n",
                         ("Journal: ", "bold"), (f"{info.journal_library}.{info.journal_name}" if info.journal_library and info.journal_name else "N/A"), "\n",
                         ("Receiver: ", "bold"), (f"{info.journal_receiver_library}.{info.journal_receiver_name}" if info.journal_receiver_library and info.journal_receiver_name else "N/A"), "\n",
