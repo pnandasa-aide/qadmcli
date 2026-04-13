@@ -164,11 +164,11 @@ All tables are automatically journaled when created in a library with an active 
 
 ```bash
 # Verify journaling status
-qadmcli table check -n INSURANCE_PRODUCTS -l GSLIBTST
-qadmcli table check -n SUBSCRIPTIONS -l GSLIBTST
-qadmcli table check -n PAYMENTS -l GSLIBTST
-qadmcli table check -n CLAIMS -l GSLIBTST
-qadmcli table check -n CLAIM_DOCUMENTS -l GSLIBTST
+qadmcli table check -t INSURANCE_PRODUCTS -l GSLIBTST
+qadmcli table check -t SUBSCRIPTIONS -l GSLIBTST
+qadmcli table check -t PAYMENTS -l GSLIBTST
+qadmcli table check -t CLAIMS -l GSLIBTST
+qadmcli table check -t CLAIM_DOCUMENTS -l GSLIBTST
 ```
 
 ### Grant Permissions

@@ -259,10 +259,10 @@ Check the table and journal status:
 
 ```bash
 # Check table info (shows row count, journaling status, primary key)
-qadmcli table check -n ORDERS -l MYLIB
+qadmcli table check -t ORDERS -l MYLIB
 
 # Check journal info
-qadmcli journal info -n ORDERS -l MYLIB
+qadmcli journal info -t ORDERS -l MYLIB
 
 # List tables in library
 qadmcli table list -l MYLIB
@@ -274,13 +274,13 @@ Populate the table with test data:
 
 ```bash
 # Dry run - preview generated data
-qadmcli mockup generate -n ORDERS -l MYLIB --dry-run -t 10
+qadmcli mockup generate -t ORDERS -l MYLIB --dry-run -r 10
 
 # Generate 1000 transactions (50% insert, 30% update, 20% delete)
-qadmcli mockup generate -n ORDERS -l MYLIB -t 1000
+qadmcli mockup generate -t ORDERS -l MYLIB -r 1000
 
 # Custom transaction mix
-qadmcli mockup generate -n ORDERS -l MYLIB -t 500 \
+qadmcli mockup generate -t ORDERS -l MYLIB -r 500 \
   --insert-ratio 60 --update-ratio 30 --delete-ratio 10
 ```
 
@@ -290,10 +290,10 @@ After data changes, view the journal entries:
 
 ```bash
 # Show recent journal entries
-qadmcli journal show -n ORDERS -l MYLIB -e 50
+qadmcli journal entries -t ORDERS -l MYLIB --limit 50
 
 # Show entries as JSON
-qadmcli journal show -n ORDERS -l MYLIB -e 50 --json
+qadmcli --json journal entries -t ORDERS -l MYLIB --limit 50
 ```
 
 ---
@@ -317,7 +317,7 @@ qadmcli connection test --json
 
 Check if table exists (shows both system and SQL names):
 ```bash
-qadmcli table check -n CUSTOMERS -l MYLIB
+qadmcli table check -t CUSTOMERS -l MYLIB
 ```
 
 Create table from YAML schema:
@@ -336,23 +336,23 @@ qadmcli table create -s config/tables/orders.sql
 
 Drop and recreate table:
 ```bash
-qadmcli table drop-create -n CUSTOMERS -l MYLIB -s config/tables/customers.yaml --force
+qadmcli table drop-create -t CUSTOMERS -l MYLIB -s config/tables/customers.yaml --force
 ```
 
 Drop a table:
 ```bash
-qadmcli table drop -n CUSTOMERS -l MYLIB --force
+qadmcli table drop -t CUSTOMERS -l MYLIB --force
 ```
 
 Empty table data (DELETE all rows):
 ```bash
-qadmcli table empty -n CUSTOMERS -l MYLIB --force
+qadmcli table empty -t CUSTOMERS -l MYLIB --force
 ```
 
 Reverse engineer table to YAML schema:
 ```bash
-qadmcli table reverse -n CUSTOMERS -l MYLIB
-qadmcli table reverse -n CUSTOMERS -l MYLIB -o /app/schemas/customers.yaml
+qadmcli table reverse -t CUSTOMERS -l MYLIB
+qadmcli table reverse -t CUSTOMERS -l MYLIB -o /app/schemas/customers.yaml
 ```
 
 List tables in a library (shows both system and SQL names):
@@ -417,35 +417,39 @@ qadmcli journal cleanup -j QSQJRN -l MYLIB --keep 2
 #### Journal Operations
 
 Check journal status:
+Check journal status:
 ```bash
-qadmcli journal check -n CUSTOMERS -l MYLIB
+qadmcli journal check -t CUSTOMERS -l MYLIB
+
+# JSON output
+qadmcli --json journal check -t CUSTOMERS -l MYLIB
 ```
 
 Enable journaling:
 ```bash
 # Use default journal from config
-qadmcli journal enable -n CUSTOMERS -l MYLIB
+qadmcli journal enable -t CUSTOMERS -l MYLIB
 
 # Specify journal explicitly (supports cross-library)
-qadmcli journal enable -n CUSTOMERS -l MYLIB --journal-library JRNLIB --journal-name QSQJRN
+qadmcli journal enable -t CUSTOMERS -l MYLIB --journal-library JRNLIB --journal-name QSQJRN
 
 # Enable with BEFORE/AFTER images (BOTH) for CDC
-qadmcli journal enable -n CUSTOMERS -l MYLIB --images *BOTH
+qadmcli journal enable -t CUSTOMERS -l MYLIB --images *BOTH
 ```
 
 Enable/disable journaling for multiple tables (wildcard support):
 ```bash
 # Dry run first to see which tables match
-qadmcli journal disable -n "TB_*" -l EZPIPE --dry-run
+qadmcli journal disable -t "TB_*" -l EZPIPE --dry-run
 
 # Disable journaling for all TB_ tables
-qadmcli journal disable -n "TB_*" -l EZPIPE
+qadmcli journal disable -t "TB_*" -l EZPIPE
 
 # Enable with BOTH images for TB_01 to TB_09
-qadmcli journal enable -n "TB_0*" -l EZPIPE -j EZPIPE --images *BOTH
+qadmcli journal enable -t "TB_0*" -l EZPIPE -j EZPIPE --images *BOTH
 
 # Enable for all TEST tables
-qadmcli journal enable -n "TEST*" -l MYLIB --images *AFTER
+qadmcli journal enable -t "TEST*" -l MYLIB --images *AFTER
 ```
 
 **Wildcard Characters:**
@@ -460,34 +464,34 @@ qadmcli journal enable -n "TEST*" -l MYLIB --images *AFTER
 Get journal entries:
 ```bash
 # SQL format (default)
-qadmcli journal entries -n CUSTOMERS -l MYLIB --limit 50
+qadmcli journal entries -t CUSTOMERS -l MYLIB --limit 50
 
 # JSON format
-qadmcli journal entries -n CUSTOMERS -l MYLIB --limit 50 --format json
+qadmcli --json journal entries -t CUSTOMERS -l MYLIB --limit 50
 ```
 
 Get detailed journal info:
 ```bash
 # Normal mode (shows entry range - may be slow for large journals)
-qadmcli journal info -n CUSTOMERS -l MYLIB
+qadmcli journal info -t CUSTOMERS -l MYLIB
 
 # Fast mode (skips entry range query for better performance)
-qadmcli journal info -n CUSTOMERS -l MYLIB --fast
+qadmcli journal info -t CUSTOMERS -l MYLIB --fast
 
 # JSON output
-qadmcli journal info -n CUSTOMERS -l MYLIB --json
+qadmcli --json journal info -t CUSTOMERS -l MYLIB
 ```
 
 Get journal info for multiple tables (wildcard support):
 ```bash
 # Check journal status for all TB_ tables (fast mode recommended)
-qadmcli journal info -n "TB_*" -l EZPIPE --fast
+qadmcli journal info -t "TB_*" -l EZPIPE --fast
 
 # Check all TEST tables
-qadmcli journal info -n "TEST*" -l MYLIB --fast
+qadmcli journal info -t "TEST*" -l MYLIB --fast
 
 # JSON output for multiple tables
-qadmcli journal info -n "TB_*" -l EZPIPE --fast --json
+qadmcli --json journal info -t "TB_*" -l EZPIPE --fast
 ```
 
 **Wildcard batch output format:**
@@ -811,7 +815,7 @@ qadmcli user grant -u USER001 -g "*CHANGE" -l MYLIB -n "CUST*" -t *FILE
 **Step 3: Grant journal permissions (required for CDC)**
 ```bash
 # First, find the journal name
-qadmcli journal info -n CUSTOMERS -l MYLIB
+qadmcli journal info -t CUSTOMERS -l MYLIB
 # Output shows: Journal: MYLIB.MYJRN
 
 # Grant authority on the journal
@@ -841,23 +845,23 @@ qadmcli user check-table -u USER001 -t CUSTOMERS -l MYLIB
 Generate mock data with automatic field pattern recognition:
 ```bash
 # Dry run - preview SQL statements
-qadmcli mockup generate -n CUSTOMERS -l MYLIB --dry-run -t 100
+qadmcli mockup generate -t CUSTOMERS -l MYLIB --dry-run -r 100
 
 # Execute with default ratios (50% insert, 30% update, 20% delete)
-qadmcli mockup generate -n CUSTOMERS -l MYLIB -t 1000
+qadmcli mockup generate -t CUSTOMERS -l MYLIB -r 1000
 
 # Custom transaction mix
-qadmcli mockup generate -n CUSTOMERS -l MYLIB -t 1000 \
+qadmcli mockup generate -t CUSTOMERS -l MYLIB -r 1000 \
   --insert-ratio 60 --update-ratio 30 --delete-ratio 10
 
 # Large batch with custom batch size
-qadmcli mockup generate -n CUSTOMERS -l MYLIB -t 5000 -b 200
+qadmcli mockup generate -t CUSTOMERS -l MYLIB -r 5000 -b 200
 
 # Use schema file for hints and validation
-qadmcli mockup generate -n ORDERTRANX -l MYLIB -s config/schema/order.yaml --dry-run -t 100
+qadmcli mockup generate -t ORDERTRANX -l MYLIB -s config/schema/order.yaml --dry-run -r 100
 
 # Skip schema validation when using schema file
-qadmcli mockup generate -n ORDERTRANX -l MYLIB -s config/schema/order.yaml --skip-validation -t 100
+qadmcli mockup generate -t ORDERTRANX -l MYLIB -s config/schema/order.yaml --skip-validation -r 100
 ```
 
 **Supported Field Patterns:**
@@ -1009,10 +1013,10 @@ When using `--schema` with mockup generation, the tool validates that the actual
 
 ```bash
 # Validate schema before generating data
-qadmcli mockup generate -n ORDERTRANX -l MYLIB -s config/schema/order.yaml --dry-run -t 100
+qadmcli mockup generate -t ORDERTRANX -l MYLIB -s config/schema/order.yaml --dry-run -r 100
 
 # Skip validation if needed
-qadmcli mockup generate -n ORDERTRANX -l MYLIB -s config/schema/order.yaml --skip-validation -t 100
+qadmcli mockup generate -t ORDERTRANX -l MYLIB -s config/schema/order.yaml --skip-validation -r 100
 ```
 
 **Validation Checks:**
@@ -1283,17 +1287,17 @@ qadmcli table convert -s config/schema/subscriber.yaml \
 
 ```bash
 # Create table on MSSQL from DB2 schema
-qadmcli table create-mssql -n subscribers \
+qadmcli table create-mssql -t subscribers \
   -s config/schema/subscriber.yaml \
   -d mydatabase --schema-name dbo
 
 # Dry run to preview SQL
-qadmcli table create-mssql -n subscribers \
+qadmcli table create-mssql -t subscribers \
   -s config/schema/subscriber.yaml \
   -d mydatabase --dry-run
 
 # Drop and recreate
-qadmcli table create-mssql -n subscribers \
+qadmcli table create-mssql -t subscribers \
   -s config/schema/subscriber.yaml \
   -d mydatabase --drop-if-exists
 ```
@@ -1311,18 +1315,18 @@ qadmcli table compare-schemas \
 
 ```bash
 # 1. Create table on DB2 from schema
-qadmcli table create -n SUBSCRIBER -l TESTLIB \
+qadmcli table create -t SUBSCRIBER -l TESTLIB \
   -s config/schema/subscriber.yaml
 
 # 2. Reverse engineer the table back to YAML
-qadmcli table reverse -n SUBSCRIBER -l TESTLIB \
+qadmcli table reverse -t SUBSCRIBER -l TESTLIB \
   -o reversed_subscriber.yaml
 
 # 3. Compare original with reversed
 diff config/schema/subscriber.yaml reversed_subscriber.yaml
 
 # 4. Create on MSSQL from same schema
-qadmcli table create-mssql -n subscribers \
+qadmcli table create-mssql -t subscribers \
   -s config/schema/subscriber.yaml -d targetdb
 ```
 

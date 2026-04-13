@@ -366,7 +366,7 @@ qadmcli mssql ct enable-db \
 
 ### Enable Journaling (requires authority)
 ```bash
-qadmcli journal enable -n CUSTOMERS -l GSLIBTST
+qadmcli journal enable -t CUSTOMERS -l GSLIBTST
 ```
 
 ### Test After Changes

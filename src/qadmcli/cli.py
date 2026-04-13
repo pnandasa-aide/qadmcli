@@ -1149,9 +1149,9 @@ def journal_disable(
       - ? or _ for single character
     
     Examples:
-      qadmcli journal disable -n TB_01 -l EZPIPE
-      qadmcli journal disable -n "TB_*" -l EZPIPE
-      qadmcli journal disable -n "%TEST%" -l MYLIB --dry-run
+      qadmcli journal disable -t TB_01 -l EZPIPE
+      qadmcli journal disable -t "TB_*" -l EZPIPE
+      qadmcli journal disable -t "%TEST%" -l MYLIB --dry-run
     """
     config_path = ctx.obj["config_path"]
     output_json = ctx.obj["output_json"]
@@ -1267,9 +1267,9 @@ def journal_enable(
       - ? or _ for single character
     
     Examples:
-      qadmcli journal enable -n TB_01 -l EZPIPE
-      qadmcli journal enable -n "TB_*" -l EZPIPE --images *BOTH
-      qadmcli journal enable -n "%TEST%" -l MYLIB -j MYLIB --dry-run
+      qadmcli journal enable -t TB_01 -l EZPIPE
+      qadmcli journal enable -t "TB_*" -l EZPIPE --images *BOTH
+      qadmcli journal enable -t "%TEST%" -l MYLIB -j MYLIB --dry-run
     """
     config_path = ctx.obj["config_path"]
     output_json = ctx.obj["output_json"]
@@ -1701,9 +1701,9 @@ def journal_info(ctx: click.Context, table: str, library: str, fast: bool) -> No
       - ? for single character
     
     Examples:
-      qadmcli journal info -n TB_01 -l EZPIPE
-      qadmcli journal info -n "TB_*" -l EZPIPE --fast
-      qadmcli journal info -n "TEST*" -l MYLIB
+      qadmcli journal info -t TB_01 -l EZPIPE
+      qadmcli journal info -t "TB_*" -l EZPIPE --fast
+      qadmcli journal info -t "TEST*" -l MYLIB
     """
     config_path = ctx.obj["config_path"]
     output_json = ctx.obj["output_json"]
