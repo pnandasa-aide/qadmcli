@@ -585,7 +585,7 @@ qadmcli user check -u USER001 -l MYLIB -n "CUST*"
 Check permissions for a specific table (includes journal permissions):
 ```bash
 # Check user permissions on table and its related journal objects
-qadmcli user check-table -u USER001 -n CUSTOMERS -l MYLIB
+qadmcli user check-table -u USER001 -t CUSTOMERS -l MYLIB
 
 # Output shows:
 # - Table permission (*FILE) with authority sources
@@ -824,7 +824,7 @@ qadmcli user grant -u USER001 -g "*ALL" -l MYLIB -n "MYJRN*" -t *JRNRCV
 **Step 4: Verify permissions**
 ```bash
 # Check-table shows consolidated view
-qadmcli user check-table -u USER001 -n CUSTOMERS -l MYLIB
+qadmcli user check-table -u USER001 -t CUSTOMERS -l MYLIB
 ```
 
 **Common Permission Issues:**
