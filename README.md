@@ -107,7 +107,7 @@ qadmcli --border-style ascii table check -n CUSTOMERS -l MYLIB
 qadmcli --verbose table list -l MYLIB
 
 # JSON output
-qadmcli --json user check -u USER001
+qadmcli user check -u USER001
 
 # Custom config file
 qadmcli --config /path/to/connection.yaml table check -n CUSTOMERS -l MYLIB
@@ -293,7 +293,7 @@ After data changes, view the journal entries:
 qadmcli journal entries -t ORDERS -l MYLIB --limit 50
 
 # Show entries as JSON
-qadmcli --json journal entries -t ORDERS -l MYLIB --limit 50
+qadmcli journal entries -t ORDERS -l MYLIB --limit 50
 ```
 
 ---
@@ -310,7 +310,7 @@ qadmcli connection test
 qadmcli -c /path/to/connection.yaml connection test
 
 # JSON output
-qadmcli connection test --json
+qadmcli connection test --format json
 ```
 
 ### Table Commands
@@ -358,7 +358,7 @@ qadmcli table reverse -t CUSTOMERS -l MYLIB -o /app/schemas/customers.yaml
 List tables in a library (shows both system and SQL names):
 ```bash
 qadmcli table list -l MYLIB
-qadmcli table list -l MYLIB --json
+qadmcli table list -l MYLIB --format json
 ```
 
 ### Journal Commands
@@ -422,7 +422,7 @@ Check journal status:
 qadmcli journal check -t CUSTOMERS -l MYLIB
 
 # JSON output
-qadmcli --json journal check -t CUSTOMERS -l MYLIB
+qadmcli journal check -t CUSTOMERS -l MYLIB
 ```
 
 Enable journaling:
@@ -467,7 +467,7 @@ Get journal entries:
 qadmcli journal entries -t CUSTOMERS -l MYLIB --limit 50
 
 # JSON format
-qadmcli --json journal entries -t CUSTOMERS -l MYLIB --limit 50
+qadmcli journal entries -t CUSTOMERS -l MYLIB --limit 50
 ```
 
 Get detailed journal info:
@@ -479,7 +479,7 @@ qadmcli journal info -t CUSTOMERS -l MYLIB
 qadmcli journal info -t CUSTOMERS -l MYLIB --fast
 
 # JSON output
-qadmcli --json journal info -t CUSTOMERS -l MYLIB
+qadmcli journal info -t CUSTOMERS -l MYLIB
 ```
 
 Get journal info for multiple tables (wildcard support):
@@ -491,7 +491,7 @@ qadmcli journal info -t "TB_*" -l EZPIPE --fast
 qadmcli journal info -t "TEST*" -l MYLIB --fast
 
 # JSON output for multiple tables
-qadmcli --json journal info -t "TB_*" -l EZPIPE --fast
+qadmcli journal info -t "TB_*" -l EZPIPE --fast
 ```
 
 **Wildcard batch output format:**
@@ -741,7 +741,7 @@ qadmcli user list --filter "Q*"
 qadmcli user list --filter "*ADMIN*"
 
 # JSON output
-qadmcli --json user list
+qadmcli user list
 ```
 
 **Output columns:**
@@ -1150,7 +1150,7 @@ qadmcli sql execute -q "SELECT JOURNAL_NAME, JOURNAL_LIBRARY, JOURNAL_IMAGES FRO
 qadmcli -v connection test
 
 # JSON output
-qadmcli --json table check -n CUSTOMERS -l MYLIB
+qadmcli table check -t CUSTOMERS -l MYLIB --format json
 
 # Custom config file
 qadmcli -c /custom/path/connection.yaml table list -l MYLIB
