@@ -1454,8 +1454,9 @@ def journal_entries(
 
 @journal.command("list")
 @click.option("--library", "-l", help="Filter by library name")
+@click.option("--format", "-f", "output_format", type=click.Choice(["table", "json"]), default="table", help="Output format (default: table)")
 @click.pass_context
-def journal_list(ctx: click.Context, library: str | None) -> None:
+def journal_list(ctx: click.Context, library: str | None, output_format: str) -> None:
     """List all journals with their sizes and status."""
     config_path = ctx.obj["config_path"]
     
@@ -1836,12 +1837,14 @@ def journal_info(ctx: click.Context, table: str, library: str, fast: bool, outpu
 @click.option("--name", "-n", required=True, help="Journal receiver name")
 @click.option("--library", "-l", required=True, help="Library for journal receiver")
 @click.option("--threshold", "-t", default="*NONE", help="Size threshold (e.g., '100000' or '*NONE')")
+@click.option("--format", "-F", "output_format", type=click.Choice(["table", "json"]), default="table", help="Output format (default: table)")
 @click.pass_context
 def journal_create_receiver(
     ctx: click.Context,
-    table: str,
+    name: str,
     library: str,
-    threshold: str
+    threshold: str,
+    output_format: str
 ) -> None:
     """Create a standalone journal receiver (not attached to any journal)."""
     config_path = ctx.obj["config_path"]
@@ -1922,6 +1925,7 @@ def journal_rollover(
 @click.option("--receiver", "-r", required=True, help="Journal receiver name")
 @click.option("--receiver-library", "-rl", help="Journal receiver library (defaults to journal library)")
 @click.option("--msg-queue", "-m", default="*NONE", help="Message queue for journal messages")
+@click.option("--format", "-F", "output_format", type=click.Choice(["table", "json"]), default="table", help="Output format (default: table)")
 @click.pass_context
 def journal_create(
     ctx: click.Context,
@@ -1929,7 +1933,8 @@ def journal_create(
     library: str,
     receiver: str,
     receiver_library: str | None,
-    msg_queue: str
+    msg_queue: str,
+    output_format: str
 ) -> None:
     """Create a journal."""
     config_path = ctx.obj["config_path"]
@@ -1963,12 +1968,14 @@ def user() -> None:
 @click.option("--filter", "-f", help="Filter users by name (supports wildcards like 'Q*' or '%USER%')")
 @click.option("--active-only", "-a", is_flag=True, help="Show only active/enabled users")
 @click.option("--limit", "-n", type=int, default=100, help="Maximum number of users to display (default: 100)")
+@click.option("--format", "-F", "output_format", type=click.Choice(["table", "json"]), default="table", help="Output format (default: table)")
 @click.pass_context
 def user_list(
     ctx: click.Context,
     filter: str | None,
     active_only: bool,
-    limit: int
+    limit: int,
+    output_format: str
 ) -> None:
     """List user profiles with status and library information."""
     config_path = ctx.obj["config_path"]
@@ -2042,12 +2049,14 @@ def user_list(
 @click.option("--user", "-u", required=True, help="Username to check")
 @click.option("--library", "-l", help="Library to check permissions on")
 @click.option("--name", "-n", help="Table name(s) to check (supports wildcards like 'customer*')")
+@click.option("--format", "-F", "output_format", type=click.Choice(["table", "json"]), default="table", help="Output format (default: table)")
 @click.pass_context
 def user_check(
     ctx: click.Context,
     user: str,
     library: str | None,
-    name: str | None
+    name: str | None,
+    output_format: str
 ) -> None:
     """Check user existence and permissions."""
     config_path = ctx.obj["config_path"]
@@ -2400,6 +2409,7 @@ def user_delete(
 @click.option("--object-type", "-t", default="*FILE",
               type=click.Choice(["*FILE", "*JRN", "*JRNRCV", "*LIB", "*ALL"]),
               help="Object type (default: *FILE)")
+@click.option("--format", "-F", "output_format", type=click.Choice(["table", "json"]), default="table", help="Output format (default: table)")
 @click.pass_context
 def user_grant(
     ctx: click.Context,
@@ -2407,7 +2417,8 @@ def user_grant(
     grant_option: str,
     library: str,
     name: str | None,
-    object_type: str
+    object_type: str,
+    output_format: str
 ) -> None:
     """Grant authority to a user on library/objects.
     
@@ -2664,12 +2675,14 @@ def library() -> None:
 @click.option("--name", "-n", required=True, help="Library name to create")
 @click.option("--user", "-u", help="User to grant authority to (optional)")
 @click.option("--authority", "-a", default="*ALL", help="Authority level to grant (*USE, *CHANGE, *ALL)")
+@click.option("--format", "-f", "output_format", type=click.Choice(["table", "json"]), default="table", help="Output format (default: table)")
 @click.pass_context
 def library_create(
     ctx: click.Context,
     name: str,
     user: str | None,
-    authority: str
+    authority: str,
+    output_format: str
 ) -> None:
     """Create a new library and optionally grant user authority.
     
@@ -2722,12 +2735,14 @@ def library_create(
 @click.option("--name", "-n", required=True, help="Library name")
 @click.option("--user", "-u", required=True, help="User to grant authority to")
 @click.option("--authority", "-a", default="*USE", help="Authority level (*USE, *CHANGE, *ALL)")
+@click.option("--format", "-f", "output_format", type=click.Choice(["table", "json"]), default="table", help="Output format (default: table)")
 @click.pass_context
 def library_grant(
     ctx: click.Context,
     name: str,
     user: str,
-    authority: str
+    authority: str,
+    output_format: str
 ) -> None:
     """Grant authority to a user on a library.
     
