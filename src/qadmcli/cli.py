@@ -3052,7 +3052,8 @@ def sql_execute(ctx: click.Context, query: str, target: str, output_format: str,
             as400_config = config.as400
             if user or password:
                 as400_config = config.as400.copy_with_overrides(user=user, password=password)
-                console.print(f"[yellow]Using credential override: user={user or '***'}[/yellow]")
+                if output_format != "json":  # Suppress in JSON mode
+                    console.print(f"[yellow]Using credential override: user={user or '***'}[/yellow]")
             
             # Create temporary config with overridden AS400 settings
             from copy import deepcopy
@@ -3072,7 +3073,7 @@ def sql_execute(ctx: click.Context, query: str, target: str, output_format: str,
                 rows = cursor.fetchall()
                 cursor.close()
                 
-                if output_json or output_format == "json":
+                if output_format == "json":
                     # Clean JSON output for scripts (no Rich formatting)
                     from .utils.formatters import print_json_clean
                     results = []
