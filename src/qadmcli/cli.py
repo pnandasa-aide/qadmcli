@@ -438,7 +438,7 @@ def table_create(ctx: click.Context, name: str | None, library: str | None, sche
 @click.pass_context
 def table_drop_create(
     ctx: click.Context,
-    name: str,
+    table: str,
     library: str,
     schema: str,
     force: bool,
@@ -543,7 +543,7 @@ def table_list(ctx: click.Context, library: str, table_type: str | None) -> None
 @click.pass_context
 def table_drop(
     ctx: click.Context,
-    name: str,
+    table: str,
     library: str,
     cascade: bool,
     force: bool
@@ -584,7 +584,7 @@ def table_drop(
 @click.pass_context
 def table_empty(
     ctx: click.Context,
-    name: str,
+    table: str,
     library: str,
     force: bool
 ) -> None:
@@ -633,7 +633,7 @@ def table_empty(
 @click.pass_context
 def table_reverse(
     ctx: click.Context,
-    name: str,
+    table: str,
     library: str,
     output: str | None
 ) -> None:
@@ -1138,7 +1138,7 @@ def journal_check(ctx: click.Context, table: str, library: str) -> None:
 @click.pass_context
 def journal_disable(
     ctx: click.Context,
-    name: str,
+    table: str,
     library: str,
     dry_run: bool
 ) -> None:
@@ -1253,7 +1253,7 @@ def journal_disable(
 @click.pass_context
 def journal_enable(
     ctx: click.Context,
-    name: str,
+    table: str,
     library: str,
     journal_library: str | None,
     journal_name: str | None,
@@ -1375,7 +1375,7 @@ def journal_enable(
 @click.pass_context
 def journal_entries(
     ctx: click.Context,
-    name: str,
+    table: str,
     library: str,
     limit: int,
     from_time: str | None,
@@ -1827,7 +1827,7 @@ def journal_info(ctx: click.Context, name: str, library: str, fast: bool) -> Non
 @click.pass_context
 def journal_create_receiver(
     ctx: click.Context,
-    name: str,
+    table: str,
     library: str,
     threshold: str
 ) -> None:
@@ -2811,7 +2811,7 @@ def _load_schema_hints(schema_path: str) -> tuple[dict[str, str], dict[str, Any]
 @click.option("--library", "-l", required=True, help="Library/schema name (e.g., EZPIPE)")
 @click.option("--schema", "-s", help="Schema YAML file for column hints and validation")
 @click.option("--skip-validation", is_flag=True, help="Skip schema validation when using --schema")
-@click.option("--number", "-n", default=1000, show_default=True, help="Total number of transactions to generate")
+@click.option("--number", "-r", default=1000, show_default=True, help="Number of rows/transactions to generate")
 @click.option("--insert-ratio", default=50, show_default=True, help="Percentage of INSERT operations (0-100)")
 @click.option("--update-ratio", default=30, show_default=True, help="Percentage of UPDATE operations (0-100)")
 @click.option("--delete-ratio", default=20, show_default=True, help="Percentage of DELETE operations (0-100)")
@@ -2851,13 +2851,13 @@ def mockup_generate(
     \b
     Examples:
         # Dry run - preview SQL without executing
-        qadmcli mockup generate -t TB_02 -l EZPIPE --dry-run -n 10
+        qadmcli mockup generate -t TB_02 -l EZPIPE --dry-run -r 10
 
         # Generate 1000 transactions with default ratios (50% insert, 30% update, 20% delete)
-        qadmcli mockup generate -t CUSTOMERS -l MYLIB -n 1000
+        qadmcli mockup generate -t CUSTOMERS -l MYLIB -r 1000
 
         # Custom transaction mix - 60% inserts, 30% updates, 10% deletes
-        qadmcli mockup generate -t ORDERS -l MYLIB -n 500 \\
+        qadmcli mockup generate -t ORDERS -l MYLIB -r 500 \\
             --insert-ratio 60 --update-ratio 30 --delete-ratio 10
 
         # Use schema file for custom column hints
