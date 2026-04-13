@@ -242,7 +242,7 @@ def table() -> None:
 
 
 @table.command("check")
-@click.option("--name", "-n", required=True, help="Table name")
+@click.option("--table", "-t", required=True, help="Table name")
 @click.option("--library", "-l", required=True, help="Library/schema name")
 @click.pass_context
 def table_check(ctx: click.Context, name: str, library: str) -> None:
@@ -376,7 +376,7 @@ def table_check(ctx: click.Context, name: str, library: str) -> None:
 
 
 @table.command("create")
-@click.option("--name", "-n", help="Table name (if not using schema file)")
+@click.option("--table", "-t", help="Table name (if not using schema file)")
 @click.option("--library", "-l", help="Library name (if not using schema file)")
 @click.option("--schema", "-s", type=click.Path(exists=True), help="Schema YAML or SQL file")
 @click.option("--dry-run", is_flag=True, help="Show SQL without executing")
@@ -430,7 +430,7 @@ def table_create(ctx: click.Context, name: str | None, library: str | None, sche
 
 
 @table.command("drop-create")
-@click.option("--name", "-n", required=True, help="Table name")
+@click.option("--table", "-t", required=True, help="Table name")
 @click.option("--library", "-l", required=True, help="Library name")
 @click.option("--schema", "-s", type=click.Path(exists=True), required=True, help="Schema YAML or SQL file")
 @click.option("--force", "-f", is_flag=True, help="Force drop if table exists")
@@ -536,7 +536,7 @@ def table_list(ctx: click.Context, library: str, table_type: str | None) -> None
 
 
 @table.command("drop")
-@click.option("--name", "-n", required=True, help="Table name")
+@click.option("--table", "-t", required=True, help="Table name")
 @click.option("--library", "-l", required=True, help="Library name")
 @click.option("--cascade", "-c", is_flag=True, help="Cascade drop (remove constraints)")
 @click.option("--force", "-f", is_flag=True, help="Force drop without confirmation")
@@ -578,7 +578,7 @@ def table_drop(
 
 
 @table.command("empty")
-@click.option("--name", "-n", required=True, help="Table name")
+@click.option("--table", "-t", required=True, help="Table name")
 @click.option("--library", "-l", required=True, help="Library name")
 @click.option("--force", "-f", is_flag=True, help="Force delete without confirmation")
 @click.pass_context
@@ -627,7 +627,7 @@ def table_empty(
 
 
 @table.command("reverse")
-@click.option("--name", "-n", required=True, help="Table name")
+@click.option("--table", "-t", required=True, help="Table name")
 @click.option("--library", "-l", required=True, help="Library name")
 @click.option("--output", "-o", type=click.Path(), help="Output YAML file path")
 @click.pass_context
@@ -1132,7 +1132,7 @@ def journal_check(ctx: click.Context, table: str, library: str) -> None:
 
 
 @journal.command("disable")
-@click.option("--name", "-n", required=True, help="Table name (supports wildcards: * or %)")
+@click.option("--table", "-t", required=True, help="Table name (supports wildcards: * or %)")
 @click.option("--library", "-l", required=True, help="Library name")
 @click.option("--dry-run", is_flag=True, help="Show which tables would be affected without making changes")
 @click.pass_context
@@ -1243,7 +1243,7 @@ def journal_disable(
 
 
 @journal.command("enable")
-@click.option("--name", "-n", required=True, help="Table name (supports wildcards: * or %)")
+@click.option("--table", "-t", required=True, help="Table name (supports wildcards: * or %)")
 @click.option("--library", "-l", required=True, help="Library name")
 @click.option("--journal-library", "-j", help="Journal library (default from config)")
 @click.option("--journal-name", help="Journal name (default from config)")
@@ -1366,7 +1366,7 @@ def journal_enable(
 
 
 @journal.command("entries")
-@click.option("--name", "-n", required=True, help="Table name")
+@click.option("--table", "-t", required=True, help="Table name")
 @click.option("--library", "-l", required=True, help="Library name")
 @click.option("--limit", default=100, help="Number of entries to retrieve (default: 100)")
 @click.option("--from-time", help="Filter entries from timestamp (ISO 8601: YYYY-MM-DD or YYYY-MM-DD HH:MM:SS)")
@@ -1689,7 +1689,7 @@ def journal_monitor(ctx: click.Context, library: str | None, threshold: int) -> 
 
 
 @journal.command("info")
-@click.option("--name", "-n", required=True, help="Table name (supports wildcards: * or %)")
+@click.option("--table", "-t", required=True, help="Table name (supports wildcards: * or %)")
 @click.option("--library", "-l", required=True, help="Library name")
 @click.option("--fast", "-f", is_flag=True, help="Skip slow entry range query (for large journals)")
 @click.pass_context
