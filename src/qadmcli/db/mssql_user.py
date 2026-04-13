@@ -140,6 +140,8 @@ class MSSQLUserManager:
             "table_exists": False,
             "user_has_login": False,
             "user_has_db_user": False,
+            "is_sysadmin": False,
+            "is_db_owner": False,
             "effective_permissions": [],
             "role_permissions": [],
             "public_permissions": []
@@ -178,6 +180,31 @@ class MSSQLUserManager:
             
             if cursor.fetchone()[0] > 0:
                 result["user_has_db_user"] = True
+            
+            # Check if user is sysadmin (bypasses all permissions)
+            cursor.execute("""
+                SELECT COUNT(*)
+                FROM sys.server_role_members rm
+                JOIN sys.server_principals r ON rm.role_principal_id = r.principal_id
+                JOIN sys.server_principals m ON rm.member_principal_id = m.principal_id
+                WHERE m.name = ? AND r.name = 'sysadmin'
+            """, (username,))
+            
+            if cursor.fetchone()[0] > 0:
+                result["is_sysadmin"] = True
+            
+            # Check if user is db_owner
+            if result["user_has_db_user"]:
+                cursor.execute("""
+                    SELECT COUNT(*)
+                    FROM sys.database_role_members rm
+                    JOIN sys.database_principals r ON rm.role_principal_id = r.principal_id
+                    JOIN sys.database_principals m ON rm.member_principal_id = m.principal_id
+                    WHERE m.name = ? AND r.name = 'db_owner'
+                """, (username,))
+                
+                if cursor.fetchone()[0] > 0:
+                    result["is_db_owner"] = True
             
             # Get table object_id
             cursor.execute("""

@@ -3130,7 +3130,7 @@ def sql_query(ctx: click.Context, query: str, target: str, limit: int, offset: i
             sys.exit(1)
         
         # Warn about trailing semicolon (DB2 for i doesn't accept it in JDBC)
-        if query.rstrip().endswith(';'):
+        if target == "as400" and query.rstrip().endswith(';'):
             console.print("[yellow]Warning: Trailing semicolon detected. DB2 for i JDBC driver may reject it. Consider removing the ';'.[/yellow]")
         
         # Use appropriate connection based on target
@@ -3619,7 +3619,14 @@ def mssql_user_check_table(ctx: click.Context, user: str, table: str, schema: st
                 if result["user_has_db_user"]:
                     console.print(f"[green]✓ User {user} has database user[/green]")
                 else:
-                    console.print(f"[red]✗ User {user} has no database user[/red]")
+                    console.print(f"[yellow]⚠ User {user} has no explicit database user (may auto-map)[/yellow]")
+                
+                # Special roles
+                if result["is_sysadmin"]:
+                    console.print(f"[green]✓ User {user} is sysadmin (full access to all databases)[/green]")
+                
+                if result["is_db_owner"]:
+                    console.print(f"[green]✓ User {user} is db_owner (full access to this database)[/green]")
                 
                 # Effective permissions
                 if result["effective_permissions"]:
@@ -3633,7 +3640,11 @@ def mssql_user_check_table(ctx: click.Context, user: str, table: str, schema: st
                         title="Effective Permissions"
                     ))
                 else:
-                    console.print("[yellow]No effective permissions on this table[/yellow]")
+                    if not result["user_has_db_user"]:
+                        console.print("[yellow]⚠ Cannot check effective permissions (no explicit database user)[/yellow]")
+                        console.print("[dim]User may still have access through auto-mapping or server roles[/dim]")
+                    else:
+                        console.print("[yellow]No effective permissions on this table[/yellow]")
                 
                 # Explicit permissions
                 if result["role_permissions"]:
@@ -3661,8 +3672,12 @@ def mssql_user_check_table(ctx: click.Context, user: str, table: str, schema: st
                 
                 # Summary
                 has_select = any(p["permission"] == "SELECT" for p in result["effective_permissions"])
-                if has_select:
+                has_full_access = result["is_sysadmin"] or result["is_db_owner"]
+                
+                if has_select or has_full_access:
                     console.print("\n[green]✓ User can SELECT from this table[/green]")
+                    if has_full_access:
+                        console.print("[dim](Access via elevated role)[/dim]")
                 else:
                     console.print("\n[red]✗ User cannot SELECT from this table[/red]")
         
