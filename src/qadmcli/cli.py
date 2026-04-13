@@ -3848,6 +3848,11 @@ def mssql_ct_status(ctx: click.Context, table: str, schema: str, output_format: 
     """
     config_path = ctx.obj["config_path"]
     
+    # Suppress logging for JSON output
+    if output_format == "json":
+        import logging
+        logging.getLogger("qadmcli").setLevel(logging.WARNING)
+    
     try:
         config = load_config(config_path)
         
@@ -3930,6 +3935,11 @@ def mssql_ct_changes(
     """
     config_path = ctx.obj["config_path"]
     output_json = ctx.obj["output_json"]
+    
+    # Suppress logging for JSON/summary output
+    if output_format in ("json", "summary"):
+        import logging
+        logging.getLogger("qadmcli").setLevel(logging.WARNING)
     
     try:
         config = load_config(config_path)
