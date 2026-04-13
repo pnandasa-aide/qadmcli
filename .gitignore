@@ -11,4 +11,4 @@ schemas/converted_*/
 
 # Ignore working data files
 *.xml
-*.yaml.copy
+*.yaml.copy__pycache__/
