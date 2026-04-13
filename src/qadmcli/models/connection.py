@@ -17,6 +17,17 @@ class AS400Connection(BaseModel):
     ssl: bool = Field(default=True, description="Use SSL connection")
     database: str = Field(default="*LOCAL", description="Database name")
     
+    def copy_with_overrides(self, user: str = None, password: str = None) -> "AS400Connection":
+        """Create a copy with credential overrides."""
+        return AS400Connection(
+            host=self.host,
+            user=user or self.user,
+            password=password or self.password,
+            port=self.port,
+            ssl=self.ssl,
+            database=self.database
+        )
+    
     @field_validator("host")
     @classmethod
     def validate_host(cls, v: str) -> str:
@@ -40,6 +51,16 @@ class MSSQLConnection(BaseModel):
     username: str = Field(..., description="MSSQL username")
     password: str = Field(..., description="MSSQL password")
     database: str = Field(default="master", description="Default database")
+
+    def copy_with_overrides(self, username: str = None, password: str = None) -> "MSSQLConnection":
+        """Create a copy with credential overrides."""
+        return MSSQLConnection(
+            host=self.host,
+            port=self.port,
+            username=username or self.username,
+            password=password or self.password,
+            database=self.database
+        )
 
     @field_validator("host")
     @classmethod

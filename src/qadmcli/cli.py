@@ -2107,13 +2107,13 @@ Status: {status}"""
 
 @user.command("check-table")
 @click.option("--user", "-u", required=True, help="Username to check")
-@click.option("--name", "-n", required=True, help="Table name to check")
+@click.option("--table", "-t", "--name", "-n", required=True, help="Table name to check")
 @click.option("--library", "-l", required=True, help="Library containing the table")
 @click.pass_context
 def user_check_table(
     ctx: click.Context,
     user: str,
-    name: str,
+    table: str,
     library: str
 ) -> None:
     """Check user permissions for a specific table and its related journal objects.
@@ -2133,7 +2133,7 @@ def user_check_table(
             from .db.user import UserManager
             user_mgr = UserManager(conn)
             
-            result = user_mgr.check_table_permissions_with_journal(user, name, library)
+            result = user_mgr.check_table_permissions_with_journal(user, table, library)
             
             if output_json:
                 print_json(console, result)
@@ -2141,7 +2141,7 @@ def user_check_table(
                 # Build consolidated view
                 print_panel(
                     ctx,
-                    f"Checking permissions for {user} on {library}.{name}",
+                    f"Checking permissions for {user} on {library}.{table}",
                     title="Table Permission Check",
                     border_style="blue"
                 )
@@ -2945,8 +2945,10 @@ def sql() -> None:
 @sql.command("execute")
 @click.option("--query", "-q", required=True, help="SQL query to execute")
 @click.option("-t", "--target", type=click.Choice(["as400", "mssql"]), default="as400", help="Target database (default: as400)")
+@click.option("--user", "-u", default=None, help="Override username for connection")
+@click.option("--password", "-p", default=None, help="Override password for connection")
 @click.pass_context
-def sql_execute(ctx: click.Context, query: str, target: str) -> None:
+def sql_execute(ctx: click.Context, query: str, target: str, user: str, password: str) -> None:
     """Execute a SQL query and display results.
     
     Examples:
@@ -2968,9 +2970,15 @@ def sql_execute(ctx: click.Context, query: str, target: str) -> None:
             
             from .db.mssql import MSSQLConnection
             
+            # Apply credential overrides if provided
+            mssql_config = config.mssql
+            if user or password:
+                mssql_config = config.mssql.copy_with_overrides(username=user, password=password)
+                console.print(f"[yellow]Using credential override: user={user or '***'}[/yellow]")
+            
             console.print(f"[dim]Executing on MSSQL: {query[:80]}...[/dim]")
             
-            with MSSQLConnection(config.mssql) as conn:
+            with MSSQLConnection(mssql_config) as conn:
                 with conn.get_cursor() as cursor:
                     cursor.execute(query)
                     
@@ -3004,9 +3012,20 @@ def sql_execute(ctx: click.Context, query: str, target: str) -> None:
                             console.print(f"[green]✓ Query executed successfully ({row_count} rows affected)[/green]")
         else:
             # Execute on AS400 (default)
+            # Apply credential overrides if provided
+            as400_config = config.as400
+            if user or password:
+                as400_config = config.as400.copy_with_overrides(user=user, password=password)
+                console.print(f"[yellow]Using credential override: user={user or '***'}[/yellow]")
+            
+            # Create temporary config with overridden AS400 settings
+            from copy import deepcopy
+            temp_config = deepcopy(config)
+            temp_config.as400 = as400_config
+            
             console.print(f"[dim]Executing on AS400: {query[:80]}...[/dim]")
             
-            with AS400ConnectionManager(config) as conn:
+            with AS400ConnectionManager(temp_config) as conn:
                 cursor = conn.execute(query)
                 
                 # Get column names
@@ -3080,8 +3099,10 @@ def sql_execute(ctx: click.Context, query: str, target: str) -> None:
 @click.option("--limit", "-l", type=int, default=100, help="Maximum rows to return (default: 100)")
 @click.option("--offset", "-o", type=int, default=0, help="Number of rows to skip (default: 0)")
 @click.option("--format", "-f", "output_format", type=click.Choice(["table", "csv", "json"]), default="table", help="Output format")
+@click.option("--user", "-u", default=None, help="Override username for connection")
+@click.option("--password", "-p", default=None, help="Override password for connection")
 @click.pass_context
-def sql_query(ctx: click.Context, query: str, target: str, limit: int, offset: int, output_format: str) -> None:
+def sql_query(ctx: click.Context, query: str, target: str, limit: int, offset: int, output_format: str, user: str, password: str) -> None:
     """Execute a SELECT query with formatted output and pagination.
     
     Examples:
@@ -3110,11 +3131,25 @@ def sql_query(ctx: click.Context, query: str, target: str, limit: int, offset: i
             if not config.mssql:
                 console.print("[red]Error: MSSQL configuration not found in connection.yaml[/red]")
                 sys.exit(1)
-            conn_manager = MSSQLConnection(config.mssql)
+            # Apply credential overrides if provided
+            mssql_config = config.mssql
+            if user or password:
+                mssql_config = config.mssql.copy_with_overrides(username=user, password=password)
+                console.print(f"[yellow]Using credential override: user={user or '***'}[/yellow]")
+            conn_manager = MSSQLConnection(mssql_config)
             conn_manager.connect()
         else:
             from .db.connection import AS400ConnectionManager
-            conn_manager = AS400ConnectionManager(config)
+            # Apply credential overrides if provided
+            as400_config = config.as400
+            if user or password:
+                as400_config = config.as400.copy_with_overrides(user=user, password=password)
+                console.print(f"[yellow]Using credential override: user={user or '***'}[/yellow]")
+            # Create temporary config with overridden AS400 settings
+            from copy import deepcopy
+            temp_config = deepcopy(config)
+            temp_config.as400 = as400_config
+            conn_manager = AS400ConnectionManager(temp_config)
             conn_manager.connect()
         
         try:
@@ -3341,8 +3376,10 @@ def mssql_test(ctx: click.Context, username: str | None, password: str | None) -
 @click.option("--limit", "-l", type=int, default=100, help="Maximum rows to return (default: 100)")
 @click.option("--offset", "-o", type=int, default=0, help="Number of rows to skip (default: 0)")
 @click.option("--format", "-f", "output_format", type=click.Choice(["table", "csv", "json"]), default="table", help="Output format")
+@click.option("--user", "-u", default=None, help="Override username for connection")
+@click.option("--password", "-p", default=None, help="Override password for connection")
 @click.pass_context
-def mssql_query(ctx: click.Context, query: str, limit: int, offset: int, output_format: str) -> None:
+def mssql_query(ctx: click.Context, query: str, limit: int, offset: int, output_format: str, user: str, password: str) -> None:
     """Execute a SELECT query on MSSQL database.
     
     This is a convenience alias for 'sql query --target mssql'.
@@ -3351,15 +3388,18 @@ def mssql_query(ctx: click.Context, query: str, limit: int, offset: int, output_
         qadmcli mssql query -q "SELECT * FROM dbo.CUSTOMERS"
         qadmcli mssql query -q "SELECT * FROM dbo.CUSTOMERS" --limit 10
         qadmcli mssql query -q "SELECT * FROM dbo.CUSTOMERS" --format json
+        qadmcli mssql query -q "SELECT * FROM dbo.CUSTOMERS" -u GLUESYNC01 -p password123
     """
     # Delegate to sql_query with target=mssql
-    ctx.invoke(sql_query, query=query, target="mssql", limit=limit, offset=offset, output_format=output_format)
+    ctx.invoke(sql_query, query=query, target="mssql", limit=limit, offset=offset, output_format=output_format, user=user, password=password)
 
 
 @mssql.command("execute")
 @click.option("--query", "-q", required=True, help="SQL query to execute (DDL/DML)")
+@click.option("--user", "-u", default=None, help="Override username for connection")
+@click.option("--password", "-p", default=None, help="Override password for connection")
 @click.pass_context
-def mssql_execute(ctx: click.Context, query: str) -> None:
+def mssql_execute(ctx: click.Context, query: str, user: str, password: str) -> None:
     """Execute a SQL query on MSSQL database (DDL/DML).
     
     Use this for CREATE, ALTER, DROP, INSERT, UPDATE, DELETE operations.
@@ -3370,9 +3410,10 @@ def mssql_execute(ctx: click.Context, query: str) -> None:
         qadmcli mssql execute -q "INSERT INTO dbo.CUSTOMERS VALUES (1, 'John')"
         qadmcli mssql execute -q "UPDATE dbo.CUSTOMERS SET STATUS='ACTIVE'"
         qadmcli mssql execute -q "DROP TABLE dbo.TEST"
+        qadmcli mssql execute -q "GRANT SELECT ON dbo.CUSTOMERS TO GLUESYNC01" -u sa -p password
     """
     # Delegate to sql_execute with target=mssql
-    ctx.invoke(sql_execute, query=query, target="mssql")
+    ctx.invoke(sql_execute, query=query, target="mssql", user=user, password=password)
 
 
 @mssql.group()
