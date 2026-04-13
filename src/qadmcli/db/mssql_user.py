@@ -171,6 +171,9 @@ class MSSQLUserManager:
             "has_db_datareader": False,  # NEW: Can read all tables
             "has_db_datawriter": False,  # NEW: Can write all tables
             "has_db_ddladmin": False,    # NEW: Can modify schema
+            "has_db_securityadmin": False,  # NEW: Can manage permissions
+            "has_db_backupoperator": False,  # NEW: Can backup database
+            "database_roles": [],  # NEW: All database roles
             "effective_permissions": [],
             "role_permissions": [],
             "public_permissions": []
@@ -278,7 +281,8 @@ class MSSQLUserManager:
             
             # Check for other important database roles
             if result["database_user_exists"] or result["mapped_database_user"]:
-                for role_name in ['db_datareader', 'db_datawriter', 'db_ddladmin']:
+                # Check specific important roles
+                for role_name in ['db_datareader', 'db_datawriter', 'db_ddladmin', 'db_securityadmin', 'db_backupoperator']:
                     cursor.execute("""
                         SELECT COUNT(*)
                         FROM sys.database_role_members rm
@@ -294,6 +298,10 @@ class MSSQLUserManager:
                             result["has_db_datawriter"] = True
                         elif role_name == 'db_ddladmin':
                             result["has_db_ddladmin"] = True
+                        elif role_name == 'db_securityadmin':
+                            result["has_db_securityadmin"] = True
+                        elif role_name == 'db_backupoperator':
+                            result["has_db_backupoperator"] = True
                     
                     # Also check mapped user
                     if (result["mapped_database_user"] and 
@@ -314,6 +322,40 @@ class MSSQLUserManager:
                                 result["has_db_datawriter"] = True
                             elif role_name == 'db_ddladmin':
                                 result["has_db_ddladmin"] = True
+                            elif role_name == 'db_securityadmin':
+                                result["has_db_securityadmin"] = True
+                            elif role_name == 'db_backupoperator':
+                                result["has_db_backupoperator"] = True
+                
+                # Get ALL database roles for this user
+                cursor.execute("""
+                    SELECT r.name
+                    FROM sys.database_role_members rm
+                    JOIN sys.database_principals r ON rm.role_principal_id = r.principal_id
+                    JOIN sys.database_principals m ON rm.member_principal_id = m.principal_id
+                    WHERE m.name = ?
+                    ORDER BY r.name
+                """, (effective_username,))
+                
+                result["database_roles"] = [row[0] for row in cursor.fetchall()]
+                
+                # Also get roles for mapped user if different
+                if (result["mapped_database_user"] and 
+                    result["mapped_database_user"]["database_user_name"] != effective_username):
+                    mapped_user = result["mapped_database_user"]["database_user_name"]
+                    cursor.execute("""
+                        SELECT r.name
+                        FROM sys.database_role_members rm
+                        JOIN sys.database_principals r ON rm.role_principal_id = r.principal_id
+                        JOIN sys.database_principals m ON rm.member_principal_id = m.principal_id
+                        WHERE m.name = ?
+                        ORDER BY r.name
+                    """, (mapped_user,))
+                    
+                    mapped_roles = [row[0] for row in cursor.fetchall()]
+                    # Merge roles (avoid duplicates)
+                    result["database_roles"] = list(set(result["database_roles"] + mapped_roles))
+                    result["database_roles"].sort()
             
             # Get table object_id
             cursor.execute("""

@@ -3664,6 +3664,17 @@ def mssql_user_check_table(ctx: click.Context, user: str, table: str, schema: st
                 if result["has_db_ddladmin"]:
                     console.print(f"[green]✓ Database role: db_ddladmin (can modify schema)[/green]")
                 
+                if result["has_db_securityadmin"]:
+                    console.print(f"[green]✓ Database role: db_securityadmin (can manage permissions)[/green]")
+                
+                if result["has_db_backupoperator"]:
+                    console.print(f"[green]✓ Database role: db_backupoperator (can backup database)[/green]")
+                
+                # Show all database roles
+                if result["database_roles"]:
+                    roles_text = ", ".join(result["database_roles"])
+                    console.print(f"\n[dim]All database roles: {roles_text}[/dim]")
+                
                 # Effective permissions
                 if result["effective_permissions"]:
                     eff_rows = []

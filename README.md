@@ -1464,6 +1464,91 @@ qadmcli sql query -q "SELECT TABLE_NAME, COLUMN_NAME, DATA_TYPE FROM INFORMATION
 qadmcli sql query -q "SELECT TABLE_NAME, COLUMN_NAME, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME = 'CUST_ID' AND TABLE_SCHEMA = 'dbo' ORDER BY TABLE_NAME" --target mssql
 ```
 
+### MSSQL User Management
+
+Check user existence, login-to-user mapping, and permissions:
+
+```bash
+# Check if user exists and get permissions
+qadmcli mssql user check -u GLUESYNC01
+
+# Output shows:
+# - Server login existence and details
+# - Database user existence
+# - Login-to-user mapping (via SID)
+# - Server roles (sysadmin, etc.)
+# - Database roles (db_owner, db_datareader, etc.)
+# - Explicit permissions
+```
+
+**Check table permissions:**
+```bash
+# Check user permissions on specific table
+qadmcli mssql user check-table -u GLUESYNC01 -t CUSTOMERS -s dbo
+
+# Output shows:
+# - Table existence
+# - Server login status
+# - Login-to-database-user mapping
+# - Database roles (db_datareader, db_datawriter, etc.)
+# - Effective permissions (as mapped user)
+# - Explicit grants
+# - Public permissions
+```
+
+**Example output:**
+```
+╭────────────── MSSQL Table Permission Check ─────────────╮
+│ Checking permissions for gstgdblogin on dbo.Customers2  │
+╰─────────────────────────────────────────────────────────╯
+
+✓ Table dbo.Customers2 exists
+✓ Server login: gstgdblogin
+✓ Mapped to database user: gstgdbuser (type: SQL_USER)
+✓ Database role: db_datareader (can SELECT from all tables)
+✓ Database role: db_datawriter (can INSERT/UPDATE/DELETE all tables)
+✓ Database role: db_ddladmin (can modify schema)
+
+All database roles: db_datareader, db_datawriter, db_ddladmin, db_owner
+
+✓ User can SELECT from this table
+(Access via role: db_datareader)
+```
+
+**Grant permissions:**
+```bash
+# Grant SELECT permission
+qadmcli mssql user grant -u GLUESYNC01 -p SELECT -t CUSTOMERS
+
+# Grant multiple permissions
+qadmcli mssql user grant -u GLUESYNC01 -p SELECT,INSERT,UPDATE -t ORDERS
+
+# Grant ALL permissions
+qadmcli mssql user grant -u GLUESYNC01 -p ALL -t PRODUCTS
+
+# Custom schema
+qadmcli mssql user grant -u GLUESYNC01 -p SELECT -t CUSTOMERS -s sales
+```
+
+**Common Database Roles:**
+
+| Role | Permissions | Use Case |
+|------|------------|----------|
+| `db_owner` | Full database access | Database administrators |
+| `db_datareader` | SELECT on all tables | Read-only access, reporting |
+| `db_datawriter` | INSERT/UPDATE/DELETE on all tables | Data modification |
+| `db_ddladmin` | CREATE/ALTER/DROP objects | Schema management |
+| `db_securityadmin` | Manage permissions | Security administration |
+| `db_backupoperator` | Backup database | Backup operations |
+
+**Login-to-User Mapping:**
+
+MSSQL uses a two-level security model:
+1. **Server Login** - Authenticates to SQL Server
+2. **Database User** - Authorizes access within a database
+
+The `check` and `check-table` commands automatically trace the mapping via SID (Security Identifier) and report which database user context is being checked.
+
 ### MSSQL Change Tracking (CT)
 
 **Check CT status on database and table:**
