@@ -245,7 +245,7 @@ def table() -> None:
 @click.option("--table", "-t", required=True, help="Table name")
 @click.option("--library", "-l", required=True, help="Library/schema name")
 @click.pass_context
-def table_check(ctx: click.Context, name: str, library: str) -> None:
+def table_check(ctx: click.Context, table: str, library: str) -> None:
     """Check if table exists and show info."""
     import logging
     logger = logging.getLogger("qadmcli")
@@ -262,16 +262,16 @@ def table_check(ctx: click.Context, name: str, library: str) -> None:
             logger.debug("Connected to AS400, creating SchemaManager")
             schema = SchemaManager(conn)
             
-            logger.debug(f"Checking if table {library}.{name} exists")
-            exists = schema.table_exists(name, library)
+            logger.debug(f"Checking if table {library}.{table} exists")
+            exists = schema.table_exists(table, library)
             logger.debug(f"Table exists: {exists}")
             
             if exists:
-                logger.debug(f"Getting table info for {library}.{name}")
-                info = schema.get_table_info(name, library)
-                row_count = schema.get_table_row_count(name, library) if info else None
-                columns = schema.get_columns(name, library) if info else []
-                pk_columns = schema.get_primary_key(name, library)
+                logger.debug(f"Getting table info for {library}.{table}")
+                info = schema.get_table_info(table, library)
+                row_count = schema.get_table_row_count(table, library) if info else None
+                columns = schema.get_columns(table, library) if info else []
+                pk_columns = schema.get_primary_key(table, library)
                 logger.debug(f"Table info retrieved successfully")
                 if output_json:
                     data = info.model_dump() if info else {}
@@ -282,11 +282,11 @@ def table_check(ctx: click.Context, name: str, library: str) -> None:
                 else:
                     # Build text parts safely
                     # Use actual system name from info, not the input name
-                    system_name = info.name if info else name
+                    system_name = info.name if info else table
                     sql_name = info.sql_name if info else None
                     
                     parts = [
-                        ("Table: ", "bold"), f"{library}.{name}", "\n",
+                        ("Table: ", "bold"), f"{library}.{table}", "\n",
                         ("System Name: ", "bold"), system_name, "\n",
                     ]
                     if sql_name and sql_name != system_name:
@@ -359,13 +359,13 @@ def table_check(ctx: click.Context, name: str, library: str) -> None:
                             console,
                             ["Column", "Type", "Length", "Nullable", "Identity", "Mockup Pattern"],
                             col_rows,
-                            title=f"Columns in {library}.{name}"
+                            title=f"Columns in {library}.{table}"
                         ))
             else:
                 if output_json:
-                    print_json_clean({"exists": False, "table": f"{library}.{name}"})
+                    print_json_clean({"exists": False, "table": f"{library}.{table}"})
                 else:
-                    console.print(f"[yellow]Table {library}.{name} does not exist.[/yellow]")
+                    console.print(f"[yellow]Table {library}.{table} does not exist.[/yellow]")
         
     except ConnectionError as e:
         console.print(f"[red]Connection error: {e.message}[/red]")
@@ -381,7 +381,7 @@ def table_check(ctx: click.Context, name: str, library: str) -> None:
 @click.option("--schema", "-s", type=click.Path(exists=True), help="Schema YAML or SQL file")
 @click.option("--dry-run", is_flag=True, help="Show SQL without executing")
 @click.pass_context
-def table_create(ctx: click.Context, name: str | None, library: str | None, schema: str | None, dry_run: bool) -> None:
+def table_create(ctx: click.Context, table: str | None, library: str | None, schema: str | None, dry_run: bool) -> None:
     """Create a table from schema definition."""
     config_path = ctx.obj["config_path"]
     
@@ -413,8 +413,8 @@ def table_create(ctx: click.Context, name: str | None, library: str | None, sche
                     console.print("[red]Error: --name and --library required when not using --schema[/red]")
                     sys.exit(1)
                 
-                if schema_mgr.table_exists(name, library):
-                    console.print(f"[yellow]Table {library}.{name} already exists.[/yellow]")
+                if schema_mgr.table_exists(table, library):
+                    console.print(f"[yellow]Table {library}.{table} already exists.[/yellow]")
                     sys.exit(0)
                 
                 # Would need column definitions for simple create
@@ -460,19 +460,19 @@ def table_drop_create(
             schema_path = Path(schema)
             if schema_path.suffix == ".sql":
                 # Drop first
-                if schema_mgr.table_exists(name, library):
+                if schema_mgr.table_exists(table, library):
                     if dry_run:
-                        console.print(f"[blue]Would drop table {library}.{name}[/blue]")
+                        console.print(f"[blue]Would drop table {library}.{table}[/blue]")
                     else:
-                        schema_mgr.drop_table(name, library)
-                        console.print(f"[yellow]Dropped table {library}.{name}[/yellow]")
+                        schema_mgr.drop_table(table, library)
+                        console.print(f"[yellow]Dropped table {library}.{table}[/yellow]")
                 
                 # Execute SQL file
                 executed = schema_mgr.execute_sql_file(str(schema_path), dry_run)
                 if dry_run:
                     console.print(f"[blue]Would execute {len(executed)} statements[/blue]")
                 else:
-                    console.print(f"[green]Recreated table {library}.{name}[/green]")
+                    console.print(f"[green]Recreated table {library}.{table}[/green]")
             else:
                 # YAML schema
                 table_config = TableConfig.from_yaml(str(schema_path))
@@ -480,7 +480,7 @@ def table_drop_create(
                 if dry_run:
                     print_panel(ctx, ddl, title="SQL to Execute", border_style="blue")
                 else:
-                    console.print(f"[green]Recreated table {library}.{name}[/green]")
+                    console.print(f"[green]Recreated table {library}.{table}[/green]")
         
     except ConnectionError as e:
         console.print(f"[red]Connection error: {e.message}[/red]")
@@ -552,7 +552,7 @@ def table_drop(
     config_path = ctx.obj["config_path"]
     
     if not force:
-        console.print(f"[yellow]Warning: This will permanently delete table {library}.{name}[/yellow]")
+        console.print(f"[yellow]Warning: This will permanently delete table {library}.{table}[/yellow]")
         console.print("Use --force to confirm.")
         sys.exit(1)
     
@@ -562,12 +562,12 @@ def table_drop(
         with AS400ConnectionManager(config) as conn:
             schema = SchemaManager(conn)
             
-            if not schema.table_exists(name, library):
-                console.print(f"[yellow]Table {library}.{name} does not exist.[/yellow]")
+            if not schema.table_exists(table, library):
+                console.print(f"[yellow]Table {library}.{table} does not exist.[/yellow]")
                 sys.exit(0)
             
-            schema.drop_table(name, library, cascade)
-            console.print(f"[green]Dropped table {library}.{name}[/green]")
+            schema.drop_table(table, library, cascade)
+            console.print(f"[green]Dropped table {library}.{table}[/green]")
         
     except ConnectionError as e:
         console.print(f"[red]Connection error: {e.message}[/red]")
@@ -592,7 +592,7 @@ def table_empty(
     config_path = ctx.obj["config_path"]
     
     if not force:
-        console.print(f"[yellow]Warning: This will delete ALL data from {library}.{name}[/yellow]")
+        console.print(f"[yellow]Warning: This will delete ALL data from {library}.{table}[/yellow]")
         console.print("Use --force to confirm.")
         sys.exit(1)
     
@@ -602,20 +602,20 @@ def table_empty(
         with AS400ConnectionManager(config) as conn:
             schema = SchemaManager(conn)
             
-            if not schema.table_exists(name, library):
-                console.print(f"[yellow]Table {library}.{name} does not exist.[/yellow]")
+            if not schema.table_exists(table, library):
+                console.print(f"[yellow]Table {library}.{table} does not exist.[/yellow]")
                 sys.exit(1)
             
             # Get row count before truncate
-            row_count = schema.get_table_row_count(name, library)
+            row_count = schema.get_table_row_count(table, library)
             
             # Execute TRUNCATE
-            sql = f"DELETE FROM {library}.{name}"
+            sql = f"DELETE FROM {library}.{table}"
             cursor = conn.execute(sql)
             cursor.close()
             conn.commit()
             
-            console.print(f"[green]Deleted all data from {library}.{name}[/green]")
+            console.print(f"[green]Deleted all data from {library}.{table}[/green]")
             console.print(f"Rows removed: {row_count:,}" if row_count else "Rows removed: Unknown")
         
     except ConnectionError as e:
@@ -646,8 +646,8 @@ def table_reverse(
         with AS400ConnectionManager(config) as conn:
             schema = SchemaManager(conn)
             
-            if not schema.table_exists(name, library):
-                console.print(f"[red]Table {library}.{name} does not exist.[/red]")
+            if not schema.table_exists(table, library):
+                console.print(f"[red]Table {library}.{table} does not exist.[/red]")
                 sys.exit(1)
             
             # Generate YAML from table
@@ -658,7 +658,7 @@ def table_reverse(
                     f.write(yaml_content)
                 console.print(f"[green]Schema saved to {output}[/green]")
             else:
-                print_panel(ctx, yaml_content, title=f"Schema for {library}.{name}", border_style="blue")
+                print_panel(ctx, yaml_content, title=f"Schema for {library}.{table}", border_style="blue")
         
     except ConnectionError as e:
         console.print(f"[red]Connection error: {e.message}[/red]")
