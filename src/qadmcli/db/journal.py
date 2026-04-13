@@ -687,8 +687,11 @@ class JournalManager:
         # Build entry types filter - default to all types if not specified
         entry_types = entry_type.upper() if entry_type else "*ALL"
         
-        # Build SQL - filter by OBJECT (table name) only
-        # Note: DISPLAY_JOURNAL doesn't have OBJECT_LIBRARY column
+        # Build SQL - filter by OBJECT (table name) using LIKE
+        # Note: DISPLAY_JOURNAL OBJECT column format is inconsistent:
+        #   - Sometimes: "TABLE_NAME LIBRARY_NAME"
+        #   - Sometimes: "TABLE_NAME LIBRARY_NAME  SYSTEM_NAME" (extra system name)
+        # Solution: Use LIKE with prefix match
         sql = """
             SELECT 
                 SEQUENCE_NUMBER,
@@ -709,18 +712,19 @@ class JournalManager:
                     JOURNAL_ENTRY_TYPES => ?
                 )
             )
-            WHERE OBJECT = ?
+            WHERE OBJECT LIKE ?
         """
         
-        # OBJECT column contains "TABLE_NAME LIBRARY_NAME" format
-        object_value = f"{system_name} {library.upper()}"
-        logger.debug(f"Using OBJECT value: '{object_value}'")
+        # OBJECT column can be "TABLE LIBRARY" or "TABLE LIBRARY  SYSTEM_TABLE"
+        # Use prefix match to handle both formats
+        object_prefix = f"{system_name} {library.upper()}"
+        logger.debug(f"Using OBJECT prefix: '{object_prefix}'")
         
         params = [
             info.journal_library,
             info.journal_name,
             entry_types,
-            object_value,
+            f"{object_prefix}%",  # LIKE pattern with wildcard
         ]
         
         if starting_sequence:
@@ -774,6 +778,16 @@ class JournalManager:
                     logger.debug(f"Could not read blob data: {e}")
                     raw_data = str(row[10])
             
+            # Parse OBJECT column - format can be:
+            # "TABLE LIBRARY" or "TABLE LIBRARY  SYSTEM_TABLE"
+            object_raw = str(row[8]).strip() if row[8] else None
+            if object_raw:
+                parts = object_raw.split()
+                actual_table_name = parts[0] if len(parts) >= 1 else object_raw
+                # library is parts[1] if present, but we use the provided library parameter
+            else:
+                actual_table_name = None
+            
             entry = JournalEntry(
                 entry_number=row[0],
                 entry_timestamp=str(row[1]) if row[1] else None,
@@ -783,7 +797,7 @@ class JournalManager:
                 program_name=str(row[5]) if row[5] else None,
                 code=str(row[6]) if row[6] else None,
                 entry_type=str(row[7]) if row[7] else None,
-                object_name=str(row[8]).strip() if row[8] else None,
+                object_name=actual_table_name,
                 object_library=library.upper(),  # Use the provided library
                 object_type=str(row[9]) if row[9] else None,
                 raw_entry_data=raw_data,
@@ -836,10 +850,12 @@ class JournalManager:
         except Exception:
             pass
         
-        # Build summary query
+        # Build summary query - use LIKE for OBJECT filter
+        # Need both JOURNAL_CODE and JOURNAL_ENTRY_TYPE to properly categorize
         sql = """
             SELECT 
                 JOURNAL_CODE,
+                JOURNAL_ENTRY_TYPE,
                 COUNT(*) as count
             FROM TABLE (
                 QSYS2.DISPLAY_JOURNAL(
@@ -848,11 +864,11 @@ class JournalManager:
                     JOURNAL_ENTRY_TYPES => '*ALL'
                 )
             )
-            WHERE OBJECT = ?
+            WHERE OBJECT LIKE ?
         """
         
-        object_value = f"{system_name} {library.upper()}"
-        params = [info.journal_library, info.journal_name, object_value]
+        object_prefix = f"{system_name} {library.upper()}"
+        params = [info.journal_library, info.journal_name, f"{object_prefix}%"]
         
         if from_time:
             sql += " AND ENTRY_TIMESTAMP >= ?"
@@ -862,7 +878,7 @@ class JournalManager:
             sql += " AND ENTRY_TIMESTAMP <= ?"
             params.append(to_time)
         
-        sql += " GROUP BY JOURNAL_CODE ORDER BY JOURNAL_CODE"
+        sql += " GROUP BY JOURNAL_CODE, JOURNAL_ENTRY_TYPE ORDER BY JOURNAL_CODE, JOURNAL_ENTRY_TYPE"
         
         cursor = self.conn.execute(sql, tuple(params))
         
@@ -880,22 +896,24 @@ class JournalManager:
         }
         
         for row in cursor.fetchall():
-            code = str(row[0]).strip() if row[0] else '?'
-            count = int(row[1]) if row[1] else 0
+            journal_code = str(row[0]).strip() if row[0] else '?'
+            entry_type = str(row[1]).strip() if row[1] else '?'
+            count = int(row[2]) if row[2] else 0
             
-            entry_info = {'code': code, 'count': count}
+            entry_info = {'code': journal_code, 'type': entry_type, 'count': count}
             
-            # Map journal codes to operations
-            if code == 'PT':  # Put/Insert
-                summary['inserts'] = count
+            # Map journal entry types to operations
+            # JOURNAL_CODE 'R' = Record, actual operation in JOURNAL_ENTRY_TYPE
+            if entry_type == 'PT':  # Put/Insert
+                summary['inserts'] += count
                 entry_info['operation'] = 'INSERT'
-            elif code == 'UP':  # Update (actually 'DL' with before/after images)
-                summary['updates'] = count
+            elif entry_type in ('UP', 'UB'):  # Update (UP=after, UB=before)
+                summary['updates'] += count
                 entry_info['operation'] = 'UPDATE'
-            elif code == 'DL':  # Delete
-                summary['deletes'] = count
+            elif entry_type == 'DL':  # Delete
+                summary['deletes'] += count
                 entry_info['operation'] = 'DELETE'
-            elif code in ('CG', 'JF'):  # Commit/Journal File
+            elif entry_type in ('CG',):  # Commit
                 summary['commits'] += count
                 entry_info['operation'] = 'COMMIT'
             else:
