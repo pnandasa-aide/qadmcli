@@ -3281,7 +3281,7 @@ def sql_query(ctx: click.Context, query: str, target: str, limit: int, offset: i
                 table_data.append([str(cell) if cell is not None else "NULL" for cell in row])
             
             # Output based on format
-            if output_format == "json" or output_json:
+            if output_format == "json":
                 # Clean JSON output for scripts (no Rich formatting)
                 from .utils.formatters import print_json_clean
                 results = []
@@ -3863,18 +3863,14 @@ def mssql_user_grant(ctx: click.Context, user: str, permission: str, table: str,
                 result = user_mgr.grant_permission(user, perm, table, "TABLE", schema)
                 results.append(result)
                 
-                if output_format == "json":
-                    print_json_clean(result)
+                if result["success"]:
+                    console.print(f"[green]✓ Granted {perm} on {schema}.{table} to {user}[/green]")
+                    console.print(f"[dim]SQL: {result['sql_executed']}[/dim]")
                 else:
-                    if result["success"]:
-                        console.print(f"[green]✓ Granted {perm} on {schema}.{table} to {user}[/green]")
-                        console.print(f"[dim]SQL: {result['sql_executed']}[/dim]")
-                    else:
-                        console.print(f"[red]✗ Failed to grant {perm}: {result['error']}[/red]")
+                    console.print(f"[red]✗ Failed to grant {perm}: {result['error']}[/red]")
             
-            if not output_json:
-                success_count = sum(1 for r in results if r["success"])
-                console.print(f"\n{success_count}/{len(results)} permission(s) granted successfully")
+            success_count = sum(1 for r in results if r["success"])
+            console.print(f"\n{success_count}/{len(results)} permission(s) granted successfully")
         
         finally:
             mssql_conn.disconnect()
@@ -4097,7 +4093,7 @@ def mssql_ct_changes(
                     ]
                 }
                 print_json_clean(summary)
-            elif output_format == "json" or output_json:
+            elif output_format == "json":
                 results = []
                 for change in changes:
                     result = {
