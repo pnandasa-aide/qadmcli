@@ -2800,13 +2800,14 @@ def mockup() -> None:
     
     \b
     Field Patterns (auto-detected from column names):
-      Names:   FIRST_NAME, LAST_NAME, FNAME, LNAME, SURNAME
-      Contact: EMAIL, PHONE, MOBILE, TEL, CELL
-      Dates:   DATE, CREATED_DATE, UPDATED_DATE, BIRTHDAY
-      Money:   AMOUNT, PRICE, COST, FEE, TAX, BALANCE
-      IDs:     ID, CUST_ID, USER_ID, ORDER_ID, ACCOUNT_ID
-      Status:  STATUS, TYPE, ORDER_STATUS, STATE
-      Text:    CHAR, VARCHAR (fallback for unknown patterns)
+      Names:        FIRST_NAME, LAST_NAME, FNAME, LNAME, SURNAME
+      Contact:      EMAIL, PHONE, MOBILE, TEL, CELL
+      Credit Card:  CREDIT_CARD, CREDITCARD, CC_NUMBER, CC_NO, CARD_NUMBER
+      Dates:        DATE, CREATED_DATE, UPDATED_DATE, BIRTHDAY
+      Money:        AMOUNT, PRICE, COST, FEE, TAX, BALANCE
+      IDs:          ID, CUST_ID, USER_ID, ORDER_ID, ACCOUNT_ID
+      Status:       STATUS, TYPE, ORDER_STATUS, STATE
+      Text:         CHAR, VARCHAR (fallback for unknown patterns)
     
     \b
     Examples:

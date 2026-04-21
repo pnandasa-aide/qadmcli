@@ -168,6 +168,48 @@ class PhonePattern(DataPattern):
         return ''.join(random.choices(string.digits, k=length or 10))
 
 
+class CreditCardPattern(DataPattern):
+    """Generate credit card-like numbers (16 digits with Luhn algorithm)."""
+    
+    def __init__(self):
+        super().__init__("credit_card", priority=100)
+        self.field_patterns = [
+            "CREDIT_CARD", "CREDITCARD", "CC_NUMBER", "CC_NO", "CARD_NUMBER",
+            "CARD_NO", "PAYMENT_CARD", "CCN", "CREDIT_CARD_NO"
+        ]
+    
+    def _luhn_checksum(self, number: str) -> int:
+        """Calculate Luhn checksum for a number."""
+        def digits_of(n):
+            return [int(d) for d in str(n)]
+        
+        digits = digits_of(number)
+        odd_digits = digits[-1::-2]
+        even_digits = digits[-2::-2]
+        checksum = sum(odd_digits)
+        for d in even_digits:
+            checksum += sum(digits_of(d * 2))
+        return checksum % 10
+    
+    def generate_luhn_number(self, length: int = 16) -> str:
+        """Generate a Luhn-valid number (credit card format)."""
+        # Generate length-1 random digits
+        number = ''.join(random.choices(string.digits, k=length - 1))
+        
+        # Calculate check digit
+        checksum = self._luhn_checksum(number + '0')
+        check_digit = (10 - checksum) % 10
+        
+        return number + str(check_digit)
+    
+    def generate(self, length: Optional[int] = None, scale: Optional[int] = None) -> str:
+        # Default to 16 digits for credit cards
+        card_length = length if length else 16
+        
+        # Generate Luhn-valid number
+        return self.generate_luhn_number(card_length)
+
+
 class DatePattern(DataPattern):
     """Generate dates."""
     
@@ -358,6 +400,7 @@ class DataGenerator:
             LastNamePattern(),
             EmailPattern(),
             PhonePattern(),
+            CreditCardPattern(),
             DatePattern(),
             AmountPattern(),
             IDPattern(),
@@ -418,6 +461,7 @@ class DataGenerator:
         - thai_first_name, thai_last_name, thai_full_name
         - email
         - phone, mobile
+        - credit_card, creditcard, cc_number
         - date, datetime, timestamp
         - amount, price, fee, tax
         - id, uuid
@@ -478,6 +522,11 @@ class DataGenerator:
             prefix = random.choice(prefixes)
             suffix = ''.join(random.choices(string.digits, k=7))
             return f"{prefix}{suffix}"
+        
+        # Credit card pattern
+        elif hint == "credit_card":
+            cc_pattern = CreditCardPattern()
+            return cc_pattern.generate(length or 16)
         
         # Date patterns
         elif hint in ["date", "datetime", "timestamp"]:

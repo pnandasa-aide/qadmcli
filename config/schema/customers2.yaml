@@ -1,0 +1,10 @@
+# Schema definition for CUSTOMERS2 table
+# Use [hint:pattern_name] in description to override auto-detection
+# Available hints: first_name, last_name, email, phone, credit_card, date, amount, id, status
+
+columns:
+  - name: CREDIT_CARD
+    type: VARCHAR
+    length: 20
+    nullable: true
+    description: "Credit card number [hint:credit_card]"
