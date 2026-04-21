@@ -2783,7 +2783,48 @@ def library_grant(
 
 @cli.group()
 def mockup() -> None:
-    """Mockup data generation commands."""
+    """Mockup data generation for testing.
+    
+    Generate realistic test data with automatic field pattern detection.
+    Supports INSERT/UPDATE/DELETE operations with customizable ratios.
+    
+    \b
+    Features:
+      - Automatic column type detection based on column names
+      - Realistic data generation (names, emails, phones, etc.)
+      - Customizable transaction mix (insert/update/delete ratios)
+      - Dry-run mode to preview SQL without executing
+      - Schema file support for custom column hints
+      - Composite primary key support
+      - Efficient handling of large tables (millions of rows)
+    
+    \b
+    Field Patterns (auto-detected from column names):
+      Names:   FIRST_NAME, LAST_NAME, FNAME, LNAME, SURNAME
+      Contact: EMAIL, PHONE, MOBILE, TEL, CELL
+      Dates:   DATE, CREATED_DATE, UPDATED_DATE, BIRTHDAY
+      Money:   AMOUNT, PRICE, COST, FEE, TAX, BALANCE
+      IDs:     ID, CUST_ID, USER_ID, ORDER_ID, ACCOUNT_ID
+      Status:  STATUS, TYPE, ORDER_STATUS, STATE
+      Text:    CHAR, VARCHAR (fallback for unknown patterns)
+    
+    \b
+    Examples:
+      # Quick test - dry run 10 rows
+      qadmcli mockup generate -t CUSTOMERS -l MYLIB --dry-run -r 10
+      
+      # Generate 1000 rows with default ratios
+      qadmcli mockup generate -t ORDERS -l MYLIB -r 1000
+      
+      # Custom transaction mix
+      qadmcli mockup generate -t PRODUCTS -l MYLIB -r 500 \\
+          --insert-ratio 70 --update-ratio 20 --delete-ratio 10
+    
+    Notes:
+        - Table must have a primary key for UPDATE/DELETE operations
+        - Composite primary keys are fully supported
+        - Use --dry-run to preview SQL before executing
+    """
     pass
 
 
