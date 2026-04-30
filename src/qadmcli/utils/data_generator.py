@@ -81,11 +81,17 @@ class FirstNamePattern(DataPattern):
         self.thai_patterns = ["THAI", "TH_", "_TH", "NAME_THAI", "THAI_NAME"]
     
     def generate(self, length: Optional[int] = None, scale: Optional[int] = None, 
-                 field_name: str = "") -> str:
+                 field_name: str = "", ccsid: Optional[int] = None) -> str:
         # Check if Thai name field based on the actual field name
         field_upper = field_name.upper()
-        if any(thai in field_upper for thai in self.thai_patterns):
+        is_thai = any(thai in field_upper for thai in self.thai_patterns)
+        
+        if is_thai:
+            # DB2 for i automatically converts UTF-8 to the target CCSID
+            # So we can always send Thai Unicode, regardless of CCSID
+            # CCSID 838 (Thai EBCDIC), 1208 (UTF-8), etc. all accept Thai Unicode input
             return random.choice(self.THAI_FIRST_NAMES)
+        
         return random.choice(self.FIRST_NAMES)
 
 
@@ -126,10 +132,15 @@ class LastNamePattern(DataPattern):
         self.thai_patterns = ["THAI", "TH_", "_TH", "THAI_SURNAME", "SURNAME_THAI"]
     
     def generate(self, length: Optional[int] = None, scale: Optional[int] = None,
-                 field_name: str = "") -> str:
+                 field_name: str = "", ccsid: Optional[int] = None) -> str:
         field_upper = field_name.upper()
-        if any(thai in field_upper for thai in self.thai_patterns):
+        is_thai = any(thai in field_upper for thai in self.thai_patterns)
+        
+        if is_thai:
+            # DB2 for i automatically converts UTF-8 to the target CCSID
+            # So we can always send Thai Unicode, regardless of CCSID
             return random.choice(self.THAI_LAST_NAMES)
+        
         return random.choice(self.LAST_NAMES)
 
 
@@ -438,6 +449,9 @@ class DataGenerator:
         """Get pattern name for fallback based on data type."""
         type_upper = data_type.upper()
         if "CHAR" in type_upper or "GRAPHIC" in type_upper:
+            # Check if it's "FOR BIT DATA" (binary)
+            if "FOR BIT DATA" in type_upper:
+                return "binary"
             return "string"
         elif "INT" in type_upper or "SMALLINT" in type_upper:
             return "integer"
@@ -445,7 +459,7 @@ class DataGenerator:
             return "decimal"
         elif "DATE" in type_upper or "TIME" in type_upper or "TIMESTMP" in type_upper:
             return "datetime"
-        elif "BLOB" in type_upper or "BINARY" in type_upper:
+        elif "BLOB" in type_upper or "BINARY" in type_upper or "FOR BIT DATA" in type_upper:
             return "binary"
         else:
             return "default"
@@ -453,7 +467,8 @@ class DataGenerator:
     def generate_for_column(self, column_name: str, data_type: str, 
                            length: Optional[int] = None, 
                            scale: Optional[int] = None,
-                           hint: Optional[str] = None) -> Any:
+                           hint: Optional[str] = None,
+                           ccsid: Optional[int] = None) -> Any:
         """Generate mock data for a column based on its name and type.
         
         Supported hints:
@@ -473,21 +488,33 @@ class DataGenerator:
         - constant:<value> - Use a constant value
         - range:<min>:<max> - Numeric range
         - choices:<val1>,<val2>,<val3> - Random from choices
+        
+        CCSID handling:
+        - CCSID 838: Thai EBCDIC - DB2 auto-converts UTF-8 to Thai EBCDIC
+        - CCSID 1208: UTF-8 - Store as UTF-8
+        - CCSID 65535: Binary - Generate hex string for binary data
         """
         
         # Check for hint first - it overrides automatic detection
         if hint:
             hint_lower = hint.lower().strip()
-            result = self._generate_from_hint(hint_lower, length, scale, column_name)
+            result = self._generate_from_hint(hint_lower, length, scale, column_name, ccsid)
             if result is not None:
                 return result
+        
+        # Special handling for CCSID 65535 (binary columns)
+        if ccsid == 65535:
+            # Generate hex string for binary data
+            import string
+            hex_length = min(length or 20, 64)
+            return ''.join(random.choices(string.hexdigits.upper(), k=hex_length))
         
         # Find matching pattern
         for pattern in self.patterns:
             if pattern.matches(column_name, data_type):
                 # Pass field_name for patterns that need it (like Thai name detection)
                 try:
-                    return pattern.generate(length, scale, field_name=column_name)
+                    return pattern.generate(length, scale, field_name=column_name, ccsid=ccsid)
                 except TypeError:
                     # Pattern doesn't accept field_name parameter
                     return pattern.generate(length, scale)

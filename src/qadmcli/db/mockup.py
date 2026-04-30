@@ -123,8 +123,9 @@ class MockupManager:
                 error_msg = "Schema validation failed:\n" + "\n".join(f"  - {e}" for e in validation_errors)
                 raise SchemaValidationError(error_msg)
 
-        # Get table columns
-        columns = self._get_columns(table_name, library)
+        # Get table columns and store for batch execution
+        self._columns = self._get_columns(table_name, library)
+        columns = self._columns
         
         # Get primary key info
         pk_columns = self._get_primary_key(table_name, library)
@@ -151,7 +152,7 @@ class MockupManager:
         # Generate INSERT operations
         for i in range(insert_count):
             row_data = self._generate_row(columns, pk_columns, existing_pks, is_insert=True)
-            sql = self._build_insert_sql(table_name, library, row_data)
+            sql = self._build_insert_sql(table_name, library, row_data, columns)
             
             if config.dry_run:
                 results["sql_statements"].append(sql)
@@ -237,7 +238,8 @@ class MockupManager:
                 c.IS_NULLABLE,
                 c.COLUMN_DEFAULT,
                 c.COLUMN_TEXT,
-                c.IS_IDENTITY
+                c.IS_IDENTITY,
+                c.CCSID
             FROM QSYS2.SYSCOLUMNS c
             WHERE c.SYSTEM_TABLE_NAME = ?
             AND c.SYSTEM_TABLE_SCHEMA = ?
@@ -283,6 +285,8 @@ class MockupManager:
                 "hint": final_hint,
                 "is_identity": is_identity,
                 "is_generated": is_generated,
+                "ccsid": row[9] if len(row) > 9 else None,  # CCSID value
+                "is_binary": row[9] == 65535 if len(row) > 9 else False,  # CCSID 65535 = binary
             })
         cursor.close()
         return columns
@@ -450,7 +454,7 @@ class MockupManager:
                 if hint:
                     logger.debug(f"Using hint '{hint}' for column {col_name}")
                 value = self.data_generator.generate_for_column(
-                    col_name, col["type"], col["length"], col["scale"], hint
+                    col_name, col["type"], col["length"], col["scale"], hint, col.get("ccsid")
                 )
 
             row[col_name] = value
@@ -462,7 +466,7 @@ class MockupManager:
         max_attempts = 1000
         for _ in range(max_attempts):
             value = self.data_generator.generate_for_column(
-                col["name"], col["type"], col["length"], col["scale"], col.get("hint")
+                col["name"], col["type"], col["length"], col["scale"], col.get("hint"), col.get("ccsid")
             )
             if value not in existing_pks:
                 return value
@@ -470,7 +474,7 @@ class MockupManager:
         # If we can't find a unique value, add timestamp
         import time
         base_value = self.data_generator.generate_for_column(
-            col["name"], col["type"], col["length"], col["scale"], col.get("hint")
+            col["name"], col["type"], col["length"], col["scale"], col.get("hint"), col.get("ccsid")
         )
         return f"{base_value}_{int(time.time() * 1000)}"
     
@@ -491,26 +495,63 @@ class MockupManager:
         for col in cols_to_update:
             # Pass hint if available for consistent data generation
             value = self.data_generator.generate_for_column(
-                col["name"], col["type"], col["length"], col["scale"], col.get("hint")
+                col["name"], col["type"], col["length"], col["scale"], col.get("hint"), col.get("ccsid")
             )
             update_data[col["name"]] = value
 
         return update_data
     
     def _build_insert_sql(self, table_name: str, library: str, 
-                         row_data: dict) -> str:
-        """Build INSERT SQL statement."""
+                         row_data: dict, 
+                         columns: list[dict] = None) -> str:
+        """Build INSERT SQL statement.
+        
+        Args:
+            table_name: Target table name
+            library: Library/schema name
+            row_data: Dictionary of column_name -> value
+            columns: Optional list of column metadata dicts (for type detection)
+        """
         from datetime import datetime, date
         
-        columns = ", ".join(row_data.keys())
+        columns_str = ", ".join(row_data.keys())
         values = []
         
-        for val in row_data.values():
+        # Build column name -> type mapping if columns metadata provided
+        col_type_map = {}
+        if columns:
+            for col in columns:
+                col_type_map[col["name"].upper()] = col["type"].upper()
+        
+        for col_name, val in row_data.items():
+            col_type = col_type_map.get(col_name.upper(), "")
+            
             if val is None:
                 values.append("NULL")
             elif isinstance(val, str):
-                escaped = val.replace("'", "''")
-                values.append(f"'{escaped}'")
+                # Check if this is a binary column
+                # CCSID 65535 or explicit binary types
+                is_binary_col = (
+                    "FOR BIT DATA" in col_type or 
+                    col_type in ("BINARY", "VARBINARY", "BLOB") or
+                    any(c["name"].upper() == col_name.upper() and c.get("is_binary") 
+                        for c in (columns or []))
+                )
+                
+                if is_binary_col:
+                    # Use DB2 binary literal syntax: X'HEXSTRING'
+                    # Ensure value contains only hex characters
+                    hex_val = val.upper().replace(' ', '')
+                    if all(c in '0123456789ABCDEF' for c in hex_val):
+                        values.append(f"X'{hex_val}'")
+                    else:
+                        # Fallback: treat as regular string if not valid hex
+                        escaped = val.replace("'", "''")
+                        values.append(f"'{escaped}'")
+                else:
+                    # Regular string column
+                    escaped = val.replace("'", "''")
+                    values.append(f"'{escaped}'")
             elif isinstance(val, (int, float)):
                 values.append(str(val))
             elif isinstance(val, datetime):
@@ -525,7 +566,7 @@ class MockupManager:
                 values.append(f"'{str(val)}'")
         
         values_str = ", ".join(values)
-        return f"INSERT INTO {library}.{table_name} ({columns}) VALUES ({values_str});"
+        return f"INSERT INTO {library}.{table_name} ({columns_str}) VALUES ({values_str});"
     
     def _build_update_sql(self, table_name: str, library: str,
                          update_data: dict, pk_columns: list[str],
@@ -612,6 +653,7 @@ class MockupManager:
         # Get stored table info
         table_name = getattr(self, '_table_name', '')
         library = getattr(self, '_library', '')
+        columns = getattr(self, '_columns', [])  # Get stored columns metadata
         
         # Track FK errors
         fk_errors = []
@@ -622,7 +664,7 @@ class MockupManager:
             if operation == "INSERT":
                 for row_data in batch:
                     try:
-                        sql = self._build_insert_sql(table_name, library, row_data)
+                        sql = self._build_insert_sql(table_name, library, row_data, columns)
                         cursor = self.conn.execute(sql.rstrip(';'))
                         cursor.close()
                         success_count += 1
