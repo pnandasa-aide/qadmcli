@@ -23,13 +23,13 @@ fi
 IMAGE_NAME="qadmcli"
 CONTAINER_NAME="qadmcli-${RANDOM}"
 
-# Check if image exists
-if ! podman images --format "{{.Repository}}" | grep -q "^localhost/${IMAGE_NAME}$"; then
+# Check if image exists (use sudo to match root podman storage)
+if ! sudo podman images --format "{{.Repository}}" | grep -q "^localhost/${IMAGE_NAME}$"; then
     # Only show build messages if not JSON output
     if [[ "$*" != *"--format json"* ]] && [[ "$*" != *"--format summary"* ]]; then
         echo "🔨 Building qadmcli image..."
     fi
-    podman build -t "$IMAGE_NAME" -f "${SCRIPT_DIR}/Containerfile" "$SCRIPT_DIR"
+    sudo podman build -t "$IMAGE_NAME" -f "${SCRIPT_DIR}/Containerfile" "$SCRIPT_DIR"
     if [ $? -ne 0 ]; then
         echo "❌ Build failed!" >&2
         exit 1
@@ -43,22 +43,24 @@ else
     fi
 fi
 
-# Run container (suppress info message for JSON output)
+# Run container (use sudo for root podman)
 if [[ "$*" == *"--format json"* ]] || [[ "$*" == *"--format summary"* ]]; then
-    podman run -it --rm --name "$CONTAINER_NAME" \
+    sudo podman run -it --rm --name "$CONTAINER_NAME" \
         -e AS400_USER="$AS400_USER" \
         -e AS400_PASSWORD="$AS400_PASSWORD" \
         -e MSSQL_USER="$MSSQL_USER" \
         -e MSSQL_PASSWORD="$MSSQL_PASSWORD" \
+        -e QADMCLI_DEBUG="$QADMCLI_DEBUG" \
         -v "${SCRIPT_DIR}:/app:Z" \
         "$IMAGE_NAME" "$@"
 else
     echo "🚀 Running: qadmcli $*"
-    podman run -it --rm --name "$CONTAINER_NAME" \
+    sudo podman run -it --rm --name "$CONTAINER_NAME" \
         -e AS400_USER="$AS400_USER" \
         -e AS400_PASSWORD="$AS400_PASSWORD" \
         -e MSSQL_USER="$MSSQL_USER" \
         -e MSSQL_PASSWORD="$MSSQL_PASSWORD" \
+        -e QADMCLI_DEBUG="$QADMCLI_DEBUG" \
         -v "${SCRIPT_DIR}:/app:Z" \
         "$IMAGE_NAME" "$@"
 fi

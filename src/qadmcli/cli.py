@@ -3108,69 +3108,88 @@ def sql_execute(ctx: click.Context, query: str, target: str, output_format: str,
             with AS400ConnectionManager(temp_config) as conn:
                 cursor = conn.execute(query)
                 
-                # Get column names
-                columns = [desc[0] for desc in cursor.description] if cursor.description else []
-                
-                # Fetch all rows
-                rows = cursor.fetchall()
-                cursor.close()
-                
-                if output_format == "json":
-                    # Clean JSON output for scripts (no Rich formatting)
-                    from .utils.formatters import print_json_clean
-                    results = []
-                    for row in rows:
-                        row_dict = {}
-                        for i, col in enumerate(columns):
-                            row_dict[str(col)] = row[i]
-                        results.append(row_dict)
-                    print_json_clean(results)
-                else:
-                    # Format as table
-                    if rows:
-                        table_rows = []
+                # Check if query returns results (SELECT)
+                if query.strip().upper().startswith("SELECT"):
+                    # Get column names
+                    columns = [desc[0] for desc in cursor.description] if cursor.description else []
+                    
+                    # Fetch all rows
+                    rows = cursor.fetchall()
+                    cursor.close()
+                    
+                    if output_format == "json":
+                        # Clean JSON output for scripts (no Rich formatting)
+                        from .utils.formatters import print_json_clean
+                        results = []
                         for row in rows:
-                            table_rows.append([str(cell) if cell is not None else "NULL" for cell in row])
-                        
-                        # Sanitize column names for Windows terminal compatibility
-                        # Replace non-ASCII characters that may render as Thai characters
-                        def sanitize_column(name: str) -> str:
-                            """Sanitize column name for Windows terminal display."""
-                            # Replace common problematic characters
-                            sanitized = str(name)
-                            # Replace ellipsis and other Unicode characters with ASCII equivalents
-                            replacements = {
-                                '\u2026': '...',  # Horizontal ellipsis
-                                '\u2018': "'",    # Left single quote
-                                '\u2019': "'",    # Right single quote
-                                '\u201C': '"',    # Left double quote
-                                '\u201D': '"',    # Right double quote
-                                '\u2013': '-',    # En dash
-                                '\u2014': '--',   # Em dash
-                            }
-                            for unicode_char, ascii_char in replacements.items():
-                                sanitized = sanitized.replace(unicode_char, ascii_char)
-                            # Truncate if too long (prevents wrapping issues)
-                            if len(sanitized) > 30:
-                                sanitized = sanitized[:27] + '...'
-                            return sanitized
-                        
-                        str_columns = [sanitize_column(str(col)) for col in columns]
-                        console.print(print_table(
-                            console,
-                            str_columns,
-                            table_rows,
-                            title="Query Results"
-                        ))
-                        console.print(f"[green]{len(rows)} row(s) returned[/green]")
+                            row_dict = {}
+                            for i, col in enumerate(columns):
+                                row_dict[str(col)] = row[i]
+                            results.append(row_dict)
+                        print_json_clean(results)
                     else:
-                        console.print("[yellow]No rows returned[/yellow]")
+                        # Format as table
+                        if rows:
+                            table_rows = []
+                            for row in rows:
+                                table_rows.append([str(cell) if cell is not None else "NULL" for cell in row])
+                            
+                            # Sanitize column names for Windows terminal compatibility
+                            def sanitize_column(name: str) -> str:
+                                """Sanitize column name for Windows terminal display."""
+                                sanitized = str(name)
+                                replacements = {
+                                    '\u2026': '...',
+                                    '\u2018': "'",
+                                    '\u2019': "'",
+                                    '\u201C': '"',
+                                    '\u201D': '"',
+                                    '\u2013': '-',
+                                    '\u2014': '--',
+                                }
+                                for unicode_char, ascii_char in replacements.items():
+                                    sanitized = sanitized.replace(unicode_char, ascii_char)
+                                if len(sanitized) > 30:
+                                    sanitized = sanitized[:27] + '...'
+                                return sanitized
+                            
+                            str_columns = [sanitize_column(str(col)) for col in columns]
+                            console.print(print_table(
+                                console,
+                                str_columns,
+                                table_rows,
+                                title="Query Results"
+                            ))
+                            console.print(f"[green]{len(rows)} row(s) returned[/green]")
+                        else:
+                            console.print("[yellow]No rows returned[/yellow]")
+                else:
+                    # DDL/DML query (CREATE, ALTER, INSERT, UPDATE, DELETE)
+                    row_count = cursor.rowcount if cursor.rowcount >= 0 else 0
+                    cursor.close()
+                    
+                    if output_format == "json":
+                        import json
+                        console.print(json.dumps({"status": "success", "rows_affected": row_count}))
+                    else:
+                        console.print(f"[green]✓ Query executed successfully ({row_count} rows affected)[/green]")
     
     except ConnectionError as e:
         console.print(f"[red]Connection error: {e.message}[/red]")
         sys.exit(1)
     except Exception as e:
-        console.print(f"[red]Error: {e}[/red]")
+        # Enhanced error reporting - show exception type and details
+        error_msg = str(e) if str(e) else "(empty error message)"
+        error_type = type(e).__name__
+        console.print(f"[red]Error [{error_type}]: {error_msg}[/red]")
+        
+        # Show traceback in verbose mode (for debugging)
+        import os
+        if os.environ.get('QADMCLI_DEBUG') == '1':
+            import traceback
+            console.print(f"[dim]Traceback:[/dim]")
+            console.print(f"[dim]{traceback.format_exc()}[/dim]")
+        
         sys.exit(1)
 
 
