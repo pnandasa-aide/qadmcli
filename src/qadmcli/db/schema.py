@@ -136,7 +136,8 @@ class SchemaManager:
                 c.IS_NULLABLE,
                 c.COLUMN_DEFAULT,
                 c.COLUMN_TEXT,
-                c.IS_IDENTITY
+                c.IS_IDENTITY,
+                c.CCSID
             FROM QSYS2.SYSCOLUMNS c
             WHERE c.SYSTEM_TABLE_NAME = ?
             AND c.SYSTEM_TABLE_SCHEMA = ?
@@ -162,6 +163,8 @@ class SchemaManager:
                 "description": str(row[7]) if row[7] else None,
                 "is_identity": is_identity,
                 "is_generated": is_generated,
+                "ccsid": row[9] if len(row) > 9 else None,  # CCSID value
+                "is_binary": row[9] == 65535 if len(row) > 9 else False,  # CCSID 65535 = binary
             })
         cursor.close()
         return columns

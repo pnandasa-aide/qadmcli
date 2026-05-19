@@ -12,3 +12,6 @@ schemas/converted_*/
 # Ignore working data files
 *.xml
 *.yaml.copy__pycache__/
+src/qadmcli/utils/__pycache__/
+# To remove files from index (cache)
+# git rm -r --cached src/qadmcli/utils/__pycache__/

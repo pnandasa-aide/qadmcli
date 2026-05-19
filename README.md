@@ -6,6 +6,7 @@ A Python-based CLI tool for managing AS400 DB2 for i database tables with connec
 
 - **Connection Management**: Connect to AS400 via jt400 JDBC driver with SSL support
 - **Table Operations**: Create, check, list, drop, empty, and reverse-engineer tables using YAML or SQL schema definitions
+- **Library Management**: Create libraries, manage user access, list with wildcard patterns, check privileges and journal status
 - **User Management**: List, check, create, modify, delete users with privilege escalation support
 - **Journal Management**: Enable/disable journaling, retrieve and decode journal entries
 - **Mockup Data Generation**: Generate realistic test data with intelligent field pattern recognition (names, emails, phones, Thai names, etc.)
@@ -304,13 +305,21 @@ qadmcli journal entries -t ORDERS -l MYLIB --limit 50
 
 Test connection to AS400:
 ```bash
-qadmcli connection test
+qadmcli connection test-as400
 
-# With custom config
-qadmcli -c /path/to/connection.yaml connection test
+# With custom credentials
+qadmcli connection test-as400 -U ADMIN -P password
 
 # JSON output
-qadmcli connection test --format json
+qadmcli connection test-as400 --format json
+```
+
+Test connection to MSSQL:
+```bash
+qadmcli connection test-mssql
+
+# JSON output
+qadmcli connection test-mssql --format json
 ```
 
 ### Table Commands
@@ -1147,7 +1156,7 @@ qadmcli sql execute -q "SELECT JOURNAL_NAME, JOURNAL_LIBRARY, JOURNAL_IMAGES FRO
 
 ```bash
 # Verbose output
-qadmcli -v connection test
+qadmcli -v connection test-as400
 
 # JSON output
 qadmcli table check -t CUSTOMERS -l MYLIB --format json
@@ -1155,6 +1164,74 @@ qadmcli table check -t CUSTOMERS -l MYLIB --format json
 # Custom config file
 qadmcli -c /custom/path/connection.yaml table list -l MYLIB
 ```
+
+### Library Management
+
+Library commands help you manage AS400 libraries (schemas) and their security settings.
+
+#### Create a Library
+
+```bash
+# Create a new library
+qadmcli library create -n NEWLIB
+
+# Create and grant authority to a user
+qadmcli library create -n NEWLIB -u USER001
+
+# Create with specific authority level
+qadmcli library create -n NEWLIB -u USER001 -a *CHANGE
+```
+
+**Authority Levels:**
+- `*USE` - Read-only access
+- `*CHANGE` - Read/write access
+- `*ALL` - Full control
+
+#### Grant Library Access
+
+```bash
+# Grant read access
+qadmcli library grant -n MYLIB -u USER001
+
+# Grant full control
+qadmcli library grant -n MYLIB -u USER001 -a *ALL
+```
+
+#### List Libraries
+
+```bash
+# List all libraries
+qadmcli library list
+
+# List libraries matching pattern (quote wildcards!)
+qadmcli library list -p "GS*"
+qadmcli library list -p "GSLIB*"
+qadmcli library list -p "*PROD*"
+qadmcli library list -p "TEST?"
+
+# JSON output
+qadmcli library list -p "GS*" -f json
+```
+
+> **Important:** Always quote wildcard patterns (`"GS*"`) to prevent shell expansion!
+
+#### Check Library Privileges & Journal Status
+
+```bash
+# Check all users with privileges on a library
+qadmcli library check -l GSLIBTST
+
+# Check specific user's privileges
+qadmcli library check -l GSLIBTST -u USER001
+
+# JSON output
+qadmcli library check -l GSLIBTST -f json
+```
+
+**Output includes:**
+- User privileges (who has access and what authority)
+- Journal status (enabled/disabled)
+- Journal name and library (if journaling is enabled)
 
 ## Development Workflow with Podman
 
@@ -1188,11 +1265,11 @@ qadmcli -c /custom/path/connection.yaml table list -l MYLIB
      -e AS400_USER=$AS400_USER \
      -e AS400_PASSWORD=$AS400_PASSWORD \
      -v $(pwd)/config:/app/config:Z \
-     qadmcli connection test
+     qadmcli connection test-as400
    
    # Or use podman-compose
    podman-compose up -d
-   podman exec -it qadmcli-dev qadmcli connection test
+   podman exec -it qadmcli-dev qadmcli connection test-as400
    ```
 
 4. **Development with hot-reload**:
@@ -1213,7 +1290,8 @@ qadmcli -c /custom/path/connection.yaml table list -l MYLIB
 | Command | Description |
 |---------|-------------|
 | **Connection** | |
-| `connection test` | Test AS400 connection |
+| `connection test-as400` | Test AS400 DB2 connection |
+| `connection test-mssql` | Test MSSQL connection |
 | **Table** | |
 | `table check` | Check if table exists (shows system & SQL names) |
 | `table create` | Create table from schema |
@@ -1248,6 +1326,12 @@ qadmcli -c /custom/path/connection.yaml table list -l MYLIB
 | `mockup generate` | Generate mock data with INSERT/UPDATE/DELETE |
 | `mockup generate -s <schema>` | Generate with schema hints and validation |
 | `mockup generate --skip-validation` | Skip schema validation |
+| `mockup hint` | Show mockup schema file format and available hints |
+| **Library** | |
+| `library create` | Create a new library and optionally grant user authority |
+| `library grant` | Grant authority to a user on a library |
+| `library list` | List libraries with wildcard pattern support |
+| `library check` | Check library privileges and journal status |
 | **Cross-Database** | |
 | `table convert` | Convert schema between DB2 and MSSQL |
 | `table create-mssql` | Create table on MSSQL from schema |

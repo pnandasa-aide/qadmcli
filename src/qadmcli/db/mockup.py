@@ -116,6 +116,11 @@ class MockupManager:
         self._table_name = table_name
         self._library = library
         
+        # Validate table exists
+        columns = self._get_columns(table_name, library)
+        if not columns:
+            raise ValueError(f"Table '{library}.{table_name}' does not exist or has no columns")
+        
         # Validate schema if validation rules are provided
         if self.schema_validation:
             validation_errors = self.validate_schema(table_name, library)
@@ -123,9 +128,8 @@ class MockupManager:
                 error_msg = "Schema validation failed:\n" + "\n".join(f"  - {e}" for e in validation_errors)
                 raise SchemaValidationError(error_msg)
 
-        # Get table columns and store for batch execution
-        self._columns = self._get_columns(table_name, library)
-        columns = self._columns
+        # Store columns for batch execution
+        self._columns = columns
         
         # Get primary key info
         pk_columns = self._get_primary_key(table_name, library)
