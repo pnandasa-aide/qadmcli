@@ -5,9 +5,6 @@ import os
 from contextlib import contextmanager
 from typing import Any, Generator
 
-import jaydebeapi
-import jpype
-
 from ..models.connection import ConnectionConfig
 
 logger = logging.getLogger("qadmcli")
@@ -65,6 +62,7 @@ class AS400ConnectionManager:
     
     def _start_jvm(self) -> None:
         """Start JVM if not already running."""
+        import jpype
         if not jpype.isJVMStarted():
             jt400_path = self._get_jt400_path()
             classpath = [jt400_path]
@@ -77,6 +75,8 @@ class AS400ConnectionManager:
         """Establish connection to AS400."""
         try:
             self._start_jvm()
+            
+            import jaydebeapi
             
             jdbc_url = self.config.get_jdbc_url()
             props = self.config.get_connection_properties()

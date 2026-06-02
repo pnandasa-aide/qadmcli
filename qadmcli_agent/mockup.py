@@ -5,9 +5,8 @@ import random
 from typing import Any, Optional
 from dataclasses import dataclass
 
-from ..utils.data_generator import DataGenerator
-from .connection import AS400ConnectionManager
-from .agent_client import AS400AgentClient
+from .utils.data_generator import DataGenerator
+# Note: connection can be either AS400ConnectionManager (old) or pooled connection (new agent)
 
 logger = logging.getLogger("qadmcli")
 
@@ -32,19 +31,19 @@ class MockupConfig:
 class MockupManager:
     """Manages mockup data generation and operations."""
 
-    def __init__(self, connection: AS400ConnectionManager, schema_hints: Optional[dict[str, str]] = None,
+    def __init__(self, connection, schema_hints: Optional[dict[str, str]] = None,
                  schema_validation: Optional[dict[str, Any]] = None):
+        """Initialize MockupManager.
+        
+        Args:
+            connection: Database connection (AS400ConnectionManager or pooled connection)
+            schema_hints: Optional schema hints for data generation
+            schema_validation: Optional schema validation rules
+        """
         self.conn = connection
         self.data_generator = DataGenerator()
         self.schema_hints = schema_hints or {}
         self.schema_validation = schema_validation or {}
-        
-        # Initialize agent client (auto-detects from QADMCLI_AGENT_URL env var)
-        self.agent = AS400AgentClient()
-        if self.agent.is_available():
-            logger.info("🚀 Using AS400 agent for bulk operations")
-        else:
-            logger.info("📡 Using direct JT400 connection")
 
     def validate_schema(self, table_name: str, library: str) -> list[str]:
         """Validate that actual table schema matches the input schema.
@@ -684,72 +683,163 @@ class MockupManager:
         library = getattr(self, '_library', '')
         columns = getattr(self, '_columns', [])  # Get stored columns metadata
         
-        # Use agent if available for bulk operations
-        if self.agent.is_available():
-            return self._execute_batch_via_agent(batch, operation, table_name, library, columns, pk_columns)
-        
-        # Fallback to direct JT400 (original code)
         # Track FK errors
         fk_errors = []
         other_errors = []
         success_count = 0
             
         try:
+            col_type_map = {col["name"].upper(): col for col in columns}
+            
             if operation == "INSERT":
-                for row_data in batch:
-                    try:
-                        sql = self._build_insert_sql(table_name, library, row_data, columns)
-                        cursor = self.conn.execute(sql.rstrip(';'))
-                        cursor.close()
-                        success_count += 1
-                    except Exception as row_e:
-                        error_str = str(row_e).upper()
-                        # Check for FK constraint violations
-                        if any(kw in error_str for kw in ['FOREIGN KEY', 'CONSTRAINT', 'PARENT KEY', 'PARENT ROW']):
-                            fk_errors.append(f"FK violation for row {row_data}: {row_e}")
-                            logger.warning(f"FK constraint violation in {library}.{table_name}: {row_e}")
-                        else:
-                            other_errors.append(f"Error for row {row_data}: {row_e}")
-                            raise  # Re-raise non-FK errors
+                # Build parameterized insert SQL
+                keys = list(batch[0].keys())
+                columns_str = ", ".join(keys)
+                placeholders = ", ".join(["?"] * len(keys))
+                sql = f"INSERT INTO {library}.{table_name} ({columns_str}) VALUES ({placeholders})"
                 
-            elif operation == "UPDATE":
-                for item in batch:
-                    pk_values = item["pk_values"]
-                    update_data = item["data"]
-                    if update_data:
+                params_list = []
+                for row_data in batch:
+                    row_params = {}
+                    for idx, key in enumerate(keys, 1):
+                        val = row_data[key]
+                        col = col_type_map.get(key.upper(), {})
+                        col_type = col.get("type", "").upper()
+                        is_binary_col = (
+                            "FOR BIT DATA" in col_type or 
+                            col_type in ("BINARY", "VARBINARY", "BLOB") or
+                            col.get("is_binary", False)
+                        )
+                        if is_binary_col and isinstance(val, str):
+                            hex_val = val.upper().replace(' ', '')
+                            try:
+                                val = bytes.fromhex(hex_val)
+                            except ValueError:
+                                pass
+                        row_params[str(idx)] = val
+                    params_list.append(row_params)
+                
+                try:
+                    self.conn.execute_batch(sql, params_list)
+                    success_count = len(batch)
+                except Exception as batch_e:
+                    logger.warning(f"Batch INSERT failed, falling back to row-by-row: {batch_e}")
+                    success_count = 0
+                    for row_data in batch:
                         try:
-                            sql = self._build_update_sql(table_name, library, update_data, pk_columns or [], pk_values)
-                            logger.debug(f"UPDATE SQL: {sql}")
-                            cursor = self.conn.execute(sql.rstrip(';'))
+                            sql_single = self._build_insert_sql(table_name, library, row_data, columns)
+                            cursor = self.conn.execute(sql_single.rstrip(';'))
                             cursor.close()
                             success_count += 1
                         except Exception as row_e:
                             error_str = str(row_e).upper()
-                            if any(kw in error_str for kw in ['FOREIGN KEY', 'CONSTRAINT', 'PARENT KEY']):
-                                fk_errors.append(f"FK violation for PK {pk_values}: {row_e}")
+                            if any(kw in error_str for kw in ['FOREIGN KEY', 'CONSTRAINT', 'PARENT KEY', 'PARENT ROW']):
+                                fk_errors.append(f"FK violation for row {row_data}: {row_e}")
                                 logger.warning(f"FK constraint violation in {library}.{table_name}: {row_e}")
+                            else:
+                                other_errors.append(f"Error for row {row_data}: {row_e}")
+                                raise
+                    self.conn.commit()
+                
+            elif operation == "UPDATE":
+                groups = {}
+                for item in batch:
+                    cols = tuple(sorted(item["data"].keys()))
+                    if not cols:
+                        continue
+                    groups.setdefault(cols, []).append(item)
+                
+                success_count = 0
+                
+                try:
+                    for cols, group_batch in groups.items():
+                        set_clauses = ", ".join([f"{col} = ?" for col in cols])
+                        where_clauses = " AND ".join([f"{col} = ?" for col in pk_columns])
+                        sql = f"UPDATE {library}.{table_name} SET {set_clauses} WHERE {where_clauses}"
+                        
+                        params_list = []
+                        for item in group_batch:
+                            row_params = {}
+                            idx = 1
+                            for col_name in cols:
+                                val = item["data"][col_name]
+                                col = col_type_map.get(col_name.upper(), {})
+                                col_type = col.get("type", "").upper()
+                                is_binary_col = (
+                                    "FOR BIT DATA" in col_type or 
+                                    col_type in ("BINARY", "VARBINARY", "BLOB") or
+                                    col.get("is_binary", False)
+                                )
+                                if is_binary_col and isinstance(val, str):
+                                    hex_val = val.upper().replace(' ', '')
+                                    try:
+                                        val = bytes.fromhex(hex_val)
+                                    except ValueError:
+                                        pass
+                                row_params[str(idx)] = val
+                                idx += 1
+                            
+                            for pk_val in item["pk_values"]:
+                                row_params[str(idx)] = pk_val
+                                idx += 1
+                            params_list.append(row_params)
+                        
+                        self.conn.execute_batch(sql, params_list)
+                        success_count += len(group_batch)
+                except Exception as batch_e:
+                    logger.warning(f"Batch UPDATE failed, falling back to row-by-row: {batch_e}")
+                    success_count = 0
+                    for item in batch:
+                        pk_values = item["pk_values"]
+                        update_data = item["data"]
+                        if update_data:
+                            try:
+                                sql_single = self._build_update_sql(table_name, library, update_data, pk_columns or [], pk_values)
+                                cursor = self.conn.execute(sql_single.rstrip(';'))
+                                cursor.close()
+                                success_count += 1
+                            except Exception as row_e:
+                                error_str = str(row_e).upper()
+                                if any(kw in error_str for kw in ['FOREIGN KEY', 'CONSTRAINT', 'PARENT KEY']):
+                                    fk_errors.append(f"FK violation for PK {pk_values}: {row_e}")
+                                    logger.warning(f"FK constraint violation in {library}.{table_name}: {row_e}")
+                                else:
+                                    other_errors.append(f"Error for PK {pk_values}: {row_e}")
+                                    raise
+                    self.conn.commit()
+                
+            elif operation == "DELETE":
+                where_clauses = " AND ".join([f"{col} = ?" for col in pk_columns])
+                sql = f"DELETE FROM {library}.{table_name} WHERE {where_clauses}"
+                
+                params_list = []
+                for pk_values in batch:
+                    row_params = {}
+                    for idx, val in enumerate(pk_values, 1):
+                        row_params[str(idx)] = val
+                    params_list.append(row_params)
+                
+                try:
+                    self.conn.execute_batch(sql, params_list)
+                    success_count = len(batch)
+                except Exception as batch_e:
+                    logger.warning(f"Batch DELETE failed, falling back to row-by-row: {batch_e}")
+                    success_count = 0
+                    for pk_values in batch:
+                        try:
+                            sql_single = self._build_delete_sql(table_name, library, pk_columns or [], pk_values)
+                            cursor = self.conn.execute(sql_single.rstrip(';'))
+                            cursor.close()
+                            success_count += 1
+                        except Exception as row_e:
+                            error_str = str(row_e).upper()
+                            if any(kw in error_str for kw in ['FOREIGN KEY', 'CONSTRAINT', 'CHILD RECORD', 'REFERENTIAL']):
+                                fk_errors.append(f"FK violation (child records exist) for PK {pk_values}: {row_e}")
+                                logger.warning(f"Cannot delete {library}.{table_name} row {pk_values} - child records exist")
                             else:
                                 other_errors.append(f"Error for PK {pk_values}: {row_e}")
                                 raise
-                
-            elif operation == "DELETE":
-                for pk_values in batch:
-                    try:
-                        sql = self._build_delete_sql(table_name, library, pk_columns or [], pk_values)
-                        cursor = self.conn.execute(sql.rstrip(';'))
-                        cursor.close()
-                        success_count += 1
-                    except Exception as row_e:
-                        error_str = str(row_e).upper()
-                        # DELETE often fails due to child records (FK violations)
-                        if any(kw in error_str for kw in ['FOREIGN KEY', 'CONSTRAINT', 'CHILD RECORD', 'REFERENTIAL']):
-                            fk_errors.append(f"FK violation (child records exist) for PK {pk_values}: {row_e}")
-                            logger.warning(f"Cannot delete {library}.{table_name} row {pk_values} - child records exist")
-                        else:
-                            other_errors.append(f"Error for PK {pk_values}: {row_e}")
-                            raise
-                
-            self.conn.commit()
+                    self.conn.commit()
             
             # Log summary
             total = len(batch)
@@ -764,96 +854,4 @@ class MockupManager:
             
         except Exception as e:
             logger.error(f"Error executing batch {operation}: {e}")
-            raise
-    
-    def _execute_batch_via_agent(self, batch: list, operation: str, table_name: str, library: str, 
-                                 columns: list, pk_columns: Optional[list[str]] = None) -> None:
-        """Execute batch operations via AS400 Agent (FAST!)."""
-        try:
-            col_type_map = {col["name"].upper(): col for col in columns}
-            
-            if operation == "INSERT":
-                # Build parameterized insert SQL
-                keys = list(batch[0].keys())
-                columns_str = ", ".join(keys)
-                placeholders = ", ".join(["?"] * len(keys))
-                sql = f"INSERT INTO {library}.{table_name} ({columns_str}) VALUES ({placeholders})"
-                
-                # Format parameters, wrapping binary columns in bytes serialization
-                rows_list = []
-                for row_data in batch:
-                    row_vals = []
-                    for key in keys:
-                        val = row_data[key]
-                        col = col_type_map.get(key.upper(), {})
-                        col_type = col.get("type", "").upper()
-                        is_binary_col = (
-                            "FOR BIT DATA" in col_type or 
-                            col_type in ("BINARY", "VARBINARY", "BLOB") or
-                            col.get("is_binary", False)
-                        )
-                        if is_binary_col and isinstance(val, str):
-                            val = {"__type__": "bytes", "value": val.upper().replace(' ', '')}
-                        row_vals.append(val)
-                    rows_list.append(row_vals)
-                
-                # Send to agent
-                result = self.agent.mockup_insert(sql, rows_list, library)
-                logger.info(f"Agent INSERT: {result['rows_affected']} rows in {result['execution_time_ms']:.0f}ms")
-                
-            elif operation == "UPDATE":
-                groups = {}
-                for item in batch:
-                    cols = tuple(sorted(item["data"].keys()))
-                    if not cols:
-                        continue
-                    groups.setdefault(cols, []).append(item)
-                
-                for cols, group_batch in groups.items():
-                    set_clauses = ", ".join([f"{col} = ?" for col in cols])
-                    where_clauses = " AND ".join([f"{col} = ?" for col in pk_columns])
-                    sql = f"UPDATE {library}.{table_name} SET {set_clauses} WHERE {where_clauses}"
-                    
-                    updates = []
-                    for item in group_batch:
-                        param_dict = {}
-                        idx = 1
-                        for col_name in cols:
-                            val = item["data"][col_name]
-                            col = col_type_map.get(col_name.upper(), {})
-                            col_type = col.get("type", "").upper()
-                            is_binary_col = (
-                                "FOR BIT DATA" in col_type or 
-                                col_type in ("BINARY", "VARBINARY", "BLOB") or
-                                col.get("is_binary", False)
-                            )
-                            if is_binary_col and isinstance(val, str):
-                                val = {"__type__": "bytes", "value": val.upper().replace(' ', '')}
-                            param_dict[str(idx)] = val
-                            idx += 1
-                        
-                        for pk_val in item["pk_values"]:
-                            param_dict[str(idx)] = pk_val
-                            idx += 1
-                        updates.append(param_dict)
-                    
-                    result = self.agent.mockup_update(sql, updates, library)
-                    logger.info(f"Agent UPDATE: {result['rows_affected']} rows in {result['execution_time_ms']:.0f}ms")
-                
-            elif operation == "DELETE":
-                where_clauses = " AND ".join([f"{col} = ?" for col in pk_columns])
-                sql = f"DELETE FROM {library}.{table_name} WHERE {where_clauses}"
-                
-                params = []
-                for pk_values in batch:
-                    param_dict = {}
-                    for idx, val in enumerate(pk_values, 1):
-                        param_dict[str(idx)] = val
-                    params.append(param_dict)
-                
-                result = self.agent.execute_batch(sql, params, library)
-                logger.info(f"Agent DELETE: {result['rows_affected']} rows in {result['execution_time_ms']:.0f}ms")
-                
-        except Exception as e:
-            logger.error(f"Agent batch {operation} failed: {e}")
             raise

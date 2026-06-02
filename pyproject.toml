@@ -7,7 +7,7 @@ name = "qadmcli"
 version = "0.4.0"
 description = "AS400 DB2 for i Database Management CLI Tool"
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.10"
 license = "MIT"
 authors = [
     { name = "QADM CLI Team" }
@@ -20,6 +20,7 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Topic :: Database",
@@ -30,13 +31,20 @@ dependencies = [
     "pydantic>=2.0.0",
     "pydantic-settings>=2.0.0",
     "pyyaml>=6.0",
+    "requests>=2.31.0",
     "rich>=13.0.0",
-    "jaydebeapi>=1.2.3",
-    "jpype1>=1.4.0",
-    "pyodbc>=4.0.39",
 ]
 
 [project.optional-dependencies]
+agent = [
+    "jpype1>=1.4.0",
+    "jaydebeapi>=1.2.3",
+    "fastapi>=0.104.0",
+    "uvicorn>=0.24.0",
+    "pyodbc>=4.0.39",
+    "pymysql>=1.1.0",
+    "oracledb>=2.0.0",
+]
 dev = [
     "pytest>=7.0.0",
     "pytest-cov>=4.0.0",

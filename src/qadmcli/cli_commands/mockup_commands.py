@@ -74,11 +74,12 @@ def _load_schema_hints(schema_path: str) -> tuple[dict[str, str], dict]:
 @click.option("--schema", "-s", help="Schema YAML file for column hints and validation")
 @click.option("--skip-validation", is_flag=True, help="Skip schema validation when using --schema")
 @click.option("--number", "-r", default=1000, show_default=True, help="Number of rows/transactions to generate")
-@click.option("--insert-ratio", default=50, show_default=True, help="Percentage of INSERT operations (0-100)")
-@click.option("--update-ratio", default=30, show_default=True, help="Percentage of UPDATE operations (0-100)")
+@click.option("--insert-ratio", default=60, show_default=True, help="Percentage of INSERT operations (0-100)")
+@click.option("--update-ratio", default=20, show_default=True, help="Percentage of UPDATE operations (0-100)")
 @click.option("--delete-ratio", default=20, show_default=True, help="Percentage of DELETE operations (0-100)")
 @click.option("--batch-size", "-b", default=100, show_default=True, help="Number of operations per batch commit")
 @click.option("--dry-run", is_flag=True, help="Preview SQL statements without executing")
+@click.option("--random", is_flag=True, help="Fetch random PKs from database instead of reusing inserts")
 @click.pass_context
 def mockup_generate(
     ctx: click.Context,
@@ -91,7 +92,8 @@ def mockup_generate(
     update_ratio: int,
     delete_ratio: int,
     batch_size: int,
-    dry_run: bool
+    dry_run: bool,
+    random: bool
 ) -> None:
     """Generate mock data with INSERT/UPDATE/DELETE operations.
 
@@ -115,7 +117,8 @@ def mockup_generate(
             delete_ratio=delete_ratio,
             total_transactions=number,
             batch_size=batch_size,
-            dry_run=dry_run
+            dry_run=dry_run,
+            random_pks=random
         )
 
         # Load schema hints and validation if provided

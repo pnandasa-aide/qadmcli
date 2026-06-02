@@ -70,6 +70,61 @@ class MSSQLConnection(BaseModel):
         return v.strip()
 
 
+
+class MySQLConnection(BaseModel):
+    """MySQL connection settings."""
+
+    host: str = Field(..., description="MySQL server hostname or IP")
+    port: int = Field(default=3306, description="MySQL port (default: 3306)")
+    username: str = Field(..., description="MySQL username")
+    password: str = Field(..., description="MySQL password")
+    database: str = Field(default="mysql", description="Default database")
+
+    def copy_with_overrides(self, username: str = None, password: str = None) -> "MySQLConnection":
+        """Create a copy with credential overrides."""
+        return MySQLConnection(
+            host=self.host,
+            port=self.port,
+            username=username or self.username,
+            password=password or self.password,
+            database=self.database
+        )
+
+    @field_validator("host")
+    @classmethod
+    def validate_host(cls, v: str) -> str:
+        if not v or not v.strip():
+            raise ValueError("Host cannot be empty")
+        return v.strip()
+
+
+class OracleConnection(BaseModel):
+    """Oracle connection settings."""
+
+    host: str = Field(..., description="Oracle server hostname or IP")
+    port: int = Field(default=1521, description="Oracle port (default: 1521)")
+    username: str = Field(..., description="Oracle username")
+    password: str = Field(..., description="Oracle password")
+    service_name: str = Field(..., description="Oracle Service Name")
+
+    def copy_with_overrides(self, username: str = None, password: str = None) -> "OracleConnection":
+        """Create a copy with credential overrides."""
+        return OracleConnection(
+            host=self.host,
+            port=self.port,
+            username=username or self.username,
+            password=password or self.password,
+            service_name=self.service_name
+        )
+
+    @field_validator("host")
+    @classmethod
+    def validate_host(cls, v: str) -> str:
+        if not v or not v.strip():
+            raise ValueError("Host cannot be empty")
+        return v.strip()
+
+
 class DefaultsConfig(BaseModel):
     """Default settings."""
 
@@ -91,8 +146,10 @@ class LoggingConfig(BaseModel):
 class ConnectionConfig(BaseModel):
     """Root connection configuration."""
 
-    as400: AS400Connection
+    as400: AS400Connection | None = Field(default=None, description="Optional AS400 connection")
     mssql: MSSQLConnection | None = Field(default=None, description="Optional MSSQL connection")
+    mysql: MySQLConnection | None = Field(default=None, description="Optional MySQL connection")
+    oracle: OracleConnection | None = Field(default=None, description="Optional Oracle connection")
     defaults: DefaultsConfig = Field(default_factory=DefaultsConfig)
     logging: LoggingConfig = Field(default_factory=LoggingConfig)
 
@@ -125,13 +182,27 @@ class ConnectionConfig(BaseModel):
         # Remove optional sections that have unset credential values
         if data.get("mssql"):
             mssql_data = data["mssql"]
-            # Check if critical credential fields are empty
-            # If username and password are both empty, treat MSSQL as not configured
             username = mssql_data.get("username", "")
             password = mssql_data.get("password", "")
             if (not username or username == "__OPTIONAL_UNSET__") and \
                (not password or password == "__OPTIONAL_UNSET__"):
                 data["mssql"] = None
+
+        if data.get("mysql"):
+            mysql_data = data["mysql"]
+            username = mysql_data.get("username", "")
+            password = mysql_data.get("password", "")
+            if (not username or username == "__OPTIONAL_UNSET__") and \
+               (not password or password == "__OPTIONAL_UNSET__"):
+                data["mysql"] = None
+
+        if data.get("oracle"):
+            oracle_data = data["oracle"]
+            username = oracle_data.get("username", "")
+            password = oracle_data.get("password", "")
+            if (not username or username == "__OPTIONAL_UNSET__") and \
+               (not password or password == "__OPTIONAL_UNSET__"):
+                data["oracle"] = None
         
         return cls(**data)
     

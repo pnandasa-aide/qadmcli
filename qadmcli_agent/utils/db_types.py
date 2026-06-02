@@ -73,78 +73,6 @@ class TypeMapper:
         "ROWID": ("UNIQUEIDENTIFIER", None, None),
     }
 
-    # DB2 for i to MySQL mappings
-    DB2_TO_MYSQL = {
-        # Character types
-        "CHAR": ("CHAR", None, None),
-        "VARCHAR": ("VARCHAR", None, None),
-        "NCHAR": ("CHAR", None, None),
-        "NVARCHAR": ("VARCHAR", None, None),
-        "GRAPHIC": ("CHAR", None, None),
-        "VARGRAPHIC": ("VARCHAR", None, None),
-        "CLOB": ("LONGTEXT", None, None),
-        "DBCLOB": ("LONGTEXT", None, None),
-
-        # Numeric types
-        "SMALLINT": ("SMALLINT", None, None),
-        "INTEGER": ("INT", None, None),
-        "BIGINT": ("BIGINT", None, None),
-        "DECIMAL": ("DECIMAL", None, None),
-        "NUMERIC": ("DECIMAL", None, None),
-        "DECFLOAT": ("DOUBLE", None, None),
-        "REAL": ("FLOAT", None, None),
-        "DOUBLE": ("DOUBLE", None, None),
-        "FLOAT": ("DOUBLE", None, None),
-
-        # Date/Time types
-        "DATE": ("DATE", None, None),
-        "TIME": ("TIME", None, None),
-        "TIMESTAMP": ("DATETIME", None, None),
-        "TIMESTMP": ("DATETIME", None, None),
-
-        # Binary types
-        "BINARY": ("BINARY", None, None),
-        "VARBINARY": ("VARBINARY", None, None),
-        "BLOB": ("LONGBLOB", None, None),
-        "ROWID": ("VARCHAR", 36, None),
-    }
-
-    # DB2 for i to Oracle mappings
-    DB2_TO_ORACLE = {
-        # Character types
-        "CHAR": ("CHAR", None, None),
-        "VARCHAR": ("VARCHAR2", None, None),
-        "NCHAR": ("NCHAR", None, None),
-        "NVARCHAR": ("NVARCHAR2", None, None),
-        "GRAPHIC": ("NCHAR", None, None),
-        "VARGRAPHIC": ("NVARCHAR2", None, None),
-        "CLOB": ("CLOB", None, None),
-        "DBCLOB": ("NCLOB", None, None),
-
-        # Numeric types
-        "SMALLINT": ("NUMBER", 5, 0),
-        "INTEGER": ("NUMBER", 10, 0),
-        "BIGINT": ("NUMBER", 19, 0),
-        "DECIMAL": ("NUMBER", None, None),
-        "NUMERIC": ("NUMBER", None, None),
-        "DECFLOAT": ("NUMBER", None, None),
-        "REAL": ("BINARY_FLOAT", None, None),
-        "DOUBLE": ("BINARY_DOUBLE", None, None),
-        "FLOAT": ("FLOAT", None, None),
-
-        # Date/Time types
-        "DATE": ("DATE", None, None),
-        "TIME": ("VARCHAR2", 8, None),  # Oracle doesn't have raw TIME, store as string HH:MM:SS
-        "TIMESTAMP": ("TIMESTAMP", None, None),
-        "TIMESTMP": ("TIMESTAMP", None, None),
-
-        # Binary types
-        "BINARY": ("RAW", None, None),
-        "VARBINARY": ("RAW", None, None),
-        "BLOB": ("BLOB", None, None),
-        "ROWID": ("ROWID", None, None),
-    }
-
     # MSSQL to DB2 for i mappings
     MSSQL_TO_DB2 = {
         # Character types
@@ -245,68 +173,6 @@ class TypeMapper:
         )
 
     @classmethod
-    def db2_to_mysql(cls, db2_type: DatabaseType) -> DatabaseType:
-        """Convert DB2 for i type to MySQL type."""
-        type_key = db2_type.db_type.upper()
-
-        if type_key not in cls.DB2_TO_MYSQL:
-            return db2_type
-
-        mysql_type, default_length, default_scale = cls.DB2_TO_MYSQL[type_key]
-
-        length = db2_type.length
-        if length is None and default_length is not None:
-            length = default_length
-
-        scale = db2_type.scale
-        if scale is None and default_scale is not None:
-            scale = default_scale
-
-        extra = db2_type.extra.copy()
-        if db2_type.identity:
-            extra["identity"] = True
-
-        return DatabaseType(
-            mysql_type,
-            length=length,
-            scale=scale,
-            nullable=db2_type.nullable,
-            default=cls._convert_default(db2_type.default, "DB2", "MYSQL"),
-            extra=extra
-        )
-
-    @classmethod
-    def db2_to_oracle(cls, db2_type: DatabaseType) -> DatabaseType:
-        """Convert DB2 for i type to Oracle type."""
-        type_key = db2_type.db_type.upper()
-
-        if type_key not in cls.DB2_TO_ORACLE:
-            return db2_type
-
-        oracle_type, default_length, default_scale = cls.DB2_TO_ORACLE[type_key]
-
-        length = db2_type.length
-        if length is None and default_length is not None:
-            length = default_length
-
-        scale = db2_type.scale
-        if scale is None and default_scale is not None:
-            scale = default_scale
-
-        extra = db2_type.extra.copy()
-        if db2_type.identity:
-            extra["identity"] = True
-
-        return DatabaseType(
-            oracle_type,
-            length=length,
-            scale=scale,
-            nullable=db2_type.nullable,
-            default=cls._convert_default(db2_type.default, "DB2", "ORACLE"),
-            extra=extra
-        )
-
-    @classmethod
     def mssql_to_db2(cls, mssql_type: DatabaseType) -> DatabaseType:
         """Convert MSSQL type to DB2 for i type."""
         type_key = mssql_type.db_type.upper()
@@ -400,26 +266,21 @@ class SchemaConverter:
         Initialize converter.
 
         Args:
-            source_db: Source database type ("DB2", "MSSQL", "MYSQL", or "ORACLE")
-            target_db: Target database type ("DB2", "MSSQL", "MYSQL", or "ORACLE")
+            source_db: Source database type ("DB2" or "MSSQL")
+            target_db: Target database type ("DB2" or "MSSQL")
         """
         self.source_db = source_db.upper()
         self.target_db = target_db.upper()
 
     def convert_column(self, col_name: str, source_type: DatabaseType) -> DatabaseType:
         """Convert a single column type."""
-        if self.source_db == "DB2":
-            if self.target_db == "MSSQL":
-                return TypeMapper.db2_to_mssql(source_type)
-            elif self.target_db == "MYSQL":
-                return TypeMapper.db2_to_mysql(source_type)
-            elif self.target_db == "ORACLE":
-                return TypeMapper.db2_to_oracle(source_type)
+        if self.source_db == "DB2" and self.target_db == "MSSQL":
+            return TypeMapper.db2_to_mssql(source_type)
         elif self.source_db == "MSSQL" and self.target_db == "DB2":
             return TypeMapper.mssql_to_db2(source_type)
-        
-        # Default fallback: return as-is
-        return source_type
+        else:
+            # Same database type - no conversion needed
+            return source_type
 
     def convert_schema(self, columns: list[dict]) -> list[dict]:
         """Convert multiple columns."""

@@ -1,10 +1,10 @@
 """MSSQL database operations."""
 
+from __future__ import annotations
+
 import logging
 from contextlib import contextmanager
 from typing import Any, Optional
-
-import pyodbc
 
 from ..models.connection import ConnectionConfig
 
@@ -26,6 +26,7 @@ class MSSQLConnection:
 
     def connect(self) -> pyodbc.Connection:
         """Establish MSSQL connection."""
+        import pyodbc
         try:
             conn_str = self._build_connection_string()
             self._connection = pyodbc.connect(conn_str, timeout=30)
@@ -40,6 +41,7 @@ class MSSQLConnection:
     
     def build_connection_string(self) -> str:
         """Build ODBC connection string (public method)."""
+        import pyodbc
         # Try ODBC Driver 18 first (newer), fallback to 17
         drivers = ["ODBC Driver 18 for SQL Server", "ODBC Driver 17 for SQL Server"]
         available_drivers = pyodbc.drivers()

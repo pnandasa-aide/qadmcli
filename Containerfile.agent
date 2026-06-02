@@ -1,0 +1,52 @@
+# QADM CLI - Agent Container Image
+# Persistent agent with JVM, JT400, ODBC, connection pool, and all DB drivers.
+# Designed to run as a long-running daemon that the slim CLI talks to via REST API.
+
+FROM python:3.11-slim-bookworm
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    JT400_JAR=/opt/jt400/jt400.jar
+
+# Install system dependencies: JRE for JT400, ODBC for MSSQL, build tools
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc \
+    g++ \
+    unixodbc-dev \
+    openjdk-17-jre-headless \
+    curl \
+    ca-certificates \
+    gnupg \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Microsoft ODBC Driver for SQL Server
+RUN curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor -o /usr/share/keyrings/microsoft-prod.gpg && \
+    curl https://packages.microsoft.com/config/debian/12/prod.list | tee /etc/apt/sources.list.d/mssql-release.list && \
+    apt-get update && \
+    ACCEPT_EULA=Y apt-get install -y msodbcsql18 && \
+    rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Copy dependency manifests first for better caching
+COPY pyproject.toml README.md ./
+COPY requirements-agent.txt* ./
+
+# Copy source code
+COPY src/ ./src/
+COPY qadmcli_agent/ ./qadmcli_agent/
+COPY lib/jt400.jar /opt/jt400/jt400.jar
+
+# Install with agent extras (JVM, DB drivers, FastAPI)
+RUN pip install --upgrade pip && \
+    pip install -e .[agent]
+
+# Create non-root user for security
+RUN useradd -m -u 1000 qadmcli && \
+    chown -R qadmcli:qadmcli /app
+
+USER qadmcli
+ENTRYPOINT ["qadmcli"]
+CMD ["--help"]

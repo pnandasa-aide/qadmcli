@@ -1,8 +1,6 @@
 # QADM CLI - Slim CLI Client Image
 # Lightweight CLI that communicates with agent via REST API.
 # No JRE, no JT400, no ODBC — just pure Python for fast container startup.
-#
-# For the full agent image (JVM + JT400 + ODBC + DB drivers), use Containerfile.agent.
 
 FROM python:3.11-slim-bookworm
 

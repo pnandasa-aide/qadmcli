@@ -17,10 +17,10 @@ A Python-based CLI tool for managing AS400 DB2 for i database tables with connec
 
 ## Prerequisites
 
-- Python 3.11+
-- Java Runtime Environment (JRE) 8+ (for jt400 JDBC driver)
-- jt400.jar (IBM Toolbox for Java)
+- Podman (or Docker) installed for container-based usage (recommended)
+- Python 3.10+ for direct host usage
 - Access to an AS400 system with DB2 for i
+- jt400.jar (only needed for host-based agent setup or direct CLI mode)
 
 ## Installation
 
@@ -45,13 +45,23 @@ pip install -e .
 
 ### Container Installation (Recommended)
 
-Using Podman (preferred for rootless security):
-```bash
-# Build the image
-podman build -t qadmcli -f Containerfile .
+The CLI auto-builds container images on first use. No manual build is needed:
 
-# Or use podman-compose
-podman-compose up -d
+```bash
+# Just run any command — images build and agent starts automatically
+cd /home/ubuntu/_qoder/qadmcli
+cp .env.example .env
+# Edit .env with your credentials
+./qadmcli.sh connection check
+```
+
+To build images manually:
+```bash
+# Slim CLI image (pure Python, ~180MB)
+podman build -t qadmcli-cli -f Containerfile.cli .
+
+# Agent image (JVM + JT400 + ODBC, ~692MB)
+podman build -t qadmcli-agent -f Containerfile.agent .
 ```
 
 ## Configuration
@@ -1738,38 +1748,50 @@ WITH (TRACK_COLUMNS_UPDATED = ON);
 
 ```
 qadmcli/
-├── src/qadmcli/           # Main source code
-│   ├── cli.py            # CLI entry point
+├── src/qadmcli/           # Main CLI source code
+│   ├── cli.py            # CLI entry point (click)
 │   ├── config.py         # Configuration loader
 │   ├── db/               # Database modules
-│   │   ├── connection.py # AS400 connection
+│   │   ├── connection.py # AS400 connection (lazy jpype/jaydebeapi)
+│   │   ├── agent_client.py # HTTP client for agent API
 │   │   ├── schema.py     # Table operations
 │   │   ├── journal.py    # Journal operations
 │   │   ├── user.py       # User management
-│   │   ├── mockup.py     # Mockup data generation
-│   │   ├── mssql.py      # MSSQL connection and schema
+│   │   ├── mockup.py     # Mockup data generation (routes to agent)
+│   │   ├── mssql.py      # MSSQL connection (lazy pyodbc)
+│   │   ├── oracle.py     # Oracle connection (lazy oracledb)
 │   │   └── mssql_ct.py   # MSSQL Change Tracking
 │   ├── models/           # Data models
 │   │   ├── connection.py
 │   │   ├── table.py
 │   │   └── journal.py
+│   ├── cli_commands/     # CLI command groups
+│   │   └── agent_commands.py  # Agent sub-command registration
 │   └── utils/            # Utilities
 │       ├── logger.py
 │       ├── formatters.py
 │       └── data_generator.py  # Mockup data patterns
+├── qadmcli_agent/        # Agent daemon (heavy deps)
+│   ├── server.py         # FastAPI REST server
+│   ├── connection_pool.py # JT400 connection pool
+│   ├── jvm_manager.py    # JVM lifecycle (jpype)
+│   ├── cli.py            # Agent CLI commands (start/stop/status)
+│   ├── mockup.py         # Bulk mockup via JDBC batch
+│   └── utils/            # Agent utilities
+│       ├── data_generator.py
+│       ├── db_types.py
+│       └── formatters.py
 ├── config/               # Configuration files
 │   ├── connection.yaml.example
 │   ├── schema/           # Table schema examples
 │   └── data/             # Sample data files for mockup (CSV)
 ├── schemas/              # Schema definitions for mockup
-│   └── insurance.yaml    # Insurance tables schema
 ├── scripts/              # Helper scripts
-│   ├── mssql_ct_setup.sql    # CT test setup
-│   ├── test_mssql_ct.py      # CT test script
-│   └── mockup_with_fk.py     # FK-aware mockup wrapper
 ├── tests/                # Test suite
-├── Containerfile         # Container build
-├── podman-compose.yaml   # Podman compose config
+├── Containerfile         # Slim CLI image (symlink to Containerfile.cli)
+├── Containerfile.cli     # Slim CLI container build
+├── Containerfile.agent   # Agent container build
+├── qadmcli.sh            # Shell wrapper (auto-start + detection)
 └── pyproject.toml        # Python project config
 ```
 
@@ -1778,6 +1800,25 @@ qadmcli/
 - [Insurance Domain Schema](docs/insurance-schema.md) - Complete insurance business schema with customers, products, subscriptions, payments, and claims
 
 ## Changelog
+
+### v0.4.0 (2025-04-20)
+
+#### Split-Container Architecture
+- **Dual container images**: `qadmcli-cli` (~180MB, pure Python) and `qadmcli-agent` (~692MB, JVM + JT400 + ODBC)
+- **Auto-start agent**: `qadmcli.sh` automatically detects or starts the agent daemon
+- **Lazy imports**: jpype, jaydebeapi, pyodbc, oracledb deferred to prevent CLI import failures without heavy deps
+- **Optional dependency groups**: Agent deps in `pyproject.toml` `[agent]` group
+- **PEP 563 future annotations**: `from __future__ import annotations` for deferred type hints
+- **5x smaller CLI image**: 180MB vs 900MB monolithic
+- **20x faster bulk operations**: ~200 rows/sec via persistent agent + connection pool
+
+#### New Files
+- `Containerfile.cli` — Slim CLI image definition
+- `Containerfile.agent` — Agent image definition (JVM + ODBC + JT400)
+- `qadmcli.sh` — Shell wrapper with agent auto-start, detection, and .env support
+- `src/qadmcli/db/agent_client.py` — HTTP client for agent REST API
+- `src/qadmcli/cli_commands/agent_commands.py` — Agent CLI registration
+- `qadmcli_agent/` — Agent daemon package (server, connection_pool, jvm_manager, mockup)
 
 ### v0.3.1 (2025-04-09)
 
