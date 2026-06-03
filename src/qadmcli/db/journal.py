@@ -1,10 +1,18 @@
 """Journal operations for AS400 tables."""
 
 import logging
+from datetime import datetime
 from typing import Any
 
 from ..models.journal import JournalEntry, JournalInfo, JournalReceiverInfo
 from .connection import AS400ConnectionManager
+
+EPOCH_START = datetime(1, 1, 1)
+
+
+def dt_to_dotnet_ticks(dt: datetime) -> int:
+    """Convert Python datetime to .NET ticks (100-nanosecond intervals since 0001-01-01)."""
+    return int((dt - EPOCH_START).total_seconds() * 10_000_000)
 
 logger = logging.getLogger("qadmcli")
 
@@ -178,11 +186,14 @@ class JournalManager:
             'to_delete': to_delete
         }
     
-    def execute_cleanup(self, plan: dict[str, Any]) -> list[dict[str, Any]]:
+    def execute_cleanup(self, plan: dict[str, Any], force: bool = False) -> list[dict[str, Any]]:
         """Execute cleanup plan by deleting old receivers.
         
         Args:
             plan: Cleanup plan from get_cleanup_plan()
+            force: If True, set INQMSGRPY(*DFT) on the job before each delete so that
+                   the CPA7025 'receiver not saved' inquiry is auto-answered (Ignore),
+                   preventing the command from hanging in MSGW.
             
         Returns:
             List of deletion results
@@ -195,6 +206,19 @@ class JournalManager:
                 cmd = f"DLTJRNRCV JRNRCV({receiver['receiver_library']}/{receiver['receiver_name']})"
                 sql = "CALL QSYS2.QCMDEXC(?, ?)"
                 cmd_bytes = cmd.encode('utf-8')
+                
+                if force:
+                    # Set job to auto-reply to inquiry messages using the default reply.
+                    # For CPA7025 ('Receiver not saved'), the default reply is 'I' (Ignore/proceed).
+                    # This must run on the SAME connection as the DLTJRNRCV to take effect.
+                    chgjob_cmd = "CHGJOB INQMSGRPY(*DFT)"
+                    chgjob_bytes = chgjob_cmd.encode('utf-8')
+                    try:
+                        chg_cursor = self.conn.execute(sql, (chgjob_cmd, len(chgjob_bytes)))
+                        chg_cursor.close()
+                        logger.debug("Set INQMSGRPY(*DFT) on job for force delete")
+                    except Exception as e:
+                        logger.warning(f"Could not set INQMSGRPY(*DFT): {e} — proceeding anyway")
                 
                 cursor = self.conn.execute(sql, (cmd, len(cmd_bytes)))
                 cursor.close()
@@ -213,6 +237,17 @@ class JournalManager:
                     'error': str(e)
                 })
                 logger.error(f"Failed to delete receiver {receiver['receiver_name']}: {e}")
+            finally:
+                if force:
+                    # Reset inquiry reply back to required (operator must reply manually)
+                    try:
+                        reset_cmd = "CHGJOB INQMSGRPY(*RQD)"
+                        reset_bytes = reset_cmd.encode('utf-8')
+                        reset_cursor = self.conn.execute(sql, (reset_cmd, len(reset_bytes)))
+                        reset_cursor.close()
+                        logger.debug("Reset INQMSGRPY(*RQD) on job after force delete")
+                    except Exception:
+                        pass
         
         return results
     
@@ -227,32 +262,48 @@ class JournalManager:
         import time
         start_time = time.time()
         
-        # First check if table exists
+        # First check if table exists — match by SQL name (TABLE_NAME) first,
+        # then fall back to system name (SYSTEM_TABLE_NAME) for short names
         sql = """
             SELECT TABLE_NAME, TABLE_SCHEMA
             FROM QSYS2.SYSTABLES 
-            WHERE SYSTEM_TABLE_NAME = ? 
-            AND SYSTEM_TABLE_SCHEMA = ?
+            WHERE (TABLE_NAME = ? OR SYSTEM_TABLE_NAME = ?)
+            AND TABLE_SCHEMA = ?
         """
-        cursor = self.conn.execute(sql, (table_name.upper(), library.upper()))
+        cursor = self.conn.execute(sql, (table_name.upper(), table_name.upper(), library.upper()))
         row = cursor.fetchone()
         cursor.close()
         
         if not row:
             raise ValueError(f"Table {library}.{table_name} not found")
         
-        # Get journal info from JOURNALED_OBJECTS
+        # Resolve system table name (needed for JOURNALED_OBJECTS which uses the system name)
+        system_table_name = table_name.upper()
+        try:
+            cursor = self.conn.execute(
+                "SELECT SYSTEM_TABLE_NAME FROM QSYS2.SYSTABLES "
+                "WHERE TABLE_NAME = ? AND TABLE_SCHEMA = ?",
+                (table_name.upper(), library.upper())
+            )
+            sys_row = cursor.fetchone()
+            cursor.close()
+            if sys_row and sys_row[0]:
+                system_table_name = str(sys_row[0]).strip()
+        except Exception:
+            pass
+        
+        # Get journal info from JOURNALED_OBJECTS — match by either SQL name or system name
         sql = """
             SELECT 
                 JOURNAL_LIBRARY,
                 JOURNAL_NAME,
                 JOURNAL_IMAGES
             FROM QSYS2.JOURNALED_OBJECTS 
-            WHERE OBJECT_NAME = ? 
+            WHERE (OBJECT_NAME = ? OR OBJECT_NAME = ?)
             AND OBJECT_LIBRARY = ?
             AND OBJECT_TYPE = '*FILE'
         """
-        cursor = self.conn.execute(sql, (table_name.upper(), library.upper()))
+        cursor = self.conn.execute(sql, (table_name.upper(), system_table_name, library.upper()))
         row = cursor.fetchone()
         cursor.close()
         
@@ -926,6 +977,109 @@ class JournalManager:
         cursor.close()
         
         return summary
+    
+    def get_last_transaction(self, tables: list[str]) -> list[dict[str, Any]]:
+        """Get last transaction sequence and timestamp for each table.
+        
+        Queries the attached journal receiver for LAST_SEQUENCE_NUMBER
+        and converts the attach timestamp to .NET ticks, which correspond
+        to Syniti Replicate's TransactionID and TransactionTS fields.
+        
+        Args:
+            tables: List of table names in "Library.Table" format
+            
+        Returns:
+            List of dicts with per-table transaction info
+        """
+        results: list[dict[str, Any]] = []
+        
+        for table_ref in tables:
+            parts = table_ref.split(".")
+            if len(parts) != 2:
+                results.append({
+                    "table": table_ref,
+                    "error": f"Invalid format: expected Library.Table, got '{table_ref}'"
+                })
+                continue
+            
+            library, table_name = parts[0].upper(), parts[1].upper()
+            
+            try:
+                info = self.get_journal_info(table_name, library)
+                
+                if not info.is_journaled:
+                    results.append({
+                        "table": f"{library}.{table_name}",
+                        "journaled": False,
+                        "error": "Table is not journaled"
+                    })
+                    continue
+                
+                if not info.journal_library or not info.journal_name:
+                    results.append({
+                        "table": f"{library}.{table_name}",
+                        "journaled": True,
+                        "error": "Could not determine journal for table"
+                    })
+                    continue
+                
+                # Query the attached receiver for LAST_SEQUENCE_NUMBER
+                sql = """
+                    SELECT LAST_SEQUENCE_NUMBER, ATTACH_TIMESTAMP, 
+                           JOURNAL_RECEIVER_NAME, JOURNAL_RECEIVER_LIBRARY, STATUS
+                    FROM QSYS2.JOURNAL_RECEIVER_INFO
+                    WHERE JOURNAL_LIBRARY = ?
+                      AND JOURNAL_NAME = ?
+                      AND STATUS = 'ATTACHED'
+                    FETCH FIRST 1 ROW ONLY
+                """
+                cursor = self.conn.execute(sql, (info.journal_library, info.journal_name))
+                row = cursor.fetchone()
+                cursor.close()
+                
+                if not row or row[0] is None:
+                    results.append({
+                        "table": f"{library}.{table_name}",
+                        "journaled": True,
+                        "journal": f"{info.journal_library}.{info.journal_name}",
+                        "error": "No attached receiver with entries found"
+                    })
+                    continue
+                
+                last_seq = int(row[0])
+                attach_ts = str(row[1]) if row[1] else None
+                receiver_name = str(row[2]) if row[2] else None
+                receiver_lib = str(row[3]) if row[3] else None
+                
+                # Convert attach timestamp to .NET ticks
+                transaction_ts = None
+                ts_datetime = None
+                if attach_ts:
+                    dt = datetime.strptime(attach_ts, "%Y-%m-%d %H:%M:%S")
+                    ts_datetime = str(dt)
+                    transaction_ts = dt_to_dotnet_ticks(dt)
+                
+                results.append({
+                    "table": f"{library}.{table_name}",
+                    "journaled": True,
+                    "journal": f"{info.journal_library}.{info.journal_name}",
+                    "journal_library": info.journal_library,
+                    "journal_name": info.journal_name,
+                    "receiver_library": receiver_lib,
+                    "receiver_name": receiver_name,
+                    "last_sequence": last_seq,
+                    "attach_timestamp": attach_ts,
+                    "transaction_ts": transaction_ts,
+                    "transaction_ts_datetime": ts_datetime
+                })
+            except Exception as e:
+                logger.error(f"Error getting last transaction for {table_ref}: {e}")
+                results.append({
+                    "table": table_ref,
+                    "error": str(e)
+                })
+        
+        return results
     
     def _parse_entry_data(self, entry: JournalEntry) -> None:
         """Parse journal entry data into before/after images."""

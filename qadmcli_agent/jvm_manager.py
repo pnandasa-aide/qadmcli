@@ -30,8 +30,9 @@ class JVMManager:
             if not Path(self.jt400_path).exists():
                 raise FileNotFoundError(f"JT400 not found: {self.jt400_path}")
             
-            # Start JVM
+            # Start JVM with headless mode (required for containers without X11)
             jpype.startJVM(
+                "-Djava.awt.headless=true",
                 classpath=[self.jt400_path],
                 convertStrings=False
             )

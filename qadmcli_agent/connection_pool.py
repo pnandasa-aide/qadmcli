@@ -33,7 +33,32 @@ class JDBCResultCursor:
         self._col_count = self._meta.getColumnCount()
         self._closed = False
         
+    def get_column_names(self) -> list:
+        """Get column names from result set metadata."""
+        columns = []
+        for i in range(1, self._col_count + 1):
+            try:
+                name = self._meta.getColumnLabel(i)
+                if not name:
+                    name = self._meta.getColumnName(i)
+            except:
+                name = f"col{i}"
+            # Convert Java String to Python str
+            columns.append(str(name))
+        return columns
+    
+    def get_column_types(self) -> list:
+        """Get JDBC column type codes."""
+        types = []
+        for i in range(1, self._col_count + 1):
+            try:
+                types.append(self._meta.getColumnType(i))
+            except:
+                types.append(None)
+        return types
+        
     def fetchall(self) -> List[tuple]:
+        """Fetch all rows from result set."""
         rows = []
         try:
             while self._rs.next():
@@ -45,6 +70,42 @@ class JDBCResultCursor:
         except Exception as e:
             logger.error(f"Error fetching all rows: {e}")
             raise
+
+    def fetchall_dicts(self) -> List[dict]:
+        """Fetch all rows as dicts with column names. Converts Java types to Python."""
+        import datetime
+        from decimal import Decimal
+        
+        columns = self.get_column_names()
+        rows = self.fetchall()
+        result = []
+        for row in rows:
+            d = {}
+            for i, col in enumerate(columns):
+                val = row[i] if i < len(row) else None
+                # Convert Java objects to Python-native types for JSON serialization
+                if val is not None:
+                    java_class = str(type(val))
+                    if 'java.sql.Timestamp' in java_class or 'java.util.Date' in java_class:
+                        val = str(val)
+                    elif 'java.math.BigDecimal' in java_class:
+                        val = float(str(val))
+                    elif 'java.lang.Integer' in java_class or 'java.lang.Long' in java_class:
+                        val = int(val)
+                    elif 'java.lang.Float' in java_class or 'java.lang.Double' in java_class:
+                        val = float(val)
+                    elif 'java.lang.Boolean' in java_class:
+                        val = bool(val)
+                    elif 'byte' in java_class or 'Byte' in java_class:
+                        try:
+                            val = bytes(val).hex()
+                        except:
+                            val = str(val)
+                    else:
+                        val = str(val)
+                d[col] = val
+            result.append(d)
+        return result
         
     def fetchone(self) -> Optional[tuple]:
         try:
@@ -139,10 +200,7 @@ class AS400Connection:
             # Create JDBC connection using DriverManager
             self._conn = DriverManager.getConnection(jdbc_url, props)
             
-            # Apply library list if specified and not default *LIBL
-            lib = self.config.library
-            if lib and lib != "*LIBL":
-                self._conn.setLibraryList(lib)
+            # Library list is already set via JDBC URL path and props["libraries"]
             
             logger.info(f"✅ Connected to AS400: {self.config.host}")
             
@@ -389,6 +447,87 @@ class ConnectionPool:
             )
             
             return result
+        except Exception as e:
+            self._stats.total_errors += 1
+            raise
+        finally:
+            self.release_connection(conn)
+    
+    def execute_query(self, sql: str, params: list | None = None) -> dict:
+        """Execute a SELECT query and return structured results.
+        
+        Args:
+            sql: SQL statement
+            params: Optional list of positional parameter values
+        
+        Returns:
+            dict with columns (list), rows (list of lists), row_count
+        """
+        conn = self.get_connection()
+        if not conn:
+            raise Exception("No available connections")
+        
+        try:
+            start_time = time.time()
+            
+            if params:
+                cursor = conn.execute(sql, tuple(params))
+            else:
+                cursor = conn.execute(sql)
+            
+            # Check if this is a result cursor (SELECT) or int cursor (DML)
+            if isinstance(cursor, JDBCResultCursor):
+                columns = cursor.get_column_names()
+                rows_raw = cursor.fetchall()
+                # Convert tuples to lists for JSON serialization
+                rows = []
+                for row in rows_raw:
+                    clean = []
+                    for val in row:
+                        if val is not None:
+                            java_class = str(type(val))
+                            if any(x in java_class for x in ['java.sql.Timestamp', 'java.util.Date']):
+                                clean.append(str(val))
+                            elif 'java.math.BigDecimal' in java_class:
+                                clean.append(float(str(val)))
+                            elif any(x in java_class for x in ['java.lang.Integer', 'java.lang.Long']):
+                                clean.append(int(val))
+                            elif any(x in java_class for x in ['java.lang.Float', 'java.lang.Double']):
+                                clean.append(float(val))
+                            elif 'java.lang.Boolean' in java_class:
+                                clean.append(bool(val))
+                            elif any(x in java_class for x in ['byte', 'Byte']):
+                                try:
+                                    clean.append(bytes(val).hex())
+                                except:
+                                    clean.append(str(val))
+                            else:
+                                clean.append(str(val))
+                        else:
+                            clean.append(None)
+                    rows.append(clean)
+                cursor.close()
+            else:
+                # DML statement - no result rows
+                columns = []
+                rows = []
+                cursor.close()
+            
+            elapsed = (time.time() - start_time) * 1000
+            
+            # Update stats
+            self._stats.total_queries += 1
+            self._stats.avg_query_time_ms = (
+                (self._stats.avg_query_time_ms * (self._stats.total_queries - 1) + elapsed)
+                / self._stats.total_queries
+            )
+            
+            return {
+                "columns": columns,
+                "rows": rows,
+                "row_count": len(rows),
+                "execution_time_ms": round(elapsed, 2)
+            }
         except Exception as e:
             self._stats.total_errors += 1
             raise

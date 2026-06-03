@@ -11,7 +11,10 @@ schemas/converted_*/
 
 # Ignore working data files
 *.xml
-*.yaml.copy__pycache__/
-src/qadmcli/utils/__pycache__/
-# To remove files from index (cache)
-# git rm -r --cached src/qadmcli/utils/__pycache__/
+# Ignore Python cache and compiled files
+__pycache__/
+*.pyc
+*.pyo
+
+# To remove files from index (cache) if needed:
+# git rm -r --cached . --ignore-unmatch $(find . -name __pycache__ -type d)

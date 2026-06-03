@@ -13,6 +13,7 @@ This module contains all journal-related CLI commands:
 - journal create-receiver: Create a new journal receiver
 - journal rollover: Perform journal receiver rollover
 - journal create: Create a new journal
+- journal last-txn: Get last transaction sequence and timestamp for table(s)
 """
 
 import sys
@@ -517,8 +518,9 @@ def journal_receivers(ctx: click.Context, journal: str, library: str, output_for
 @click.option("--library", "-l", required=True, help="Library name")
 @click.option("--keep", "-k", default=2, help="Number of recent receivers to keep (default: 2)")
 @click.option("--dry-run", is_flag=True, help="Show what would be deleted without executing")
+@click.option("--force", is_flag=True, help="Force delete by auto-answering the 'receiver not saved' inquiry (CPA7025). Prevents hanging in MSGW status.")
 @click.pass_context
-def journal_cleanup(ctx: click.Context, journal: str, library: str, keep: int, dry_run: bool) -> None:
+def journal_cleanup(ctx: click.Context, journal: str, library: str, keep: int, dry_run: bool, force: bool) -> None:
     """Clean up old journal receivers (keeps attached + N recent)."""
     config_path = ctx.obj["config_path"]
     
@@ -556,8 +558,10 @@ def journal_cleanup(ctx: click.Context, journal: str, library: str, keep: int, d
                 console.print(f"\n[yellow]Dry run mode - no changes made[/yellow]")
                 console.print(f"Run without --dry-run to execute cleanup")
             else:
+                if force:
+                    console.print(f"\n[yellow]Force mode: auto-answering 'receiver not saved' inquiry (CPA7025)[/yellow]")
                 console.print(f"\n[yellow]Executing cleanup...[/yellow]")
-                results = jrn.execute_cleanup(plan)
+                results = jrn.execute_cleanup(plan, force=force)
                 
                 success = sum(1 for r in results if r['success'])
                 failed = len(results) - success
@@ -568,6 +572,7 @@ def journal_cleanup(ctx: click.Context, journal: str, library: str, keep: int, d
                     for r in results:
                         if not r['success']:
                             console.print(f"[red]Failed:[/red] {r['receiver_name']} - {r['error']}")
+
     
     except ConnectionError as e:
         console.print(f"[red]Connection error: {e.message}[/red]")
@@ -774,6 +779,78 @@ def journal_info(ctx: click.Context, table: str, library: str, fast: bool, outpu
                     )
                     print_panel(ctx, content, title="Detailed Journal Information", border_style="blue")
         
+    except ConnectionError as e:
+        console.print(f"[red]Connection error: {e.message}[/red]")
+        sys.exit(1)
+    except Exception as e:
+        console.print(f"[red]Error: {e}[/red]")
+        sys.exit(1)
+
+
+@journal.command("last-txn")
+@click.option("--table", "-t", "tables", required=True, multiple=True,
+              help="Table in Library.Table format (can be specified multiple times)")
+@click.option("--format", "-f", "output_format", type=click.Choice(["table", "json"]),
+              default="table", help="Output format (default: table)")
+@click.pass_context
+def journal_last_txn(ctx: click.Context, tables: tuple[str], output_format: str) -> None:
+    """Get last transaction sequence and timestamp for table(s).
+
+    Queries the attached journal receiver for LAST_SEQUENCE_NUMBER
+    and converts the attach timestamp to .NET ticks, providing both
+    TransactionID (sequence) and TransactionTS (ticks) as used by
+    Syniti Replicate metadata.
+
+    Examples:
+
+      qadmcli journal last-txn -t SYNITI.CHDRPF50
+
+      qadmcli journal last-txn -t SYNITI.CHDRPF50 -t SYNITI.DEMOTABLETEST_2
+
+      qadmcli journal last-txn -t SYNITI.CHDRPF50 -f json
+    """
+    config_path = ctx.obj["config_path"]
+
+    if output_format == "json":
+        import logging
+        logging.getLogger("qadmcli").setLevel(logging.WARNING)
+
+    try:
+        config = load_config(config_path)
+
+        with AS400ConnectionManager(config) as conn:
+            jrn = JournalManager(conn)
+            results = jrn.get_last_transaction(list(tables))
+
+            if output_format == "json":
+                print_json_clean(results)
+            else:
+                rows = []
+                for r in results:
+                    if "error" in r:
+                        rows.append([
+                            r.get("table", "?"),
+                            "[red]ERROR[/red]",
+                            r.get("error", "Unknown error"),
+                            "—", "—", "—"
+                        ])
+                    else:
+                        rows.append([
+                            r["table"],
+                            r["journal"],
+                            str(r["last_sequence"]),
+                            r.get("attach_timestamp") or "—",
+                            str(r.get("transaction_ts") or "—"),
+                            r.get("transaction_ts_datetime") or "—"
+                        ])
+
+                console.print(print_table(
+                    console,
+                    ["Table", "Journal", "Last Seq", "Attach Time", "TransactionTS", "Datetime"],
+                    rows,
+                    title="Last Transaction Info"
+                ))
+
     except ConnectionError as e:
         console.print(f"[red]Connection error: {e.message}[/red]")
         sys.exit(1)

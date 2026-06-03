@@ -108,29 +108,36 @@ def print_panel(
         console.print(Panel(content, title=title, border_style=border_style))
 
 
-def get_config_path(ctx: click.Context, param: Any, value: str | None) -> Path:
+def get_config_path(ctx: click.Context, param: Any, value: str | None) -> Path | None:
     """Resolve config path."""
     if value:
+        # Explicit -c was given, must exist
         path = Path(value)
-    else:
-        # Try environment variable first
-        env_config = os.environ.get("QADMCLI_CONFIG")
-        if env_config:
-            path = Path(env_config)
-        else:
-            path = DEFAULT_CONFIG
+        if not path.exists():
+            raise click.BadParameter(f"Config file not found: {path}")
+        return path
     
-    if not path.exists():
-        raise click.BadParameter(f"Config file not found: {path}")
+    # Try environment variable first
+    env_config = os.environ.get("QADMCLI_CONFIG")
+    if env_config:
+        path = Path(env_config)
+        if path.exists():
+            return path
+        # Env var points to missing file — silently ignore,
+        # caller commands that need config will handle None
+        return None
     
-    return path
+    # Default path — return None if missing (commands that need config will error)
+    if DEFAULT_CONFIG.exists():
+        return DEFAULT_CONFIG
+    return None
 
 
 @click.group()
 @click.version_option(version=__version__, prog_name="qadmcli")
 @click.option(
     "--config", "-c",
-    type=click.Path(exists=True, path_type=Path),
+    type=click.Path(path_type=Path),
     callback=get_config_path,
     help="Path to connection config file (default: config/connection.yaml)"
 )
@@ -142,7 +149,7 @@ def get_config_path(ctx: click.Context, param: Any, value: str | None) -> Path:
     help="Border style for panels: unicode (default) or ascii (for Windows/PowerShell)"
 )
 @click.pass_context
-def cli(ctx: click.Context, config: Path, verbose: bool, border_style: str) -> None:
+def cli(ctx: click.Context, config: Path | None, verbose: bool, border_style: str) -> None:
     """QADM CLI - AS400 DB2 for i Database Management Tool."""
     # Ensure context object exists
     ctx.ensure_object(dict)

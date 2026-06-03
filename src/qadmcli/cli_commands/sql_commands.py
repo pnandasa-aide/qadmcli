@@ -131,7 +131,7 @@ def sql_execute(ctx: click.Context, query: str, target: str, output_format: str,
                     
                     if output_format == "json":
                         # Clean JSON output for scripts (no Rich formatting)
-                        from .utils.formatters import print_json_clean
+                        from ..utils.formatters import print_json_clean
                         results = []
                         for row in rows:
                             row_dict = {}
@@ -313,7 +313,7 @@ def sql_query(ctx: click.Context, query: str, target: str, limit: int, offset: i
             # Output based on format
             if output_format == "json":
                 # Clean JSON output for scripts (no Rich formatting)
-                from .utils.formatters import print_json_clean
+                from ..utils.formatters import print_json_clean
                 results = []
                 for row in rows:
                     row_dict = {}
@@ -354,7 +354,7 @@ def sql_query(ctx: click.Context, query: str, target: str, limit: int, offset: i
                 
                 # Use ASCII border style if requested
                 if border_style == "ascii":
-                    from .utils.formatters import print_table as format_table
+                    from ..utils.formatters import print_table as format_table
                     console.print(format_table(
                         console,
                         str_columns,

@@ -62,10 +62,31 @@ if [ -n "$ENV_FILE" ]; then
     done < "$ENV_FILE"
 fi
 
-# Build image if missing
+# Image cache directory and TTL
+IMAGE_CACHE_DIR="${HOME}/.cache/qadmcli/image-check"
+IMAGE_CACHE_TTL=300  # seconds: skip podman images check if verified within this window (avoids 12s overhead)
+
+mkdir -p "$IMAGE_CACHE_DIR" 2>/dev/null || true
+
+# Build image if missing (with time-based cache to avoid slow podman images)
 ensure_image() {
     local name="$1"
     local containerfile="$2"
+    local cache_file="${IMAGE_CACHE_DIR}/${name}"
+    
+    # Check cache: skip podman images if verified recently
+    if [ -f "$cache_file" ]; then
+        local cache_time
+        cache_time=$(cat "$cache_file")
+        local now
+        now=$(date +%s)
+        local age=$((now - cache_time))
+        if [ "$age" -lt "$IMAGE_CACHE_TTL" ]; then
+            return 0
+        fi
+    fi
+    
+    # Cache expired or missing — check via podman images (slow)
     if ! podman images --format "{{.Repository}}" | grep -q "^localhost/${name}$"; then
         if [ "$SUPPRESS_OUTPUT" = false ]; then
             echo -e "${BLUE}🔨 Building ${name} image...${NC}"
@@ -79,6 +100,9 @@ ensure_image() {
             echo -e "${GREEN}✅ Build of ${name} successful!${NC}"
         fi
     fi
+    
+    # Update cache timestamp
+    date +%s > "$cache_file"
 }
 
 # Detect if agent is running (host or container)
@@ -168,7 +192,7 @@ fi
 
 # Run CLI container (slim image, no JVM/ODBC needed)
 PODMAN_ARGS=(
-    -it --rm --name "cli-$$"
+    --rm --name "cli-$$"
     --network=host
     --userns=keep-id
     -e AS400_HOST="$AS400_HOST"
@@ -182,6 +206,14 @@ PODMAN_ARGS=(
     -e QADMCLI_AGENT_URL="$AGENT_URL"
     -v "${SCRIPT_DIR}:/app:Z"
 )
+
+# Only use TTY flags when running interactively
+if [ -t 0 ]; then
+    PODMAN_ARGS+=(-i)
+    if [ -t 1 ]; then
+        PODMAN_ARGS+=(-t)
+    fi
+fi
 
 if [[ "$*" == *"--format json"* ]] || [[ "$*" == *"--format summary"* ]]; then
     podman run "${PODMAN_ARGS[@]}" "$CLI_IMAGE" "$@"

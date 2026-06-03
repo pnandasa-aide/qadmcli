@@ -28,6 +28,7 @@ from ..db.connection import AS400ConnectionManager, ConnectionError
 from ..db.schema import SchemaManager
 from ..db.mssql import MSSQLConnection, MSSQLManager
 from ..models.table import TableConfig
+from ..models.connection import MSSQLConnection as MSSQLConnectionModel
 from ..utils.logger import setup_logging
 from ..utils.formatters import print_table, print_json, print_json_clean, print_ascii_panel
 from ..utils.db_types import SchemaConverter, DatabaseType
@@ -652,17 +653,20 @@ def table_create_mssql(
 
 @table.command("compare-schemas")
 @click.option("--db2-table", "-d2", required=True, help="DB2 table name (LIBRARY.TABLE)")
-@click.option("--mssql-table", "-ms", required=True, help="MSSQL table name (SCHEMA.TABLE)")
-@click.option("--mssql-config", "-mc", type=click.Path(exists=True), help="MSSQL connection config")
+@click.option("--target-table", "-ms", "--mssql-table", required=True, help="Target table name (SCHEMA.TABLE)")
+@click.option("--target-type", "-t", type=click.Choice(["mssql", "mysql", "oracle"]), default="mssql", help="Target database type (default: mssql)")
+@click.option("--target-config", "-mc", "--mssql-config", type=click.Path(exists=True), help="Target connection config")
 @click.pass_context
 def table_compare_schemas(
     ctx: click.Context,
     db2_table: str,
-    mssql_table: str,
-    mssql_config: str | None
+    target_table: str,
+    target_type: str,
+    target_config: str | None
 ) -> None:
-    """Compare schemas between DB2 for i and MSSQL tables."""
+    """Compare schemas between DB2 for i and a target database (MSSQL, MySQL, Oracle)."""
     config_path = ctx.obj["config_path"]
+    target_type = target_type.lower()
 
     try:
         # Parse table names
@@ -672,11 +676,11 @@ def table_compare_schemas(
             sys.exit(1)
         db2_library, db2_name = db2_parts
 
-        mssql_parts = mssql_table.split(".")
-        if len(mssql_parts) != 2:
-            console.print("[red]MSSQL table must be in format: SCHEMA.TABLE[/red]")
+        target_parts = target_table.split(".")
+        if len(target_parts) != 2:
+            console.print(f"[red]Target table must be in format: SCHEMA.TABLE (or DATABASE.TABLE)[/red]")
             sys.exit(1)
-        mssql_schema, mssql_name = mssql_parts
+        target_schema, target_name = target_parts
 
         # Load configs
         config = load_config(config_path)
@@ -686,30 +690,43 @@ def table_compare_schemas(
             schema_mgr = SchemaManager(conn)
             db2_columns = schema_mgr.get_columns(db2_name, db2_library)
 
-        # Get MSSQL schema
-        mssql_cfg = load_config(Path(mssql_config) if mssql_config else config_path)
+        # Get Target schema
+        target_cfg = load_config(Path(target_config) if target_config else config_path)
         
-        # Check if MSSQL is configured
-        if not mssql_cfg.mssql:
-            console.print("[red]Error: MSSQL connection not configured.[/red]")
-            console.print("[yellow]Please set MSSQL_USER and MSSQL_PASSWORD environment variables[/yellow]")
-            console.print("[yellow]or provide a custom config file with --mssql-config[/yellow]")
-            sys.exit(1)
-        
-        mssql_conn_cfg = MSSQLConnectionModel(
-            host=mssql_cfg.mssql.host,
-            port=mssql_cfg.mssql.port,
-            username=mssql_cfg.mssql.username,
-            password=mssql_cfg.mssql.password,
-            database=mssql_cfg.mssql.database,
-        )
-
-        with MSSQLConnection(mssql_conn_cfg) as conn:
-            mssql_mgr = MSSQLManager(conn)
-            mssql_columns = mssql_mgr.schema.get_columns(mssql_name, mssql_schema)
+        target_columns = []
+        if target_type == "mssql":
+            if not target_cfg.mssql:
+                console.print("[red]Error: MSSQL connection not configured.[/red]")
+                sys.exit(1)
+            mssql_conn_cfg = MSSQLConnectionModel(
+                host=target_cfg.mssql.host,
+                port=target_cfg.mssql.port,
+                username=target_cfg.mssql.username,
+                password=target_cfg.mssql.password,
+                database=target_cfg.mssql.database,
+            )
+            with MSSQLConnection(mssql_conn_cfg) as conn:
+                mssql_mgr = MSSQLManager(conn)
+                target_columns = mssql_mgr.schema.get_columns(target_name, target_schema)
+        elif target_type == "mysql":
+            if not target_cfg.mysql:
+                console.print("[red]Error: MySQL connection not configured.[/red]")
+                sys.exit(1)
+            from ..db.mysql import MySQLConnection, MySQLManager
+            with MySQLConnection(target_cfg.mysql) as conn:
+                mysql_mgr = MySQLManager(conn)
+                target_columns = mysql_mgr.schema.get_columns(target_name, target_schema)
+        elif target_type == "oracle":
+            if not target_cfg.oracle:
+                console.print("[red]Error: Oracle connection not configured.[/red]")
+                sys.exit(1)
+            from ..db.oracle import OracleConnection, OracleManager
+            with OracleConnection(target_cfg.oracle) as conn:
+                oracle_mgr = OracleManager(conn)
+                target_columns = oracle_mgr.schema.get_columns(target_name, target_schema)
 
         # Compare schemas with fuzzy matching
-        converter = SchemaConverter("DB2", "MSSQL")
+        converter = SchemaConverter("DB2", target_type)
         mismatches = []
         side_by_side = []
 
@@ -720,20 +737,20 @@ def table_compare_schemas(
         
         # Create maps
         db2_col_map = {col["name"].upper(): col for col in db2_columns}
-        mssql_col_map = {col["name"].upper(): col for col in mssql_columns}
+        target_col_map = {col["name"].upper(): col for col in target_columns}
         db2_fuzzy_map = {normalize_key(col["name"]): col for col in db2_columns}
-        mssql_fuzzy_map = {normalize_key(col["name"]): col for col in mssql_columns}
+        target_fuzzy_map = {normalize_key(col["name"]): col for col in target_columns}
         
         # Track processed columns
         db2_processed = set()
-        mssql_processed = set()
+        target_processed = set()
         
         # First pass: exact matches
-        for col_name_upper in sorted(db2_col_map.keys() & mssql_col_map.keys()):
+        for col_name_upper in sorted(db2_col_map.keys() & target_col_map.keys()):
             db2_col = db2_col_map[col_name_upper]
-            mssql_col = mssql_col_map[col_name_upper]
+            target_col = target_col_map[col_name_upper]
             db2_processed.add(col_name_upper)
-            mssql_processed.add(col_name_upper)
+            target_processed.add(col_name_upper)
             
             db2_type = DatabaseType(
                 db_type=db2_col["type"],
@@ -741,10 +758,10 @@ def table_compare_schemas(
                 scale=db2_col.get("scale"),
                 nullable=db2_col.get("nullable", True)
             )
-            expected_mssql = converter.convert_column(db2_col["name"], db2_type)
+            expected_target = converter.convert_column(db2_col["name"], db2_type)
             
-            type_match = expected_mssql.db_type == mssql_col["type"]
-            null_match = db2_col.get("nullable", True) == mssql_col.get("nullable", True)
+            type_match = expected_target.db_type == target_col["type"]
+            null_match = db2_col.get("nullable", True) == target_col.get("nullable", True)
             
             db2_type_str = f"{db2_col['type']}"
             if db2_col.get('length'):
@@ -753,28 +770,28 @@ def table_compare_schemas(
                     db2_type_str += f",{db2_col['scale']}"
                 db2_type_str += ")"
             
-            mssql_type_str = f"{mssql_col['type']}"
-            if mssql_col.get('length'):
-                mssql_type_str += f"({mssql_col['length']}"
-                if mssql_col.get('scale'):
-                    mssql_type_str += f",{mssql_col['scale']}"
-                mssql_type_str += ")"
+            target_type_str = f"{target_col['type']}"
+            if target_col.get('length'):
+                target_type_str += f"({target_col['length']}"
+                if target_col.get('scale'):
+                    target_type_str += f",{target_col['scale']}"
+                target_type_str += ")"
             
             if type_match and null_match:
                 status = "[green]OK Match[/green]"
             else:
                 status_parts = []
                 if not type_match:
-                    status_parts.append(f"Type: {expected_mssql.db_type}≠{mssql_col['type']}")
+                    status_parts.append(f"Type: {expected_target.db_type}≠{target_col['type']}")
                     mismatches.append(
                         f"Column '{db2_col['name']}' type mismatch: DB2({db2_col['type']}) -> "
-                        f"Expected MSSQL({expected_mssql.db_type}), Got MSSQL({mssql_col['type']})"
+                        f"Expected {target_type.upper()}({expected_target.db_type}), Got {target_type.upper()}({target_col['type']})"
                     )
                 if not null_match:
                     status_parts.append("Null mismatch")
                     mismatches.append(
                         f"Column '{db2_col['name']}' nullable mismatch: DB2({db2_col.get('nullable')}) vs "
-                        f"MSSQL({mssql_col.get('nullable')})"
+                        f"{target_type.upper()}({target_col.get('nullable')})"
                     )
                 status = f"[red]{' | '.join(status_parts)}[/red]"
             
@@ -782,8 +799,8 @@ def table_compare_schemas(
                 "column": db2_col["name"],
                 "db2_type": db2_type_str,
                 "db2_null": "Y" if db2_col.get('nullable') else "N",
-                "mssql_type": mssql_type_str,
-                "mssql_null": "Y" if mssql_col.get('nullable') else "N",
+                "target_type": target_type_str,
+                "target_null": "Y" if target_col.get('nullable') else "N",
                 "status": status
             })
         
@@ -794,12 +811,12 @@ def table_compare_schemas(
                 continue
             
             fuzzy_key = normalize_key(db2_col["name"])
-            mssql_col = mssql_fuzzy_map.get(fuzzy_key)
+            target_col = target_fuzzy_map.get(fuzzy_key)
             
-            if mssql_col and mssql_col["name"].upper() not in mssql_processed:
-                mssql_name_upper = mssql_col["name"].upper()
+            if target_col and target_col["name"].upper() not in target_processed:
+                target_name_upper = target_col["name"].upper()
                 db2_processed.add(db2_name_upper)
-                mssql_processed.add(mssql_name_upper)
+                target_processed.add(target_name_upper)
                 
                 db2_type = DatabaseType(
                     db_type=db2_col["type"],
@@ -807,10 +824,10 @@ def table_compare_schemas(
                     scale=db2_col.get("scale"),
                     nullable=db2_col.get("nullable", True)
                 )
-                expected_mssql = converter.convert_column(db2_col["name"], db2_type)
+                expected_target = converter.convert_column(db2_col["name"], db2_type)
                 
-                type_match = expected_mssql.db_type == mssql_col["type"]
-                null_match = db2_col.get("nullable", True) == mssql_col.get("nullable", True)
+                type_match = expected_target.db_type == target_col["type"]
+                null_match = db2_col.get("nullable", True) == target_col.get("nullable", True)
                 
                 db2_type_str = f"{db2_col['type']}"
                 if db2_col.get('length'):
@@ -819,35 +836,35 @@ def table_compare_schemas(
                         db2_type_str += f",{db2_col['scale']}"
                     db2_type_str += ")"
                 
-                mssql_type_str = f"{mssql_col['type']}"
-                if mssql_col.get('length'):
-                    mssql_type_str += f"({mssql_col['length']}"
-                    if mssql_col.get('scale'):
-                        mssql_type_str += f",{mssql_col['scale']}"
-                    mssql_type_str += ")"
+                target_type_str = f"{target_col['type']}"
+                if target_col.get('length'):
+                    target_type_str += f"({target_col['length']}"
+                    if target_col.get('scale'):
+                        target_type_str += f",{target_col['scale']}"
+                    target_type_str += ")"
                 
                 if type_match and null_match:
                     status = "[yellow]~ Fuzzy Match[/yellow]"
                 else:
                     status_parts = []
                     if not type_match:
-                        status_parts.append(f"Type: {expected_mssql.db_type}≠{mssql_col['type']}")
+                        status_parts.append(f"Type: {expected_target.db_type}≠{target_col['type']}")
                         mismatches.append(
-                            f"Fuzzy column '{db2_col['name']}↔{mssql_col['name']}' type mismatch"
+                            f"Fuzzy column '{db2_col['name']}↔{target_col['name']}' type mismatch"
                         )
                     if not null_match:
                         status_parts.append("Null mismatch")
                         mismatches.append(
-                            f"Fuzzy column '{db2_col['name']}↔{mssql_col['name']}' nullable mismatch"
+                            f"Fuzzy column '{db2_col['name']}↔{target_col['name']}' nullable mismatch"
                         )
                     status = f"[red]{' | '.join(status_parts)}[/red]"
                 
                 side_by_side.append({
-                    "column": f"{db2_col['name']}↔{mssql_col['name']}",
+                    "column": f"{db2_col['name']}↔{target_col['name']}",
                     "db2_type": db2_type_str,
                     "db2_null": "Y" if db2_col.get('nullable') else "N",
-                    "mssql_type": mssql_type_str,
-                    "mssql_null": "Y" if mssql_col.get('nullable') else "N",
+                    "target_type": target_type_str,
+                    "target_null": "Y" if target_col.get('nullable') else "N",
                     "status": status
                 })
         
@@ -858,32 +875,32 @@ def table_compare_schemas(
                     "column": db2_col["name"],
                     "db2_type": f"[cyan]{db2_col['type']}[/cyan]",
                     "db2_null": "Y" if db2_col.get('nullable') else "N",
-                    "mssql_type": "[red]N/A[/red]",
-                    "mssql_null": "",
+                    "target_type": "[red]N/A[/red]",
+                    "target_null": "",
                     "status": "[red]DB2 Only[/red]"
                 })
-                mismatches.append(f"Column '{db2_col['name']}' exists in DB2 but not in MSSQL")
+                mismatches.append(f"Column '{db2_col['name']}' exists in DB2 but not in {target_type.upper()}")
         
-        for mssql_col in mssql_columns:
-            if mssql_col["name"].upper() not in mssql_processed:
+        for target_col in target_columns:
+            if target_col["name"].upper() not in target_processed:
                 side_by_side.append({
-                    "column": mssql_col["name"],
+                    "column": target_col["name"],
                     "db2_type": "[red]N/A[/red]",
                     "db2_null": "",
-                    "mssql_type": f"[cyan]{mssql_col['type']}[/cyan]",
-                    "mssql_null": "Y" if mssql_col.get('nullable') else "N",
-                    "status": "[red]MSSQL Only[/red]"
+                    "target_type": f"[cyan]{target_col['type']}[/cyan]",
+                    "target_null": "Y" if target_col.get('nullable') else "N",
+                    "status": f"[red]{target_type.upper()} Only[/red]"
                 })
-                mismatches.append(f"Column '{mssql_col['name']}' exists in MSSQL but not in DB2")
+                mismatches.append(f"Column '{target_col['name']}' exists in {target_type.upper()} but not in DB2")
 
         # Display side-by-side table
         from rich.table import Table
         from rich import box
-        table = Table(title=f"Schema Comparison: {db2_table} vs {mssql_table}", box=box.ASCII)
+        table = Table(title=f"Schema Comparison: {db2_table} vs {target_table} ({target_type.upper()})", box=box.ASCII)
         table.add_column("Column", style="bold")
         table.add_column("DB2 Type", justify="left")
         table.add_column("N", justify="center")
-        table.add_column("MSSQL Type", justify="left")
+        table.add_column(f"{target_type.upper()} Type", justify="left")
         table.add_column("N", justify="center")
         table.add_column("Status", justify="left")
         
@@ -892,15 +909,14 @@ def table_compare_schemas(
                 row["column"],
                 row["db2_type"],
                 row["db2_null"],
-                row["mssql_type"],
-                row["mssql_null"],
+                row["target_type"],
+                row["target_null"],
                 row["status"]
             )
         
         console.print(table)
         
         # Summary
-        total_columns = len(db2_columns) + len(mssql_columns) - len([r for r in side_by_side if "Match" in r["status"]])
         if mismatches:
             console.print(f"\n[red]Found {len(mismatches)} difference(s)[/red]")
         else:

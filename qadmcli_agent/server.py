@@ -1,6 +1,7 @@
 """FastAPI REST Server - Exposes AS400 operations via HTTP API."""
 
 import logging
+import os
 import time
 from typing import List, Optional
 from fastapi import FastAPI, HTTPException
@@ -31,6 +32,7 @@ connection_pool: Optional[ConnectionPool] = None
 class SQLRequest(BaseModel):
     sql: str
     library: Optional[str] = ""
+    params: Optional[List] = None
 
 
 class BatchSQLRequest(BaseModel):
@@ -43,6 +45,14 @@ class BatchResponse(BaseModel):
     status: str
     rows_affected: int
     execution_time_ms: float
+
+
+class QueryResponse(BaseModel):
+    status: str
+    columns: List[str] = []
+    rows: List[List] = []
+    row_count: int = 0
+    execution_time_ms: float = 0.0
 
 
 class HealthResponse(BaseModel):
@@ -120,13 +130,13 @@ async def startup_event():
     jvm_manager = JVMManager(jt400_path=agent_config.get("jt400_path", "/opt/jt400/jt400.jar"))
     jvm_manager.start_jvm()
     
-    # Initialize connection pool
+    # Initialize connection pool with env var fallback for credentials
     as400_config = agent_config.get("as400", {})
     pool_config = ConnectionConfig(
-        host=as400_config.get("host") or "161.82.146.249",
-        user=as400_config.get("user", ""),
-        password=as400_config.get("password", ""),
-        library=as400_config.get("library", "*LIBL")
+        host=as400_config.get("host") or os.getenv("AS400_HOST", "161.82.146.249"),
+        user=as400_config.get("user") or os.getenv("AS400_USER", ""),
+        password=as400_config.get("password") or os.getenv("AS400_PASSWORD", ""),
+        library=as400_config.get("library") or os.getenv("AS400_LIBRARY", "*LIBL")
     )
     
     pool_size = agent_config.get("pool_size", 5)
@@ -240,6 +250,26 @@ async def execute_sql(request: SQLRequest):
         
     except Exception as e:
         logger.error(f"SQL execution failed: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/sql/query", response_model=QueryResponse)
+async def execute_query(request: SQLRequest):
+    """Execute a SQL SELECT query and return structured results (columns + rows)."""
+    if not connection_pool:
+        raise HTTPException(status_code=503, detail="Connection pool not initialized")
+    
+    try:
+        result = connection_pool.execute_query(request.sql, request.params)
+        return QueryResponse(
+            status="success",
+            columns=result["columns"],
+            rows=result["rows"],
+            row_count=result["row_count"],
+            execution_time_ms=result["execution_time_ms"]
+        )
+    except Exception as e:
+        logger.error(f"SQL query failed: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 

@@ -33,6 +33,44 @@ class AS400AgentClient:
         """Check if agent is available."""
         return self._available
     
+    def query(self, sql: str, library: str = "", params: list | None = None) -> dict:
+        """Execute a SELECT query via agent and return structured results.
+        
+        Args:
+            sql: SELECT SQL statement
+            library: Library name
+            params: Optional list of positional parameter values
+            
+        Returns:
+            dict with columns, rows, row_count, execution_time_ms
+        """
+        if not self._available:
+            raise Exception("Agent not available")
+        
+        payload = {
+            "sql": sql,
+            "library": library,
+        }
+        if params:
+            payload["params"] = params
+        
+        try:
+            response = requests.post(
+                f"{self.agent_url}/sql/query",
+                json=payload,
+                timeout=60
+            )
+            
+            if response.status_code == 200:
+                return response.json()
+            else:
+                raise Exception(f"Agent error {response.status_code}: {response.text}")
+        except requests.exceptions.Timeout:
+            raise Exception("Agent query timed out")
+        except requests.exceptions.ConnectionError:
+            self._available = False
+            raise Exception("Lost connection to agent")
+    
     def _check_health(self) -> bool:
         """Check agent health."""
         try:
