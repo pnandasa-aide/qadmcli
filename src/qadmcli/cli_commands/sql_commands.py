@@ -6,6 +6,7 @@ This module contains SQL execution commands:
 """
 
 import sys
+import os
 import logging
 from typing import Optional
 
@@ -46,13 +47,12 @@ def sql_execute(ctx: click.Context, query: str, target: str, output_format: str,
     config_path = ctx.obj["config_path"]
     
     try:
-        config = load_config(config_path)
-        
         # Warn about trailing semicolon for AS400 (DB2 for i doesn't accept it in JDBC)
         if target == "as400" and query.rstrip().endswith(';'):
             console.print("[yellow]Warning: Trailing semicolon detected. DB2 for i JDBC driver may reject it. Consider removing the ';'.[/yellow]")
         
         if target == "mssql":
+            config = load_config(config_path)
             # Execute on MSSQL
             if not config.mssql:
                 console.print("[red]Error: MSSQL configuration not found[/red]")
@@ -102,6 +102,47 @@ def sql_execute(ctx: click.Context, query: str, target: str, output_format: str,
                             console.print(f"[green]✓ Query executed successfully ({row_count} rows affected)[/green]")
         else:
             # Execute on AS400 (default)
+            # Check if agent is available (no JVM needed in CLI)
+            agent_url = os.environ.get("QADMCLI_AGENT_URL")
+            if agent_url:
+                from ..db.agent_client import AS400AgentClient
+                client = AS400AgentClient(agent_url)
+                if client.is_available():
+                    result = client.execute(query)
+                    
+                    if result.get("columns"):
+                        # SELECT query
+                        columns = result["columns"]
+                        rows = result["rows"]
+                        if output_format == "json":
+                            from ..utils.formatters import print_json_clean
+                            results_list = []
+                            for row in rows:
+                                row_dict = {}
+                                for i, col in enumerate(columns):
+                                    row_dict[str(col)] = row[i] if i < len(row) else None
+                                results_list.append(row_dict)
+                            print_json_clean(results_list)
+                        else:
+                            if rows:
+                                table_rows = [[str(cell) if cell is not None else "NULL" for cell in row] for row in rows]
+                                console.print(print_table(console, columns, table_rows, title="Query Results"))
+                                console.print(f"[green]{len(rows)} row(s) returned[/green]")
+                            else:
+                                console.print("[yellow]No rows returned[/yellow]")
+                    else:
+                        # DDL/DML query
+                        rows_affected = result.get("rows_affected", 0)
+                        if output_format == "json":
+                            import json
+                            console.print(json.dumps({"status": "success", "rows_affected": rows_affected}))
+                        else:
+                            console.print(f"[green]✓ Query executed successfully ({rows_affected} rows affected)[/green]")
+                    return
+            
+            # Fallback to direct JT400 connection
+            config = load_config(config_path)
+            
             # Apply credential overrides if provided
             as400_config = config.as400
             if user or password:
@@ -196,7 +237,6 @@ def sql_execute(ctx: click.Context, query: str, target: str, output_format: str,
         console.print(f"[red]Error [{error_type}]: {error_msg}[/red]")
         
         # Show traceback in verbose mode (for debugging)
-        import os
         if os.environ.get('QADMCLI_DEBUG') == '1':
             import traceback
             console.print(f"[dim]Traceback:[/dim]")
@@ -228,8 +268,6 @@ def sql_query(ctx: click.Context, query: str, target: str, limit: int, offset: i
     border_style = ctx.obj.get("border_style", "unicode")
     
     try:
-        config = load_config(config_path)
-        
         # Validate query is a SELECT
         query_stripped = query.strip().upper()
         if not query_stripped.startswith("SELECT"):
@@ -242,30 +280,74 @@ def sql_query(ctx: click.Context, query: str, target: str, limit: int, offset: i
                 console.print("[yellow]Warning: Trailing semicolon detected. DB2 for i JDBC driver may reject it. Consider removing the ';'.[/yellow]")
         
         # Use appropriate connection based on target
-        if target == "mssql":
+        if target == "as400":
+            # Check if agent is available (no JVM needed in CLI)
+            agent_url = os.environ.get("QADMCLI_AGENT_URL")
+            if agent_url:
+                from ..db.agent_client import AS400AgentClient
+                client = AS400AgentClient(agent_url)
+                if client.is_available():
+                    # Add pagination
+                    paginated_query = query
+                    query_stripped = query.strip().upper()
+                    if "FETCH FIRST" not in query_stripped and "LIMIT" not in query_stripped:
+                        if "OFFSET" not in query_stripped:
+                            paginated_query = f"{query} OFFSET {offset} ROWS FETCH FIRST {limit} ROWS ONLY"
+                    
+                    result = client.query(paginated_query)
+                    
+                    columns = result.get("columns", [])
+                    rows = result.get("rows", [])
+                    
+                    if output_format == "json":
+                        from ..utils.formatters import print_json_clean
+                        results_list = []
+                        for row in rows:
+                            row_dict = {}
+                            for i, col in enumerate(columns):
+                                row_dict[str(col)] = row[i] if i < len(row) else None
+                            results_list.append(row_dict)
+                        print_json_clean(results_list)
+                    elif output_format == "csv":
+                        import csv, io
+                        output = io.StringIO()
+                        writer = csv.writer(output)
+                        writer.writerow(columns)
+                        for row in rows:
+                            writer.writerow([str(cell) if cell is not None else "" for cell in row])
+                        sys.stdout.write(output.getvalue())
+                    else:
+                        if rows:
+                            table_rows = [[str(cell) if cell is not None else "NULL" for cell in row] for row in rows]
+                            console.print(print_table(console, columns, table_rows, title="Query Results"))
+                            console.print(f"[green]{len(rows)} row(s) returned[/green]")
+                        else:
+                            console.print("[yellow]No rows returned[/yellow]")
+                    return
+            
+            # Fallback to direct JT400 connection
+            config = load_config(config_path)
+            as400_config = config.as400
+            if user or password:
+                as400_config = config.as400.copy_with_overrides(user=user, password=password)
+                if output_format != "json":  # Suppress in JSON mode
+                    console.print(f"[yellow]Using credential override: user={user or '***'}[/yellow]")
+            from copy import deepcopy
+            temp_config = deepcopy(config)
+            temp_config.as400 = as400_config
+            conn_manager = AS400ConnectionManager(temp_config)
+            conn_manager.connect()
+        else:
+            config = load_config(config_path)
             if not config.mssql:
                 console.print("[red]Error: MSSQL configuration not found in connection.yaml[/red]")
                 sys.exit(1)
-            # Apply credential overrides if provided
             mssql_config = config.mssql
             if user or password:
                 mssql_config = config.mssql.copy_with_overrides(username=user, password=password)
                 if output_format != "json":  # Suppress in JSON mode
                     console.print(f"[yellow]Using credential override: user={user or '***'}[/yellow]")
             conn_manager = MSSQLConnection(mssql_config)
-            conn_manager.connect()
-        else:
-            # Apply credential overrides if provided
-            as400_config = config.as400
-            if user or password:
-                as400_config = config.as400.copy_with_overrides(user=user, password=password)
-                if output_format != "json":  # Suppress in JSON mode
-                    console.print(f"[yellow]Using credential override: user={user or '***'}[/yellow]")
-            # Create temporary config with overridden AS400 settings
-            from copy import deepcopy
-            temp_config = deepcopy(config)
-            temp_config.as400 = as400_config
-            conn_manager = AS400ConnectionManager(temp_config)
             conn_manager.connect()
         
         try:
@@ -378,6 +460,9 @@ def sql_query(ctx: click.Context, query: str, target: str, limit: int, offset: i
             # Always close connection
             conn_manager.disconnect()
     
+    except ConnectionError as e:
+        console.print(f"[red]Connection error: {e.message}[/red]")
+        sys.exit(1)
     except Exception as e:
         console.print(f"[red]Error: {e}[/red]")
         sys.exit(1)

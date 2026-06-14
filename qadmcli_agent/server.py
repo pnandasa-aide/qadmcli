@@ -227,25 +227,19 @@ async def get_status():
 
 @app.post("/sql/execute")
 async def execute_sql(request: SQLRequest):
-    """Execute a single SQL statement."""
+    """Execute a SQL statement (DDL/DML) and return affected row count."""
     if not connection_pool:
         raise HTTPException(status_code=503, detail="Connection pool not initialized")
     
     try:
-        conn = connection_pool.get_connection()
-        if not conn:
-            raise HTTPException(status_code=503, detail="No available connections")
-        
-        start_time = __import__('time').time()
-        result = conn.execute(request.sql)
-        elapsed_ms = (__import__('time').time() - start_time) * 1000
-        
-        connection_pool.release_connection(conn)
-        
+        result = connection_pool.execute_query(request.sql, request.params)
         return {
             "status": "success",
-            "rows_affected": result,
-            "execution_time_ms": round(elapsed_ms, 2)
+            "columns": result["columns"],
+            "rows": result["rows"],
+            "row_count": result["row_count"],
+            "rows_affected": result["rows_affected"],
+            "execution_time_ms": result["execution_time_ms"]
         }
         
     except Exception as e:

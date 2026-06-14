@@ -1,0 +1,7 @@
+mysql:
+  host: "192.168.13.28"
+  port: 1433
+  username: "syniti_user"
+  password: "P@ssw0rd"
+  database: "syniti_db"
+

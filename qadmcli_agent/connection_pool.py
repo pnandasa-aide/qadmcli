@@ -405,9 +405,11 @@ class ConnectionPool:
             # Check if connection is still valid
             if not conn.is_valid():
                 logger.warning("Connection invalid, recreating...")
-                conn.close()
+                old_conn = conn
+                old_conn.close()
                 conn = AS400Connection(self.config)
-                self._all_connections.remove(conn)
+                if old_conn in self._all_connections:
+                    self._all_connections.remove(old_conn)
                 self._all_connections.append(conn)
             
             conn._in_use = True
@@ -508,7 +510,8 @@ class ConnectionPool:
                     rows.append(clean)
                 cursor.close()
             else:
-                # DML statement - no result rows
+                # DML statement - capture rows affected
+                rows_affected = int(cursor)
                 columns = []
                 rows = []
                 cursor.close()
@@ -526,6 +529,7 @@ class ConnectionPool:
                 "columns": columns,
                 "rows": rows,
                 "row_count": len(rows),
+                "rows_affected": rows_affected if isinstance(cursor, IntegerCursor) else 0,
                 "execution_time_ms": round(elapsed, 2)
             }
         except Exception as e:

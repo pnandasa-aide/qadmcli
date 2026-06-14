@@ -1005,7 +1005,7 @@ class JournalManager:
             library, table_name = parts[0].upper(), parts[1].upper()
             
             try:
-                info = self.get_journal_info(table_name, library)
+                info = self.get_journal_info(table_name, library, skip_entry_range=False)
                 
                 if not info.is_journaled:
                     results.append({
@@ -1051,12 +1051,14 @@ class JournalManager:
                 receiver_name = str(row[2]) if row[2] else None
                 receiver_lib = str(row[3]) if row[3] else None
                 
-                # Convert attach timestamp to .NET ticks
+                # Get per-table entry info from DISPLAY_JOURNAL (populated because skip_entry_range=False)
+                entry_seq = info.newest_entry_sequence
+                entry_ts = info.newest_entry_timestamp
+                
+                # Convert attach timestamp to .NET ticks (Syniti Replicate compatibility)
                 transaction_ts = None
-                ts_datetime = None
                 if attach_ts:
-                    dt = datetime.strptime(attach_ts, "%Y-%m-%d %H:%M:%S")
-                    ts_datetime = str(dt)
+                    dt = datetime.strptime(attach_ts.split('.')[0], "%Y-%m-%d %H:%M:%S")
                     transaction_ts = dt_to_dotnet_ticks(dt)
                 
                 results.append({
@@ -1067,10 +1069,10 @@ class JournalManager:
                     "journal_name": info.journal_name,
                     "receiver_library": receiver_lib,
                     "receiver_name": receiver_name,
-                    "last_sequence": last_seq,
                     "attach_timestamp": attach_ts,
+                    "entry_sequence": int(entry_seq) if entry_seq is not None else None,
+                    "entry_timestamp": entry_ts,
                     "transaction_ts": transaction_ts,
-                    "transaction_ts_datetime": ts_datetime
                 })
             except Exception as e:
                 logger.error(f"Error getting last transaction for {table_ref}: {e}")

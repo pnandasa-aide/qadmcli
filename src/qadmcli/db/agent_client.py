@@ -80,6 +80,45 @@ class AS400AgentClient:
             logger.debug(f"Agent health check failed: {e}")
             return False
     
+    def execute(self, sql: str, library: str = "", params: list | None = None) -> dict:
+        """Execute a SQL statement (DDL/DML/SELECT) via agent.
+        
+        Args:
+            sql: SQL statement to execute
+            library: Library name
+            params: Optional list of positional parameter values
+            
+        Returns:
+            dict with status, columns (empty for DML), rows (empty for DML),
+            rows_affected (0 for SELECT), execution_time_ms
+        """
+        if not self._available:
+            raise Exception("Agent not available")
+        
+        payload = {
+            "sql": sql,
+            "library": library,
+        }
+        if params:
+            payload["params"] = params
+        
+        try:
+            response = requests.post(
+                f"{self.agent_url}/sql/execute",
+                json=payload,
+                timeout=60
+            )
+            
+            if response.status_code == 200:
+                return response.json()
+            else:
+                raise Exception(f"Agent error {response.status_code}: {response.text}")
+        except requests.exceptions.Timeout:
+            raise Exception("Agent request timed out")
+        except requests.exceptions.ConnectionError:
+            self._available = False
+            raise Exception("Lost connection to agent")
+    
     def execute_batch(self, sql: str, params: list, library: str = "") -> dict:
         """Execute batch SQL via agent.
         

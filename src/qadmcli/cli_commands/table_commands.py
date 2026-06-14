@@ -14,6 +14,7 @@ This module contains all table-related CLI commands:
 """
 
 import sys
+import os
 import logging
 from typing import Optional, Any
 from pathlib import Path
@@ -60,6 +61,149 @@ def table_check(ctx: click.Context, table: str, library: str, output_format: str
         logger.setLevel(logging.WARNING)
     
     try:
+        # Check if agent is available (no JVM needed in CLI)
+        agent_url = os.environ.get("QADMCLI_AGENT_URL")
+        if agent_url:
+            from ..db.agent_client import AS400AgentClient
+            client = AS400AgentClient(agent_url)
+            if client.is_available():
+                # Step 1: Check if table exists and get info
+                info_result = client.query(
+                    "SELECT TABLE_NAME, TABLE_TYPE, TABLE_TEXT, TABLE_SCHEMA "
+                    "FROM QSYS2.SYSTABLES WHERE TABLE_NAME = ? AND TABLE_SCHEMA = ?",
+                    params=[table.upper(), library.upper()]
+                )
+                exists = info_result["row_count"] > 0
+                
+                if not exists:
+                    if output_format == "json":
+                        print_json_clean({"exists": False, "table": f"{library}.{table}"})
+                    else:
+                        console.print(f"[yellow]Table {library}.{table} does not exist.[/yellow]")
+                    return
+                
+                # Step 2: Get columns
+                col_result = client.query(
+                    "SELECT COLUMN_NAME, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH, "
+                    "NUMERIC_PRECISION, NUMERIC_SCALE, IS_NULLABLE, "
+                    "CCSID, COLUMN_DEFAULT, IS_IDENTITY "
+                    "FROM QSYS2.SYSCOLUMNS WHERE TABLE_NAME = ? AND TABLE_SCHEMA = ? "
+                    "ORDER BY ORDINAL_POSITION",
+                    params=[table.upper(), library.upper()]
+                )
+                
+                # Step 3: Get primary key
+                pk_result = client.query(
+                    "SELECT COLUMN_NAME FROM QSYS2.SYSCSTCOL "
+                    "WHERE CONSTRAINT_NAME IN ("
+                    "SELECT CONSTRAINT_NAME FROM QSYS2.SYSCST "
+                    "WHERE TABLE_NAME = ? AND TABLE_SCHEMA = ? "
+                    "AND CONSTRAINT_TYPE = 'PRIMARY KEY'"
+                    ")",
+                    params=[table.upper(), library.upper()]
+                )
+                pk_columns = [row[0] for row in pk_result["rows"]]
+                
+                # Step 4: Get row count
+                count_result = client.query(
+                    f"SELECT COUNT(*) AS CNT FROM \"{library.upper()}\".\"{table.upper()}\""
+                )
+                row_count = count_result["rows"][0][0] if count_result["rows"] else None
+                
+                # Step 5: Format output
+                row_data = info_result["rows"][0] if info_result["rows"] else []
+                info_cols = info_result["columns"]
+                info_dict = dict(zip(info_cols, row_data)) if row_data else {}
+                system_name = info_dict.get("TABLE_NAME", table.upper())
+                
+                if output_format == "json":
+                    columns_list = []
+                    for row in col_result["rows"]:
+                        col_dict = dict(zip(col_result["columns"], row))
+                        columns_list.append({
+                            "name": col_dict.get("COLUMN_NAME", ""),
+                            "type": col_dict.get("DATA_TYPE", ""),
+                            "length": col_dict.get("CHARACTER_MAXIMUM_LENGTH") or col_dict.get("NUMERIC_PRECISION"),
+                            "scale": col_dict.get("NUMERIC_SCALE"),
+                            "nullable": col_dict.get("IS_NULLABLE", "Y") == "Y",
+                            "ccsid": col_dict.get("CCSID"),
+                            "is_identity": col_dict.get("IS_IDENTITY") == "YES",
+                            "is_generated": col_dict.get("IS_GENERATED") == "YES",
+                        })
+                    print_json_clean({
+                        "exists": True,
+                        "table": f"{library}.{table}",
+                        "system_name": system_name,
+                        "row_count": row_count,
+                        "primary_key": pk_columns,
+                        "columns": columns_list
+                    })
+                else:
+                    # Text output
+                    from ..utils.data_generator import DataGenerator
+                    dg = DataGenerator()
+                    
+                    parts = [
+                        ("Table: ", "bold"), f"{library}.{table}", "\n",
+                        ("Exists: ", "bold"), ("Yes", "green"), "\n",
+                        ("Row Count: ", "bold"), f"{row_count:,}" if row_count is not None else "N/A", "\n",
+                    ]
+                    
+                    if pk_columns:
+                        parts.extend([("Primary Key: ", "bold"), ", ".join(pk_columns), "\n"])
+                    else:
+                        parts.extend([("Primary Key: ", "bold"), ("None", "yellow"), "\n"])
+                    
+                    print_panel(ctx, Text.assemble(*parts), title="Table Information", border_style="green")
+                    
+                    if col_result["rows"]:
+                        border_style = ctx.obj.get("border_style", "unicode")
+                        if border_style == "ascii":
+                            pk_indicator_char = "[PK]"
+                        else:
+                            pk_indicator_char = "🔑"
+                        
+                        col_rows = []
+                        for row in col_result["rows"]:
+                            col_dict = dict(zip(col_result["columns"], row))
+                            cname = col_dict.get("COLUMN_NAME", "")
+                            pk_ind = pk_indicator_char if cname in pk_columns else ""
+                            display_name = f"{cname} {pk_ind}".strip()
+                            
+                            ccsid = col_dict.get("CCSID")
+                            if ccsid == 65535:
+                                ccsid_d = "65535 (Binary)"
+                            elif ccsid == 838:
+                                ccsid_d = "838 (Thai)"
+                            elif ccsid == 1208:
+                                ccsid_d = "1208 (UTF-8)"
+                            elif ccsid == 37:
+                                ccsid_d = "37 (English)"
+                            elif ccsid:
+                                ccsid_d = str(ccsid)
+                            else:
+                                ccsid_d = ""
+                            
+                            pattern = dg.detect_pattern(cname, col_dict.get("DATA_TYPE", ""), None)
+                            
+                            col_rows.append([
+                                display_name,
+                                col_dict.get("DATA_TYPE", ""),
+                                str(col_dict.get("CHARACTER_MAXIMUM_LENGTH") or "") if col_dict.get("CHARACTER_MAXIMUM_LENGTH") else str(col_dict.get("NUMERIC_PRECISION") or ""),
+                                "Yes" if col_dict.get("IS_NULLABLE", "Y") == "Y" else "No",
+                                "Auto" if col_dict.get("IS_IDENTITY") == "YES" or col_dict.get("IS_GENERATED") == "YES" else "",
+                                ccsid_d,
+                                pattern
+                            ])
+                        
+                        console.print(print_table(
+                            console,
+                            ["Column", "Type", "Length", "Nullable", "Identity", "CCSID", "Mockup Pattern"],
+                            col_rows,
+                            title=f"Columns in {library}.{table}"
+                        ))
+                return
+        
         logger.debug(f"Loading config from: {config_path}")
         config = load_config(config_path)
         logger.debug(f"Config loaded. Host: {config.as400.host}, Library: {config.defaults.library}")
@@ -329,6 +473,53 @@ def table_list(ctx: click.Context, library: str, table_type: str | None, output_
         logging.getLogger("qadmcli").setLevel(logging.WARNING)
     
     try:
+        # Check if agent is available (no JVM needed in CLI)
+        agent_url = os.environ.get("QADMCLI_AGENT_URL")
+        if agent_url:
+            from ..db.agent_client import AS400AgentClient
+            client = AS400AgentClient(agent_url)
+            if client.is_available():
+                sql = "SELECT TABLE_NAME, TABLE_TYPE, TABLE_TEXT FROM QSYS2.SYSTABLES WHERE TABLE_SCHEMA = ?"
+                params = [library.upper()]
+                if table_type:
+                    sql += " AND TABLE_TYPE = ?"
+                    params.append(table_type)
+                sql += " ORDER BY TABLE_NAME"
+                
+                result = client.query(sql, params=params)
+                
+                if output_format == "json":
+                    tables_data = []
+                    for row in result["rows"]:
+                        row_dict = dict(zip(result["columns"], row))
+                        tables_data.append({
+                            "name": row_dict.get("TABLE_NAME", ""),
+                            "table_type": row_dict.get("TABLE_TYPE", ""),
+                            "table_text": row_dict.get("TABLE_TEXT", ""),
+                            "column_count": row_dict.get("COLUMN_COUNT"),
+                        })
+                    print_json_clean(tables_data)
+                else:
+                    if result["rows"]:
+                        display_rows = []
+                        for row in result["rows"]:
+                            row_dict = dict(zip(result["columns"], row))
+                            display_rows.append([
+                                row_dict.get("TABLE_NAME", ""),
+                                row_dict.get("TABLE_TYPE", ""),
+                                str(row_dict.get("COLUMN_COUNT", "")),
+                                row_dict.get("TABLE_TEXT", "") or "",
+                            ])
+                        console.print(print_table(
+                            console,
+                            ["Table Name", "Type", "Columns", "Description"],
+                            display_rows,
+                            title=f"Tables in {library}"
+                        ))
+                    else:
+                        console.print(f"[yellow]No tables found in {library}[/yellow]")
+                return
+        
         config = load_config(config_path)
         
         with AS400ConnectionManager(config) as conn:
@@ -386,6 +577,17 @@ def table_drop(
         sys.exit(1)
     
     try:
+        # Check if agent is available (no JVM needed in CLI)
+        agent_url = os.environ.get("QADMCLI_AGENT_URL")
+        if agent_url:
+            from ..db.agent_client import AS400AgentClient
+            client = AS400AgentClient(agent_url)
+            if client.is_available():
+                result = client.execute(f"DROP TABLE \"{library.upper()}\".\"{table.upper()}\"")
+                if result.get("success", True):
+                    console.print(f"[green]Dropped table {library}.{table}[/green]")
+                return
+        
         config = load_config(config_path)
         
         with AS400ConnectionManager(config) as conn:
@@ -426,6 +628,28 @@ def table_empty(
         sys.exit(1)
     
     try:
+        # Check if agent is available (no JVM needed in CLI)
+        agent_url = os.environ.get("QADMCLI_AGENT_URL")
+        if agent_url:
+            from ..db.agent_client import AS400AgentClient
+            client = AS400AgentClient(agent_url)
+            if client.is_available():
+                # Check if table exists via agent
+                check_result = client.query(
+                    "SELECT COUNT(*) AS CNT FROM \"{}\".\"{}\"".format(library.upper(), table.upper())
+                )
+                if check_result["row_count"] > 0:
+                    row_count = check_result["rows"][0][0]
+                else:
+                    console.print(f"[yellow]Table {library}.{table} does not exist.[/yellow]")
+                    sys.exit(1)
+                
+                result = client.execute(f"DELETE FROM \"{library.upper()}\".\"{table.upper()}\"")
+                rows_affected = result.get("rows_affected", 0)
+                console.print(f"[green]Deleted all data from {library}.{table}[/green]")
+                console.print(f"Rows removed: {rows_affected:,}" if rows_affected else "Rows removed: Unknown")
+                return
+        
         config = load_config(config_path)
         
         with AS400ConnectionManager(config) as conn:
